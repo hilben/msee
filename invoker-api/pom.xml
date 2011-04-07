@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>${project.parent.groupId}</groupId>
-  <artifactId>api</artifactId>
+  <artifactId>invoker-api</artifactId>
   <version>${project.parent.version}</version>
   <packaging>jar</packaging>
   
