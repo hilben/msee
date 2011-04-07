@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>../api</module>
+		<module>../invoker-api</module>
 		<module>../invoker-client</module>
 		<module>../invoker-framework</module>
 		<module>../invoker-webservice</module>
