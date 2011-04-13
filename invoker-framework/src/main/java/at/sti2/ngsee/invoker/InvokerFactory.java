@@ -3,7 +3,9 @@
  */
 package at.sti2.ngsee.invoker;
 
+import at.sti2.ngsee.invoker.rest.RESTInvoker;
 import at.sti2.ngsee.invoker.soap.WSDLInvoker;
+import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
 
 /**
  * <b>Purpose:</b>
@@ -23,12 +25,12 @@ import at.sti2.ngsee.invoker.soap.WSDLInvoker;
  */
 public class InvokerFactory {
 	
-	public static void createWSDLInvoker(){
-		new WSDLInvoker();
+	public static ServiceInvoker createWSDLInvoker(){
+		return new WSDLInvoker();
 	}
 	
-	public static void createRESTInvoker(){
-		
+	public static ServiceInvoker createRESTInvoker(){
+		return new RESTInvoker();
 	}
 
 }

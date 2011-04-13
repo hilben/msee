@@ -23,7 +23,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>at.sti2.ngsee</groupId>
-			<artifactId>api</artifactId>
+			<artifactId>invoker-api</artifactId>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

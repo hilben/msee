@@ -1,7 +1,4 @@
-package at.sti2.ngsee.invoker.soap;
-
-import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
-
+package at.sti2.ngsee.invoker_grounding;
 
 /**
  * <b>Purpose:</b>
@@ -19,13 +16,6 @@ import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class WSDLInvoker implements ServiceInvoker {
+public abstract class GroundingFactory {
 
-	@Override
-	public String invoke(String _serviceBindingURL, BINDING_TYPE _bindingType,
-			String _operationName, String _inputData) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-   
 }
