@@ -26,6 +26,5 @@ public class ServiceHandler {
 	public static String getOperationQName(String _serviceID, String _operationName) {
 		// TODO: Try to get the namespace of the _operationName and return the QName
 		return _operationName;
-		
 	}
 }

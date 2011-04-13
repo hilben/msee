@@ -31,7 +31,7 @@ import at.sti2.ngsee.invoker_api.ws.IInvokerEndpoint;
  * State:        		$State$<br>
  */
 
-@WebService
+@WebService(targetNamespace="http://see.sti2.at/")
 public class InvokerWebService implements IInvokerEndpoint
 {
 	
@@ -60,5 +60,7 @@ public class InvokerWebService implements IInvokerEndpoint
 		IServiceInvoker wsdlInvoker = InvokerFactory.createWSDLInvoker();
 		return wsdlInvoker.invoke(serviceURL, BINDING_TYPE.Automatic, operationQName, serviceData);
 	}
+	
+	public String getVersion() { return "v9999"; }
 
 }
