@@ -1,6 +1,7 @@
-package at.sti2.ngsee.invoker.rest;
+package at.sti2.ngsee.invoker.framework.soap;
 
-import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
+import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
+
 
 /**
  * <b>Purpose:</b>
@@ -18,13 +19,13 @@ import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class RESTInvoker implements ServiceInvoker {
+public class SOAPInvoker implements IServiceInvoker {
 
 	@Override
-	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType,
-			String operationName, String inputData) {
-		// TODO: Call here the Service over REST and return the result.
+	public String invoke(String _serviceBindingURL, BINDING_TYPE _bindingType,
+			String _operationName, String _inputData) {
+		// TODO Auto-generated method stub
 		return null;
 	}
-
+   
 }

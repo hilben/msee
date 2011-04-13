@@ -6,11 +6,11 @@ import javax.jws.WebService;
 
 import org.apache.log4j.Logger;
 
-import at.sti2.ngsee.invoker.InvokerFactory;
 import at.sti2.ngsee.invoker.ServiceHandler;
-import at.sti2.ngsee.invoker_api.framework.ServiceInvoker;
-import at.sti2.ngsee.invoker_api.framework.ServiceInvoker.BINDING_TYPE;
-import at.sti2.ngsee.invoker_api.ws.InvokerEndpoint;
+import at.sti2.ngsee.invoker.framework.InvokerFactory;
+import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
+import at.sti2.ngsee.invoker_api.framework.IServiceInvoker.BINDING_TYPE;
+import at.sti2.ngsee.invoker_api.ws.IInvokerEndpoint;
 
 /**
  * 
@@ -32,7 +32,7 @@ import at.sti2.ngsee.invoker_api.ws.InvokerEndpoint;
  */
 
 @WebService
-public class InvokerWebService implements InvokerEndpoint
+public class InvokerWebService implements IInvokerEndpoint
 {
 	
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
@@ -48,14 +48,17 @@ public class InvokerWebService implements InvokerEndpoint
 		//TODO retrieve wsmoLite from TripleStore using webServiceID
 		
 		String serviceURL = ServiceHandler.getServiceURL(_serviceID);
+		
+		// Lookup the namespace of the operation. If the operationName is a URL, then the operationName is returned.
+		String operationQName = ServiceHandler.getOperationQName(_serviceID, _operationName);
 		// TODO: Lower the RDF Data to Data that is understandable for the Service.
 		String serviceData = _inputData;
 		
 		logger.info("Invoking webservice " + _serviceID + " with data " + _inputData);
 		
 		// TODO: Check the Service Type, e.g. REST, SOAP
-		ServiceInvoker wsdlInvoker = InvokerFactory.createWSDLInvoker();
-		return wsdlInvoker.invoke(serviceURL, BINDING_TYPE.Automatic, _operationName, serviceData);		
+		IServiceInvoker wsdlInvoker = InvokerFactory.createWSDLInvoker();
+		return wsdlInvoker.invoke(serviceURL, BINDING_TYPE.Automatic, operationQName, serviceData);
 	}
 
 }

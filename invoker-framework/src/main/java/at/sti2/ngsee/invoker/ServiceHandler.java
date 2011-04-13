@@ -18,8 +18,14 @@ package at.sti2.ngsee.invoker;
  */
 public class ServiceHandler {
 	
-	public static String getServiceURL(String serviceID) {
+	public static String getServiceURL(String _serviceID) {
 		// TODO: Retrieve here the service URL from the Triple Store.
 		return null;
+	}
+	
+	public static String getOperationQName(String _serviceID, String _operationName) {
+		// TODO: Try to get the namespace of the _operationName and return the QName
+		return _operationName;
+		
 	}
 }

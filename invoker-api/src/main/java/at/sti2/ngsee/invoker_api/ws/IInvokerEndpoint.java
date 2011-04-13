@@ -16,7 +16,7 @@ package at.sti2.ngsee.invoker_api.ws;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public interface InvokerEndpoint {
+public interface IInvokerEndpoint {
 	
 	/**
 	 * 

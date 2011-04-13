@@ -20,7 +20,7 @@ package at.sti2.ngsee.invoker_api.framework;
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
-public interface ServiceInvoker {
+public interface IServiceInvoker {
 	
 	public enum BINDING_TYPE {
 		Automatic,
@@ -34,9 +34,9 @@ public interface ServiceInvoker {
 	 * 
 	 * @param serviceURL The Endpoint of the 
 	 * @param bindingType If unsure choose Automatic.
-	 * @param operationName The operation that should be called.
+	 * @param operationQName The operation that should be called.
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
-	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType, String operationName, String inputData);
+	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType, String operationQName, String inputData);
 }
