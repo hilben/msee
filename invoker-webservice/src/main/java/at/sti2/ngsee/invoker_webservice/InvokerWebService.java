@@ -55,7 +55,7 @@ public class InvokerWebService implements IInvokerEndpoint
 		String serviceData = _inputData;
 		
 		logger.info("Invoking webservice " + _serviceID + " with data " + _inputData);
-		
+
 		// TODO: Check the Service Type, e.g. REST, SOAP
 		IServiceInvoker wsdlInvoker = InvokerFactory.createWSDLInvoker();
 		return wsdlInvoker.invoke(serviceURL, BINDING_TYPE.Automatic, operationQName, serviceData);

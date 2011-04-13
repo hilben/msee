@@ -23,7 +23,7 @@ import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class InvokerFactory {
+public abstract class InvokerFactory {
 	
 	public static IServiceInvoker createWSDLInvoker(){
 		return new SOAPInvoker();
