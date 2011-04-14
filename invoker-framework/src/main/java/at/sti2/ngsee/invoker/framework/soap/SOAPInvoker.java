@@ -25,7 +25,7 @@ public class SOAPInvoker implements IServiceInvoker {
 	public String invoke(String _serviceBindingURL, BINDING_TYPE _bindingType,
 			String _operationName, String _inputData) {
 		// TODO Auto-generated method stub
-		return null;
+		return "Not Implemented";
 	}
    
 }

@@ -54,13 +54,16 @@ public class InvokerWebService implements IInvokerEndpoint
 		// TODO: Lower the RDF Data to Data that is understandable for the Service.
 		String serviceData = _inputData;
 		
-		logger.info("Invoking webservice " + _serviceID + " with data " + _inputData);
+		logger.info("Invoking Web Service '" + _serviceID + "' with data '" + _inputData + "'");
 
 		// TODO: Check the Service Type, e.g. REST, SOAP
 		IServiceInvoker wsdlInvoker = InvokerFactory.createWSDLInvoker();
 		return wsdlInvoker.invoke(serviceURL, BINDING_TYPE.Automatic, operationQName, serviceData);
 	}
 	
-	public String getVersion() { return "v9999"; }
+	public String getVersion() {
+		logger.info("Invoking getVersion()");
+		return "v9999";
+	}
 
 }
