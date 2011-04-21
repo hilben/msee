@@ -20,6 +20,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.3.3</cxf.version>
+		<saxon.version>8.7</saxon.version>
 	</properties>
 
 	<issueManagement>
@@ -210,6 +211,18 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>
+			
+			<!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon-dom</artifactId>
+				<version>${saxon.version}</version>
 			</dependency>
 
 			<!-- tools -->
