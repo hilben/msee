@@ -1,5 +1,6 @@
 package at.sti2.ngsee.invoker_api.grounding;
 
+
 /**
  * <b>Purpose:</b>
  * <br>
@@ -16,6 +17,7 @@ package at.sti2.ngsee.invoker_api.grounding;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public interface IGrounding {
-
+public interface IGroundingEngine {
+	public String lowering(String rdfInputData);
+	public String lifting(String xmlInputData);
 }

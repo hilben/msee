@@ -1,6 +1,6 @@
 package at.sti2.ngsee.invoker.framework.soap;
 
-import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
+import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
 
 
 /**
@@ -19,7 +19,7 @@ import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class SOAPInvoker implements IServiceInvoker {
+public class SOAPInvoker implements ISOAPInvoker {
 
 	@Override
 	public String invoke(String _serviceBindingURL, BINDING_TYPE _bindingType,

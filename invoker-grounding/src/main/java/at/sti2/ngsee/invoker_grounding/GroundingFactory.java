@@ -1,5 +1,9 @@
 package at.sti2.ngsee.invoker_grounding;
 
+import java.net.URL;
+
+import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
+
 /**
  * <b>Purpose:</b>
  * <br>
@@ -17,5 +21,11 @@ package at.sti2.ngsee.invoker_grounding;
  * State:        $State$<br>
  */
 public abstract class GroundingFactory {
-
+	public static IGroundingEngine createGroundingEngine(URL liftingSchemaURL, URL loweringSchemaURL){
+		/**
+		 * TODO: Check here the grounding type, e.g. XSLT or Service and 
+		 * 	  	 return the right instance.
+		 */
+		return new XSLTGroundingEngine(liftingSchemaURL, loweringSchemaURL);
+	}
 }

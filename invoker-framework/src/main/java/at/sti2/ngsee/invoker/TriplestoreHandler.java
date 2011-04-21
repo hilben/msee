@@ -16,7 +16,7 @@ package at.sti2.ngsee.invoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class ServiceHandler {
+public class TriplestoreHandler {
 	
 	public static String getServiceURL(String _serviceID) {
 		// TODO: Retrieve here the service URL from the Triple Store.

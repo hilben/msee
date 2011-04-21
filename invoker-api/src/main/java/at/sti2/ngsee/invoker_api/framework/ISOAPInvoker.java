@@ -20,13 +20,12 @@ package at.sti2.ngsee.invoker_api.framework;
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
-public interface IServiceInvoker {
+public interface ISOAPInvoker {
 	
 	public enum BINDING_TYPE {
 		Automatic,
 		SOAP11,
-		SOAP12,
-		REST
+		SOAP12
 		/* ... */
 	}
 	

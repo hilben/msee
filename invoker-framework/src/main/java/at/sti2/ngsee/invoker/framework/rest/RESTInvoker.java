@@ -1,6 +1,6 @@
 package at.sti2.ngsee.invoker.framework.rest;
 
-import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
+import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
 
 /**
  * <b>Purpose:</b>
@@ -18,7 +18,7 @@ import at.sti2.ngsee.invoker_api.framework.IServiceInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class RESTInvoker implements IServiceInvoker {
+public class RESTInvoker implements ISOAPInvoker {
 
 	@Override
 	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType,
