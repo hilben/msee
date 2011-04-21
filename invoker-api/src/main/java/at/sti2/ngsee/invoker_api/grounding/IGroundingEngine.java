@@ -1,5 +1,7 @@
 package at.sti2.ngsee.invoker_api.grounding;
 
+import at.sti2.ngsee.invoker_api.grounding.exception.GroundingException;
+
 
 /**
  * <b>Purpose:</b>
@@ -18,6 +20,6 @@ package at.sti2.ngsee.invoker_api.grounding;
  * State:        $State$<br>
  */
 public interface IGroundingEngine {
-	public String lowering(String rdfInputData);
-	public String lifting(String xmlInputData);
+	public String lower(String rdfInputData) throws GroundingException;
+	public String lift(String xmlInputData) throws GroundingException;
 }
