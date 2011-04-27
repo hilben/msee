@@ -3,6 +3,12 @@
  */
 package at.sti2.ngsee.invoker_api.framework;
 
+import java.util.Vector;
+
+import javax.xml.namespace.QName;
+
+//import javax.xml.namespace.QName;
+
 /**
  * <b>Purpose:</b>
  * <br>
@@ -22,20 +28,13 @@ package at.sti2.ngsee.invoker_api.framework;
  */
 public interface ISOAPInvoker {
 	
-	public enum BINDING_TYPE {
-		Automatic,
-		SOAP11,
-		SOAP12
-		/* ... */
-	}
-	
 	/**
 	 * 
-	 * @param serviceURL The Endpoint of the 
-	 * @param bindingType If unsure choose Automatic.
+	 * @param wsdlURL The Endpoint of the 
 	 * @param operationQName The operation that should be called.
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
-	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType, String operationQName, String inputData);
+	public Vector<String> invoke(String wsdlURL, QName operationQName, String... inputData) throws Exception;
+	
 }

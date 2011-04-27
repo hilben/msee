@@ -127,6 +127,12 @@
 							<groupId>org.eclipse.jetty.toolchain</groupId>
 							<artifactId>jetty-enforcer-rules</artifactId>
 							<version>1.0</version>
+							<exclusions>
+								<exclusion>
+									<groupId>javax.activation</groupId>
+									<artifactId>activation</artifactId>
+								</exclusion>
+							</exclusions>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -138,6 +144,19 @@
 					<configuration>
 						<source>1.6</source>
 						<target>1.6</target>
+						<profile>
+							<activation>
+								<jdk>1.6</jdk>
+							</activation>
+							<dependencies>
+								<dependency>
+									<groupId>javax.activation</groupId>
+									<artifactId>activation</artifactId>
+									<version>1.1</version>
+									<scope>provided</scope>
+								</dependency>
+							</dependencies>
+						</profile>
 					</configuration>
 				</plugin>
 
@@ -212,7 +231,7 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-			
+
 			<!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
 			<dependency>
 				<groupId>net.sf.saxon</groupId>
@@ -261,5 +280,6 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
+
 
 </project>

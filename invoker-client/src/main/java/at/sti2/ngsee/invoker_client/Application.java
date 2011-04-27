@@ -1,25 +1,22 @@
 package at.sti2.ngsee.invoker_client;
 
-import java.io.IOException;
+import at.sti2.see.InvokerWebService;
+import at.sti2.see.InvokerWebServiceService;
 
-import javax.xml.soap.SOAPException;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
-/**
- * Hello world!
- *
- */
 public class Application {
-	
-    public static void main(String[] args) throws UnsupportedOperationException, SOAPException, IOException {
-    	Logger logging = Logger.getLogger(Application.class);
-    	logging.setLevel(Level.ALL);
-    	
-    	Invoker invoker = new Invoker();
-    	
-    	logging.info("[*] Service Invoker Version: " + invoker.getVersion());
-    	logging.info("[*] Invoking Example Service: \n---\n" + invoker.invokeService("NGSW-Europe-1", "getStatus", "") + "\n---");
-    }
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		InvokerWebServiceService factory = new InvokerWebServiceService();
+		InvokerWebService service = factory.getInvokerWebServicePort();
+		System.out.println(service.getVersion());
+		
+//		String inputData0 = "<id>http://sigimera.networld.to/instances/entries#drone_00-00-00-00-00-00</id>";
+//		System.out.println(service.invoke("http://localhost:9091/groundstation-webservice/services/sigimeraEntity?wsdl", "get", inputData0));
+		
+		System.out.println(service.invoke("http://localhost:9091/groundstation-webservice/services/sigimeraID?wsdl", "getDrones", null));
+	}
+
 }
