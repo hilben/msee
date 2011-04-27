@@ -5,8 +5,7 @@ import java.net.URL;
 import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
 
 /**
- * <b>Purpose:</b>
- * <br>
+ * <b>Purpose:</b> Grounding engine based on external transformation services<br>
  * <b>Description:</b>
  * <br>
  * <b>Copyright:</b>     Copyright (c) 2011 STI<br>

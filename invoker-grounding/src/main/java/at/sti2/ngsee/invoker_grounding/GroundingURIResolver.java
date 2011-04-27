@@ -14,14 +14,13 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Logger;
 
 /**
- * <b>Purpose:</b>
- * <br>
+ * <b>Purpose:</b> This URI resolver is called by the xml processor when xml:import or xsl:include need to be resolved<br>
  * <b>Description:</b>
  * <br>
  * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
  * <b>Company:</b>       STI Innsbruck<br>
  *
- * @author      Michael Rogger, Alex Oberhauser, Corneliu Valentin Stanciu<br>
+ * @author      Michael Rogger<br>
  * @version     $Id$<br>
  * Date of creation:  13.04.2011<br>
  * File:         $Source$<br>
@@ -34,6 +33,10 @@ public class GroundingURIResolver implements URIResolver {
 
 	private static Logger logger = Logger.getLogger(GroundingURIResolver.class);
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.xml.transform.URIResolver#resolve(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Source resolve(String arg0, String arg1) throws TransformerException {
 		logger.debug("imported resource: " + arg0);

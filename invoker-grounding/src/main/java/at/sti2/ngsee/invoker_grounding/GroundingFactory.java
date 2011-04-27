@@ -5,8 +5,7 @@ import java.net.URL;
 import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
 
 /**
- * <b>Purpose:</b>
- * <br>
+ * <b>Purpose:</b> This factory creates grouding engines.<br>
  * <b>Description:</b>
  * <br>
  * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
@@ -23,6 +22,12 @@ import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
 
 public abstract class GroundingFactory {
 
+	/**
+	 * Creates a grouding engine depending on the specified type. Currently only the {@link XSLTGroundingEngine} is supported.
+	 * @param loweringSchemaURL {@link URL} that points to the lowering schema
+	 * @param liftingSchemaURL {@link URL} that points to the lifting schema
+	 * @return grounding engine
+	 */
 	public static IGroundingEngine createGroundingEngine(URL loweringSchemaURL,
 			URL liftingSchemaURL) {
 		/**

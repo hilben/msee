@@ -1,8 +1,7 @@
 package at.sti2.ngsee.invoker_grounding;
 
 /**
- * <b>Purpose:</b>
- * <br>
+ * <b>Purpose:</b> Test XSLT grounding engine<br> 
  * <b>Description:</b>
  * <br>
  * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
