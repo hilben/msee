@@ -3,7 +3,6 @@
  */
 package at.sti2.ngsee.invoker.framework;
 
-import at.sti2.ngsee.invoker.framework.rest.RESTInvoker;
 import at.sti2.ngsee.invoker.framework.soap.SOAPInvoker;
 import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
 
@@ -25,12 +24,8 @@ import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
  */
 public abstract class InvokerFactory {
 	
-	public static ISOAPInvoker createWSDLInvoker() {
+	public static ISOAPInvoker createSOAPInvoker() {
 		return new SOAPInvoker();
 	}
 	
-	public static ISOAPInvoker createRESTInvoker() {
-		return new RESTInvoker();
-	}
-
 }

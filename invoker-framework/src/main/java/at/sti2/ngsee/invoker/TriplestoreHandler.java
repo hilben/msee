@@ -1,5 +1,7 @@
 package at.sti2.ngsee.invoker;
 
+import javax.xml.namespace.QName;
+
 /**
  * <b>Purpose:</b>
  * <br>
@@ -20,11 +22,11 @@ public class TriplestoreHandler {
 	
 	public static String getServiceURL(String _serviceID) {
 		// TODO: Retrieve here the service URL from the Triple Store.
-		return null;
+		return _serviceID;
 	}
 	
-	public static String getOperationQName(String _serviceID, String _operationName) {
+	public static QName getOperationQName(String _serviceID, String _operationName) {
 		// TODO: Try to get the namespace of the _operationName and return the QName
-		return _operationName;
+		return new QName("http://ws.sigimera.networld.to/", _operationName);
 	}
 }

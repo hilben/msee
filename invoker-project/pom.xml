@@ -125,128 +125,147 @@
 						<dependency>
 							<groupId>org.eclipse.jetty.toolchain</groupId>
 							<artifactId>jetty-enforcer-rules</artifactId>
-							<version>1.0</version>
-						</dependency>
-					</dependencies>
-				</plugin>
+                                                        <version>1.0</version>
+                                                        <exclusions>
+                                                                <exclusion>
+                                                                        <groupId>javax.activation</groupId>
+                                                                        <artifactId>activation</artifactId>
+                                                                </exclusion>
+                                                        </exclusions>
+                                                </dependency>
+                                        </dependencies>
+                                </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.0.2</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
+                                <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-compiler-plugin</artifactId>
+                                        <version>2.0.2</version>
+                                        <configuration>
+                                                <source>1.6</source>
+                                                <target>1.6</target>
+                                                <profile>
+                                                        <activation>
+                                                                <jdk>1.6</jdk>
+                                                        </activation>
+                                                        <dependencies>
+                                                                <dependency>
+                                                                        <groupId>javax.activation</groupId>
+                                                                        <artifactId>activation</artifactId>
+                                                                        <version>1.1</version>
+                                                                        <scope>provided</scope>
+                                                                </dependency>
+                                                        </dependencies>
+                                                </profile>
+                                        </configuration>
+                                </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1-beta-1</version>
-				</plugin>
+                                <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-war-plugin</artifactId>
+                                        <version>2.1-beta-1</version>
+                                </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.6</version>
-					<configuration>
-						<minmemory>128m</minmemory>
-						<maxmemory>512</maxmemory>
-					</configuration>
-				</plugin>
+                                <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-javadoc-plugin</artifactId>
+                                        <version>2.6</version>
+                                        <configuration>
+                                                <minmemory>128m</minmemory>
+                                                <maxmemory>512</maxmemory>
+                                        </configuration>
+                                </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<useProjectReferences>true</useProjectReferences>
-					</configuration>
-				</plugin>
+                                <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-eclipse-plugin</artifactId>
+                                        <version>2.5</version>
+                                        <configuration>
+                                                <useProjectReferences>true</useProjectReferences>
+                                        </configuration>
+                                </plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+                                <plugin>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-deploy-plugin</artifactId>
+                                        <version>2.4</version>
+                                </plugin>
+                        </plugins>
+                </pluginManagement>
+        </build>
 
-	<!-- DEPENDENCY MANAGEMENT -->
-	<dependencyManagement>
-		<dependencies>
+        <!-- DEPENDENCY MANAGEMENT -->
+        <dependencyManagement>
+                <dependencies>
 
-			<!-- projects -->
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>invoker-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>invoker-framework</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>invoker-client</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>invoker-webservice</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+                        <!-- projects -->
+                        <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>invoker-api</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>invoker-framework</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>invoker-client</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>invoker-webservice</artifactId>
+                                <version>${project.version}</version>
+                        </dependency>
 
-			<!-- libraries -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxws</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
+                        <!-- libraries -->
+                        <dependency>
+                                <groupId>org.apache.cxf</groupId>
+                                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                                <version>${cxf.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>org.apache.cxf</groupId>
+                                <artifactId>cxf-rt-transports-http</artifactId>
+                                <version>${cxf.version}</version>
+                        </dependency>
 
-			<!-- tools -->
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.16</version>
-				<!-- Because the JDK1.6 already includes the Java Activation API, otherwise 
-					this could generate ClassLoading Linkage errors in Servlets -->
-				<exclusions>
-					<exclusion>
-						<groupId>javax.activation</groupId>
-						<artifactId>activation</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.5</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+                        <!-- tools -->
+                        <dependency>
+                                <groupId>log4j</groupId>
+                                <artifactId>log4j</artifactId>
+                                <version>1.2.16</version>
+                                <!-- Because the JDK1.6 already includes the Java Activation API, otherwise 
+                                        this could generate ClassLoading Linkage errors in Servlets -->
+                                <exclusions>
+                                        <exclusion>
+                                                <groupId>javax.activation</groupId>
+                                                <artifactId>activation</artifactId>
+                                        </exclusion>
+                                </exclusions>
+                        </dependency>
+                        <dependency>
+                                <groupId>junit</groupId>
+                                <artifactId>junit</artifactId>
+                                <version>4.5</version>
+                                <scope>test</scope>
+                        </dependency>
+                </dependencies>
+        </dependencyManagement>
 
 
-	<!-- DEPENDENCIES -->
-	<!-- these dependencies are included in every child project per default -->
-	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-	</dependencies>
+        <!-- DEPENDENCIES -->
+        <!-- these dependencies are included in every child project per default -->
+        <dependencies>
+                <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                </dependency>
+                <dependency>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                </dependency>
+        </dependencies>
 
 </project>

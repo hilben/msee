@@ -1,7 +1,5 @@
 package at.sti2.ngsee.invoker.framework.rest;
 
-import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
-
 /**
  * <b>Purpose:</b>
  * <br>
@@ -18,11 +16,9 @@ import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public class RESTInvoker implements ISOAPInvoker {
+public class RESTInvoker {
 
-	@Override
-	public String invoke(String serviceBindingURL, BINDING_TYPE bindingType,
-			String operationName, String inputData) {
+	public String invoke(String serviceBindingURL, String operationName, String inputData) {
 		// TODO: Call here the Service over REST and return the result.
 		return null;
 	}
