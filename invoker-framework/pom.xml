@@ -30,34 +30,34 @@
                         <groupId>org.apache.axis2</groupId>
                         <artifactId>axis2-kernel</artifactId>
                         <version>1.5.4</version>
-                        <exclusions>
-                                <exclusion>
-                                        <groupId>javax.activation</groupId>
-                                        <artifactId>activation</artifactId>
-                                </exclusion>
-                        </exclusions>
+                                <exclusions>
+                                        <exclusion>
+                                                <groupId>org.apache.geronimo.specs</groupId>
+                                                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                                        </exclusion>
+                                </exclusions>
                 </dependency>
                 <dependency>
                         <groupId>org.apache.axis2</groupId>
                         <artifactId>axis2-transport-local</artifactId>
                         <version>1.5.4</version>
-                        <exclusions>
-                                <exclusion>
-                                        <groupId>javax.activation</groupId>
-                                        <artifactId>activation</artifactId>
-                                </exclusion>
-                        </exclusions>
+                                <exclusions>
+                                        <exclusion>
+                                                <groupId>org.apache.geronimo.specs</groupId>
+                                                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                                        </exclusion>
+                                </exclusions>
                 </dependency>
                 <dependency>
                         <groupId>org.apache.axis2</groupId>
                         <artifactId>axis2-transport-http</artifactId>
                         <version>1.5.4</version>
-                        <exclusions>
-                                <exclusion>
-                                        <groupId>javax.activation</groupId>
-                                        <artifactId>activation</artifactId>
-                                </exclusion>
-                        </exclusions>
+                                <exclusions>
+                                        <exclusion>
+                                                <groupId>org.apache.geronimo.specs</groupId>
+                                                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                                        </exclusion>
+                                </exclusions>
                 </dependency>
                 <dependency>
                         <groupId>dom4j</groupId>
