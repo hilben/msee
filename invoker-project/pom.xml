@@ -219,23 +219,11 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
-                                <exclusions>
-                                        <exclusion>
-                                                <groupId>org.apache.geronimo.specs</groupId>
-                                                <artifactId>geronimo-activation_1.1_spec</artifactId>
-                                        </exclusion>
-                                </exclusions>
                         </dependency>
                         <dependency>
                                 <groupId>org.apache.cxf</groupId>
                                 <artifactId>cxf-rt-transports-http</artifactId>
                                 <version>${cxf.version}</version>
-                                <exclusions>
-                                        <exclusion>
-                                                <groupId>org.apache.geronimo.specs</groupId>
-                                                <artifactId>geronimo-activation_1.1_spec</artifactId>
-                                        </exclusion>
-                                </exclusions>
                         </dependency>
 
                         <!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
