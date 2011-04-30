@@ -25,8 +25,29 @@ public class TriplestoreHandler {
 		return _serviceID;
 	}
 	
+	/**
+	 * XXX: Only during development used. In productive use the operation qualified name
+	 * is taken from an internal data source.
+	 * 
+	 * @param _operationName The operation name receive from the client. During testing phase it should be a QName.
+	 * @return
+	 */
+	private static String[] _simulateNamespaceGathering(String _operationName) {
+		String[] result = new String[2];
+		result[0] = "";
+		result[1] = "";
+		String[] qnameParts = _operationName.split("/");
+		for ( int count = 0; count < (qnameParts.length-1); count++ )
+			result[0] += qnameParts[count] + "/";
+		result[1] = qnameParts[qnameParts.length-1];
+		if ( !_operationName.endsWith("/") )
+			result[0] = (String) result[0].subSequence(0, result[0].length()-1);
+		return result;
+	}
+	
 	public static QName getOperationQName(String _serviceID, String _operationName) {
 		// TODO: Try to get the namespace of the _operationName and return the QName
-		return new QName("http://ws.sigimera.networld.to/", _operationName);
+		String[] operationQName = _simulateNamespaceGathering(_operationName);
+		return new QName(operationQName[0], operationQName[1]);
 	}
 }

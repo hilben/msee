@@ -40,7 +40,7 @@ public class InvokerWebService implements IInvokerEndpoint
 	@WebMethod
 	public String invoke(@WebParam(name="serviceID")String _serviceID,
 			@WebParam(name="operation")String _operationName,
-			@WebParam(name="inputData")String _inputData) throws Exception {
+			@WebParam(name="inputData")String... _inputData) throws Exception {
 		return InvokerFramework.invoke(_serviceID, _operationName, _inputData);
 	}
 	

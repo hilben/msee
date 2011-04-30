@@ -1,6 +1,7 @@
 
 package at.sti2.see;
 
+import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -41,7 +42,7 @@ public interface InvokerWebService {
         @WebParam(name = "operation", targetNamespace = "")
         String operation,
         @WebParam(name = "inputData", targetNamespace = "")
-        String inputData);
+        List<String> inputData);
 
     /**
      * 

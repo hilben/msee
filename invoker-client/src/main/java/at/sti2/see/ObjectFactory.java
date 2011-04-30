@@ -37,11 +37,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetVersionResponse }
+     * Create an instance of {@link Invoke }
      * 
      */
-    public GetVersionResponse createGetVersionResponse() {
-        return new GetVersionResponse();
+    public Invoke createInvoke() {
+        return new Invoke();
     }
 
     /**
@@ -53,19 +53,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetVersionResponse }
+     * 
+     */
+    public GetVersionResponse createGetVersionResponse() {
+        return new GetVersionResponse();
+    }
+
+    /**
      * Create an instance of {@link GetVersion }
      * 
      */
     public GetVersion createGetVersion() {
         return new GetVersion();
-    }
-
-    /**
-     * Create an instance of {@link Invoke }
-     * 
-     */
-    public Invoke createInvoke() {
-        return new Invoke();
     }
 
     /**

@@ -3,8 +3,6 @@
  */
 package at.sti2.ngsee.invoker_api.framework;
 
-import java.util.Vector;
-
 import javax.xml.namespace.QName;
 
 //import javax.xml.namespace.QName;
@@ -35,6 +33,6 @@ public interface ISOAPInvoker {
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
-	public Vector<String> invoke(String wsdlURL, QName operationQName, String... inputData) throws Exception;
+	public String invoke(String wsdlURL, QName operationQName, String... inputData) throws Exception;
 	
 }
