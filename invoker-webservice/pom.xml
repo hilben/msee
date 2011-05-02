@@ -2,15 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>${project.parent.groupId}</groupId>
+	<groupId>at.sti2.ngsee</groupId>
 	<artifactId>invoker-webservice</artifactId>
-	<version>${project.parent.version}</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
         <parent>
                 <groupId>at.sti2.ngsee</groupId>
                 <artifactId>invoker-project</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
+                <relativePath>../invoker-project/pom.xml</relativePath>
         </parent>
 
         <name>invoker-webservice</name>
@@ -134,12 +135,12 @@
 
         <dependencies>
                 <dependency>
-                        <groupId>at.sti2.ngsee</groupId>
+                        <groupId>${project.parent.groupId}</groupId>
                         <artifactId>invoker-api</artifactId>
                         <scope>compile</scope>
                 </dependency>
                 <dependency>
-                        <groupId>at.sti2.ngsee</groupId>
+                        <groupId>${project.parent.groupId}</groupId>
                         <artifactId>invoker-framework</artifactId>
                         <scope>compile</scope>
                 </dependency>

@@ -12,6 +12,8 @@
 		<module>../invoker-client</module>
 		<module>../invoker-framework</module>
 		<module>../invoker-webservice</module>
+		<module>../invoker-grounding</module>
+		<module>../invoker-doc</module>
 	</modules>
 
 	<name>invoker-project</name>
@@ -138,19 +140,19 @@
 					<configuration>
 						<source>1.6</source>
 						<target>1.6</target>
-                                                <profile>
+						<profile>
 							<activation>
 								<jdk>1.6</jdk>
 							</activation>
-                                                        <dependencies>
+							<dependencies>
 								<dependency>
 									<groupId>javax.activation</groupId>
 									<artifactId>activation</artifactId>
 									<version>1.1</version>
 									<scope>provided</scope>
 								</dependency>
-                                                        </dependencies>
-                                               </profile>
+							</dependencies>
+						</profile>
 					</configuration>
 				</plugin>
 
@@ -219,65 +221,61 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>org.apache.cxf</groupId>
-                                <artifactId>cxf-rt-transports-http</artifactId>
-                                <version>${cxf.version}</version>
-                        </dependency>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
 
-                        <!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon-dom</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
+			<!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon-dom</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
 
-                        <!-- tools -->
-                        <dependency>
-                                <groupId>log4j</groupId>
-                                <artifactId>log4j</artifactId>
-                                <version>1.2.16</version>
-                                <!--
-                                             Because the JDK1.6 already
-                                             include the Java Activation API,
-                                             otherwise this could generate
-                                             ClassLoading en Linkage errors
-                                             -->
-                                        <exclusions>
-                                                <exclusion>
-                                                        <groupId>javax.activation</groupId>
-                                                        <artifactId>activation</artifactId>
-                                                </exclusion>
-                                        </exclusions>
-                                </dependency>
-                                <dependency>
-                                        <groupId>junit</groupId>
-                                        <artifactId>junit</artifactId>
-                                        <version>4.5</version>
-                                        <scope>test</scope>
-                                </dependency>
-                        </dependencies>
-                </dependencyManagement>
+			<!-- tools -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+				<!-- Because the JDK1.6 already include the Java Activation API, otherwise 
+					this could generate ClassLoading en Linkage errors -->
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.5</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 
-                <!-- DEPENDENCIES -->
-                <!-- these dependencies are included in every child project per default -->
-                <dependencies>
-                        <dependency>
-                                <groupId>log4j</groupId>
-                                <artifactId>log4j</artifactId>
-                        </dependency>
-                        <dependency>
-                                <groupId>junit</groupId>
-                                <artifactId>junit</artifactId>
-                        </dependency>
-                </dependencies>
+	<!-- DEPENDENCIES -->
+	<!-- these dependencies are included in every child project per default -->
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
 
 
-        </project>
+</project>
