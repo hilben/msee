@@ -56,8 +56,12 @@ public class XSLTGroundingEngineTest {
 	}
 
 	@Test
-	public void testLifting() {
-//		fail("Not yet implemented");
+	public void testLifting() throws IOException, GroundingException {
+		String xmlInputData = loadResource("WeatherResponse.xml");
+		String liftedData = xsltGroundingEnginge.lift(xmlInputData);
+		
+		assertNotNull(liftedData);
+		assertNotSame(liftedData, "");
 	}
 
 	private String loadResource(String resource) throws IOException {

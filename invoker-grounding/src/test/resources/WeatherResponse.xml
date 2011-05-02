@@ -1,0 +1,16 @@
+<GetWeatherResponse xmlns="http://www.webserviceX.NET">
+  <GetWeatherResult>&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;CurrentWeather&gt;
+  &lt;Location&gt;NEW YORK LA GUARDIA AIRPORT , NY, United States (KLGA) 40-47N 73-53W 11M&lt;/Location&gt;
+  &lt;Time&gt;May 04, 2009 - 01:51 PM EDT / 2009.05.04 1751 UTC&lt;/Time&gt;
+  &lt;Wind&gt; from the ENE (070 degrees) at 6 MPH (5 KT):0&lt;/Wind&gt;
+  &lt;Visibility&gt; 5 mile(s):0&lt;/Visibility&gt;
+  &lt;SkyConditions&gt; overcast&lt;/SkyConditions&gt;
+  &lt;Temperature&gt; 55.0 F (12.8 C)&lt;/Temperature&gt;
+  &lt;DewPoint&gt; 50.0 F (10.0 C)&lt;/DewPoint&gt;
+  &lt;RelativeHumidity&gt; 83%&lt;/RelativeHumidity&gt;
+  &lt;Pressure&gt; 30.1 in. Hg (1019 hPa)&lt;/Pressure&gt;
+  &lt;PressureTendency&gt; rising rapidly - 0.01 inches (0.2 hPa) lower than three hours ago&lt;/PressureTendency&gt;
+  &lt;Status&gt;Success&lt;/Status&gt;
+&lt;/CurrentWeather&gt;</GetWeatherResult>
+</GetWeatherResponse>

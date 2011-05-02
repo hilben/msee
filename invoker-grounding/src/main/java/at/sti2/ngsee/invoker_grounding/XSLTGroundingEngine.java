@@ -91,9 +91,42 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 	 * @see at.sti2.ngsee.invoker_api.grounding.IGroundingEngine#lift(java.lang.String)
 	 */
 	@Override
-	public String lift(String xmlInputData) {
-		// TODO Auto-generated method stub
-		return null;
+	public String lift(String xmlInputData) throws GroundingException {
+		
+		logger.debug("lifting schema URL: " + liftingSchemaURL);
+		logger.debug("xml input data:\n" + xmlInputData);
+		
+		//instantiate transformer factory
+		TransformerFactory tf = TransformerFactory.newInstance();
+		tf.setURIResolver(new GroundingURIResolver());
+		Transformer transformer;
+		
+		
+		//results will be stored in writer
+		StringWriter result = new StringWriter();
+		try {
+			//set lowering schema url
+			transformer = tf.newTransformer(new StreamSource(liftingSchemaURL.toString()));
+			
+			//indent xml output
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			
+			// transform rdf to xml using lowering xslt
+			transformer.transform(new StreamSource(new StringReader(xmlInputData)), new StreamResult(result));
+		
+		} catch (TransformerConfigurationException e) {
+			throw new GroundingException(
+					"Lifting Transformer not configured correctly",
+					e.getCause());
+		} catch (TransformerException e) {
+			throw new GroundingException(
+					"Lifting transformation produced errors", e.getCause());
+		}
+		
+		String strResult = result.toString();
+		logger.debug("lifted output:\n" + strResult);
+		
+		return result.toString();
 	}
 
 }
