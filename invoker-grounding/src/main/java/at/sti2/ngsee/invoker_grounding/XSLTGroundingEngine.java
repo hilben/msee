@@ -54,36 +54,11 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 		logger.debug("lowering schema URL: " + loweringSchemaURL);
 		logger.debug("rdf input data:\n" + rdfInputData);
 
-		//instantiate transformer factory
-		TransformerFactory tf = TransformerFactory.newInstance();
-		tf.setURIResolver(new GroundingURIResolver());
-		Transformer transformer;
+		String strResult = transform(loweringSchemaURL, rdfInputData);
 		
-		//results will be stored in writer
-		StringWriter result = new StringWriter();
-		try {
-			//set lowering schema url
-			transformer = tf.newTransformer(new StreamSource(loweringSchemaURL.toString()));
-			
-			//indent xml output
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			
-			// transform rdf to xml using lowering xslt
-			transformer.transform(new StreamSource(new StringReader(rdfInputData)), new StreamResult(result));
-		
-		} catch (TransformerConfigurationException e) {
-			throw new GroundingException(
-					"Lowering Transformer not configured correctly",
-					e.getCause());
-		} catch (TransformerException e) {
-			throw new GroundingException(
-					"Lowering transformation produced errors", e.getCause());
-		}
-		
-		String strResult = result.toString();
 		logger.debug("lowered output:\n" + strResult);
 		
-		return result.toString();
+		return strResult;
 	}
 
 	/*
@@ -96,6 +71,23 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 		logger.debug("lifting schema URL: " + liftingSchemaURL);
 		logger.debug("xml input data:\n" + xmlInputData);
 		
+		String strResult = transform(liftingSchemaURL, xmlInputData);
+		
+		logger.debug("lifted output:\n" + strResult);
+		
+		return strResult;
+	}
+	
+	/**
+	 * XSLT transformation using Saxon, XSLT 1.0 and 2.0 is supported
+	 * @param schemaURL url of transformation schema
+	 * @param inputData xml input data
+	 * @throws GroundingException 
+	 * @throws  
+	 * @return
+	 */
+	private String transform(URL schemaURL, String inputData) throws GroundingException{
+		
 		//instantiate transformer factory
 		TransformerFactory tf = TransformerFactory.newInstance();
 		tf.setURIResolver(new GroundingURIResolver());
@@ -106,27 +98,25 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 		StringWriter result = new StringWriter();
 		try {
 			//set lowering schema url
-			transformer = tf.newTransformer(new StreamSource(liftingSchemaURL.toString()));
+			transformer = tf.newTransformer(new StreamSource(schemaURL.toString()));
 			
 			//indent xml output
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			
 			// transform rdf to xml using lowering xslt
-			transformer.transform(new StreamSource(new StringReader(xmlInputData)), new StreamResult(result));
+			transformer.transform(new StreamSource(new StringReader(inputData)), new StreamResult(result));
 		
 		} catch (TransformerConfigurationException e) {
 			throw new GroundingException(
-					"Lifting Transformer not configured correctly",
+					"Transformer not configured correctly",
 					e.getCause());
 		} catch (TransformerException e) {
 			throw new GroundingException(
-					"Lifting transformation produced errors", e.getCause());
+					"transformation produced errors", e.getCause());
 		}
-		
-		String strResult = result.toString();
-		logger.debug("lifted output:\n" + strResult);
 		
 		return result.toString();
 	}
+	
 
 }
