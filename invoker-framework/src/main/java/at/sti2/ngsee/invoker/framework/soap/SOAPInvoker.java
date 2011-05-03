@@ -37,15 +37,6 @@ import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
 public class SOAPInvoker implements ISOAPInvoker {
 	protected static Logger logger = Logger.getLogger(SOAPInvoker.class);
 	
-	private String _getSOAPAction(QName _operationQName) {
-		String namespace = _operationQName.getNamespaceURI();
-		String operation = _operationQName.getLocalPart();
-		if ( namespace.endsWith("/") )
-			return namespace + operation;
-		else
-			return namespace + "/" + operation;
-	}
-	
 	@Override
 	public String invoke(String _wsdlURL, QName _operationQName, String... _inputData) throws AxisFault, MalformedURLException, XMLStreamException { 
 		ServiceClient serviceClient = new ServiceClient();
@@ -54,7 +45,7 @@ public class SOAPInvoker implements ISOAPInvoker {
 		/**
 		 * TODO: Support SOAPAction values that are different than the operation qualified name. 
 		 */
-		opts.setAction(this._getSOAPAction(_operationQName));
+		opts.setAction(null);
 		serviceClient.setOptions(opts);
 		
 		OMFactory factory = OMAbstractFactory.getOMFactory();
