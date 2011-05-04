@@ -1,6 +1,18 @@
 package at.sti2.ngsee.invoker;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.xml.namespace.QName;
+
+import org.openrdf.query.BindingSet;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.repository.RepositoryException;
+
+import at.sti2.ngsee.invoker.common.Config;
+import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
  * <b>Purpose:</b>
@@ -20,34 +32,33 @@ import javax.xml.namespace.QName;
  */
 public class TriplestoreHandler {
 	
-	public static String getServiceURL(String _serviceID) {
-		// TODO: Retrieve here the service URL from the Triple Store.
-		return _serviceID;
-	}
-	
-	/**
-	 * XXX: Only during development used. In productive use the operation qualified name
-	 * is taken from an internal data source.
-	 * 
-	 * @param _operationName The operation name receive from the client. During testing phase it should be a QName.
-	 * @return
-	 */
-	private static String[] _simulateNamespaceGathering(String _operationName) {
+	public static QName getStringToQName(String _value) { 
 		String[] result = new String[2];
 		result[0] = "";
 		result[1] = "";
-		String[] qnameParts = _operationName.split("/");
+		String[] qnameParts = _value.split("/");
 		for ( int count = 0; count < (qnameParts.length-1); count++ )
 			result[0] += qnameParts[count] + "/";
 		result[1] = qnameParts[qnameParts.length-1];
-		if ( !_operationName.endsWith("/") )
+		if ( !_value.endsWith("/") )
 			result[0] = (String) result[0].subSequence(0, result[0].length()-1);
-		return result;
+		return new QName(result[0], result[1]);
 	}
 	
-	public static QName getOperationQName(String _serviceID, String _operationName) {
-		// TODO: Try to get the namespace of the _operationName and return the QName
-		String[] operationQName = _simulateNamespaceGathering(_operationName);
-		return new QName(operationQName[0], operationQName[1]);
+	public static InvokerMSM getInvokerMSM(String _serviceID, String _operationName) throws IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
+		Config cfg = new Config();
+		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
+		TupleQueryResult result = reposHandler.selectSPARQL("SELECT ?lifting ?lowering ?wsdl ?operation WHERE { <<TODO>> }");
+		
+		InvokerMSM msmInstance = new InvokerMSM();
+		if ( result.hasNext() ) {
+			BindingSet entry = result.next();
+			msmInstance.setLiftingSchema(new URL(entry.getBinding("lifting").getValue().stringValue()));
+			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
+			msmInstance.setWSDL(new URL(entry.getBinding("wsdl").getValue().stringValue()));
+			msmInstance.setOperationQName(getStringToQName(entry.getBinding("operation").getValue().stringValue()));
+		}
+		
+		return msmInstance;
 	}
 }

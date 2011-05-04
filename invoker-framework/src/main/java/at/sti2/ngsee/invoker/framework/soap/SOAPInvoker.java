@@ -1,6 +1,7 @@
 package at.sti2.ngsee.invoker.framework.soap;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +17,6 @@ import org.apache.axis2.client.ServiceClient;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
-
 
 /**
  * <b>Purpose:</b>
@@ -37,6 +37,17 @@ import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
 public class SOAPInvoker implements ISOAPInvoker {
 	protected static Logger logger = Logger.getLogger(SOAPInvoker.class);
 	
+	@Deprecated
+    private String _getSOAPAction(QName _operationQName) {
+        String namespace = _operationQName.getNamespaceURI();
+        String operation = _operationQName.getLocalPart();
+        if ( namespace.endsWith("/") )
+        	return namespace + operation;
+        else
+            return namespace + "/" + operation;
+    }
+	
+    @Deprecated
 	@Override
 	public String invoke(String _wsdlURL, QName _operationQName, String... _inputData) throws AxisFault, MalformedURLException, XMLStreamException { 
 		ServiceClient serviceClient = new ServiceClient();
@@ -45,7 +56,7 @@ public class SOAPInvoker implements ISOAPInvoker {
 		/**
 		 * TODO: Support SOAPAction values that are different than the operation qualified name. 
 		 */
-		opts.setAction(null);
+		opts.setAction(this._getSOAPAction(_operationQName));
 		serviceClient.setOptions(opts);
 		
 		OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -62,6 +73,22 @@ public class SOAPInvoker implements ISOAPInvoker {
 		
 		String result = serviceClient.sendReceive(method).toString();
 		
+		serviceClient.cleanup();
+		serviceClient.cleanupTransport();
+		serviceClient.removeHeaders();
+		return result;
+	}
+	
+	@Override
+	public String invoke(URL _wsdlURL, String _soapAction, String _inputData) throws AxisFault, XMLStreamException {
+		ServiceClient serviceClient = new ServiceClient();
+		Options opts = new Options();
+		opts.setTo(new EndpointReference(_wsdlURL.toString()));
+		opts.setAction(_soapAction);
+		
+		OMElement omInput = AXIOMUtil.stringToOM(_inputData.toString());
+		
+		String result = serviceClient.sendReceive(omInput).toString();
 		serviceClient.cleanup();
 		serviceClient.cleanupTransport();
 		serviceClient.removeHeaders();

@@ -3,6 +3,8 @@
  */
 package at.sti2.ngsee.invoker_api.framework;
 
+import java.net.URL;
+
 import javax.xml.namespace.QName;
 
 //import javax.xml.namespace.QName;
@@ -27,12 +29,21 @@ import javax.xml.namespace.QName;
 public interface ISOAPInvoker {
 	
 	/**
-	 * 
+	 * @deprecated
 	 * @param wsdlURL The Endpoint of the 
 	 * @param operationQName The operation that should be called.
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
 	public String invoke(String wsdlURL, QName operationQName, String... inputData) throws Exception;
+	
+	/**
+	 * 
+	 * @param wsdlURL The Endpoint of the 
+	 * @param soapAction SOAPAction field specified in the HTTP Header.
+	 * @param inputData The input data, understandable by the services.
+	 * @return
+	 */
+	public String invoke(URL wsdlURL, String _soapAction, String inputData) throws Exception;
 	
 }

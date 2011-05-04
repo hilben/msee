@@ -28,6 +28,17 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>at.sti2.ngsee</groupId>
+			<artifactId>invoker-grounding</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+                        <groupId>at.sti2.util</groupId>
+                        <artifactId>util-triplestore-client</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-kernel</artifactId>
 			<version>1.5.4</version>

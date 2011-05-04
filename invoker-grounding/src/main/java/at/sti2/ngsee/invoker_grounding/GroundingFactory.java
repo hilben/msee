@@ -19,7 +19,6 @@ import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-
 public abstract class GroundingFactory {
 
 	/**

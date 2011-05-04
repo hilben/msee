@@ -1,24 +1,26 @@
 
 package at.sti2.see;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for invoke complex type.
+ * <p>Java class for invokeOld complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="invoke">
+ * &lt;complexType name="invokeOld">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="serviceID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="operation" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="inputData" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="inputData" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,16 +30,16 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "invoke", propOrder = {
+@XmlType(name = "invokeOld", propOrder = {
     "serviceID",
     "operation",
     "inputData"
 })
-public class Invoke {
+public class InvokeOld {
 
     protected String serviceID;
     protected String operation;
-    protected String inputData;
+    protected List<String> inputData;
 
     /**
      * Gets the value of the serviceID property.
@@ -90,25 +92,30 @@ public class Invoke {
     /**
      * Gets the value of the inputData property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getInputData() {
-        return inputData;
-    }
-
-    /**
-     * Sets the value of the inputData property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the inputData property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getInputData().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
      */
-    public void setInputData(String value) {
-        this.inputData = value;
+    public List<String> getInputData() {
+        if (inputData == null) {
+            inputData = new ArrayList<String>();
+        }
+        return this.inputData;
     }
 
 }

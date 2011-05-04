@@ -27,6 +27,8 @@ public class ObjectFactory {
     private final static QName _GetVersion_QNAME = new QName("http://see.sti2.at/", "getVersion");
     private final static QName _InvokeResponse_QNAME = new QName("http://see.sti2.at/", "invokeResponse");
     private final static QName _Invoke_QNAME = new QName("http://see.sti2.at/", "invoke");
+    private final static QName _InvokeOldResponse_QNAME = new QName("http://see.sti2.at/", "invokeOldResponse");
+    private final static QName _InvokeOld_QNAME = new QName("http://see.sti2.at/", "invokeOld");
     private final static QName _GetVersionResponse_QNAME = new QName("http://see.sti2.at/", "getVersionResponse");
 
     /**
@@ -34,6 +36,14 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link InvokeOld }
+     * 
+     */
+    public InvokeOld createInvokeOld() {
+        return new InvokeOld();
     }
 
     /**
@@ -45,11 +55,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link InvokeResponse }
+     * Create an instance of {@link GetVersion }
      * 
      */
-    public InvokeResponse createInvokeResponse() {
-        return new InvokeResponse();
+    public GetVersion createGetVersion() {
+        return new GetVersion();
     }
 
     /**
@@ -61,11 +71,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetVersion }
+     * Create an instance of {@link InvokeOldResponse }
      * 
      */
-    public GetVersion createGetVersion() {
-        return new GetVersion();
+    public InvokeOldResponse createInvokeOldResponse() {
+        return new InvokeOldResponse();
+    }
+
+    /**
+     * Create an instance of {@link InvokeResponse }
+     * 
+     */
+    public InvokeResponse createInvokeResponse() {
+        return new InvokeResponse();
     }
 
     /**
@@ -93,6 +111,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://see.sti2.at/", name = "invoke")
     public JAXBElement<Invoke> createInvoke(Invoke value) {
         return new JAXBElement<Invoke>(_Invoke_QNAME, Invoke.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InvokeOldResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://see.sti2.at/", name = "invokeOldResponse")
+    public JAXBElement<InvokeOldResponse> createInvokeOldResponse(InvokeOldResponse value) {
+        return new JAXBElement<InvokeOldResponse>(_InvokeOldResponse_QNAME, InvokeOldResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InvokeOld }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://see.sti2.at/", name = "invokeOld")
+    public JAXBElement<InvokeOld> createInvokeOld(InvokeOld value) {
+        return new JAXBElement<InvokeOld>(_InvokeOld_QNAME, InvokeOld.class, null, value);
     }
 
     /**

@@ -6,18 +6,19 @@ import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.invoker.framework.InvokerFactory;
 import at.sti2.ngsee.invoker_api.framework.ISOAPInvoker;
+import at.sti2.ngsee.invoker_api.grounding.IGroundingEngine;
+import at.sti2.ngsee.invoker_grounding.GroundingFactory;
 
 public class InvokerFramework {
 	protected static Logger logger = Logger.getLogger(InvokerFramework.class);
 	
-	public static String invoke(String _serviceID, String _operationName, String... _inputData) throws Exception {
+	@Deprecated
+	public static String invoke(String _serviceID, String _operationName, String... _inputData) throws Exception {	
+		// TODO: Delete this line. msmObject includes the WSDL URL 
+		String serviceURL = _serviceID;
 		
-		//TODO retrieve wsmoLite from TripleStore using webServiceID
-		
-		String serviceURL = TriplestoreHandler.getServiceURL(_serviceID);
-		
-		// Lookup the namespace of the operation. If the operationName is a URL, then the operationName is returned.
-		QName operationQName = TriplestoreHandler.getOperationQName(_serviceID, _operationName);
+		// TODO: Delete this line. msmObject includes the WSDL URL
+		QName operationQName = TriplestoreHandler.getStringToQName(_operationName);
 		// TODO: Lower the RDF Data to Data that is understandable for the Service.
 		String[] serviceData = _inputData;
 		
@@ -33,5 +34,39 @@ public class InvokerFramework {
 		// TODO: Lifting the xml Data to RDF.
 		String rdfData = xmlData.toString();
 		return rdfData;
+	}
+	
+	/**
+	 * 
+	 * @param _serviceID
+	 * @param _operationName
+	 * @param _inputData
+	 * @return
+	 * @throws Exception
+	 */
+	public static String invoke(String _serviceID, String _operationName, String _inputData) throws Exception {
+		/*
+		 * Reading out all relevant information from the Triplestore
+		 */
+		InvokerMSM msmObject = TriplestoreHandler.getInvokerMSM(_serviceID, _operationName);
+		
+		IGroundingEngine groundingEngine = GroundingFactory.createGroundingEngine(msmObject.getLoweringSchema(), msmObject.getLifingSchema());
+		
+		/*
+		 * Starting the lowering process
+		 */
+		String loweredInputData = groundingEngine.lower(_inputData);
+		
+		/*
+		 * Starting the invocation process
+		 */
+		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
+		logger.info("Invoking Web Service '" + msmObject.getWSDL() + "' with input data '" + loweredInputData + "'");
+		String outputData = soapInvoker.invoke(msmObject.getWSDL(), msmObject.getSOAPAction(), loweredInputData);
+		
+		/*
+		 * Return the lifted data
+		 */
+		return groundingEngine.lift(outputData);
 	}
 }

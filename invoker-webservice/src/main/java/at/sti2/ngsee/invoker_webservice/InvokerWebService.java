@@ -4,6 +4,10 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.cxf.annotations.WSDLDocumentation;
+import org.apache.cxf.annotations.WSDLDocumentationCollection;
+import org.apache.cxf.interceptor.InFaultInterceptors;
+import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.invoker.InvokerFramework;
@@ -29,21 +33,38 @@ import at.sti2.ngsee.invoker_api.ws.IInvokerEndpoint;
  */
 
 @WebService(targetNamespace="http://see.sti2.at/")
-public class InvokerWebService implements IInvokerEndpoint
-{
-	
+@WSDLDocumentationCollection(
+		@WSDLDocumentation("SESA Invoker Component.")
+	)
+@InInterceptors(interceptors = {"at.sti2.ngsee.invoker_webservice.SOAPInterceptor"})
+@InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker_webservice.SOAPInterceptor"})
+public class InvokerWebService implements IInvokerEndpoint {
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
 
+	/* (non-Javadoc)
+	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
+	 */
+	@Deprecated
+	@WebMethod
+	public String invokeOld(@WebParam(name="serviceID")String _serviceID,
+			@WebParam(name="operation")String _operationName,
+			@WebParam(name="inputData")String... _inputData) throws Exception {
+		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
+		return InvokerFramework.invoke(_serviceID, _operationName, _inputData);
+	}
+	
 	/* (non-Javadoc)
 	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
 	 */
 	@WebMethod
 	public String invoke(@WebParam(name="serviceID")String _serviceID,
 			@WebParam(name="operation")String _operationName,
-			@WebParam(name="inputData")String... _inputData) throws Exception {
+			@WebParam(name="inputData")String _inputData) throws Exception {
+		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
 		return InvokerFramework.invoke(_serviceID, _operationName, _inputData);
 	}
-	
+
+	@WebMethod
 	public String getVersion() {
 		logger.info("Invoking getVersion()");
 		return "v9999";
