@@ -14,7 +14,7 @@
 		<relativePath>../invoker-project/pom.xml</relativePath>
 	</parent>
 
-	<name>invoker-framework</name>
+	<name>invoker-core</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
