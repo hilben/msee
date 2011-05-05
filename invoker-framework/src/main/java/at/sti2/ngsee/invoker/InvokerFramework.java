@@ -1,5 +1,7 @@
 package at.sti2.ngsee.invoker;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
@@ -44,7 +46,7 @@ public class InvokerFramework {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String invoke(String _serviceID, String _operationName, String _inputData) throws Exception {
+	public static String invoke(String _serviceID, List<QName> _header, String _operationName, String _inputData) throws Exception {
 		/*
 		 * Reading out all relevant information from the Triplestore
 		 */
@@ -62,7 +64,7 @@ public class InvokerFramework {
 		 */
 		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
 		logger.info("Invoking Web Service '" + msmObject.getWSDL() + "' with input data '" + loweredInputData + "'");
-		String outputData = soapInvoker.invoke(msmObject.getWSDL(), msmObject.getSOAPAction(), loweredInputData);
+		String outputData = soapInvoker.invoke(msmObject.getWSDL(), _header, msmObject.getSOAPAction(), loweredInputData);
 		
 		/*
 		 * Return the lifted data

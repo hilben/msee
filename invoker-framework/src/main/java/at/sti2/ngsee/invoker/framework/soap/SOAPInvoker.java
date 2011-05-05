@@ -2,6 +2,7 @@ package at.sti2.ngsee.invoker.framework.soap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -80,18 +81,25 @@ public class SOAPInvoker implements ISOAPInvoker {
 	}
 	
 	@Override
-	public String invoke(URL _wsdlURL, String _soapAction, String _inputData) throws AxisFault, XMLStreamException {
+	public String invoke(URL _wsdlURL, List<QName> _header, String _soapAction, String _inputData) throws AxisFault, XMLStreamException {
 		ServiceClient serviceClient = new ServiceClient();
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(_wsdlURL.toString()));
 		opts.setAction(_soapAction);
+
+		OMFactory factory = OMAbstractFactory.getOMFactory();
+		for ( QName entry : _header ) {
+			OMElement omHeaderEle = factory.createOMElement(entry);
+			serviceClient.addHeader(omHeaderEle);
+		}
 		
 		OMElement omInput = AXIOMUtil.stringToOM(_inputData.toString());
-		
 		String result = serviceClient.sendReceive(omInput).toString();
+		
 		serviceClient.cleanup();
 		serviceClient.cleanupTransport();
 		serviceClient.removeHeaders();
+		
 		return result;
 	}
 	

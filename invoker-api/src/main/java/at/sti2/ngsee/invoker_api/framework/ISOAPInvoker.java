@@ -4,6 +4,7 @@
 package at.sti2.ngsee.invoker_api.framework;
 
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
@@ -40,10 +41,11 @@ public interface ISOAPInvoker {
 	/**
 	 * 
 	 * @param wsdlURL The Endpoint of the 
+	 * @param header The SOAP Header forwareded from the client.
 	 * @param soapAction SOAPAction field specified in the HTTP Header.
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
-	public String invoke(URL wsdlURL, String _soapAction, String inputData) throws Exception;
+	public String invoke(URL wsdlURL, List<QName>  header, String _soapAction, String inputData) throws Exception;
 	
 }

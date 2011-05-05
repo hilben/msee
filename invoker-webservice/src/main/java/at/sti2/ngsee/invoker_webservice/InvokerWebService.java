@@ -1,11 +1,16 @@
 package at.sti2.ngsee.invoker_webservice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.namespace.QName;
 
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
+import org.apache.cxf.headers.Header;
 import org.apache.cxf.interceptor.InFaultInterceptors;
 import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.log4j.Logger;
@@ -53,6 +58,15 @@ public class InvokerWebService implements IInvokerEndpoint {
 		return InvokerFramework.invoke(_serviceID, _operationName, _inputData);
 	}
 	
+	@WebMethod(exclude=true)
+	private List<QName> extractHeader(List<Header> _headers) {
+		List<QName> header = new ArrayList<QName>();
+		for ( Header entry : _headers) {
+			header.add(entry.getName());
+		}
+		return header;
+	}
+	
 	/* (non-Javadoc)
 	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
 	 */
@@ -61,7 +75,9 @@ public class InvokerWebService implements IInvokerEndpoint {
 			@WebParam(name="operation")String _operationName,
 			@WebParam(name="inputData")String _inputData) throws Exception {
 		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
-		return InvokerFramework.invoke(_serviceID, _operationName, _inputData);
+		
+		List<QName> headers = this.extractHeader(SOAPHeaderThreadLocal.get());
+		return InvokerFramework.invoke(_serviceID, headers, _operationName, _inputData);
 	}
 
 	@WebMethod
