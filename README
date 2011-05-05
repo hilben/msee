@@ -7,12 +7,12 @@ RUN
 1)	sh run.sh
 
 
-DEVELOP
-=======
+DEVELOPMENT
+===========
 
 *Prerequisite:
 -JAVA6+
--Maven 2.x.x
+-Maven 2.x.x or 3.x
 -Git
 
 *Optional:
