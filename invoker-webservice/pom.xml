@@ -100,7 +100,7 @@
 							<id>process-classes</id>
 							<phase>process-classes</phase>
 							<configuration>
-								<className>at.sti2.ngsee.invoker_webservice.InvokerWebService</className>
+								<className>at.sti2.ngsee.invoker.webservice.InvokerWebService</className>
 								<!-- <genServer>true</genServer> -->
 								<genWsdl>true</genWsdl>
 								<verbose>true</verbose>

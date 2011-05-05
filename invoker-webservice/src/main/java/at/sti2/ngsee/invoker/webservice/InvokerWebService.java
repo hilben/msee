@@ -41,8 +41,8 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 @WSDLDocumentationCollection(
 		@WSDLDocumentation("SESA Invoker Component.")
 	)
-@InInterceptors(interceptors = {"at.sti2.ngsee.invoker_webservice.SOAPInterceptor"})
-@InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker_webservice.SOAPInterceptor"})
+@InInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
+@InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
 public class InvokerWebService implements IInvokerEndpoint {
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
 
