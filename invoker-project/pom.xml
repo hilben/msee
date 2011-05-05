@@ -10,11 +10,11 @@
 	<modules>
 		<module>../invoker-api</module>
 		<module>../invoker-client</module>
-		<module>../invoker-framework</module>
+		<module>../invoker-core</module>
 		<module>../invoker-webservice</module>
 		<module>../invoker-grounding</module>
 		<module>../invoker-doc</module>
-                <module>../util-triplestore-client</module>
+        <module>../util-triplestore-client</module>
 	</modules>
 
 	<name>invoker-project</name>
@@ -203,7 +203,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>invoker-framework</artifactId>
+				<artifactId>invoker-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
