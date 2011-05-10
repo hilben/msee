@@ -119,14 +119,14 @@
          <rdfs:Class rdf:about="#SoapAction">
                  <rdfs:label>SOAP Action</rdfs:label>
                  <rdfs:comment>Describes the SOAPAction field used in the HTTP Header</rdfs:comment>
-                 <vs:term_status>testing</vs:term_status>
+                 <vs:term_status>unstable</vs:term_status>
          </rdfs:Class>
 
          <rdf:Property rdf:about="#hasSoapAction">
                  <rdfs:label>has SOAP Action</rdfs:label>
                  <rdfs:domain rdf:resource="#Operation" />
                  <rdfs:range rdf:resource="#SoapAction" />
-                 <vs:term_status>testing</vs:term_status>
+                 <vs:term_status>unstable</vs:term_status>
          </rdf:Property>
 
          <rdfs:Class rdf:about="#Binding">
@@ -134,8 +134,15 @@
                  <rdfs:comment>Describes a SOAP Binding URL</rdfs:comment>
                  <vs:term_status>unstable</vs:term_status>
          </rdfs:Class>
-
+         
          <rdf:Property rdf:about="#hasBinding">
+                 <rdfs:label>has Binding</rdfs:label>
+                 <rdfs:domain rdf:resource="#Service" />
+                 <rdfs:range rdf:resource="#Binding" />
+                 <vs:term_status>unstable</vs:term_status>
+         </rdf:Property>
+         
+         <rdf:Property rdf:about="#hasOperationQName">
                  <rdfs:label>has Binding</rdfs:label>
                  <rdfs:domain rdf:resource="#Service" />
                  <rdfs:range rdf:resource="#Binding" />

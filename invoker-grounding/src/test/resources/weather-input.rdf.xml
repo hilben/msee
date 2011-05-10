@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+]>
 <rdf:RDF
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns="http://example.com#"
+	xmlns="http://www.sti2.at/sesa/#"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
+    xmlns:http="http://www.w3.org/2008/http-methods#"
+    xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
+    xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+    xmlns:rest="http://www.wsmo.org/ns/hrests#"
+    xmlns:msm="&msm;">
 
-<rdf:Description rdf:about="http://example.com#ontoRequest1303411830741">
-	<ontologyID xmlns="http://www.wsmo.org/wsml/wsml-syntax#" rdf:resource="http://example.com#ontoRequest1303411830741"/>
-</rdf:Description>
-
-<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#NorthAmerica">
-	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#Continent"/>
+<rdf:Description rdf:about="#WeatherService">
+	<rdf:type rdf:resource="&msm;Service" />
 	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">North America</name>
 </rdf:Description>
 
