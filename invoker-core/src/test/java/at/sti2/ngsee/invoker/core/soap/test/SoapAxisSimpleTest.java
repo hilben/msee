@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import at.sti2.ngsee.invoker.core.soap.SoapAxisSimpleClient;
 
-public class SoapAxisSimpleClientTest {
+public class SoapAxisSimpleTest {
 	private SoapAxisSimpleClient invoker;
 
 	@Before
@@ -25,13 +25,16 @@ public class SoapAxisSimpleClientTest {
 	/**
 	 * Test invoker-dummy-webservice
 	 */
-	// @Test
+	 @Test
 	public void testInvokeLocalPing() throws Exception {
+		long start = System.currentTimeMillis();
 		String input = "<see:ping xmlns:see=\"http://see.sti2.at/\"><serviceID>Michael</serviceID></see:ping>";
 		URL wsdlURL = new URL(
 				"http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl");
 		QName operation = new QName("http://see.sti2.at/", "ping");
 		invoker.invoke(wsdlURL, operation, input);
+		long end = System.currentTimeMillis();
+		System.out.println("took ms: " + (end - start));
 	}
 
 //	@Test
