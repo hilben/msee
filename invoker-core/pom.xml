@@ -34,8 +34,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-                        <groupId>at.sti2.util</groupId>
-                        <artifactId>util-triplestore-client</artifactId>
+			<groupId>at.sti2.util</groupId>
+			<artifactId>util-triplestore-client</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -63,6 +63,14 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
 	</dependencies>
 </project>

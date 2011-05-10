@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+]>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns="http://www.sti2.at/sesa/#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
+    xmlns:http="http://www.w3.org/2008/http-methods#"
+    xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
+    xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+    xmlns:rest="http://www.wsmo.org/ns/hrests#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:msm="&msm;">
+    
+    
+<!-- Weather Service -->
+<rdf:Description rdf:about="http://www.sti2.at/sesa/service/WeatherService">
+	<rdf:type rdf:resource="&msm;Service" />
+	<rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
+	<rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
+	<dc:creator>Michael Rogger</dc:creator>
+<!-- 	<msm:hasBinding rdf:resource="http://www.sti2.at/sesa/binding/binding1" /> -->
+	<msm:hasOperation rdf:resource="http://www.sti2.at/sesa/operation/GetWeather" />
+	<msm:hasOperation rdf:resource="http://www.sti2.at/sesa/operation/GetCitiesByCountry" />
+</rdf:Description>
+
+<!-- Binding -->
+<!-- <rdf:Description rdf:about="http://www.sti2.at/sesa/binding/binding1"> -->
+<!-- 	<rdf:type rdf:resource="&msm;Binding"/> -->
+<!-- </rdf:Description> -->
+
+<!-- GetWeather Operation-->
+<rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetWeather">
+	<rdf:type rdf:resource="&msm;Operation"/>
+	<rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation -->
+	<msm:hasOperationQName rdf:resource="http://www.webserviceX.NET/GetWeather" /> <!-- NEEDED??? -->
+	<msm:hasInput rdf:resource="http://www.sti2.at/messagecontent/Input1" />
+	<msm:hasOutput rdf:resource="http://www.sti2.at/messagecontent/Output1" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Input1">
+	<rdf:type rdf:resource="&msm;MessageContent"/>
+	<msm:hasPart rdf:resource="http://www.sti2.at/sesa/messagepart/Input1Part1"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.sti2.at/sesa/messagepart/Input1Part1"> <!-- wsdl:message/wsdl:part -->
+	<rdf:type rdf:resource="&msm;MessagePart"/>
+	<sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Output1">
+	<rdf:type rdf:resource="&msm;MessageContent"/>
+	<msm:hasPart rdf:resource="http://www.sti2.at/sesa/messagepart/Output1Part1"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.sti2.at/sesa/messagepart/Output1Part1"> <!-- wsdl:message/wsdl:part -->
+	<rdf:type rdf:resource="&msm;MessagePart"/>
+	<sawsdl:loweringSchemaMapping rdf:resource="weather-lifting.xslt"/>
+</rdf:Description>
+
+<!-- GetWeatherByCountry Operation-->
+<rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetCitiesByCountry">
+	<rdf:type rdf:resource="&msm;Operation"/>
+	<msm:hasInput rdf:resource="http://www.sti2.at/sesa/messagecontent/Input2" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Input2">
+	<rdf:type rdf:resource="&msm;MessageContent"/>
+</rdf:Description>
+
+</rdf:RDF>
