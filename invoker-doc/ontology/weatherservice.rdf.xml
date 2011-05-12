@@ -37,7 +37,6 @@
 <!-- GetWeather Operation-->
 <rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetWeather"> <!--  wsdl:binding/wsdl:operation -->
 	<rdf:type rdf:resource="&msm;Operation"/>
-	<msm
 	<rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
 	<msm:hasOperationQName rdf:resource="http://www.webserviceX.NET/GetWeather" /> <!-- !!!Not in Ontology!!! -->
 	<msm:hasInput rdf:resource="http://www.sti2.at/messagecontent/Input1" />

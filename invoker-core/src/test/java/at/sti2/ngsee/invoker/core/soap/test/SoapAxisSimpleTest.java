@@ -12,7 +12,6 @@ import at.sti2.ngsee.invoker.core.soap.SoapAxisSimpleClient;
 
 public class SoapAxisSimpleTest {
 	private SoapAxisSimpleClient invoker;
-	
 	private long start;
 
 	@Before
