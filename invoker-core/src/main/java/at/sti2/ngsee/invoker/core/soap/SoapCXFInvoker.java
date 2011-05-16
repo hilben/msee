@@ -21,6 +21,12 @@ import org.apache.log4j.Logger;
  */
 public class SoapCXFInvoker{
 	protected static Logger logger = Logger.getLogger(SoapCXFInvoker.class);
+	
+	private JaxWsDynamicClientFactory dcf;
+	
+	public SoapCXFInvoker() {
+		dcf = JaxWsDynamicClientFactory.newInstance();
+	}
 
 	
 	/**
@@ -28,7 +34,6 @@ public class SoapCXFInvoker{
 	 */
 	public String invokeDynamicClient(URL wsdlURL, String operation, String... parameters) throws Exception{
 		
-		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 		Client client = dcf.createClient(wsdlURL);
 
 		Object[] res = client.invoke(operation, parameters);

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import at.sti2.ngsee.invoker.core.soap.SoapCXFInvoker;
 
-public class SoapCXFInvokerTest {
+public class SoapCXFInvokerTest extends AbstractSoapTest{
 
 	private SoapCXFInvoker soapInvoker;
 
@@ -28,38 +28,22 @@ public class SoapCXFInvokerTest {
 	 */
 	@Test
 	public void testDynamicPingService() throws Exception {
-		// slow!
 
-		long start = System.currentTimeMillis();
-		String input = "<see:ping xmlns:see=\"http://see.sti2.at/\"><serviceID>Michael</serviceID></see:ping>";
-		URL wsdlURL = new URL("http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl");
-		soapInvoker.invokeDynamicClient(wsdlURL, "ping", "Michael");
-		long end = System.currentTimeMillis();
-		System.out.println("took ms: " + (end - start));
+		//slow but at least more than one call works
+		int loops = 5;
+
+		for (int i = 0; i < loops; i++) {
+			startTimer();
+			String input = "<see:ping xmlns:see=\"http://see.sti2.at/\"><serviceID>Michael</serviceID></see:ping>";
+			QName serviceName = new QName("http://see.sti2.at/",
+			"PingWebServiceService");
+			URL wsdlURL = new URL("http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl");
+			String result = soapInvoker.invokeDynamicClient(wsdlURL, "ping", "Michael");
+			System.out.println(result);
+			System.out.print("ServiceName " + serviceName + " ");
+			stopTimer();
+			
+		}
 	}
 	
-//	/**
-//	 * Test invoker-dummy-webservice
-//	 */
-//	@Test
-//	public void testProxyPingService() throws Exception {
-//		// slow!
-//
-//		long start = System.currentTimeMillis();
-//		String input = "<see:ping xmlns:see=\"http://see.sti2.at/\"><serviceID>Michael</serviceID></see:ping>";
-//		URL wsdlURL = new URL("http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl");
-//		String result = soapInvoker.invokeJaxWSProxy(wsdlURL, new QName("http://see.sti2.at/","PingWebServiceService"),input);
-//		System.out.println(result);
-//		long end = System.currentTimeMillis();
-//		System.out.println("took ms: " + (end - start));
-//	}
-
-	// @Test
-//	public void invokeGlobalWeather() throws Exception {
-//		URL wsdlURL = new URL(
-//				"http://www.webservicex.com/globalweather.asmx?WSDL");
-//
-//		soapInvoker.invoke(wsdlURL, "Innsbruck", "Austria");
-//	}
-
 }
