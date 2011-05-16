@@ -36,7 +36,7 @@ public class SoapAxisSimpleTest extends AbstractSoapTest{
 	public void testInvokeLocalPing() throws Exception {
 
 		// >1 loop doesn't work. WFT??
-		int loops = 1;
+		int loops = 10;
 
 		for (int i = 0; i < loops; i++) {
 

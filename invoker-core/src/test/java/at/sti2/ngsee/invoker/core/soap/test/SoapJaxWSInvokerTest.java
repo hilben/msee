@@ -23,8 +23,8 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest{
 	public void tearDown() throws Exception {
 	}
 	
-	@Test
-	public void testInvoke() throws Exception {
+//	@Test
+	public void testInvokeLocalPing() throws Exception {
 		
 		int loops = 10;
 
@@ -50,8 +50,34 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest{
 			System.out.print("ServiceName " + serviceName + " ");
 			stopTimer();
 		}
+	}
+	
+	@Test
+	public void testInvokeBLZService() throws Exception {
 		
-		
+		int loops = 10;
+
+		for (int i = 0; i < loops; i++) {
+			startTimer();
+			QName serviceName = new QName("http://thomas-bayer.com/blz/",
+			"BLZService");
+			QName portName = new QName("http://thomas-bayer.com/blz/", "BLZServiceSOAP12port_http");
+			String endpointUrl = "http://www.thomas-bayer.com:80/axis2/services/BLZService";
+			String soapActionUri = "";
+			String inputData = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:see=\"http://see.sti2.at/\">"
+				+ "<soapenv:Header/>"
+				+ "<soapenv:Body>"
+				+ "<blz:getBank xmlns:blz=\"http://thomas-bayer.com/blz/\">"
+				+ "<blz:blz>60050101</blz:blz>" 
+				+ "</blz:getBank>"
+				+ "</soapenv:Body>" + "</soapenv:Envelope>";
+			
+			SOAPMessage result = invoker.invoke(serviceName, portName, endpointUrl, soapActionUri, inputData);
+			System.out.println(result.getSOAPBody().getFirstChild()
+					.getTextContent());
+			System.out.print("ServiceName " + serviceName + " ");
+			stopTimer();
+		}
 	}
 
 }
