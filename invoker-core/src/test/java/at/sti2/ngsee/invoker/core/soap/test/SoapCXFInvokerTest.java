@@ -26,7 +26,7 @@ public class SoapCXFInvokerTest extends AbstractSoapTest{
 	/**
 	 * Test invoker-dummy-webservice
 	 */
-	@Test
+//	@Test
 	public void testDynamicPingService() throws Exception {
 
 		//slow but at least more than one call works

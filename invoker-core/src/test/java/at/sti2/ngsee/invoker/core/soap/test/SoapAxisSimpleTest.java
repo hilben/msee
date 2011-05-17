@@ -32,7 +32,7 @@ public class SoapAxisSimpleTest extends AbstractSoapTest{
 	/**
 	 * Test invoker-dummy-webservice
 	 */
-	@Test
+//	@Test
 	public void testInvokeLocalPing() throws Exception {
 
 		// >1 loop doesn't work. WFT??
@@ -80,7 +80,7 @@ public class SoapAxisSimpleTest extends AbstractSoapTest{
 		stopTimer();
 	}
 
-	@Test
+//	@Test
 	public void testInvokeBLZService() throws Exception {
 		
 		// >2 loop doesn't work. WFT??

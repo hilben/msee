@@ -15,7 +15,7 @@
 	</parent>
 
 	<name>invoker-webservice</name>
-	<url>http://maven.apache.org</url>
+	<url>http://see.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -137,13 +137,11 @@
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>invoker-api</artifactId>
-                        <version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>invoker-core</artifactId>
-                        <version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

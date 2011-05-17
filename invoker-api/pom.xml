@@ -15,7 +15,7 @@
 	</parent>
 
 	<name>invoker-api</name>
-	<url>http://maven.apache.org</url>
+	<url>http://see.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

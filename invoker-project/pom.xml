@@ -14,25 +14,26 @@
 		<module>../invoker-webservice</module>
 		<module>../invoker-grounding</module>
 		<module>../invoker-doc</module>
-                <module>../util-triplestore-client</module>
+		<module>../util-triplestore-client</module>
 	</modules>
 
 	<name>invoker-project</name>
-	<url>http://www.sti-innsbruck.at</url>
+	<url>http://see.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.3.3</cxf.version>
 		<saxon.version>8.7</saxon.version>
+		<axis.version>1.5.4</axis.version>
 	</properties>
 
 	<issueManagement>
 		<system>Sourceforge</system>
-		<url>http://www.sti-innsbruck.at</url>
+		<url>http://see.sti2.at</url>
 	</issueManagement>
 
 	<organization>
-		<url>http://www.sti-innsbruck.at</url>
+		<url>http://see.sti2.at</url>
 	</organization>
 
 
@@ -195,7 +196,7 @@
 	<dependencyManagement>
 		<dependencies>
 
-			<!-- projects -->
+			<!-- PROJECTS -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>invoker-api</artifactId>
@@ -216,8 +217,19 @@
 				<artifactId>invoker-webservice</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>invoker-grounding</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>at.sti2.util</groupId>
+				<artifactId>util-triplestore-client</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
 
-			<!-- libraries -->
+			<!-- LIBARIES -->
+			<!-- cxf -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -228,8 +240,28 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-
-			<!-- XSLT and XQuery processor (needed for XSLT 2.0) -->
+			<!-- axis -->
+			<dependency>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-kernel</artifactId>
+				<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-transport-local</artifactId>
+				<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-transport-http</artifactId>
+				<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+			<!-- xslt and xquery processor (needed for xslt 2.0) -->
 			<dependency>
 				<groupId>net.sf.saxon</groupId>
 				<artifactId>saxon</artifactId>
@@ -241,7 +273,7 @@
 				<version>${saxon.version}</version>
 			</dependency>
 
-			<!-- tools -->
+			<!-- TOOLS -->
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
@@ -277,6 +309,5 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
-
 
 </project>

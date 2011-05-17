@@ -52,7 +52,7 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest{
 		}
 	}
 	
-	@Test
+//	@Test
 	public void testInvokeBLZService() throws Exception {
 		
 		int loops = 10;
