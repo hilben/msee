@@ -3,13 +3,14 @@
         <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
 ]>
 <rdf:RDF
+	xml:base="http://sesa.sti2.at/2011/msm/weatherService"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns="http://www.sti2.at/sesa/#"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:wsdl="http://www.w3.org/ns/wsdl-rdf#"
+    xmlns:wsoap="http://www.w3.org/ns/wsdl/soap#"
     xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
     xmlns:http="http://www.w3.org/2008/http-methods#"
     xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
     xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
@@ -18,35 +19,74 @@
     xmlns:msm="&msm;">
     
     
-<!-- Weather Service -->
+<!-- WEATHER SERVICE -->
 <rdf:Description rdf:about="http://www.sti2.at/sesa/service/WeatherService">
 	<rdf:type rdf:resource="&msm;Service" />
 	<rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
-	<rdfs:isDefinedBy rdf:resource="http://sesa.sti2.at/2011/wsdl/weatherService#wsdl.description()"/>
+	<rdfs:seeAlso rdf:resource="#wsdl.description()"/>
 	<rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
 	<dc:creator>Michael Rogger</dc:creator>
-<!-- 	<msm:hasBinding rdf:resource="http://www.sti2.at/sesa/binding/binding1" /> -->
 </rdf:Description>
 
-<rdf:Description rdf:about="http://sesa.sti2.at/2011/wsdl/weatherService#wsdl.description()">
+<!-- WSDL BEGIN -->
+
+<!-- wsdl description -->
+<rdf:Description rdf:about="#wsdl.description()">
 	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Description" />
-	<wsdl:service rdf:resource="" />
-	<wsdl:binding rdf:resource=""/>
+	<wsdl:interface rdf:resource="#wsdl.interface(GlobalWeatherSoap)" />
+	<wsdl:binding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+	<wsdl:service rdf:resource="#wsdl.service(GlobalWeather)" />
 </rdf:Description>
 
-<!-- Binding -->
-<!-- <rdf:Description rdf:about="http://www.sti2.at/sesa/binding/binding1"> -->
-<!-- 	<rdf:type rdf:resource="&msm;Binding"/> -->
-<!-- 	<rdf:type rdf:resource="http://schemas.xmlsoap.org/wsdl/soap12/" /> -->
-<!-- 	<msm:hasOperation rdf:resource="http://www.sti2.at/sesa/operation/GetWeather" /> -->
-<!-- 	<msm:hasOperation rdf:resource="http://www.sti2.at/sesa/operation/GetCitiesByCountry" /> -->
-<!-- </rdf:Description> -->
+<!-- wsdl porttype/interface -->
+<rdf:Description rdf:about="#wsdl.interface(GlobalWeatherSoap)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Interface" />
+	<rdfs:label>GlobalWeatherSoap</rdfs:label>
+	<wsdl:interfaceOperation rdf:resource="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)" />
+</rdf:Description>
+
+<!-- wsdl porttype/interface operation -->
+<rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#InterfaceOperation" />
+	<rdfs:label>GetWeather</rdfs:label>
+</rdf:Description>
+
+<!-- wsdl binding (soap) -->
+<rdf:Description rdf:about="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Binding" />
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl/soap" />
+	<rdfs:label>GlobalWeatherSoap</rdfs:label>
+	<wsdl:bindingOperation rdf:resource="#wsdl.bindingOperation(GlobalWeatherSoap/GetWeather)" />
+	<wsdl:binds rdf:resource="#wsdl.interface(GlobalWeatherSoap)" />
+	<wsdl:bindingFault rdf:resource="" />
+</rdf:Description>
+
+<!-- wsdl binding operation -->
+<rdf:Description rdf:about="#wsdl.bindingOperation(GlobalWeatherSoap/GetWeather)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#BindingOperation"/>
+	<wsoap:action rdf:resource="http://www.webserviceX.NET/GetWeather"/>
+</rdf:Description>
+
+<!-- wsdl service -->
+<rdf:Description rdf:about="#wsdl.service(GlobalWeather)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Service" />
+	<rdfs:label>GlobalWeather</rdfs:label>
+	<wsdl:endpoint rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+</rdf:Description>
+
+<!-- wsdl port/endpoint (soap) -->
+<rdf:Description rdf:about="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)">
+	<rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Endpoint" />
+	<rdfs:label>GlobalWeatherSoap</rdfs:label>
+	<wsdl:address rdf:resource="http://www.webservicex.com/globalweather.asmx" />
+	<wsdl:usesBinding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+</rdf:Description>
+<!-- WSDL END -->
 
 <!-- GetWeather Operation-->
 <rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetWeather"> <!--  wsdl:binding/wsdl:operation -->
 	<rdf:type rdf:resource="&msm;Operation"/>
 	<rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-<!-- 	<msm:hasOperationQName rdf:resource="http://www.webserviceX.NET/GetWeather" /> !!!Not in Ontology!!! -->
 	<msm:hasInput rdf:resource="http://www.sti2.at/messagecontent/Input1" />
 	<msm:hasOutput rdf:resource="http://www.sti2.at/messagecontent/Output1" />
 </rdf:Description>
