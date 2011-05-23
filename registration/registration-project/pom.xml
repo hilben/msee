@@ -1,0 +1,233 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>at.sti2.ngsee</groupId>
+	<artifactId>registration-project</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>../registration-api</module>
+		<module>../registration-core</module>
+		<module>../registration-webservice</module>
+	</modules>
+
+
+	<name>registration-project</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<cxf.version>2.3.3</cxf.version>
+	</properties>
+
+	<!-- REPOSITORIES -->
+	<repositories>
+		<repository>
+			<id>maven</id>
+			<name>maven.org</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>sti-snapshots</id>
+			<name>STI snapshots</name>
+			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
+		</repository>
+		<repository>
+			<id>sti-external</id>
+			<name>Maven STI external repository</name>
+			<url>http://maven.sti2.at/archiva/repository/external</url>
+		</repository>
+		<repository>
+			<id>ibiblio</id>
+			<name>ibiblio.org</name>
+			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
+		</repository>
+		<repository>
+			<id>openrdf-sesame</id>
+			<name>OpenRDF Sesame repository</name>
+			<url>http://repo.aduna-software.org/maven2/releases</url>
+		</repository>
+		<repository>
+			<id>sun-java</id>
+			<name>sun-java</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
+
+	<!-- DISTRIBUTION MANAGEMENT -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sti-snapshots</id>
+			<name>STI snapshot distribution</name>
+			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!-- BUILD PROCESS -->
+	<build>
+		<!-- All childs inherit this plugins -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<!-- PLUGIN MANAGEMENT -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.0-beta-1</version>
+					<configuration>
+						<rules>
+							<requireMavenVersion>
+								<version>[2.0.6,)</version>
+							</requireMavenVersion>
+							<requireJavaVersion>
+								<version>[1.6,)</version>
+							</requireJavaVersion>
+							<versionRule
+								implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
+						</rules>
+					</configuration>
+					<executions>
+						<execution>
+							<id>enforce-java</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.eclipse.jetty.toolchain</groupId>
+							<artifactId>jetty-enforcer-rules</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.0.2</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.1-beta-1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<minmemory>128m</minmemory>
+						<maxmemory>512</maxmemory>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<useProjectReferences>true</useProjectReferences>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<!-- DEPENDENCY MANAGEMENT -->
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- projects -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration-webservice</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- libraries -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+
+			<!-- tools -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+				<!-- Because the JDK1.6 already includes the Java Activation API, otherwise 
+					this could generate ClassLoading Linkage errors in Servlets -->
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.5</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<!-- DEPENDENCIES -->
+	<!-- these dependencies are included in every child project per default -->
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
