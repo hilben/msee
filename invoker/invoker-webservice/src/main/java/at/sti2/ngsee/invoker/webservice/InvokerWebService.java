@@ -45,18 +45,6 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 @InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
 public class InvokerWebService implements IInvokerEndpoint {
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
-
-	/* (non-Javadoc)
-	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
-	 */
-	@Deprecated
-	@WebMethod
-	public String invokeOld(@WebParam(name="serviceID")String _serviceID,
-			@WebParam(name="operation")String _operationName,
-			@WebParam(name="inputData")String... _inputData) throws Exception {
-		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
-		return InvokerCore.invoke(_serviceID, _operationName, _inputData);
-	}
 	
 	@WebMethod(exclude=true)
 	private List<QName> extractHeader(List<Header> _headers) {
@@ -67,7 +55,7 @@ public class InvokerWebService implements IInvokerEndpoint {
 		return header;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
 	 */
 	@WebMethod

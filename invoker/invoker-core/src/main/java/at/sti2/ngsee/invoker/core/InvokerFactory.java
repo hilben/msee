@@ -4,7 +4,7 @@
 package at.sti2.ngsee.invoker.core;
 
 import at.sti2.ngsee.invoker.api.core.ISOAPInvoker;
-import at.sti2.ngsee.invoker.core.soap.SoapAxisInvoker;
+import at.sti2.ngsee.invoker.core.soap.SoapJaxWSInvoker;
 
 /**
  * <b>Purpose:</b>
@@ -25,7 +25,7 @@ import at.sti2.ngsee.invoker.core.soap.SoapAxisInvoker;
 public abstract class InvokerFactory {
 	
 	public static ISOAPInvoker createSOAPInvoker() {
-		return new SoapAxisInvoker();
+		return new SoapJaxWSInvoker();
 	}
 	
 }

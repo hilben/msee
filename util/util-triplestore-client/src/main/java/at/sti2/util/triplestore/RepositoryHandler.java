@@ -45,45 +45,55 @@ public class RepositoryHandler {
 		this.repositoryID = _repositoryID;
 	}
 	
-	public ValueFactory getValueFactory() { return this.valueFactory; }
+	public synchronized ValueFactory getValueFactory() { return this.valueFactory; }
 	
-	public URI createURI(String _uri) {
+	public synchronized URI createURI(String _uri) {
 		return this.valueFactory.createURI(_uri);
 	}
 	
-	public Statement createStatement(URI _subject, URI _predicate, URI _object) {
+	public synchronized Statement createStatement(URI _subject, URI _predicate, URI _object) {
 		return this.valueFactory.createStatement(_subject, _predicate, _object);
 	}
 	
-	public Statement createStatement(URI _subject, URI _predicate, Literal _object) {
+	public synchronized Statement createStatement(URI _subject, URI _predicate, Literal _object) {
 		return this.valueFactory.createStatement(_subject, _predicate, _object);
 	}
 	
-	public Literal createLiteral(String _literal) {
+	public synchronized Literal createLiteral(String _literal) {
 		return this.valueFactory.createLiteral(_literal);
 	}
 
-	private void init() throws RepositoryException {
+	private synchronized void init() throws RepositoryException {
 		this.repository = new HTTPRepository(this.serverEndpoint, this.repositoryID);
 		this.connection = this.repository.getConnection();
 		this.valueFactory = this.connection.getValueFactory();
 	}
+	
+	public synchronized void updateResourceTriple(String _subject, String _predicate, String _object, String _context) throws RepositoryException {
+		this.delete(_subject, _predicate);
+		this.addResourceTriple(_subject, _predicate, _object, _context);
+	}
+	
+	public synchronized void updateLiteralTriple(String _subject, String _predicate, String _literalObject, String _context) throws RepositoryException {
+		this.delete(_subject, _predicate);
+		this.addLiteralTriple(_subject, _predicate, _literalObject, _context);
+	}
 
-	public TupleQueryResult selectSPARQL(String _query) throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+	public synchronized TupleQueryResult selectSPARQL(String _query) throws QueryEvaluationException, RepositoryException, MalformedQueryException {
 		if ( this.connection == null )
 			this.init();
 		TupleQuery tupleQuery = this.connection.prepareTupleQuery(QueryLanguage.SPARQL, _query);
 		return tupleQuery.evaluate();
 	}
 	
-	public void selectSPARQL(String _query, TupleQueryResultHandler _resultHandler) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException {
+	public synchronized void selectSPARQL(String _query, TupleQueryResultHandler _resultHandler) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException {
 		if ( this.connection == null )
 			this.init();
 		TupleQuery tupleQuery = this.connection.prepareTupleQuery(QueryLanguage.SPARQL, _query);
 		tupleQuery.evaluate(_resultHandler);
 	}
 
-	public boolean askSPARQL(String _query) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
+	public synchronized boolean askSPARQL(String _query) throws RepositoryException, MalformedQueryException, QueryEvaluationException {
 		if ( this.connection == null )
 			this.init();
 		BooleanQuery booleanQuery = this.connection.prepareBooleanQuery(QueryLanguage.SPARQL, _query);
@@ -100,7 +110,7 @@ public class RepositoryHandler {
 	 * @throws UnsupportedRDFormatException 
 	 * @throws RDFHandlerException 
 	 */
-	public String describeQuery(String _query, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
+	public synchronized String describeQuery(String _query, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
 		if ( this.connection == null )
 			this.init();
 		GraphQuery graphQuery = this.connection.prepareGraphQuery(QueryLanguage.SPARQL, _query);
@@ -109,7 +119,7 @@ public class RepositoryHandler {
 		return out.toString();
 	}
 
-	public String describeEntity(String _droneID, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
+	public synchronized String describeEntity(String _droneID, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
 		if ( this.connection == null )
 			this.init();
 		String query = "DESCRIBE <" + _droneID + ">";
@@ -119,7 +129,7 @@ public class RepositoryHandler {
 		return out.toString();
 	}
 	
-	public String describeEntityProperty(String _droneID, RDFFormat _rdfFormat, String _property) throws RDFHandlerException, UnsupportedRDFormatException, QueryEvaluationException, IOException, RepositoryException, MalformedQueryException {
+	public synchronized String describeEntityProperty(String _droneID, RDFFormat _rdfFormat, String _property) throws RDFHandlerException, UnsupportedRDFormatException, QueryEvaluationException, IOException, RepositoryException, MalformedQueryException {
 		if ( this.connection == null )
 			this.init();
 		String query = QueryHelper.getNamespacePrefix() + " DESCRIBE ?x WHERE { <" + _droneID + "> " + _property + " ?x . }";
@@ -129,7 +139,7 @@ public class RepositoryHandler {
 		return out.toString();
 	}
 
-	public void storeEntity(String _data, String _baseURI, RDFFormat _format, String _contextID) throws RepositoryException, RDFParseException, IOException {
+	public synchronized void storeEntity(String _data, String _baseURI, RDFFormat _format, String _contextID) throws RepositoryException, RDFParseException, IOException {
 		if ( this.connection == null )
 			this.init();
 		URI contextURI = this.valueFactory.createURI(_contextID);
@@ -140,18 +150,19 @@ public class RepositoryHandler {
 		this.connection.add(_stmt, this.valueFactory.createURI(_contextID));
 	}
 
-//	public void updateEntity(String _subject, String _data, String _baseURI, RDFFormat _format, String _contextID) throws RepositoryException, RDFParseException, IOException {
-//		if ( this.connection == null )
-//			this.init();
-//		this.delete(_subject);
-//		this.storeEntity(_data, _baseURI, _format, _contextID);
-//	}
+	public void updateEntity(String _subject, String _data, String _baseURI, RDFFormat _format, String _contextID) throws RepositoryException, RDFParseException, IOException {
+		if ( this.connection == null )
+			this.init();
+		this.delete(_subject);
+		this.storeEntity(_data, _baseURI, _format, _contextID);
+	}
 
-	public void addLiteralTriple(String _subject, String _property, String _value) throws RepositoryException {
+	public synchronized void addLiteralTriple(String _subject, String _property, String _value, String _context) throws RepositoryException {
 		if ( this.connection == null )
 			this.init();
 		Statement statement = this.valueFactory.createStatement(this.valueFactory.createURI(_subject),
-				this.valueFactory.createURI(_property), this.valueFactory.createLiteral(_value));
+				this.valueFactory.createURI(_property), this.valueFactory.createLiteral(_value),
+				this.valueFactory.createURI(_context));
 		this.connection.add(statement);
 	}
 	
@@ -164,11 +175,11 @@ public class RepositoryHandler {
 		this.connection.add(statement);
 	}
 
-	public void updateProperty(String _subject, String _property, String _value) throws RepositoryException {
+	public void updateProperty(String _subject, String _property, String _value, String _context) throws RepositoryException {
 		if ( this.connection == null )
 			this.init();
 		this.delete(_subject, _property);
-		this.addLiteralTriple(_subject, _property, _value);
+		this.addLiteralTriple(_subject, _property, _value, _context);
 	}
 
 	public void delete(String _subject, String _predicate) throws RepositoryException {
@@ -176,12 +187,12 @@ public class RepositoryHandler {
 			this.init();
 		this.connection.remove(this.valueFactory.createURI(_subject), this.valueFactory.createURI(_predicate), null);
 	}
-//
-//	public void delete(String _subject) throws RepositoryException {
-//		if ( this.connection == null )
-//			this.init();
-//		this.connection.remove(this.valueFactory.createURI(_subject), null, null);
-//	}
+
+	public void delete(String _subject) throws RepositoryException {
+		if ( this.connection == null )
+			this.init();
+		this.connection.remove(this.valueFactory.createURI(_subject), null, null);
+	}
 	
 	/**
 	 * Deletes all statements in the context.
@@ -197,13 +208,13 @@ public class RepositoryHandler {
 	}
 
 	public void commit() {
-			try {
-				if ( this.connection != null )
-					this.connection.commit();
-			} catch (RepositoryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			if ( this.connection != null )
+				this.connection.commit();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void shutdown() {
@@ -211,7 +222,7 @@ public class RepositoryHandler {
 			try {
 				this.connection.commit();
 				this.connection.close();
-				this.repository.shutDown();
+//				this.repository.shutDown();
 			} catch (RepositoryException e) {
 				e.printStackTrace();
 			} finally {

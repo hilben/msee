@@ -8,6 +8,27 @@ package at.sti2.util.triplestore;
  *
  */
 public class QueryHelper {
+
+	public static final String RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+	public static final String RDFS_NS = "http://www.w3.org/2000/01/rdf-schema#";
+	public static final String DC_NS = "http://purl.org/dc/elements/1.1/";
+	public static final String WSMF_NS = "http://www.sti2.at/wsmf/ns#";
+	
+	public static String getWSMFURI(String _property) {
+		return WSMF_NS + _property;
+	}
+	
+	public static String getRDFURI(String _property) {
+		return RDF_NS + _property;
+	}
+	
+	public static String getRDFSURI(String _property) {
+		return RDFS_NS + _property;
+	}
+	
+	public static String getDCURI(String _property) {
+		return DC_NS + _property;
+	}
 	
 	/**
 	 * @return Default Namespaces as SPARQL Prefix

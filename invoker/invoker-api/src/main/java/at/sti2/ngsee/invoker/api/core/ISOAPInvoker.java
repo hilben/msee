@@ -3,10 +3,8 @@
  */
 package at.sti2.ngsee.invoker.api.core;
 
-import java.net.URL;
-import java.util.List;
-
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPMessage;
 
 //import javax.xml.namespace.QName;
 
@@ -30,15 +28,6 @@ import javax.xml.namespace.QName;
 public interface ISOAPInvoker {
 	
 	/**
-	 * @deprecated
-	 * @param wsdlURL The Endpoint of the 
-	 * @param operationQName The operation that should be called.
-	 * @param inputData The input data, understandable by the services.
-	 * @return
-	 */
-	public String invoke(String wsdlURL, QName operationQName, String... inputData) throws Exception;
-	
-	/**
 	 * 
 	 * @param wsdlURL The Endpoint of the 
 	 * @param header The SOAP Header forwareded from the client.
@@ -46,6 +35,13 @@ public interface ISOAPInvoker {
 	 * @param inputData The input data, understandable by the services.
 	 * @return
 	 */
-	public String invoke(URL wsdlURL, List<QName>  header, String _soapAction, String inputData) throws Exception;
+//	public String invoke(URL wsdlURL, List<QName> header, String _soapAction, String inputData) throws Exception;
+	
+
+	public SOAPMessage invoke(QName serviceName,
+			QName portName,
+			String endpointUrl,
+			String soapActionUri,
+			SOAPMessage soapMessage) throws Exception;
 	
 }

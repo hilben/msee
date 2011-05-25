@@ -48,7 +48,7 @@ public class TriplestoreHandler {
 	public static InvokerMSM getInvokerMSM(String _serviceID, String _operationName) throws IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
 		Config cfg = new Config();
 		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
-		TupleQueryResult result = reposHandler.selectSPARQL("SELECT ?lifting ?lowering ?wsdl ?operation WHERE { <<TODO>> }");
+		TupleQueryResult result = reposHandler.selectSPARQL("SELECT ?serviceName ?lifting ?lowering ?wsdl ?operation ?portname ?soapaction ?endpoint WHERE { <<TODO>> }");
 		
 		InvokerMSM msmInstance = new InvokerMSM();
 		if ( result.hasNext() ) {
@@ -57,6 +57,10 @@ public class TriplestoreHandler {
 			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
 			msmInstance.setWSDL(new URL(entry.getBinding("wsdl").getValue().stringValue()));
 			msmInstance.setOperationQName(getStringToQName(entry.getBinding("operation").getValue().stringValue()));
+			msmInstance.setServiceQName(getStringToQName(entry.getBinding("endpoint").getValue().stringValue()));
+			msmInstance.setPortQName(getStringToQName(entry.getBinding("portname").getValue().stringValue()));
+			msmInstance.setSOAPAction(entry.getBinding("soapaction").getValue().stringValue());
+			msmInstance.setEndpointURL(new URL(entry.getBinding("endpoint").getValue().stringValue()));
 		}
 		
 		return msmInstance;

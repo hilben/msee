@@ -134,14 +134,14 @@
                  <rdfs:comment>Describes a SOAP Binding URL</rdfs:comment>
                  <vs:term_status>unstable</vs:term_status>
          </rdfs:Class>
-         
+
          <rdf:Property rdf:about="#hasBinding">
                  <rdfs:label>has Binding</rdfs:label>
                  <rdfs:domain rdf:resource="#Service" />
                  <rdfs:range rdf:resource="#Binding" />
                  <vs:term_status>unstable</vs:term_status>
          </rdf:Property>
-         
+
          <rdf:Property rdf:about="#hasOperationQName">
                  <rdfs:label>has Binding</rdfs:label>
                  <rdfs:domain rdf:resource="#Service" />

@@ -33,5 +33,11 @@ public interface IInvokerMSM {
 	 * @return Namespace + Operation as QName instance.
 	 */
 	public QName getOperationQName();
+	
+	public QName getServiceQName();
+	
+	public QName getPortQName();
+	
+	public URL getEndpointURL();
 
 }

@@ -38,7 +38,7 @@
 		</dependency>
 		
 		<!-- axis -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-kernel</artifactId>
 			<exclusions>
@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-		</dependency>
+		</dependency-->
 		
 		<!-- cxf -->
 		<dependency>
