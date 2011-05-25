@@ -16,6 +16,7 @@ import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.invoker.core.InvokerCore;
+import at.sti2.ngsee.invoker.api.webservice.IAvailabilityCheck;
 import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 
 /**
@@ -43,7 +44,7 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 	)
 @InInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
 @InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
-public class InvokerWebService implements IInvokerEndpoint {
+public class InvokerWebService implements IInvokerEndpoint, IAvailabilityCheck {
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
 	
 	@WebMethod(exclude=true)
@@ -58,20 +59,24 @@ public class InvokerWebService implements IInvokerEndpoint {
 	/**
 	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
 	 */
+	@Override
 	@WebMethod
 	public String invoke(@WebParam(name="serviceID")String _serviceID,
 			@WebParam(name="operation")String _operationName,
 			@WebParam(name="inputData")String _inputData) throws Exception {
 		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
-		
+
 		List<QName> headers = this.extractHeader(SOAPHeaderThreadLocal.get());
 		return InvokerCore.invoke(_serviceID, headers, _operationName, _inputData);
 	}
 
+	/**
+	 * @see at.sti2.ngsee.invoker.api.webservice.IAvailabilityCheck#checkAvailability()
+	 */
 	@WebMethod
-	public String getVersion() {
-		logger.info("Invoking getVersion()");
-		return "v9999";
+	@Override
+	public boolean checkAvailability() {
+		return true;
 	}
 
 }

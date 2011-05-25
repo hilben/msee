@@ -26,6 +26,5 @@ public interface IInvokerEndpoint {
 	 * @return
 	 */
 	public String invoke(String serviceID, String operationName, String rdfData) throws Exception;
-	
-	public String getVersion();
+
 }

@@ -38,10 +38,16 @@ public interface ISOAPInvoker {
 //	public String invoke(URL wsdlURL, List<QName> header, String _soapAction, String inputData) throws Exception;
 	
 
+	/**
+	 * @param serviceName The qualified service name.
+	 * @param portName The qualified port name.
+	 * @param endpointURL
+	 * @return
+	 */
 	public SOAPMessage invoke(QName serviceName,
 			QName portName,
-			String endpointUrl,
-			String soapActionUri,
+			String endpointURL,
+			String soapActionURI,
 			SOAPMessage soapMessage) throws Exception;
 	
 }

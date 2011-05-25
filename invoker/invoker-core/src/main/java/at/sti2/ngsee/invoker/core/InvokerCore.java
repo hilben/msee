@@ -83,8 +83,5 @@ public class InvokerCore {
 		 */
 		return groundingEngine.lift(getSOAPMessageAsString(outputData));
 	}
-	
-	public static void main(String[] args) throws Exception {
-		System.out.println(getSOAPMessageAsString(InvokerCore.createSOAPMessage("<function1><input1>test</input1></function1>")));
-	}
+
 }
