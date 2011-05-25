@@ -40,8 +40,8 @@ public class InvokerClient {
 		 */
 		List<String> inputData4 = new ArrayList<String>();
 		inputData4.add("<ns1:blz xmlns:ns1=\"http://thomas-bayer.com/blz/\">60050101</ns1:blz>");
-		System.out.println(service.invokeOld("http://www.thomas-bayer.com/axis2/services/BLZService?wsdl", 
-				"http://thomas-bayer.com/blz/getBank/", inputData4));
+//		System.out.println(service.invokeOld("http://www.thomas-bayer.com/axis2/services/BLZService?wsdl", 
+//				"http://thomas-bayer.com/blz/getBank/", inputData4));
 		System.out.println("---\n");
 		
 
@@ -51,8 +51,8 @@ public class InvokerClient {
 		List<String> inputData5 = new ArrayList<String>();
 		inputData5.add("<ns1:ipAddress xmlns:ns1=\"http://ws.cdyne.com/\">138.232.65.141</ns1:ipAddress>");
 		inputData5.add("<ns1:licenseKey xmlns:ns1=\"http://ws.cdyne.com/\">0</ns1:licenseKey>");
-		System.out.println(service.invokeOld("http://ws.cdyne.com/ip2geo/ip2geo.asmx?wsdl", 
-				"http://ws.cdyne.com/ResolveIP/", inputData5));
+//		System.out.println(service.invokeOld("http://ws.cdyne.com/ip2geo/ip2geo.asmx?wsdl", 
+//				"http://ws.cdyne.com/ResolveIP/", inputData5));
 		System.out.println("---\n");
 	}
 

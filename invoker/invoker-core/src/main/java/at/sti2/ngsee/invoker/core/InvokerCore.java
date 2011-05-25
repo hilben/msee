@@ -2,13 +2,23 @@ package at.sti2.ngsee.invoker.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
 import org.apache.log4j.Logger;
+import org.dom4j.DocumentException;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import at.sti2.ngsee.invoker.api.core.ISOAPInvoker;
 import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
@@ -17,32 +27,21 @@ import at.sti2.ngsee.invoker.grounding.GroundingFactory;
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
 	
-//	@Deprecated
-//	public static String invoke(String _serviceID, String _operationName, String... _inputData) throws Exception {	
-//		// TODO: Delete this line. msmObject includes the WSDL URL 
-//		String serviceURL = _serviceID;
-//		
-//		// TODO: Delete this line. msmObject includes the WSDL URL
-//		QName operationQName = TriplestoreHandler.getStringToQName(_operationName);
-//		// TODO: Lower the RDF Data to Data that is understandable for the Service.
-//		String[] serviceData = _inputData;
-//		
-//		logger.info("Invoking Web Service '" + _serviceID + "' with data '" + serviceData + "'");
-//
-//		// TODO: Check the Service Type, e.g. REST, SOAP
-//		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
-//		String xmlData;
-//		if ( serviceData == null )
-//			xmlData = soapInvoker.invoke(serviceURL, operationQName);
-//		else 
-//			xmlData = soapInvoker.invoke(serviceURL, operationQName, serviceData);
-//		// TODO: Lifting the xml Data to RDF.
-//		String rdfData = xmlData.toString();
-//		return rdfData;
-//	}
-	
-	private static SOAPMessage createSOAPMessage(String _loweredInputData) {
-		return null;
+	private static SOAPMessage createSOAPMessage(String _loweredInputData) throws SOAPException, DocumentException, SAXException, IOException, ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		
+		InputSource inStream = new InputSource();
+		  
+		inStream.setCharacterStream(new StringReader(_loweredInputData));
+		Document doc = builder.parse(inStream);
+		
+		MessageFactory messageFactory = MessageFactory.newInstance();
+		SOAPMessage message = messageFactory.createMessage();
+		SOAPBody soapBody = message.getSOAPBody();
+		soapBody.addDocument(doc);
+		message.saveChanges();
+		return message;
 	}
 	
 	private static String getSOAPMessageAsString(SOAPMessage _message) throws SOAPException, IOException {
@@ -78,11 +77,14 @@ public class InvokerCore {
 		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
 		logger.info("Invoking Web Service '" + msmObject.getWSDL() + "' with input data '" + loweredInputData + "'");
 		SOAPMessage outputData = soapInvoker.invoke(msmObject.getServiceQName(), msmObject.getPortQName(), msmObject.getEndpointURL().toExternalForm(), msmObject.getSOAPAction(), createSOAPMessage(loweredInputData));
-//		String outputData = soapInvoker.invoke(msmObject.getWSDL(), _header, msmObject.getSOAPAction(), loweredInputData);
 		
 		/*
 		 * Return the lifted data
 		 */
 		return groundingEngine.lift(getSOAPMessageAsString(outputData));
+	}
+	
+	public static void main(String[] args) throws Exception {
+		System.out.println(getSOAPMessageAsString(InvokerCore.createSOAPMessage("<function1><input1>test</input1></function1>")));
 	}
 }

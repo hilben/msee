@@ -1,7 +1,6 @@
 
 package at.sti2.see;
 
-import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -33,26 +32,7 @@ public interface InvokerWebService {
      * @param inputData
      * @return
      *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "invokeOld", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.InvokeOld")
-    @ResponseWrapper(localName = "invokeOldResponse", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.InvokeOldResponse")
-    public String invokeOld(
-        @WebParam(name = "serviceID", targetNamespace = "")
-        String serviceID,
-        @WebParam(name = "operation", targetNamespace = "")
-        String operation,
-        @WebParam(name = "inputData", targetNamespace = "")
-        List<String> inputData);
-
-    /**
-     * 
-     * @param operation
-     * @param serviceID
-     * @param inputData
-     * @return
-     *     returns java.lang.String
+     * @throws Exception_Exception
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -64,7 +44,9 @@ public interface InvokerWebService {
         @WebParam(name = "operation", targetNamespace = "")
         String operation,
         @WebParam(name = "inputData", targetNamespace = "")
-        String inputData);
+        String inputData)
+        throws Exception_Exception
+    ;
 
     /**
      * 
