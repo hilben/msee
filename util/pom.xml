@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>at.sti2.ngsee</groupId>
+	<artifactId>util-project</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>at.sti2.ngsee</groupId>
+		<artifactId>sesa-project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<modules>
+		<module>util-triplestore-client</module>
+	</modules>
+
+	<name>util-project</name>
+	<url>http://see.sti2.at</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<issueManagement>
+		<system>Sourceforge</system>
+		<url>http://see.sti2.at</url>
+	</issueManagement>
+
+	<organization>
+		<name>Semantic Technology Institute Innsbruck</name>
+		<url>http://see.sti2.at</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<name>Michael Rogger</name>
+		</developer>
+		<developer>
+			<name>Alex Oberhauser</name>
+		</developer>
+		<developer>
+			<name>Corneliu Stanciu</name>
+		</developer>
+	</developers>
+
+</project>

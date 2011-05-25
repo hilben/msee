@@ -1,7 +1,6 @@
 #!/bin/bash
-cd registration-project && \
-        mvn clean install package && \
-        cd .. && \
-        cd registration-webservice && \
-        mvn jetty:run
+mvn clean install && \
+cd registration-webservice && \
+mvn jetty:run && \
+cd ..
 

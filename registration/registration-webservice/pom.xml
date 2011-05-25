@@ -11,7 +11,7 @@
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>registration-project</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../registration-project/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<name>registration-webservice</name>

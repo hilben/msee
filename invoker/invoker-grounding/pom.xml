@@ -11,7 +11,7 @@
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>invoker-project</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../invoker-project/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<name>invoker-grounding</name>

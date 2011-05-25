@@ -5,21 +5,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>openrdf</id>
-			<name>OpenRDF Sesame Repository</name>
-			<url>http://repo.aduna-software.org/maven2/releases/</url>
-		</repository>
-	</repositories>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.sti2.util</groupId>
 	<artifactId>util-triplestore-client</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Triplestore Client Utilities</name>
+	<name>util-triplestore-client</name>
 
+	<parent>
+		<groupId>at.sti2.ngsee</groupId>
+		<artifactId>util-project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
@@ -47,20 +46,5 @@
 			<version>1.1.1</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<verbose>true</verbose>
-					<fork>true</fork>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
