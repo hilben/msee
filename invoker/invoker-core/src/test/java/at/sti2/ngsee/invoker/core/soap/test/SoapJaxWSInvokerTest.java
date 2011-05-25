@@ -60,10 +60,8 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest{
 				+ "</soapenv:Body>" + "</soapenv:Envelope>";
 			
 			SOAPMessage result = invoker.invoke(serviceName, portName, endpointUrl, soapActionUri, createSOAPMessage(inputData));
-			System.out.println(result.getSOAPBody().getFirstChild()
-					.getTextContent());
-			System.out.print("ServiceName " + serviceName + " ");
-			stopTimer();
+			logger.info(result.getSOAPBody().getFirstChild().getTextContent());
+			logger.info("ServiceName " + serviceName + "took ms: " +stopTimer());
 		}
 	}
 	
@@ -88,10 +86,8 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest{
 				+ "</soapenv:Body>" + "</soapenv:Envelope>";
 			
 			SOAPMessage result = invoker.invoke(serviceName, portName, endpointUrl, soapActionUri, createSOAPMessage(inputData));
-			System.out.println(result.getSOAPBody().getFirstChild()
-					.getTextContent());
-			System.out.print("ServiceName " + serviceName + " ");
-			stopTimer();
+			logger.info(result.getSOAPBody().getFirstChild().getTextContent());
+			logger.info("ServiceName " + serviceName + "took ms: " +stopTimer());
 		}
 	}
 
