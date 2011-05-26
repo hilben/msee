@@ -101,12 +101,6 @@ public class TriplestoreHandler {
 			msmInstance.setSOAPAction(entry.getBinding("soapaction").getValue().stringValue());
 			msmInstance.setEndpointURL(new URL(entry.getBinding("endpoint").getValue().stringValue()));
 			
-			System.out.println("WSDL           = " + msmInstance.getWSDL());
-			System.out.println("PortQName      = " + msmInstance.getPortQName());
-			System.out.println("SOAPAction     = " + msmInstance.getSOAPAction());
-			System.out.println("ServiceQName   = " + msmInstance.getServiceQName());
-			System.out.println("EndpointURL    = " + msmInstance.getEndpointURL());
-			System.out.println("OperationQName = " + msmInstance.getOperationQName());
 		}
 		
 		return msmInstance;

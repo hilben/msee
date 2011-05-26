@@ -62,13 +62,13 @@ public class QueryHelper {
         namespaces.append("PREFIX foaf:<http://xmlns.com/foaf/0.1/>\n");
         namespaces.append("PREFIX opo:<http://online-presence.net/opo/ns#>\n");
         namespaces.append("PREFIX geo:<http://www.w3.org/2003/01/geo/wgs84_pos#>\n");
-        namespaces.append("PREFIX dc:<http://purl.org/dc/elements/1.1/>\n");
+        namespaces.append("PREFIX dc:<" + DC_NS + ">\n");
         namespaces.append("PREFIX dct:<http://purl.org/dc/terms/>\n");
         namespaces.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#>\n");
         namespaces.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#>\n");
         namespaces.append("PREFIX wsdl:<http://www.w3.org/ns/wsdl-rdf#>\n");
         namespaces.append("PREFIX wl:<http://www.wsmo.org/ns/wsmo-lite#>\n");
-        namespaces.append("PREFIX wsmf:<http://www.sti2.at/wsmf/ns#>\n");
-        return namespaces.toString();
+        namespaces.append("PREFIX wsmf:<" + WSMF_NS + ">\n");
+		return namespaces.toString();
 	}
 }

@@ -54,7 +54,9 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 		logger.debug("lowering schema URL: " + loweringSchemaURL);
 		logger.debug("rdf input data:\n" + rdfInputData);
 
-		String strResult = transform(loweringSchemaURL, rdfInputData);
+		String strResult = rdfInputData;
+		if ( null !=  this.loweringSchemaURL)
+			strResult = transform(loweringSchemaURL, rdfInputData);
 		
 		logger.debug("lowered output:\n" + strResult);
 		
@@ -71,7 +73,9 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 		logger.debug("lifting schema URL: " + liftingSchemaURL);
 		logger.debug("xml input data:\n" + xmlInputData);
 		
-		String strResult = transform(liftingSchemaURL, xmlInputData);
+		String strResult = xmlInputData;
+		if ( null != this.liftingSchemaURL )
+			strResult = transform(liftingSchemaURL, xmlInputData);
 		
 		logger.debug("lifted output:\n" + strResult);
 		

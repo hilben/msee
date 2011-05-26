@@ -1,0 +1,40 @@
+Web Service Monitoring Framework - SME
+======================================
+
+=> How do I start and use the SME?
+
+  1. Start the run.sh script with the help of the following command (Unix/Linux):
+        
+        sh ./run.sh
+
+  2. Wait until the compiling and starting process is finished. You should see
+     something similar to:
+
+        2011-05-18 18:43:53.533::INFO:  Started SelectChannelConnector@0.0.0.0:9090
+        [INFO] Started Jetty Server
+        [INFO] Starting scanner at interval of 10 seconds.
+
+  3. Open your favorite browser and visit:
+        
+        http://localhost:9090/wsmf-webservice/services
+
+--------
+
+=> Where do I can change the underlying web service or RDF repository data?
+
+   Edit the following config file: wsmf-core/src/main/resources/default.properties 
+   (relative to this README file location)
+
+--------
+
+=> How do I execute the wsmf-client-example?
+
+   Execute the org.example.Main class
+
+--------
+
+=> How do I execute the wsmf-channellistener-example?
+
+   Change into the directory wsmf-channellistener-example - you should see
+   there a pom.xml file - and execute "mvn jetty:run"
+   
