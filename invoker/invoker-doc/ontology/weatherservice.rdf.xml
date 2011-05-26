@@ -34,7 +34,7 @@
         <rdf:Description rdf:about="#wsdl.description()">
                 <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Description" />
                 <wsdl:interface rdf:resource="#wsdl.interface(GlobalWeatherSoap)" />
-                <wsdl:binding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+                <wsdl:binding rdf:resource="#wsdl.binding(GlobalWeather/GlobalWeatherSoap)" />
                 <wsdl:service rdf:resource="#wsdl.service(GlobalWeather)" />
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
         </rdf:Description>

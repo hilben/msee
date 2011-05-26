@@ -16,7 +16,7 @@ import javax.xml.soap.SOAPMessage;
 
 import junit.framework.Assert;
 
-//import org.junit.Test;
+import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.core.InvocationHandler;
@@ -27,7 +27,7 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
  */
 public class TestInvocationHandler {
 	
-//	@Test
+	@Test
 	public void testInvocationHandler() throws RepositoryException, Exception {
 		List<QName> soapHeaderList = new ArrayList<QName>();
 		soapHeaderList.add(new QName("http://example.org", "someTestingProperty"));
