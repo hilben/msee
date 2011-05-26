@@ -5,7 +5,7 @@ package at.sti2.util.triplestore;
 
 /**
  * @author Alex Oberhauser
- *
+ * @author Corneliu-Valentin Stanciu
  */
 public class QueryHelper {
 
@@ -13,6 +13,10 @@ public class QueryHelper {
 	public static final String RDFS_NS = "http://www.w3.org/2000/01/rdf-schema#";
 	public static final String DC_NS = "http://purl.org/dc/elements/1.1/";
 	public static final String WSMF_NS = "http://www.sti2.at/wsmf/ns#";
+	public static final String MSM_NS = "http://cms-wg.sti2.org/ns/minimal-service-model#";
+	public static final String SAWSDL_NS = "http://www.w3.org/ns/sawsdl#";
+	public static final String WSDL_NS = "http://www.w3.org/ns/wsdl-rdf#";
+	public static final String WL_NS = "http://www.wsmo.org/ns/wsmo-lite#";
 	
 	public static String getWSMFURI(String _property) {
 		return WSMF_NS + _property;
@@ -30,6 +34,22 @@ public class QueryHelper {
 		return DC_NS + _property;
 	}
 	
+	public static String getMSMURI(String _property) {
+		return MSM_NS + _property;
+	}
+	
+	public static String getSAWSDLURI(String _property) {
+		return SAWSDL_NS + _property;
+	}
+	
+	public static String getWSDLURI(String _property) {
+		return WSDL_NS + _property;
+	}
+	
+	public static String getWLURI(String _property) {
+		return WL_NS + _property;
+	}
+	
 	/**
 	 * @return Default Namespaces as SPARQL Prefix
 	 */
@@ -44,6 +64,11 @@ public class QueryHelper {
         namespaces.append("PREFIX geo:<http://www.w3.org/2003/01/geo/wgs84_pos#>\n");
         namespaces.append("PREFIX dc:<http://purl.org/dc/elements/1.1/>\n");
         namespaces.append("PREFIX dct:<http://purl.org/dc/terms/>\n");
-		return namespaces.toString();
+        namespaces.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#>\n");
+        namespaces.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#>\n");
+        namespaces.append("PREFIX wsdl:<http://www.w3.org/ns/wsdl-rdf#>\n");
+        namespaces.append("PREFIX wl:<http://www.wsmo.org/ns/wsmo-lite#>\n");
+        namespaces.append("PREFIX wsmf:<http://www.sti2.at/wsmf/ns#>\n");
+        return namespaces.toString();
 	}
 }

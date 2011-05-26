@@ -53,7 +53,7 @@
         </rdf:Description>
 
         <!-- wsdl binding (soap) -->
-        <rdf:Description rdf:about="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)">
+        <rdf:Description rdf:about="#wsdl.binding(GlobalWeather/GlobalWeatherSoap)">
                 <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Binding" />
                 <rdf:type rdf:resource="http://www.w3.org/ns/wsdl/soap" />
                 <rdfs:label>GlobalWeatherSoap</rdfs:label>
