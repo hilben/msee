@@ -5,7 +5,7 @@ import java.net.URL;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Test;
 import org.ow2.easywsdl.extensions.sawsdl.SAWSDLFactory;
 import org.ow2.easywsdl.extensions.sawsdl.api.Description;
 import org.ow2.easywsdl.extensions.sawsdl.api.Endpoint;
@@ -25,7 +25,7 @@ public class EasyWsdlTest {
 	public void tearDown() throws Exception {
 	}
 	
-	@Test
+//	@Test
 	public void testWSDL() throws Exception{
 		
 		// Read a SAWSDL description

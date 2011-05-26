@@ -1,7 +1,5 @@
 package at.sti2.ngsee.registration.api.webservice;
 
-import javax.jws.WebService;
-
 /**
  * <b>Purpose:</b>
  * <br>
@@ -18,8 +16,6 @@ import javax.jws.WebService;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-
-@WebService(targetNamespace="http://see.sti2.at/")
 public interface IRegistrationEndpoint {
 
 	/**

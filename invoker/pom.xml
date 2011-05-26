@@ -20,7 +20,6 @@
 		<module>invoker-core</module>
 		<module>invoker-webservice</module>
 		<module>invoker-grounding</module>
-		<module>invoker-doc</module>
 	</modules>
 
 	<name>invoker-project</name>
