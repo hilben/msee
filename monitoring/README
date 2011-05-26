@@ -27,12 +27,6 @@ Web Service Monitoring Framework - SME
 
 --------
 
-=> How do I execute the wsmf-client-example?
-
-   Execute the org.example.Main class
-
---------
-
 => How do I execute the wsmf-channellistener-example?
 
    Change into the directory wsmf-channellistener-example - you should see

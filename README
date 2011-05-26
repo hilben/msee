@@ -1,8 +1,18 @@
 SEE Framework README 
 ====================
 
+COMPONENTS
+==========
+
+* Invoker
+* Registration
+* Monitoring
+* Utilities
+
 RUN
 ===
+
+Starts the invoker web service:
 
 1)	sh run.sh
 
@@ -10,14 +20,14 @@ RUN
 DEVELOPMENT
 ===========
 
-*Prerequisite:
--JAVA6+
--Maven 3.x
--Git
+* Prerequisite:
+        - JAVA6+
+        - Maven 3.x
+        - Git
 
-*Optional:
--Eclipse
--m2eclipse
+* Optional:
+        - Eclipse
+        - m2eclipse
 
 1)	Execute "git clone ssh://<username>@demo.sti2.at/var/scm/see/see-invoker.git" 
 	in your workspace folder, replace <username> with your account name on demo.sti2.at
