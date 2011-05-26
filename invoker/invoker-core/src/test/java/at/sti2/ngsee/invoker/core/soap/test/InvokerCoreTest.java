@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.junit.Test;
+//import org.junit.Test;
 
 import at.sti2.ngsee.invoker.core.InvokerCore;
 
@@ -18,7 +18,7 @@ import at.sti2.ngsee.invoker.core.InvokerCore;
 public class InvokerCoreTest extends AbstractSoapTest {
 	private static int LOOPS = 10;
 	
-	@Test
+//	@Test
 	public void testWeatherService() throws Exception {
 		List<QName> emptyHeaders = new ArrayList<QName>();
 		String serviceID = "http://www.sti2.at/sesa/service/WeatherService";

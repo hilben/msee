@@ -42,8 +42,9 @@ public class QueryHelper {
         namespaces.append("PREFIX foaf:<http://xmlns.com/foaf/0.1/>\n");
         namespaces.append("PREFIX opo:<http://online-presence.net/opo/ns#>\n");
         namespaces.append("PREFIX geo:<http://www.w3.org/2003/01/geo/wgs84_pos#>\n");
-        namespaces.append("PREFIX dc:<http://purl.org/dc/elements/1.1/>\n");
+        namespaces.append("PREFIX dc:<" + DC_NS + ">\n");
         namespaces.append("PREFIX dct:<http://purl.org/dc/terms/>\n");
+        namespaces.append("PREFIX wsmf:<" + WSMF_NS + ">\n");
 		return namespaces.toString();
 	}
 }

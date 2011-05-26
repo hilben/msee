@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="SESA Invoker" resourceRoot="" soapui-version="3.6.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://localhost:9090/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://see.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="SESA Invoker" resourceRoot="" soapui-version="3.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://localhost:9090/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://see.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://see.sti2.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="checkAvailability" type="tns:checkAvailability"/>
@@ -102,10 +102,12 @@
          <serviceID>http://www.sti2.at/sesa/service/WeatherService</serviceID>
          <operation>GetWeather</operation>
          <inputData>
-		&lt;GetWeather xmlns='http://www.webserviceX.NET'>
-			&lt;CountryName>Austria&lt;/CountryName>
-			&lt;CityName>Innsbruck&lt;/CityName>
-		&lt;/GetWeather>
+		<![CDATA[
+			<GetWeather xmlns='http://www.webserviceX.NET'>
+				<CountryName>Austria</CountryName>
+				<CityName>Innsbruck</CityName>
+			</GetWeather>
+		]]]]>><![CDATA[	
 	 </inputData>
       </see:invoke>
    </soapenv:Body>
