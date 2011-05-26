@@ -3,7 +3,7 @@ package at.sti2.ngsee.invoker.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -14,6 +14,13 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
@@ -45,6 +52,20 @@ public class InvokerCore {
 		return message;
 	}
 	
+	private static String getBodyContent(SOAPMessage _message) throws TransformerException, SOAPException {
+		Document doc = _message.getSOAPBody().extractContentAsDocument();
+		
+		Source source = new DOMSource(doc);
+		StringWriter stringWriter = new StringWriter();
+		Result result = new StreamResult(stringWriter);
+		TransformerFactory factory = TransformerFactory.newInstance();
+		Transformer transformer = factory.newTransformer();
+		transformer.transform(source, result);
+		
+		return stringWriter.getBuffer().toString();
+	}
+	
+	@SuppressWarnings("unused")
 	private static String getSOAPMessageAsString(SOAPMessage _message) throws SOAPException, IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		_message.writeTo(os);
@@ -52,6 +73,7 @@ public class InvokerCore {
 	}
 	
 	/**
+	 * TODO: Use lifting and lowering...
 	 * 
 	 * @param _serviceID
 	 * @param _operationName
@@ -65,13 +87,12 @@ public class InvokerCore {
 		 */
 		InvokerMSM msmObject = TriplestoreHandler.getInvokerMSM(_serviceID, _operationName);
 		
-//		IGroundingEngine groundingEngine = GroundingFactory.createGroundingEngine(msmObject.getLoweringSchema(), msmObject.getLifingSchema());
+		IGroundingEngine groundingEngine = GroundingFactory.createGroundingEngine(msmObject.getLoweringSchema(), msmObject.getLifingSchema());
 		
 		/*
 		 * Starting the lowering process
 		 */
-//		String loweredInputData = groundingEngine.lower(_inputData);
-		String loweredInputData = _inputData;
+		String loweredInputData = groundingEngine.lower(_inputData);
 		
 		/*
 		 * Starting the invocation process
@@ -83,15 +104,7 @@ public class InvokerCore {
 		/*
 		 * Return the lifted data
 		 */
-//		return groundingEngine.lift(getSOAPMessageAsString(outputData));
-		return getSOAPMessageAsString(outputData);
-	}
-	
-	public static void main(String[] args) throws Exception {
-		String retMessage = InvokerCore.invoke("http://www.sti2.at/sesa/service/WeatherService",
-				new ArrayList<QName>(), "GetWeather",
-				"<GetWeather xmlns='http://www.webserviceX.NET'><CountryName>Austria</CountryName><CityName>Innsbruck</CityName></GetWeather>");
-		System.out.println(retMessage);
+		return groundingEngine.lift(getBodyContent(outputData));
 	}
 
 }

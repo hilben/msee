@@ -15,7 +15,7 @@ import org.junit.Before;
 
 import at.sti2.ngsee.invoker.core.soap.SoapJaxWSInvoker;
 
-public class SoapJaxWSInvokerTest extends AbstractSoapTest{
+public class SoapJaxWSInvokerTest extends AbstractSoapTest {
 	
 	private SoapJaxWSInvoker invoker;
 
