@@ -6,8 +6,6 @@ package at.sti2.ngsee.invoker.api.core;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 
-//import javax.xml.namespace.QName;
-
 /**
  * <b>Purpose:</b>
  * <br>
@@ -25,20 +23,10 @@ import javax.xml.soap.SOAPMessage;
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
-public interface ISOAPInvoker {
-	
-	/**
-	 * 
-	 * @param wsdlURL The Endpoint of the 
-	 * @param header The SOAP Header forwareded from the client.
-	 * @param soapAction SOAPAction field specified in the HTTP Header.
-	 * @param inputData The input data, understandable by the services.
-	 * @return
-	 */
-//	public String invoke(URL wsdlURL, List<QName> header, String _soapAction, String inputData) throws Exception;
-	
+public interface ISOAPInvoker {	
 
 	/**
+	 * 
 	 * @param serviceName The qualified service name.
 	 * @param portName The qualified port name.
 	 * @param endpointURL Endpoint URL of the web service

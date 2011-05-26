@@ -25,7 +25,7 @@ public class EasyWsdlTest {
 	public void tearDown() throws Exception {
 	}
 	
-//	@Test
+	@Test
 	public void testWSDL() throws Exception{
 		
 		// Read a SAWSDL description

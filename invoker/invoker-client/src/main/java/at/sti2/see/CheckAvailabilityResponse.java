@@ -8,16 +8,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getVersionResponse complex type.
+ * <p>Java class for checkAvailabilityResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getVersionResponse">
+ * &lt;complexType name="checkAvailabilityResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="return" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="return" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,35 +27,27 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getVersionResponse", propOrder = {
+@XmlType(name = "checkAvailabilityResponse", propOrder = {
     "_return"
 })
-public class GetVersionResponse {
+public class CheckAvailabilityResponse {
 
     @XmlElement(name = "return")
-    protected String _return;
+    protected boolean _return;
 
     /**
      * Gets the value of the return property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getReturn() {
+    public boolean isReturn() {
         return _return;
     }
 
     /**
      * Sets the value of the return property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setReturn(String value) {
+    public void setReturn(boolean value) {
         this._return = value;
     }
 

@@ -1,7 +1,7 @@
 /**
- * EventStreamListenerWebService.java - at.sti2.wsmf.webservice
+ * EventStreamListenerWebService.java - at.sti2.ngsee.monitoring.webservice
  */
-package at.sti2.wsmf.webservice;
+package at.sti2.ngsee.monitoring.webservice;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

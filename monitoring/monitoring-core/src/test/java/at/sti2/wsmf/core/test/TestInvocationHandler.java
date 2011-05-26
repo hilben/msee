@@ -24,7 +24,6 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
  * @author Alex Oberhauser
- *
  */
 public class TestInvocationHandler {
 	
@@ -45,7 +44,7 @@ public class TestInvocationHandler {
 		operationElement.addChildElement("serviceID").setTextContent("http://www.sti2.at/sesa/service/WeatherService");
 		operationElement.addChildElement("operation").setTextContent("GetWeather");	
 		operationElement.addChildElement("inputData").setTextContent("<GetWeather xmlns='http://www.webserviceX.NET'><CountryName>Austria</CountryName><CityName>Innsbruck</CityName></GetWeather>");
-		
+
 		message.saveChanges();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);

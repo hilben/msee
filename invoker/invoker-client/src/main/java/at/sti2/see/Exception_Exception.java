@@ -14,8 +14,9 @@ import javax.xml.ws.WebFault;
 public class Exception_Exception
     extends java.lang.Exception
 {
-
-    /**
+	private static final long serialVersionUID = -1228014461959109269L;
+	
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */
