@@ -41,7 +41,9 @@ public interface ISOAPInvoker {
 	/**
 	 * @param serviceName The qualified service name.
 	 * @param portName The qualified port name.
-	 * @param endpointURL
+	 * @param endpointURL Endpoint URL of the web service
+	 * @param soapActionURI HTTP Header SOAPAction field.
+	 * @param soapMessage The SOAP message to send to the webservice
 	 * @return
 	 */
 	public SOAPMessage invoke(QName serviceName,

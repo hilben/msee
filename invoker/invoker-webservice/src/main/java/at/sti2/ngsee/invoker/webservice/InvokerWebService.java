@@ -40,7 +40,7 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 
 @WebService(targetNamespace="http://see.sti2.at/")
 @WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Invoker Component.")
+		@WSDLDocumentation("SESA Invoker Component")
 	)
 @InInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
 @InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})

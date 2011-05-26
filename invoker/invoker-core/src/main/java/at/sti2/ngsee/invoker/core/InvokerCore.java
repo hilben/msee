@@ -3,6 +3,7 @@ package at.sti2.ngsee.invoker.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -64,12 +65,13 @@ public class InvokerCore {
 		 */
 		InvokerMSM msmObject = TriplestoreHandler.getInvokerMSM(_serviceID, _operationName);
 		
-		IGroundingEngine groundingEngine = GroundingFactory.createGroundingEngine(msmObject.getLoweringSchema(), msmObject.getLifingSchema());
+//		IGroundingEngine groundingEngine = GroundingFactory.createGroundingEngine(msmObject.getLoweringSchema(), msmObject.getLifingSchema());
 		
 		/*
 		 * Starting the lowering process
 		 */
-		String loweredInputData = groundingEngine.lower(_inputData);
+//		String loweredInputData = groundingEngine.lower(_inputData);
+		String loweredInputData = _inputData;
 		
 		/*
 		 * Starting the invocation process
@@ -81,7 +83,15 @@ public class InvokerCore {
 		/*
 		 * Return the lifted data
 		 */
-		return groundingEngine.lift(getSOAPMessageAsString(outputData));
+//		return groundingEngine.lift(getSOAPMessageAsString(outputData));
+		return getSOAPMessageAsString(outputData);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		String retMessage = InvokerCore.invoke("http://www.sti2.at/sesa/service/WeatherService",
+				new ArrayList<QName>(), "GetWeather",
+				"<GetWeather xmlns='http://www.webserviceX.NET'><CountryName>Austria</CountryName><CityName>Innsbruck</CityName></GetWeather>");
+		System.out.println(retMessage);
 	}
 
 }

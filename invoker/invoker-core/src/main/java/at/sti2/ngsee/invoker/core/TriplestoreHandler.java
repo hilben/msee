@@ -40,29 +40,76 @@ public class TriplestoreHandler {
 		for ( int count = 0; count < (qnameParts.length-1); count++ )
 			result[0] += qnameParts[count] + "/";
 		result[1] = qnameParts[qnameParts.length-1];
-		if ( !_value.endsWith("/") )
-			result[0] = (String) result[0].subSequence(0, result[0].length()-1);
+//		if ( !_value.endsWith("/") )
+//			result[0] = (String) result[0].subSequence(0, result[0].length()-1);
 		return new QName(result[0], result[1]);
+	}
+	
+	public static String generateQuery(String _serviceID, String _operationName) {
+		StringBuffer query = new StringBuffer();
+		query.append("PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
+		query.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+		query.append("PREFIX wsoap: <http://www.w3.org/ns/wsdl/soap#> \n");
+		query.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+		query.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		
+		query.append("SELECT ?servicename ?portname ?namespace ?lifting ?lowering ?wsdl ?soapaction ?endpoint WHERE { \n");
+		
+		query.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdl . \n");
+		query.append("<" + _serviceID + "> rdfs:label ?servicename . \n");
+		query.append("<" + _serviceID + "> rdfs:seeAlso ?descriptionBlock . \n");
+		
+		query.append("?descriptionBlock wsdl:namespace ?namespace . \n");
+		query.append("?descriptionBlock wsdl:binding ?bindingBlock . \n");
+		query.append("?descriptionBlock wsdl:service ?serviceBlock . \n");
+		
+		query.append("?bindingBlock rdfs:label ?portname . \n");
+		query.append("?bindingBlock wsdl:bindingOperation ?bindingOperationBlock . \n");
+		query.append("?bindingOperationBlock wsoap:action ?soapaction . \n");
+		
+		query.append("?serviceBlock wsdl:endpoint ?endpointBlock . \n");
+		query.append("?endpointBlock wsdl:address ?endpoint . \n");
+		
+//		query.append(" sawsdl:loweringSchemaMapping ?lowering. \n");
+//		
+//		query.append(" sawsdl:liftingSchemaMapping ?lifting . \n");
+//		
+		
+		query.append("}");
+		
+		return query.toString();
 	}
 	
 	public static InvokerMSM getInvokerMSM(String _serviceID, String _operationName) throws IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
 		Config cfg = new Config();
 		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
-		TupleQueryResult result = reposHandler.selectSPARQL("SELECT ?serviceName ?lifting ?lowering ?wsdl ?operation ?portname ?soapaction ?endpoint WHERE { <<TODO>> }");
+		String query = generateQuery(_serviceID, _operationName);
+		TupleQueryResult result = reposHandler.selectSPARQL(query);
 		
 		InvokerMSM msmInstance = new InvokerMSM();
 		if ( result.hasNext() ) {
 			BindingSet entry = result.next();
-			msmInstance.setLiftingSchema(new URL(entry.getBinding("lifting").getValue().stringValue()));
-			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
+			
+			String namespace = entry.getBinding("namespace").getValue().stringValue();
+			
+//			msmInstance.setLiftingSchema(new URL(entry.getBinding("lifting").getValue().stringValue()));
+//			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
 			msmInstance.setWSDL(new URL(entry.getBinding("wsdl").getValue().stringValue()));
-			msmInstance.setOperationQName(getStringToQName(entry.getBinding("operation").getValue().stringValue()));
-			msmInstance.setServiceQName(getStringToQName(entry.getBinding("endpoint").getValue().stringValue()));
-			msmInstance.setPortQName(getStringToQName(entry.getBinding("portname").getValue().stringValue()));
+			msmInstance.setOperationQName(new QName(namespace, _operationName));
+			msmInstance.setServiceQName(new QName(namespace, entry.getBinding("servicename").getValue().stringValue()));
+			msmInstance.setPortQName(new QName(namespace, entry.getBinding("portname").getValue().stringValue()));
 			msmInstance.setSOAPAction(entry.getBinding("soapaction").getValue().stringValue());
 			msmInstance.setEndpointURL(new URL(entry.getBinding("endpoint").getValue().stringValue()));
+			
+			System.out.println("WSDL           = " + msmInstance.getWSDL());
+			System.out.println("PortQName      = " + msmInstance.getPortQName());
+			System.out.println("SOAPAction     = " + msmInstance.getSOAPAction());
+			System.out.println("ServiceQName   = " + msmInstance.getServiceQName());
+			System.out.println("EndpointURL    = " + msmInstance.getEndpointURL());
+			System.out.println("OperationQName = " + msmInstance.getOperationQName());
 		}
 		
 		return msmInstance;
 	}
+	
 }

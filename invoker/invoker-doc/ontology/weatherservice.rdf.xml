@@ -36,6 +36,7 @@
                 <wsdl:interface rdf:resource="#wsdl.interface(GlobalWeatherSoap)" />
                 <wsdl:binding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
                 <wsdl:service rdf:resource="#wsdl.service(GlobalWeather)" />
+                <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
         </rdf:Description>
 
         <!-- wsdl porttype/interface -->
@@ -108,7 +109,7 @@
 
         <rdf:Description rdf:about="http://www.sti2.at/sesa/messagepart/Output1Part1"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&msm;MessagePart"/>
-                <sawsdl:loweringSchemaMapping rdf:resource="weather-lifting.xslt"/>
+                <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
         </rdf:Description>
 
         <!-- GetWeatherByCountry Operation-->
