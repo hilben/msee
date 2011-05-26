@@ -119,20 +119,20 @@ public class RepositoryHandler {
 		return out.toString();
 	}
 
-	public synchronized String describeEntity(String _droneID, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
+	public synchronized String describeEntity(String _subjectID, RDFFormat _rdfFormat) throws RepositoryException, MalformedQueryException, QueryEvaluationException, RDFHandlerException, UnsupportedRDFormatException, IOException {
 		if ( this.connection == null )
 			this.init();
-		String query = "DESCRIBE <" + _droneID + ">";
+		String query = "DESCRIBE <" + _subjectID + ">";
 		GraphQuery graphQuery = this.connection.prepareGraphQuery(QueryLanguage.SPARQL, query);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		QueryResultIO.write(graphQuery.evaluate(), _rdfFormat, out);
 		return out.toString();
 	}
 	
-	public synchronized String describeEntityProperty(String _droneID, RDFFormat _rdfFormat, String _property) throws RDFHandlerException, UnsupportedRDFormatException, QueryEvaluationException, IOException, RepositoryException, MalformedQueryException {
+	public synchronized String describeEntityProperty(String _subjectID, RDFFormat _rdfFormat, String _property) throws RDFHandlerException, UnsupportedRDFormatException, QueryEvaluationException, IOException, RepositoryException, MalformedQueryException {
 		if ( this.connection == null )
 			this.init();
-		String query = QueryHelper.getNamespacePrefix() + " DESCRIBE ?x WHERE { <" + _droneID + "> " + _property + " ?x . }";
+		String query = QueryHelper.getNamespacePrefix() + " DESCRIBE ?x WHERE { <" + _subjectID + "> " + _property + " ?x . }";
 		GraphQuery graphQuery = this.connection.prepareGraphQuery(QueryLanguage.SPARQL, query);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		QueryResultIO.write(graphQuery.evaluate(), _rdfFormat, out);

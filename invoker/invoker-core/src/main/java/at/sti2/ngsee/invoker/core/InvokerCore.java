@@ -73,8 +73,6 @@ public class InvokerCore {
 	}
 	
 	/**
-	 * TODO: Use lifting and lowering...
-	 * 
 	 * @param _serviceID
 	 * @param _operationName
 	 * @param _inputData
