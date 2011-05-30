@@ -3,7 +3,7 @@
 <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
 ]>
 <rdf:RDF
-        xml:base="http://sesa.sti2.at/2011/msm/weatherService"
+        xml:base="http://www.webserviceX.NET"
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
         xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -20,7 +20,7 @@
 
 
         <!-- WEATHER SERVICE -->
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/service/WeatherService">
+        <rdf:Description rdf:about="#GlobalWeather">
                 <rdf:type rdf:resource="&msm;Service" />
                 <rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
                 <rdfs:seeAlso rdf:resource="#wsdl.description()"/>
@@ -85,40 +85,40 @@
         <!-- WSDL END -->
 
         <!-- GetWeather Operation-->
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetWeather"> <!--  wsdl:binding/wsdl:operation -->
+        <rdf:Description rdf:about="#GetWeather"> <!--  wsdl:binding/wsdl:operation -->
                 <rdf:type rdf:resource="&msm;Operation"/>
                 <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-                <msm:hasInput rdf:resource="http://www.sti2.at/messagecontent/Input1" />
-                <msm:hasOutput rdf:resource="http://www.sti2.at/messagecontent/Output1" />
+                <msm:hasInput rdf:resource="#Input1" />
+                <msm:hasOutput rdf:resource="#Output1" />
         </rdf:Description>
 
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Input1"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#Input1"> <!-- wsdl:message -->
                 <rdf:type rdf:resource="&msm;MessageContent"/>
-                <msm:hasPart rdf:resource="http://www.sti2.at/sesa/messagepart/Input1Part1"/>
+                <msm:hasPart rdf:resource="#Input1Part1"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/messagepart/Input1Part1"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#Input1Part1"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&msm;MessagePart"/>
                 <sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Output1"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#Output1"> <!-- wsdl:message -->
                 <rdf:type rdf:resource="&msm;MessageContent"/>
-                <msm:hasPart rdf:resource="http://www.sti2.at/sesa/messagepart/Output1Part1"/>
+                <msm:hasPart rdf:resource="#Output1Part1"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/messagepart/Output1Part1"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#Output1Part1"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&msm;MessagePart"/>
                 <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
         </rdf:Description>
 
         <!-- GetWeatherByCountry Operation-->
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/operation/GetCitiesByCountry">
+        <rdf:Description rdf:about="#GetCitiesByCountry">
                 <rdf:type rdf:resource="&msm;Operation"/>
-                <msm:hasInput rdf:resource="http://www.sti2.at/sesa/messagecontent/Input2" />
+                <msm:hasInput rdf:resource="#Input2" />
         </rdf:Description>
 
-        <rdf:Description rdf:about="http://www.sti2.at/sesa/messagecontent/Input2">
+        <rdf:Description rdf:about="#Input2">
                 <rdf:type rdf:resource="&msm;MessageContent"/>
         </rdf:Description>
 
