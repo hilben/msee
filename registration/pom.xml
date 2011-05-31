@@ -3,13 +3,13 @@
 
 	<groupId>at.sti2.ngsee</groupId>
 	<artifactId>registration-project</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<parent>
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>sesa-project</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -51,7 +51,7 @@
 			<dependency>
 				<groupId>at.sti2.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 
 			<!-- libraries -->

@@ -3,13 +3,13 @@
 
 	<groupId>at.sti2.ngsee</groupId>
 	<artifactId>util-project</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>sesa-project</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

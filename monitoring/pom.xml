@@ -3,7 +3,7 @@
 
 	<groupId>at.sti2.ngsee.monitoring</groupId>
 	<artifactId>monitoring-project</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Web Service Monitoring Framework</name>
 	<url>http://www.sti-innsbruck.at</url>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>sesa-project</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -47,7 +47,7 @@
 				<groupId>at.sti2.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
 				<scope>compile</scope>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 
 			<!-- libraries -->
