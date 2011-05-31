@@ -35,3 +35,24 @@ DEVELOPMENT
 2)	Eclipse as IDE:
 		a) Install m2eclipse plugin
 		b) Import folders as maven projects (File->Import->Maven->Existing Maven Projects)
+
+RELEASE
+=======
+* Prerequisite:
+		- "~/.m2/settings.xml" needs 
+		  
+		  <servers>
+		   <server>
+		    <id>sti2-archiva-external</id>
+		    <username>{your_username}</username>
+		    <password>{your_password}</password>
+		   </server>
+		  </servers>
+		  
+		  for distribution management. (maven deploy)
+ 
+1) Commit all changes
+2) run "mvn clean install" and check that all unit tests work
+3) "mvn release:prepare"
+4) "mvn release:perform"
+5) check added comits and "push" them to remote repo

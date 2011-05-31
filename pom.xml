@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.sti2.ngsee</groupId>
@@ -45,16 +46,21 @@
 	<!-- DISTRIBUTION MANAGEMENT -->
 	<distributionManagement>
 		<snapshotRepository>
-			<id>sti-snapshots</id>
+			<id>sti2-archiva-snapshots</id>
 			<name>STI snapshot distribution</name>
 			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>sti2-archiva-external</id>
+			<name>STI release distribution</name>
+			<url>http://maven.sti2.at/archiva/repository/external</url>
+		</repository>
 	</distributionManagement>
 
 
 	<scm>
 		<connection>scm:git:ssh://sesa.sti2.at:/var/scm/see/sesa.git</connection>
-		<url>scm:git:ssh://sesa.sti2.at:/var/scm/see/sesa.git</url>
+		<!-- <url>scm:git:ssh://sesa.sti2.at:/var/scm/see/sesa.git</url> -->
 		<!-- <developerConnection>scm:git:git@github.com:tobrien/git-demo.git</developerConnection> -->
 	</scm>
 
@@ -122,7 +128,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.0-beta-1</version>
+					<version>1.0</version>
 					<configuration>
 						<rules>
 							<requireMavenVersion>
@@ -131,7 +137,8 @@
 							<requireJavaVersion>
 								<version>[1.6,)</version>
 							</requireJavaVersion>
-							<versionRule implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
+							<versionRule
+								implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
 						</rules>
 					</configuration>
 					<executions>
@@ -142,13 +149,6 @@
 							</goals>
 						</execution>
 					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.eclipse.jetty.toolchain</groupId>
-							<artifactId>jetty-enforcer-rules</artifactId>
-							<version>1.0</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 
 				<plugin>
@@ -177,17 +177,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.1.1</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.7</version>
-					<configuration>
-						<minmemory>128m</minmemory>
-						<maxmemory>512</maxmemory>
-					</configuration>
+					<version>2.8</version>
 				</plugin>
 
 				<plugin>
@@ -203,13 +199,22 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.6</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>2.1</version>
+					<configuration>
+						<pushChanges>false</pushChanges>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>1.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
