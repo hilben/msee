@@ -16,7 +16,7 @@ public class InvokerClient {
 		InvokerWebServiceService factory = new InvokerWebServiceService();
 		InvokerWebService service = factory.getInvokerWebServicePort();
 		
-		String serviceID = "http://www.sti2.at/sesa/service/WeatherService";
+		String serviceID = "http://www.webserviceX.NET#GlobalWeather";
 		String operationName = "GetWeather";
 		
 		StringBuffer inputData = new StringBuffer();
