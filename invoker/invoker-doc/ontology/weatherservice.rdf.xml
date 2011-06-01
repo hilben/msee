@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
-<!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+        <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+        <!ENTITY wsdl "http://www.w3.org/ns/wsdl-rdf#" >
 ]>
 <rdf:RDF
         xml:base="http://www.webserviceX.NET"
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
         xmlns:owl="http://www.w3.org/2002/07/owl#"
-        xmlns:wsdl="http://www.w3.org/ns/wsdl-rdf#"
+        xmlns:wsdl="&wsdl;"
         xmlns:wsoap="http://www.w3.org/ns/wsdl/soap#"
         xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
@@ -26,6 +27,7 @@
                 <rdfs:seeAlso rdf:resource="#wsdl.description()"/>
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
                 <dc:creator>Michael Rogger</dc:creator>
+                <dc:creator>Alex Oberhauser</dc:creator>
         </rdf:Description>
 
         <!-- WSDL BEGIN -->
@@ -48,8 +50,10 @@
 
         <!-- wsdl porttype/interface operation -->
         <rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#InterfaceOperation" />
-                <rdfs:label>GetWeather</rdfs:label>
+                <rdf:type rdf:resource="&wsdl;#InterfaceOperation" />
+                <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
+                <msm:hasInput rdf:resource="#Input1" />
+                <msm:hasOutput rdf:resource="#Output1" />
         </rdf:Description>
 
         <!-- wsdl binding (soap) -->
@@ -64,20 +68,20 @@
 
         <!-- wsdl binding operation -->
         <rdf:Description rdf:about="#wsdl.bindingOperation(GlobalWeatherSoap/GetWeather)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#BindingOperation"/>
+                <rdf:type rdf:resource="&wsdl;BindingOperation"/>
                 <wsoap:action rdf:resource="http://www.webserviceX.NET/GetWeather"/>
         </rdf:Description>
 
         <!-- wsdl service -->
         <rdf:Description rdf:about="#wsdl.service(GlobalWeather)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Service" />
+                <rdf:type rdf:resource="&wsdl;Service" />
                 <rdfs:label>GlobalWeather</rdfs:label>
                 <wsdl:endpoint rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
         </rdf:Description>
 
         <!-- wsdl port/endpoint (soap) -->
         <rdf:Description rdf:about="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Endpoint" />
+                <rdf:type rdf:resource="&wsdl;Endpoint" />
                 <rdfs:label>GlobalWeatherSoap</rdfs:label>
                 <wsdl:address rdf:resource="http://www.webservicex.com/globalweather.asmx" />
                 <wsdl:usesBinding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
@@ -85,13 +89,6 @@
         <!-- WSDL END -->
 
         <!-- GetWeather Operation-->
-        <rdf:Description rdf:about="#GetWeather"> <!--  wsdl:binding/wsdl:operation -->
-                <rdf:type rdf:resource="&msm;Operation"/>
-                <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-                <msm:hasInput rdf:resource="#Input1" />
-                <msm:hasOutput rdf:resource="#Output1" />
-        </rdf:Description>
-
         <rdf:Description rdf:about="#Input1"> <!-- wsdl:message -->
                 <rdf:type rdf:resource="&msm;MessageContent"/>
                 <msm:hasPart rdf:resource="#Input1Part1"/>
