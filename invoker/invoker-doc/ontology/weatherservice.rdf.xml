@@ -34,7 +34,7 @@
 
         <!-- wsdl description -->
         <rdf:Description rdf:about="#wsdl.description()">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Description" />
+                <rdf:type rdf:resource="&wsdl;Description" />
                 <wsdl:interface rdf:resource="#wsdl.interface(GlobalWeatherSoap)" />
                 <wsdl:binding rdf:resource="#wsdl.binding(GlobalWeather/GlobalWeatherSoap)" />
                 <wsdl:service rdf:resource="#wsdl.service(GlobalWeather)" />
@@ -43,7 +43,7 @@
 
         <!-- wsdl porttype/interface -->
         <rdf:Description rdf:about="#wsdl.interface(GlobalWeatherSoap)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Interface" />
+                <rdf:type rdf:resource="&wsdl;Interface" />
                 <rdfs:label>GlobalWeatherSoap</rdfs:label>
                 <wsdl:interfaceOperation rdf:resource="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)" />
         </rdf:Description>
@@ -58,7 +58,7 @@
 
         <!-- wsdl binding (soap) -->
         <rdf:Description rdf:about="#wsdl.binding(GlobalWeather/GlobalWeatherSoap)">
-                <rdf:type rdf:resource="http://www.w3.org/ns/wsdl-rdf#Binding" />
+                <rdf:type rdf:resource="&wsdl;Binding" />
                 <rdf:type rdf:resource="http://www.w3.org/ns/wsdl/soap" />
                 <rdfs:label>GlobalWeatherSoap</rdfs:label>
                 <wsdl:bindingOperation rdf:resource="#wsdl.bindingOperation(GlobalWeatherSoap/GetWeather)" />

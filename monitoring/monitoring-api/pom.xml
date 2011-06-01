@@ -1,24 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+        <modelVersion>4.0.0</modelVersion>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+        <properties>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
 
-	<groupId>at.sti2.ngsee.monitoring</groupId>
-	<artifactId>monitoring-api</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>Web Service Monitoring Framework - API</name>
+        <groupId>at.sti2.ngsee.monitoring</groupId>
+        <artifactId>monitoring-api</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+        <packaging>jar</packaging>
+        <name>Web Service Monitoring Framework - API</name>
 
-	<parent>
-		<groupId>at.sti2.ngsee.monitoring</groupId>
-		<artifactId>monitoring-project</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-
-	<dependencies>
-	</dependencies>
+        <parent>
+                <groupId>at.sti2.ngsee.monitoring</groupId>
+                <artifactId>monitoring-project</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+                <relativePath>../pom.xml</relativePath>
+        </parent>
 
 </project>

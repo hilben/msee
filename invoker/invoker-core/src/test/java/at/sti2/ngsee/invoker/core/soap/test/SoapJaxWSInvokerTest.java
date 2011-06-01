@@ -1,17 +1,22 @@
 package at.sti2.ngsee.invoker.core.soap.test;
 
-
 import java.io.StringReader;
+import java.util.UUID;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.transform.stream.StreamSource;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import at.sti2.ngsee.invoker.core.soap.SoapJaxWSInvoker;
 
@@ -36,6 +41,36 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest {
 		soapPart.setContent(preppedMsgSrc);
 		message.saveChanges();
 		return message;
+	}
+	
+	private SOAPMessage _createDummyService1PingMessage(String _serviceID) throws Exception {
+		SOAPMessage inputMessage = MessageFactory.newInstance().createMessage();
+		SOAPBody body = inputMessage.getSOAPBody();
+		
+		SOAPBodyElement operationElement = body.addBodyElement(new QName("http://see.sti2.at/", "ping", "ex"));
+		operationElement.addChildElement("serviceID").addTextNode(_serviceID);
+		
+		inputMessage.saveChanges();
+		return inputMessage;
+	}
+	
+	@Test
+	public void testDummyService1() throws Exception {
+		String namespace = "http://see.sti2.at/";
+		QName serviceName = new QName(namespace, "PingWebServiceService");
+		QName portName = new QName(namespace, "PingWebService");
+		String endpointURL = "http://sesa.sti2.at:8080/invoker-dummy-webservice1/services/ping";
+		
+		for ( int count=0; count < 2; count++ ) {
+			/*
+			 * Generating a random, unique identifier to prevent success through caching.
+			 */
+			String serviceID = UUID.randomUUID().toString();
+			SOAPMessage responseMessage = this.invoker.invoke(serviceName, portName, endpointURL, "", this._createDummyService1PingMessage(serviceID));
+			SOAPBodyElement operationNode = (SOAPBodyElement) responseMessage.getSOAPBody().getChildElements().next();
+			SOAPBodyElement returnNode = (SOAPBodyElement) operationNode.getChildElements().next();
+			Assert.assertEquals("Hello " + serviceID, returnNode.getValue());;
+		}
 	}
 	
 //	@Test

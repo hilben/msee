@@ -23,12 +23,10 @@
 		<dependency>
 			<groupId>at.sti2.ngsee.monitoring</groupId>
 			<artifactId>monitoring-api</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>at.sti2.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
