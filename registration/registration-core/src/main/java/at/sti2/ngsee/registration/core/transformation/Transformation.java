@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
@@ -25,9 +26,7 @@ import at.sti2.util.triplestore.RepositoryHandler;
 public class Transformation {
 	
 	protected static Logger logger = Logger.getLogger(Transformation.class);
-	private static final String SESA_NS = "http://www.sti2.at/sesa/service/";
-	private static final String SESA_INSTANCES_NS = "http://www.sti2.at/instances";
-	private static String serviceName = null;
+	private static String SERVICE_NS;
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, URISyntaxException, XmlException, RepositoryException {
 //		transformWSDL("file:///home/koni/globalweather.asmx");
@@ -38,6 +37,8 @@ public class Transformation {
 
 	public static void transformWSDL(String _wsdlURI) throws MalformedURLException, IOException, URISyntaxException, XmlException, RepositoryException {
 		
+		HashMap<String, Service> endpointsMap = new HashMap<String, Service>();
+		
 		Config cfg = new Config();
 		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
 		
@@ -47,39 +48,40 @@ public class Transformation {
 		
 		
 		//Writing general information about services in triples
-		//TODO: DO NOT OVERWRITE THE SERVICE NAME 
 		for( Service service : desc.getServices() ) {
-			serviceName = service.getQName().getLocalPart();
 			
-			logger.info("SERVICE INFO : Triple + Context: " + SESA_NS + serviceName  + " , " + 
-					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMURI("Service") + " + " +  _wsdlURI);
-			logger.info("SERVICE INFO : Triple + Context: " + SESA_NS + serviceName  + " , " + 
-					QueryHelper.getRDFSURI("isDefinedBy") + " , " + _wsdlURI);
-			logger.info("SERVICE INFO : Triple + Context: " + SESA_NS + serviceName  + " , " + 
-					QueryHelper.getRDFSURI("seeAlso") + " , " + getDescriptionNode()  + " , " + _wsdlURI);
-			logger.info("SERVICE INFO : Triple + Context: " + SESA_NS + serviceName  + " , " + 
-					QueryHelper.getRDFSURI("label") + " , " + serviceName  + " , " + _wsdlURI);
-			logger.info("SERVICE INFO : Triple + Context: " + SESA_NS + serviceName  + " , " + 
-					QueryHelper.getDCURI("creator") + " , " + "STI Innsbruck"  + " , " + _wsdlURI);
+			String serviceName = service.getQName().getLocalPart();
+			SERVICE_NS = service.getQName().getNamespaceURI() + "#";
 			
-			logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
-					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Service")  + " , " + _wsdlURI);
-			logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
-					QueryHelper.getRDFSURI("label") + " , " + serviceName  + " , " + _wsdlURI);
-			 
-			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
-					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Description")  + " , " + _wsdlURI);
-			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
-					QueryHelper.getWSDLURI("service") + " , " + getServiceNode(serviceName)  + " , " + _wsdlURI);
-			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
-					QueryHelper.getWSDLURI("namespace") + " , " + service.getQName().getNamespaceURI()  + " , " + _wsdlURI);
+//			logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
+//					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMURI("Service"));
+//			logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
+//					QueryHelper.getRDFSURI("isDefinedBy") + " , " + _wsdlURI);
+//			logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
+//					QueryHelper.getRDFSURI("seeAlso") + " , " + getDescriptionNode());
+//			logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
+//					QueryHelper.getRDFSURI("label") + " , " + serviceName);
+//			logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
+//					QueryHelper.getDCURI("creator") + " , " + "STI Innsbruck");
+//			
+//			logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
+//					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Service"));
+//			logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
+//					QueryHelper.getRDFSURI("label") + " , " + serviceName);
+//			 
+//			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
+//					QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Description"));
+//			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
+//					QueryHelper.getWSDLURI("service") + " , " + getServiceNode(serviceName));
+//			logger.info("DESCRIPTION SERVICE INFO: Triple + Context: " + getDescriptionNode()  + " , " + 
+//					QueryHelper.getWSDLURI("namespace") + " , " + service.getQName().getNamespaceURI());
 			
 			//Writing persistent
-			reposHandler.addResourceTriple(SESA_NS + serviceName , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMURI("Service"), _wsdlURI);
-			reposHandler.addResourceTriple(SESA_NS + serviceName , QueryHelper.getRDFSURI("isDefinedBy"),  _wsdlURI, _wsdlURI);
-			reposHandler.addResourceTriple(SESA_NS + serviceName , QueryHelper.getRDFSURI("seeAlso"),  getDescriptionNode(), _wsdlURI);
-			reposHandler.addLiteralTriple(SESA_NS + serviceName , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
-			reposHandler.addLiteralTriple(SESA_NS + serviceName , QueryHelper.getDCURI("creator"),  "STI Innsbruck", _wsdlURI);
+			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMURI("Service"), _wsdlURI);
+			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("isDefinedBy"),  _wsdlURI, _wsdlURI);
+			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("seeAlso"),  getDescriptionNode(), _wsdlURI);
+			reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
+			reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getDCURI("creator"),  "STI Innsbruck", _wsdlURI);
 
 			reposHandler.addResourceTriple(getServiceNode(serviceName) , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Service"), _wsdlURI);
 			reposHandler.addLiteralTriple(getServiceNode(serviceName) , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
@@ -88,35 +90,25 @@ public class Transformation {
 			reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getWSDLURI("service"),  getServiceNode(serviceName), _wsdlURI);
 			reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getWSDLURI("namespace"),  service.getQName().getNamespaceURI(), _wsdlURI);
 			
-			
-
-			//Writing modelReference triples
-//			for ( URI model : service.getModelReference() ) {
-//				reposHandler.addResourceTriple(SESA_NS + service.getQName().getLocalPart() , QueryHelper.getRDFURI("type"), QueryHelper.getMSMURI("Service"), _wsdlUrl);
-				
-//				logger.info("MODEL REFERENCE : Triple + Context: " + SESA_NS + service.getQName().getLocalPart()  
-//						+ " , " + QueryHelper.getMSMURI("type") + " , " + QueryHelper.getMSMURI("Service") + " + " +  _wsdlURI);
-//			}
-			
 			//Writing end-points triples
 			for(Endpoint endpoint : service.getEndpoints()) {
 				String endpointName = endpoint.getName();
 				String endpointAddress = endpoint.getAddress();
-				
-				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
-						+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Endpoint") + " + " +  _wsdlURI);
-				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
-						+ QueryHelper.getRDFSURI("label") + " , " + endpointName + " + " +  _wsdlURI);
-				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
-						+ QueryHelper.getWSDLURI("address") + " , " + endpointAddress + " + " +  _wsdlURI);
-				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
-						+ QueryHelper.getWSDLURI("useBinding") + " , " + getEndpointNode(serviceName, endpointName) + " + " +  _wsdlURI);
-				
-				logger.info("SERVICE ENDPOINTS : Triple + Context: " + getServiceNode(serviceName) + " , " 
-						+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(serviceName, endpointName) + " + " +  _wsdlURI);
-				
-				logger.info("DESCRIPTION ENDPOINTS : Triple + Context: " + getDescriptionNode() + " , " 
-						+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(serviceName, endpointName) + " + " +  _wsdlURI);
+//				
+//				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
+//						+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Endpoint"));
+//				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
+//						+ QueryHelper.getRDFSURI("label") + " , " + endpointName);
+//				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
+//						+ QueryHelper.getWSDLURI("address") + " , " + endpointAddress);
+//				logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(serviceName, endpointName) + " , " 
+//						+ QueryHelper.getWSDLURI("useBinding") + " , " + getBindingNode(serviceName, endpointName));
+//				
+//				logger.info("SERVICE ENDPOINTS : Triple + Context: " + getServiceNode(serviceName) + " , " 
+//						+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(serviceName, endpointName));
+//				
+//				logger.info("DESCRIPTION ENDPOINTS : Triple + Context: " + getDescriptionNode() + " , " 
+//						+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(serviceName, endpointName));
 				
 				//Writing persistent
 				reposHandler.addResourceTriple(getEndpointNode(serviceName, endpointName) , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Endpoint"), _wsdlURI);
@@ -127,68 +119,98 @@ public class Transformation {
 				reposHandler.addResourceTriple(getServiceNode(serviceName) , QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(serviceName, endpointName), _wsdlURI);
 				
 				reposHandler.addResourceTriple(getDescriptionNode() ,QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(serviceName, endpointName), _wsdlURI);
+				
+				endpointsMap.put(endpointName, service);
 			}
-			logger.info("==================================");
 		}
 		
 		//Writing bindings triples
 		for ( Binding binding : desc.getBindings() ) {
 			String bindingName = binding.getQName().getLocalPart();
+			Service service = endpointsMap.get(bindingName);
+			String serviceName = service.getQName().getLocalPart(); 
 
-			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
-					+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Binding") + " + " +  _wsdlURI);
-			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
-					+ QueryHelper.getRDFURI("type") + " , " + binding.getTypeOfBinding() + " + " +  _wsdlURI);
-			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
-					+ QueryHelper.getRDFSURI("label") + " , " + bindingName + " + " +  _wsdlURI);
-			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
-					+ QueryHelper.getWSDLURI("binds") + " , " + getInterfaceNode(bindingName) + " + " +  _wsdlURI);
-			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
-					+ QueryHelper.getWSDLURI("bindingFault") + " , " + "" + " + " +  _wsdlURI);
-			
-			//Writing persistent
+//			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
+//					+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Binding"));
+//			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
+//					+ QueryHelper.getRDFURI("type") + " , " + binding.getTypeOfBinding());
+//			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
+//					+ QueryHelper.getRDFSURI("label") + " , " + bindingName);
+//			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
+//					+ QueryHelper.getWSDLURI("binds") + " , " + getInterfaceNode(bindingName));
+//			logger.info("BINDINGS : Triple + Context: " + getBindingNode(serviceName, bindingName) + " , " 
+//					+ QueryHelper.getWSDLURI("bindingFault") + " , " + "");
+//			
+//			logger.info("BINDINGS FOR DESCRIPTION: Triple + Context: " + getDescriptionNode() + " , " 
+//					+ QueryHelper.getWSDLURI("binding") + " , " + getBindingNode(serviceName, bindingName));
+//			
+//			//Writing persistent
 			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("Binding"), _wsdlURI);
 			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getRDFURI("type"), binding.getTypeOfBinding().toString(), _wsdlURI);
 			reposHandler.addLiteralTriple(getBindingNode(serviceName, bindingName), QueryHelper.getRDFSURI("label"), bindingName, _wsdlURI);
 			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getWSDLURI("binds"), getInterfaceNode(bindingName), _wsdlURI);
-			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getWSDLURI("bindingFault"), SESA_INSTANCES_NS, _wsdlURI);
+//			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getWSDLURI("bindingFault"), SERVICE_NS, _wsdlURI);
+			
+			reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getWSDLURI("binding"), getBindingNode(serviceName, bindingName), _wsdlURI);
 			
 			for ( BindingOperation bindingOperation : binding.getBindingOperations() ) {
 				String bindingOperationName = bindingOperation.getQName().getLocalPart();
 				
-				logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingName) + " , " 
-						+ QueryHelper.getWSDLURI("bindingOperation") + " , " + bindingOperationName + " + " +  _wsdlURI);
+				//TODO: Check only for SOAP Binding 
+				
+//				logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingOperationName) + " , " 
+//						+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("BindingOperation"));
+//				logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingOperationName) + " , " 
+//						+ QueryHelper.getWSDLURI("action") + " , " + SERVICE_NS + bindingOperationName);
+//				
+//				logger.info("BINDINGS OPERATION FOR SERVICE PARENT: Triple + Context: " + getBindingNode(serviceName, bindingOperationName) + " , " 
+//						+ QueryHelper.getWSDLURI("bindingOperation") + " , " + getBindingOperationNode(serviceName, bindingOperationName));
 				
 				//Writing persistent
+				reposHandler.addResourceTriple(getBindingOperationNode(serviceName, bindingOperationName), QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("BindingOperation"), _wsdlURI);
+				reposHandler.addResourceTriple(getBindingOperationNode(serviceName, bindingOperationName), QueryHelper.getWSDLURI("action"), SERVICE_NS + bindingOperationName, _wsdlURI);
+				
 				reposHandler.addResourceTriple(getBindingOperationNode(serviceName, bindingName), QueryHelper.getWSDLURI("bindingOperation"), getBindingOperationNode(serviceName, bindingOperationName), _wsdlURI);
 			}
-			logger.info("==================================");	
 		}
 	
 		//Parse Interface
 		for(InterfaceType wsdlInterface : desc.getInterfaces()){
 			String interfaceName = wsdlInterface.getQName().getLocalPart();
 			
-			logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
-					+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Interface") + " + " +  _wsdlURI);	
-			logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
-					+ QueryHelper.getRDFURI("label") + " , " + interfaceName + " + " +  _wsdlURI);
+			//TODO: Check only for SOAP Binding 
+			
+//			logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
+//					+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Interface"));	
+//			logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
+//					+ QueryHelper.getRDFURI("label") + " , " + interfaceName);
+//			
+//			logger.info("INTERFACE FOR DESCRIPTION : Triple + Context: " + getDescriptionNode() + " , " 
+//					+ QueryHelper.getWSDLURI("interface") + " , " + getInterfaceNode(interfaceName));
 			
 			//Writing persistent
 			reposHandler.addResourceTriple(getInterfaceNode(interfaceName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("Interface"), _wsdlURI);
 			reposHandler.addLiteralTriple(getInterfaceNode(interfaceName), QueryHelper.getRDFURI("label"), interfaceName, _wsdlURI);
 			
+			reposHandler.addLiteralTriple(getDescriptionNode(), QueryHelper.getWSDLURI("interface"), getInterfaceNode(interfaceName), _wsdlURI);
+			
+			
 			for(Operation interfaceOperation : wsdlInterface.getOperations()){
 				String interfaceOperationName = interfaceOperation.getQName().getLocalPart();
 				
-				logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(serviceName, interfaceOperationName) + " , " 
-						+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("InterfaceOperation") + " + " +  _wsdlURI);
-				logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(serviceName, interfaceOperationName) + " , " 
-						+ QueryHelper.getRDFSURI("label") + " , " + interfaceOperationName + " + " +  _wsdlURI);
+//				logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
+//						+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("InterfaceOperation"));
+//				logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
+//						+ QueryHelper.getRDFSURI("label") + " , " + interfaceOperationName);
+//				
+//				logger.info("INTERFACE OPERATION FOR PARENT: Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
+//						+ QueryHelper.getWSDLURI("interfaceOperation") + " , " + getInterfaceOperationNode(interfaceName, interfaceOperationName));
 				
 				//Writing persistent
-				reposHandler.addResourceTriple(getInterfaceOperationNode(serviceName, interfaceOperationName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("InterfaceOperation"), _wsdlURI);
-				reposHandler.addLiteralTriple(getInterfaceOperationNode(serviceName, interfaceOperationName), QueryHelper.getRDFURI("label"), interfaceOperationName, _wsdlURI);
+				reposHandler.addResourceTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("InterfaceOperation"), _wsdlURI);
+				reposHandler.addLiteralTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getRDFURI("label"), interfaceOperationName, _wsdlURI);
+				
+				reposHandler.addLiteralTriple(getInterfaceNode(interfaceName), QueryHelper.getWSDLURI("interfaceOperation"), getInterfaceOperationNode(interfaceName, interfaceOperationName), _wsdlURI);
 				
 				
 //				Input input = operation.getInput();
@@ -206,47 +228,35 @@ public class Transformation {
 //						System.out.println("    element name "+element.getContent());
 //				}
 			}
-			logger.info("==================================");	
-			
-//			for ( URI model : wsdlInterface.getModelReference() ){
-//				System.out.println("\t[MODEL REFERENCE]: " + model.getPort());
-//			}
 		}
-		
-//		AttrExtensions attributes = desc.getAttrExtensions();
-//		if ( attributes != null ) {
-//			AttrExtensions extensions = attributes.getAttrExtensions();
-//			if ( extensions != null ) {
-//				System.out.println("\t[MODEL REFERENCE]: " + extensions.getModelReference());
-//			}
-//		}
+		reposHandler.shutdown();
 	}
 	
 	private static String getDescriptionNode() {
-		return SESA_INSTANCES_NS + "#wsdl.description()"; 
+		return SERVICE_NS + "wsdl.description()"; 
 	}
 	
 	private static String getInterfaceNode(String interfaceName) {
-		return SESA_INSTANCES_NS +"#wsdl.interface(" + interfaceName + ")"; 
+		return SERVICE_NS +"wsdl.interface(" + interfaceName + ")"; 
 	}
 	
 	private static String getInterfaceOperationNode(String serviceName, String interfaceOperationName) {
-		return SESA_INSTANCES_NS +"#wsdl.interfaceOperation(" + serviceName + "/" + interfaceOperationName + ")"; 
+		return SERVICE_NS +"wsdl.interfaceOperation(" + serviceName + "/" + interfaceOperationName + ")"; 
 	}
 	
 	private static String getBindingNode(String serviceName, String bindingName ) {
-		return SESA_INSTANCES_NS +"#wsdl.binding(" + serviceName + "/" + bindingName + ")"; 
+		return SERVICE_NS +"wsdl.binding(" + serviceName + "/" + bindingName + ")"; 
 	}
 	
 	private static String getBindingOperationNode(String serviceName, String bindingOperationName ) {
-		return SESA_INSTANCES_NS +"#wsdl.binding(" + serviceName + "/" + bindingOperationName + ")"; 
+		return SERVICE_NS +"wsdl.bindingOperation(" + serviceName + "/" + bindingOperationName + ")"; 
 	}
 	
 	private static String getEndpointNode(String serviceName, String bindingName ) {
-		return SESA_INSTANCES_NS +"#wsdl.endpoint(" + serviceName + "/" + bindingName + ")"; 
+		return SERVICE_NS +"wsdl.endpoint(" + serviceName + "/" + bindingName + ")"; 
 	}
 	
 	private static String getServiceNode(String serviceName) {
-		return SESA_INSTANCES_NS +"#wsdl.service(" + serviceName + ")"; 
+		return SERVICE_NS +"wsdl.service(" + serviceName + ")"; 
 	}
 }

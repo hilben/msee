@@ -28,6 +28,7 @@
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
                 <dc:creator>Michael Rogger</dc:creator>
                 <dc:creator>Alex Oberhauser</dc:creator>
+                <dc:creator>Corneliu Stanciu</dc:creator>
         </rdf:Description>
 
         <!-- WSDL BEGIN -->
@@ -84,7 +85,7 @@
                 <rdf:type rdf:resource="&wsdl;Endpoint" />
                 <rdfs:label>GlobalWeatherSoap</rdfs:label>
                 <wsdl:address rdf:resource="http://www.webservicex.com/globalweather.asmx" />
-                <wsdl:usesBinding rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+                <wsdl:usesBinding rdf:resource="#wsdl.binding(GlobalWeather/GlobalWeatherSoap)" />
         </rdf:Description>
         <!-- WSDL END -->
 
