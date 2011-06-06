@@ -59,7 +59,7 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest {
 		String namespace = "http://see.sti2.at/";
 		QName serviceName = new QName(namespace, "PingWebServiceService");
 		QName portName = new QName(namespace, "PingWebService");
-		String endpointURL = "http://sesa.sti2.at:8080/invoker-dummy-webservice1/services/ping";
+		String endpointURL = "http://sesa.sti2.at:8080/invoker-dummy-webservice/services/ping";
 		
 		for ( int count=0; count < 2; count++ ) {
 			/*
@@ -69,7 +69,9 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest {
 			SOAPMessage responseMessage = this.invoker.invoke(serviceName, portName, endpointURL, "", this._createDummyService1PingMessage(serviceID));
 			SOAPBodyElement operationNode = (SOAPBodyElement) responseMessage.getSOAPBody().getChildElements().next();
 			SOAPBodyElement returnNode = (SOAPBodyElement) operationNode.getChildElements().next();
-			Assert.assertEquals("Hello " + serviceID, returnNode.getValue());;
+			Assert.assertEquals("Hello " + serviceID, returnNode.getValue());
+			
+			logger.info("Invoked Service " + serviceName + " using endpoint "+endpointURL);
 		}
 	}
 	

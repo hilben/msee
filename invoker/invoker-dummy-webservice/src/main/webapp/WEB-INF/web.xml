@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Sample web service provider</display-name>
+	<display-name>Invoker Dummy Webservices - for testing purpose only</display-name>
         <mime-mapping>
                 <extension>ico</extension>
                 <mime-type>image/x-icon</mime-type>

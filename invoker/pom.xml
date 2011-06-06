@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.sti2.ngsee.invoker</groupId>
@@ -19,6 +20,7 @@
 		<module>invoker-core</module>
 		<module>invoker-webservice</module>
 		<module>invoker-grounding</module>
+		<module>invoker-dummy-webservice</module>
 	</modules>
 
 	<name>invoker-project</name>
@@ -156,6 +158,71 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2.1</version>
+					<configuration>
+						<descriptors>
+							<descriptor>src/assembly/jaxws-jar.xml</descriptor>
+						</descriptors>
+						<appendAssemblyId>true</appendAssemblyId>
+						<attach>true</attach>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin><!--use mvn tomcat:deploy or mvn tomcat:undeploy -->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<version>1.1</version>
+					<configuration>
+						<!-- settings.xml needs <server>...</server> with username/credentials. 
+							see http://mojo.codehaus.org/tomcat-maven-plugin/configuration.html -->
+						<server>sesa-tomcat6</server>
+						<url>http://sesa.sti2.at:8080/manager</url>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-java2ws-plugin</artifactId>
+					<version>${cxf.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-jaxws</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-simple</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>maven-jetty-plugin</artifactId>
+					<version>6.1.10</version>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
 
 
 	<!-- DEPENDENCIES -->
