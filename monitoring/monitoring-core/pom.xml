@@ -25,7 +25,7 @@
 			<artifactId>monitoring-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.util</groupId>
+			<groupId>at.sti2.ngsee.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
 		</dependency>
 		<dependency>

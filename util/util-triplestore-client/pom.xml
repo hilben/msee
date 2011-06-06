@@ -5,14 +5,14 @@
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>at.sti2.util</groupId>
+	<groupId>at.sti2.ngsee.util</groupId>
 	<artifactId>util-triplestore-client</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>util-triplestore-client</name>
 
 	<parent>
-		<groupId>at.sti2.ngsee</groupId>
+		<groupId>at.sti2.ngsee.util</groupId>
 		<artifactId>util-project</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>

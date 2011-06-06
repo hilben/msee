@@ -89,7 +89,7 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.util</groupId>
+				<groupId>at.sti2.ngsee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
 				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
