@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
         <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+        <!ENTITY msm_ext "http://sti2.org/ns/minimal-service-model-ext#" >
         <!ENTITY wsdl "http://www.w3.org/ns/wsdl-rdf#" >
 ]>
 <rdf:RDF
@@ -17,14 +18,16 @@
         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
         xmlns:rest="http://www.wsmo.org/ns/hrests#"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:msm="&msm;">
+        xmlns:msm="&msm;"
+        xmlns:msm="&msm_ext;">
 
 
         <!-- WEATHER SERVICE -->
         <rdf:Description rdf:about="#GlobalWeather">
                 <rdf:type rdf:resource="&msm;Service" />
                 <rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
-                <rdfs:seeAlso rdf:resource="#wsdl.description()"/>
+                <!-- msm_ext:restDescription for RESTful Services -->
+                <msm_ext:wsdlDescription rdf:resource="#wsdl.description()"/>
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
                 <dc:creator>Michael Rogger</dc:creator>
                 <dc:creator>Alex Oberhauser</dc:creator>
@@ -91,33 +94,34 @@
 
         <!-- GetWeather Operation-->
         <rdf:Description rdf:about="#Input1"> <!-- wsdl:message -->
-                <rdf:type rdf:resource="&msm;MessageContent"/>
-                <msm:hasPart rdf:resource="#Input1Part1"/>
+                <!-- wsdl:IntputMessage subClassOf msm:MessageContent -->
+                <rdf:type rdf:resource="&wsdl;InputMessage"/>
+                <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
+                <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#In"/>
+                <wsdl:elementDeclaration rdf:resource="#Input1Part1"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Input1Part1"> <!-- wsdl:message/wsdl:part -->
-                <rdf:type rdf:resource="&msm;MessagePart"/>
+                <rdf:type rdf:resource="&wsdl;QName"/>
+                <wsdl:localName>Input1Part1</wsdl:localName>
+                <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
                 <sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Output1"> <!-- wsdl:message -->
-                <rdf:type rdf:resource="&msm;MessageContent"/>
-                <msm:hasPart rdf:resource="#Output1Part1"/>
+                <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->
+                <rdf:type rdf:resource="&wsdl;OutputMessage"/>
+                <!-- For exceptions use wsdl:InterfaceFaultReference -->
+                <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
+                <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#Out"/>
+                <wsdl:elementDeclaration rdf:resource="#Output1Part1"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Output1Part1"> <!-- wsdl:message/wsdl:part -->
-                <rdf:type rdf:resource="&msm;MessagePart"/>
+                <rdf:type rdf:resource="&wsdl;QName"/>
+                <wsdl:localName>Output1Part1</wsdl:localName>
+                <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
                 <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
-        </rdf:Description>
-
-        <!-- GetWeatherByCountry Operation-->
-        <rdf:Description rdf:about="#GetCitiesByCountry">
-                <rdf:type rdf:resource="&msm;Operation"/>
-                <msm:hasInput rdf:resource="#Input2" />
-        </rdf:Description>
-
-        <rdf:Description rdf:about="#Input2">
-                <rdf:type rdf:resource="&msm;MessageContent"/>
         </rdf:Description>
 
 </rdf:RDF>
