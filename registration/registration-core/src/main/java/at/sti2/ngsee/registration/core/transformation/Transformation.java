@@ -23,6 +23,22 @@ import at.sti2.ngsee.registration.core.common.Config;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
 
+/**
+ * <b>Purpose:</b>
+ * <br>
+ * <b>Description:</b>
+ * <br>
+ * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
+ * <b>Company:</b>       STI Innsbruck<br>
+ *
+ * @author      Corneliu Stanciu<br>
+ * @version     $Id$<br>
+ * Date of creation:  13.04.2011<br>
+ * File:         $Source$<br>
+ * Modifier:     $Author$<br>
+ * Revision:     $Revision$<br>
+ * State:        $State$<br>
+ */
 public class Transformation {
 	
 	protected static Logger logger = Logger.getLogger(Transformation.class);
@@ -79,7 +95,7 @@ public class Transformation {
 			//Writing persistent
 			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMURI("Service"), _wsdlURI);
 			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("isDefinedBy"),  _wsdlURI, _wsdlURI);
-			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("seeAlso"),  getDescriptionNode(), _wsdlURI);
+			reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getMSMEXTURI("wsdlDescription"),  getDescriptionNode(), _wsdlURI);
 			reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
 			reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getDCURI("creator"),  "STI Innsbruck", _wsdlURI);
 
@@ -229,7 +245,7 @@ public class Transformation {
 //				}
 			}
 		}
-		reposHandler.shutdown();
+//		reposHandler.shutdown();
 	}
 	
 	private static String getDescriptionNode() {

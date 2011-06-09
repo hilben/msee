@@ -17,6 +17,11 @@ public class QueryHelper {
 	public static final String SAWSDL_NS = "http://www.w3.org/ns/sawsdl#";
 	public static final String WSDL_NS = "http://www.w3.org/ns/wsdl-rdf#";
 	public static final String WL_NS = "http://www.wsmo.org/ns/wsmo-lite#";
+	public static final String MSMEXT_NS = "http://sesa.sti2.org/ns/minimal-service-model-ext#";
+	
+	public static String getMSMEXTURI(String _property) {
+		return MSMEXT_NS + _property;
+	}
 	
 	public static String getWSMFURI(String _property) {
 		return WSMF_NS + _property;
@@ -69,6 +74,7 @@ public class QueryHelper {
         namespaces.append("PREFIX wsdl:<http://www.w3.org/ns/wsdl-rdf#>\n");
         namespaces.append("PREFIX wl:<http://www.wsmo.org/ns/wsmo-lite#>\n");
         namespaces.append("PREFIX wsmf:<" + WSMF_NS + ">\n");
+        namespaces.append("PREFIX msm_ext: <" + MSMEXT_NS + ">\n");
 		return namespaces.toString();
 	}
 }
