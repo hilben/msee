@@ -19,7 +19,7 @@
         xmlns:rest="http://www.wsmo.org/ns/hrests#"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
         xmlns:msm="&msm;"
-        xmlns:msm="&msm_ext;">
+        xmlns:msm_ext="&msm_ext;">
 
 
         <!-- WEATHER SERVICE -->
@@ -56,8 +56,8 @@
         <rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
                 <rdf:type rdf:resource="&wsdl;#InterfaceOperation" />
                 <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-                <msm:hasInput rdf:resource="#Input1" />
-                <msm:hasOutput rdf:resource="#Output1" />
+                <wsdl:interfaceMessageReference rdf:resource="#Input1" />
+                <wsdl:interfaceMessageReference rdf:resource="#Output1" />
         </rdf:Description>
 
         <!-- wsdl binding (soap) -->
@@ -99,13 +99,13 @@
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#In"/>
                 <wsdl:elementDeclaration rdf:resource="#Input1Part1"/>
+                <sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Input1Part1"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>Input1Part1</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
-                <sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Output1"> <!-- wsdl:message -->
@@ -115,13 +115,13 @@
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#Out"/>
                 <wsdl:elementDeclaration rdf:resource="#Output1Part1"/>
+                <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Output1Part1"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>Output1Part1</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
-                <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
         </rdf:Description>
 
 </rdf:RDF>
