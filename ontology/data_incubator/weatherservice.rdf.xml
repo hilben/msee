@@ -112,7 +112,6 @@
                 <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;OutputMessage"/>
                 <!-- For exceptions use wsdl:InterfaceFaultReference -->
-                <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#Out"/>
                 <wsdl:elementDeclaration rdf:resource="#Output1Part1"/>
                 <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>

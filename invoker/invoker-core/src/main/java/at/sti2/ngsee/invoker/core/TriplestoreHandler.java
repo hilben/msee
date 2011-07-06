@@ -45,37 +45,54 @@ public class TriplestoreHandler {
 		return new QName(result[0], result[1]);
 	}
 	
+	/**
+	 * TODO: Only IN_OUT is supported. Make inputMessage and outputMessage optional to support also IN_ONLY and OUT_ONLY.
+	 * 
+	 * @param _serviceID
+	 * @param _operationName
+	 * @return
+	 */
 	public static String generateQuery(String _serviceID, String _operationName) {
 		StringBuffer query = new StringBuffer();
 		query.append("PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
 		query.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+		query.append("PREFIX sawsdl: <http://www.w3.org/ns/sawsdl#> \n");
 		query.append("PREFIX wsoap: <http://www.w3.org/ns/wsdl/soap#> \n");
 		query.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
 		query.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		query.append("PREFIX msm_ext: <http://sesa.sti2.org/ns/minimal-service-model-ext#> \n");
 		
 		query.append("SELECT ?servicename ?portname ?namespace ?lifting ?lowering ?wsdl ?soapaction ?endpoint WHERE { \n");
 		
 		query.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdl . \n");
 		query.append("<" + _serviceID + "> rdfs:label ?servicename . \n");
-		query.append("<" + _serviceID + "> rdfs:seeAlso ?descriptionBlock . \n");
+		query.append("<" + _serviceID + "> msm_ext:wsdlDescription ?descriptionBlock . \n");
 		
 		query.append("?descriptionBlock wsdl:namespace ?namespace . \n");
 		query.append("?descriptionBlock wsdl:binding ?bindingBlock . \n");
 		query.append("?descriptionBlock wsdl:service ?serviceBlock . \n");
+		query.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
 		
 		query.append("?bindingBlock rdfs:label ?portname . \n");
 		query.append("?bindingBlock wsdl:bindingOperation ?bindingOperationBlock . \n");
 		query.append("?bindingOperationBlock wsoap:action ?soapaction . \n");
 		
+		query.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
+		query.append("?interfaceOperation rdfs:label \"" + _operationName + "\" . \n");
+		query.append("?interfaceOperation wsdl:interfaceMessageReference ?inputMessage . \n");
+		query.append("?inputMessage rdf:type wsdl:InputMessage . \n");
+		query.append("?inputMessage sawsdl:loweringSchemaMapping ?lowering. \n");
+		
+		query.append("?interfaceOperation wsdl:interfaceMessageReference ?outputMessage . \n");
+		query.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
+		query.append("?outputMessage sawsdl:liftingSchemaMapping ?lifting . \n");
+		
 		query.append("?serviceBlock wsdl:endpoint ?endpointBlock . \n");
 		query.append("?endpointBlock wsdl:address ?endpoint . \n");
-		
-//		query.append(" sawsdl:loweringSchemaMapping ?lowering. \n");
-//		
-//		query.append(" sawsdl:liftingSchemaMapping ?lifting . \n");
-//		
-		
+
 		query.append("}");
+		
+		System.out.println(query);
 		
 		return query.toString();
 	}
@@ -92,8 +109,8 @@ public class TriplestoreHandler {
 			
 			String namespace = entry.getBinding("namespace").getValue().stringValue();
 			
-//			msmInstance.setLiftingSchema(new URL(entry.getBinding("lifting").getValue().stringValue()));
-//			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
+			msmInstance.setLiftingSchema(new URL(entry.getBinding("lifting").getValue().stringValue()));
+			msmInstance.setLoweringSchema(new URL(entry.getBinding("lowering").getValue().stringValue()));
 			msmInstance.setWSDL(new URL(entry.getBinding("wsdl").getValue().stringValue()));
 			msmInstance.setOperationQName(new QName(namespace, _operationName));
 			msmInstance.setServiceQName(new QName(namespace, entry.getBinding("servicename").getValue().stringValue()));
@@ -108,7 +125,7 @@ public class TriplestoreHandler {
 	
 	public static void main(String[] args) throws Exception {
 		InvokerMSM invokerMSM = TriplestoreHandler.getInvokerMSM("http://www.webserviceX.NET#GlobalWeather", "GetWeather");
-		System.out.println(invokerMSM.getEndpointURL());
+		System.out.println(invokerMSM.getLifingSchema());
 	}
 	
 }
