@@ -29,6 +29,7 @@
                 <!-- msm_ext:restDescription for RESTful Services -->
                 <msm_ext:wsdlDescription rdf:resource="#wsdl.description()"/>
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
+                <sawsdl:modelReference="http://example.org/taxonomy/environmentalService"/>
                 <dc:creator>Michael Rogger</dc:creator>
                 <dc:creator>Alex Oberhauser</dc:creator>
                 <dc:creator>Corneliu Stanciu</dc:creator>

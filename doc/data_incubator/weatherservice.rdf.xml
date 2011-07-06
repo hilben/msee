@@ -28,6 +28,7 @@
                 <rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
                 <!-- msm_ext:restDescription for RESTful Services -->
                 <msm_ext:wsdlDescription rdf:resource="#wsdl.description()"/>
+                <sawsdl:modelReference rdf:resource="http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"/>
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
                 <dc:creator>Michael Rogger</dc:creator>
                 <dc:creator>Alex Oberhauser</dc:creator>
@@ -54,7 +55,7 @@
 
         <!-- wsdl porttype/interface operation -->
         <rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
-                <rdf:type rdf:resource="&wsdl;#InterfaceOperation" />
+                <rdf:type rdf:resource="&wsdl;InterfaceOperation" />
                 <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
                 <wsdl:interfaceMessageReference rdf:resource="#Input1" />
                 <wsdl:interfaceMessageReference rdf:resource="#Output1" />

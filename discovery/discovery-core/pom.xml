@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>at.sti2.ngsee.discovery</groupId>
+	<artifactId>discovery-core</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>at.sti2.ngsee.discovery</groupId>
+		<artifactId>discovery-project</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<name>discovery-core</name>
+	<url>http://see.sti2.at</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- projects -->
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>discovery-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.sti2.ngsee.util</groupId>
+			<artifactId>util-triplestore-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>

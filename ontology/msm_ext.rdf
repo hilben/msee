@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE rdf:RDF [
-        <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#">
         <!ENTITY wl "http://www.wsmo.org/ns/wsmo-lite#">
         <!ENTITY sawsdl "http://www.w3.org/ns/sawsdl#">
         <!ENTITY rest "http://www.wsmo.org/ns/hrests#">
@@ -12,6 +11,7 @@
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:sawsdl="&sawsdl;"
 	xmlns:http="http://www.w3.org/2008/http-methods#"
+        xmlns:vs="http://www.w4.org/2003/06/sw-vocab-status/ns#"
 	xmlns:wl="&wl;"
 	xmlns:rest="&rest;">
 
@@ -107,38 +107,38 @@
         </rdfs:Class>
 
         <rdfs:Class rdf:about="&wsdl;InterfaceOperation">
-                <rdfs:subClassOf rdf:resource="&msm;Operation" />
+                <rdfs:subClassOf rdf:resource="#Operation" />
         </rdfs:Class>
 
         <rdfs:Class rdf:about="&wsdl;InputMessage">
-                <rdfs:subClassOf rdf:resource="&msm;Input" />
+                <rdfs:subClassOf rdf:resource="#Input" />
         </rdfs:Class>
 
         <rdfs:Class rdf:about="&wsdl;OutputMessage">
-                <rdfs:subClassOf rdf:resource="&msm;Output" />
+                <rdfs:subClassOf rdf:resource="#Output" />
         </rdfs:Class>
 
         <rdfs:Class rdf:about="&wsdl;QName">
-                <rdfs:subClassOf rdf:resource="&msm;MessagePart" />
+                <rdfs:subClassOf rdf:resource="#MessagePart" />
         </rdfs:Class>
 
         <rdfs:Property rdf:about="&wsdl;interfaceMessageReference">
-                <rdfs:subPropertyOf rdf:resource="&msm;hasInput" />
+                <rdfs:subPropertyOf rdf:resource="#hasInput" />
         </rdfs:Property>
 
         <rdfs:Property rdf:about="&wsdl;interfaceMessageReference">
-                <rdfs:subPropertyOf rdf:resource="&msm;hasMessageContent" />
+                <rdfs:subPropertyOf rdf:resource="#hasMessageContent" />
         </rdfs:Property>
 
         <rdfs:Property rdf:about="&wsdl;interfaceFaultReference">
-                <rdfs:subPropertyOf rdf:resource="&msm;hasMessageContent" />
+                <rdfs:subPropertyOf rdf:resource="#hasMessageContent" />
         </rdfs:Property>
 
         <rdfs:Property rdf:about="#wsdlDescription">
                 <rdfs:label>wsdl Description</rdfs:label>
                 <vs:term_status>testing</vs:term_status>
-                <rdfs:domain rdf:resource="&msm;Service" />
-                <rdfs:range rdf:resource="&msm;Description" />
+                <rdfs:domain rdf:resource="#Service" />
+                <rdfs:range rdf:resource="#Description" />
         </rdfs:Property>
 
 </rdf:RDF>

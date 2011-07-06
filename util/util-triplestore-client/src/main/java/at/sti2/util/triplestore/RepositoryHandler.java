@@ -12,6 +12,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.query.BooleanQuery;
 import org.openrdf.query.GraphQuery;
+import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.QueryLanguage;
@@ -86,6 +87,14 @@ public class RepositoryHandler {
 		TupleQuery tupleQuery = this.connection.prepareTupleQuery(QueryLanguage.SPARQL, _query);
 		return tupleQuery.evaluate();
 	}
+	
+	public synchronized GraphQueryResult constructSPARQL(String _query) throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+		if ( this.connection == null )
+			this.init();
+		GraphQuery tupleQuery = this.connection.prepareGraphQuery(QueryLanguage.SPARQL, _query);
+		return tupleQuery.evaluate();
+	}
+	
 	
 	public synchronized void selectSPARQL(String _query, TupleQueryResultHandler _resultHandler) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException {
 		if ( this.connection == null )

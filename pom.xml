@@ -10,6 +10,7 @@
 	<modules>
 		<module>invoker</module>
 		<module>registration</module>
+		<module>discovery</module>
 		<module>monitoring</module>
 		<module>util</module>
 	</modules>
