@@ -12,12 +12,12 @@ import org.apache.log4j.Logger;
 @WSDLDocumentationCollection(
 		@WSDLDocumentation("SESA Invoker Component.")
 	)
-public class PingWebService {
-	protected static Logger logger = Logger.getLogger(PingWebService.class);
+public class ValenciaPortWebService {
+	protected static Logger logger = Logger.getLogger(ValenciaPortWebService.class);
 	
 	@WebMethod
-	public String ping(@WebParam(name="serviceID")String msg){
-		return "Ping Pong "+msg;
+	public String submitFALForm(@WebParam(name="falForm")String falForm){
+		return "Ping Pong "+falForm;
 	}
 
 }

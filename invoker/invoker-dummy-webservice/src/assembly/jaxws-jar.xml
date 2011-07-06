@@ -6,7 +6,13 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-			<source>target/classes/at/sti2/ngsee/invoker/dummy/webservice/PingWebService.class</source>
+			<source>target/classes/at/sti2/ngsee/invoker/dummy/webservice/PingWebService.class
+			</source>
+			<outputDirectory>/service</outputDirectory>
+		</file>
+		<file>
+			<source>target/classes/at/sti2/ngsee/invoker/dummy/webservice/ValenciaPortWebService.class
+			</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 	</files>
