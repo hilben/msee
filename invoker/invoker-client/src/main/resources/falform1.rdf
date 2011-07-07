@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE rdf:RDF [
         <!ENTITY efreight "http://demo.sti2.at/efreight/ontologies/FalFormsOntology.rdf#" >
@@ -34,10 +34,10 @@
                 </efreight:hasLastPortOfCall>
                 <efreight:hasNextPortOfCall/>
                 <efreight:hasNumberOfCrew>0</efreight:hasNumberOfCrew>
-                <efreight:hasNumberOfPassengers>0</efreight:hasNumberOfPassengers>>
+                <efreight:hasNumberOfPassengers>0</efreight:hasNumberOfPassengers>
                 <efreight:hasRemarks/>
                 <efreight:hasRequirementsInWasteResidueReception/>
-                <efreight:hasShip rdf:resource="#ship_9HVG8">
+                <efreight:hasShip rdf:resource="#ship_9HVG8"/>
         </efreight:GeneralDeclarationF1>
 
         <efreight:Ship rdf:about="#ship_9HVG8">

@@ -8,16 +8,16 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.apache.log4j.Logger;
 
-@WebService(targetNamespace="http://see.sti2.at/")
+@WebService(targetNamespace="http://see.sti2.at/dummy")
 @WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Invoker Component.")
+		@WSDLDocumentation("SESA e-Freight Dummy Service.")
 	)
 public class ValenciaPortWebService {
 	protected static Logger logger = Logger.getLogger(ValenciaPortWebService.class);
 	
 	@WebMethod
-	public String submitFALForm(@WebParam(name="falForm")String falForm){
-		return "Ping Pong "+falForm;
+	public String submitFALForm(@WebParam(name="falForm")String falForm) {
+		return "Ping Pong "+ falForm;
 	}
 
 }

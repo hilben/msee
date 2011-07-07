@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="SESA" resourceRoot="" soapui-version="3.6.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://webservice.discovery.ngsee.sti2.at/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://localhost:9090/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.discovery.ngsee.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="SESA" resourceRoot="" soapui-version="3.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://webservice.discovery.ngsee.sti2.at/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://localhost:9090/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.discovery.ngsee.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="discover" type="tns:discover"/>
@@ -94,7 +94,7 @@
       <soap:address location="http://localhost:9090/discovery-webservice/services/discovery"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="discover" bindingOperationName="discover" type="Request-Response" outputName="discoverResponse" inputName="discover" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherServiceDiscoveryExample"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.discovery.ngsee.sti2.at/">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="discover" bindingOperationName="discover" type="Request-Response" outputName="discoverResponse" inputName="discover" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherServiceDiscovery"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.discovery.ngsee.sti2.at/">
    <soapenv:Header/>
    <soapenv:Body>
       <web:discover>
@@ -109,7 +109,7 @@
          <categoryList>http://www.example.org/noConcept</categoryList>
       </web:discover>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.discovery.ngsee.sti2.at/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="lookup" bindingOperationName="lookup" type="Request-Response" outputName="lookupResponse" inputName="lookup" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="GetWeatherOperationExample"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.discovery.ngsee.sti2.at/">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.discovery.ngsee.sti2.at/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="lookup" bindingOperationName="lookup" type="Request-Response" outputName="lookupResponse" inputName="lookup" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="GetWeatherOperation"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.discovery.ngsee.sti2.at/">
    <soapenv:Header/>
    <soapenv:Body>
       <web:lookup>
@@ -215,7 +215,7 @@
    <soapenv:Body>
       <see:checkAvailability/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/InvokerWebService/checkAvailability"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="invoke" bindingOperationName="invoke" type="Request-Response" outputName="invokeResponse" inputName="invoke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherServiceInvokerExample"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:see="http://see.sti2.at/">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/InvokerWebService/checkAvailability"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="invoke" bindingOperationName="invoke" type="Request-Response" outputName="invokeResponse" inputName="invoke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherServiceInvoker"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:see="http://see.sti2.at/">
    <soapenv:Header/>
    <soapenv:Body>
       <see:invoke>
@@ -231,4 +231,179 @@
 	 </inputData>
       </see:invoke>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ValenciaPortWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/dummy}ValenciaPortWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService?wsdl"><con:part><con:url>http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ValenciaPortWebServiceService" targetNamespace="http://see.sti2.at/dummy" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/dummy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://see.sti2.at/dummy" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="submitFALForm" type="tns:submitFALForm"/>
+      <xs:element name="submitFALFormResponse" type="tns:submitFALFormResponse"/>
+      <xs:complexType name="submitFALForm">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="falForm" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="submitFALFormResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="submitFALForm">
+    <wsdl:part element="tns:submitFALForm" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitFALFormResponse">
+    <wsdl:part element="tns:submitFALFormResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ValenciaPortWebService">
+    <wsdl:documentation>SESA e-Freight Dummy Service.</wsdl:documentation>
+    <wsdl:operation name="submitFALForm">
+      <wsdl:input message="tns:submitFALForm" name="submitFALForm"></wsdl:input>
+      <wsdl:output message="tns:submitFALFormResponse" name="submitFALFormResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ValenciaPortWebServiceServiceSoapBinding" type="tns:ValenciaPortWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="submitFALForm">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="submitFALForm">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="submitFALFormResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ValenciaPortWebServiceService">
+    <wsdl:port binding="tns:ValenciaPortWebServiceServiceSoapBinding" name="ValenciaPortWebServicePort">
+      <soap:address location="http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="submitFALForm" bindingOperationName="submitFALForm" type="Request-Response" outputName="submitFALFormResponse" inputName="submitFALForm" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="FirstFALForm1Instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/invoker-dummy-webservice/services/valenciatPortWebService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dum="http://see.sti2.at/dummy">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <dum:submitFALForm>
+         <falForm>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rdf:RDF [
+        <!ENTITY efreight "http://demo.sti2.at/efreight/ontologies/FalFormsOntology.rdf#" >
+]>
+
+<rdf:RDF
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+        xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:dct="http://purl.org/dc/terms/"
+        xmlns:efreight="&efreight;">
+
+        <efreight:GeneralDeclarationF1 rdf:about="#FAL_Form1_3f8b09d5-c430-4b6a-934b-f5e4ad25977b">
+                <efreight:hasArrivalOrDeparture rdf:resource="&efreight;Arrival"/>
+                <efreight:hasArrivalOrDepartureDateTime>2011-02-24T00:00:00</efreight:hasArrivalOrDepartureDateTime>
+                <efreight:hasPort>
+                        <efreight:Port>
+                                <efreight:hasPortCode>ESVLC</efreight:hasPortCode>
+                                <efreight:hasPortName>Valencia</efreight:hasPortName>
+                        </efreight:Port>
+                </efreight:hasPort>
+                <efreight:hasBriefDescriptionOfCargo/>
+                <efreight:hasBriefParticularsOfVoyage/>
+                <efreight:hasDepartureDateTime/>
+                <efreight:hasDeparturePort/>
+                <efreight:hasGeneralDeclarationId>354</efreight:hasGeneralDeclarationId>
+                <efreight:hasLastPortOfCall>
+                        <efreight:Port>
+                                <efreight:hasPortCode>AEAUH</efreight:hasPortCode>
+                                <efreight:hasPortName>Abu Dhabi</efreight:hasPortName>
+                        </efreight:Port>
+                </efreight:hasLastPortOfCall>
+                <efreight:hasNextPortOfCall/>
+                <efreight:hasNumberOfCrew>0</efreight:hasNumberOfCrew>
+                <efreight:hasNumberOfPassengers>0</efreight:hasNumberOfPassengers>
+                <efreight:hasRemarks/>
+                <efreight:hasRequirementsInWasteResidueReception/>
+                <efreight:hasShip rdf:resource="#ship_9HVG8"/>
+        </efreight:GeneralDeclarationF1>
+
+        <efreight:Ship rdf:about="#ship_9HVG8">
+                <efreight:hasCallSign>9HVG8</efreight:hasCallSign>
+                <efreight:hasCoRDate/>
+                <efreight:hasCoRNumber/>
+                <efreight:hasFlagState>
+                        <efreight:Country>
+                                <efreight:hasCountryName>Malta</efreight:hasCountryName>
+                                <efreight:hasCountryCode>MT</efreight:hasCountryCode>
+                        </efreight:Country>
+                </efreight:hasFlagState>
+                <efreight:hasGrossTonnage>140000.0000</efreight:hasGrossTonnage>
+                <efreight:hasNetTonnage>40000.0000</efreight:hasNetTonnage>
+                <efreight:hasIMONumber>9191254</efreight:hasIMONumber>
+                <efreight:hasShipMasterName>Jan Tore Pedersen</efreight:hasShipMasterName>
+                <efreight:hasShipType>Cargo</efreight:hasShipType>
+                <efreight:hasShipName>BACCARA</efreight:hasShipName>
+                <efreight:hasShipPositionInPort/>
+        </efreight:Ship>
+
+</rdf:RDF>
+
+
+]]]]>><![CDATA[
+	 </falForm>
+      </dum:submitFALForm>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/dummy/ValenciaPortWebService/submitFALForm"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PingWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/}PingWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl"><con:part><con:url>http://localhost:9090/invoker-dummy-webservice/services/ping?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="PingWebServiceService" targetNamespace="http://see.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://see.sti2.at/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="ping" type="tns:ping"/>
+      <xs:element name="pingResponse" type="tns:pingResponse"/>
+      <xs:complexType name="ping">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="serviceID" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pingResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="pingResponse">
+    <wsdl:part element="tns:pingResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ping">
+    <wsdl:part element="tns:ping" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PingWebService">
+    <wsdl:documentation>SESA Invoker Component.</wsdl:documentation>
+    <wsdl:operation name="ping">
+      <wsdl:input message="tns:ping" name="ping"></wsdl:input>
+      <wsdl:output message="tns:pingResponse" name="pingResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PingWebServiceServiceSoapBinding" type="tns:PingWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ping">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="ping">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="pingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PingWebServiceService">
+    <wsdl:port binding="tns:PingWebServiceServiceSoapBinding" name="PingWebServicePort">
+      <soap:address location="http://localhost:9090/invoker-dummy-webservice/services/ping"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9090/invoker-dummy-webservice/services/ping</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="ping" bindingOperationName="ping" type="Request-Response" outputName="pingResponse" inputName="ping" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="TestingServiceID1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/invoker-dummy-webservice/services/ping</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:see="http://see.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <see:ping>
+         <serviceID>http://example.org/testingServiceID1</serviceID>
+      </see:ping>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://see.sti2.at/PingWebService/ping"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
