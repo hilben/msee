@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="SESA" resourceRoot="" soapui-version="3.6.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://webservice.discovery.ngsee.sti2.at/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://localhost:9090/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.discovery.ngsee.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="SESA" resourceRoot="" soapui-version="3.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://webservice.discovery.ngsee.sti2.at/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://localhost:9090/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.discovery.ngsee.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="discover" type="tns:discover"/>
@@ -219,14 +219,49 @@
    <soapenv:Header/>
    <soapenv:Body>
       <see:invoke>
-         <serviceID>http://www.sti2.at/sesa/service/WeatherService</serviceID>
+         <serviceID>http://www.webserviceX.NET#GlobalWeather</serviceID>
          <operation>GetWeather</operation>
          <inputData>
 <![CDATA[
-<GetWeather xmlns='http://www.webserviceX.NET'>
-	<CountryName>Austria</CountryName>
-	<CityName>Innsbruck</CityName>
-</GetWeather>
+<!DOCTYPE rdf:RDF [
+        <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
+]>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns="http://www.sti2.at/sesa/#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
+    xmlns:http="http://www.w3.org/2008/http-methods#"
+    xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
+    xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+    xmlns:rest="http://www.wsmo.org/ns/hrests#"
+    xmlns:msm="&msm;">
+
+<rdf:Description rdf:about="#WeatherService">
+	<rdf:type rdf:resource="&msm;Service" />
+	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">North America</name>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#USA">
+	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#Country"/>
+	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">United States</name>
+	<continent xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NorthAmerica"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#NY">
+	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#City"/>
+	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New York</name>
+	<country xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#USA"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/WeatherGoal#request">
+	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/WeatherProcess#WeatherRequest"/>
+	<city xmlns="http://www.coin-ip.eu/tutorial/WeatherProcess#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NY"/>
+</rdf:Description>
+
+</rdf:RDF>
 ]]]]>><![CDATA[
 	 </inputData>
       </see:invoke>
