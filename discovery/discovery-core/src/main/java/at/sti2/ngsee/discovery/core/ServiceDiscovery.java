@@ -112,7 +112,7 @@ public class ServiceDiscovery {
 	public static void main(String[] args) throws Exception {
 		List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
-		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
 		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
 		System.out.println("---");
 		

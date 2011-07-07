@@ -37,6 +37,7 @@ public class InvokerCore {
 	
 	private static SOAPMessage createSOAPMessage(String _loweredInputData) throws SOAPException, DocumentException, SAXException, IOException, ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		
 		InputSource inStream = new InputSource();
@@ -97,12 +98,22 @@ public class InvokerCore {
 		 */
 		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
 		logger.info("Invoking Web Service '" + msmObject.getWSDL() + "' with input data '" + loweredInputData + "'");
+		
 		SOAPMessage outputData = soapInvoker.invoke(msmObject.getServiceQName(), msmObject.getPortQName(), msmObject.getEndpointURL().toExternalForm(), msmObject.getSOAPAction(), createSOAPMessage(loweredInputData));
 		
 		/*
 		 * Return the lifted data
 		 */
 		return groundingEngine.lift(getBodyContent(outputData));
+	}
+	
+	public static void main(String[] args) throws Exception {
+		StringBuffer strbuffer = new StringBuffer();
+		strbuffer.append("<m:GetWeather xmlns:m=\"http://www.webserviceX.NET\">");
+		strbuffer.append("   <m:CityName>New York</m:CityName>");
+		strbuffer.append("   <m:CountryName>United States</m:CountryName>");
+		strbuffer.append("</m:GetWeather>");
+		InvokerCore.createSOAPMessage(strbuffer.toString()).writeTo(System.out);
 	}
 
 }

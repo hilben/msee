@@ -100,7 +100,7 @@
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#In"/>
                 <wsdl:elementDeclaration rdf:resource="#Input1Part1"/>
-                <sawsdl:loweringSchemaMapping rdf:resource="weather-lowering.xslt"/>
+                <sawsdl:loweringSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lowering.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Input1Part1"> <!-- wsdl:message/wsdl:part -->
@@ -115,7 +115,7 @@
                 <!-- For exceptions use wsdl:InterfaceFaultReference -->
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#Out"/>
                 <wsdl:elementDeclaration rdf:resource="#Output1Part1"/>
-                <sawsdl:liftingSchemaMapping rdf:resource="weather-lifting.xslt"/>
+                <sawsdl:liftingSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lifting.xslt"/>
         </rdf:Description>
 
         <rdf:Description rdf:about="#Output1Part1"> <!-- wsdl:message/wsdl:part -->

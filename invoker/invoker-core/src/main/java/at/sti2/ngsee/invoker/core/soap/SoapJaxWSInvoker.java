@@ -13,7 +13,7 @@ public class SoapJaxWSInvoker implements ISOAPInvoker {
 	public SOAPMessage invoke(QName _serviceName, QName _portName,
 			String _endpointUrl, String _soapActionUri, SOAPMessage _soapMessage)
 			throws Exception {
-
+		
 		/** Create a service and add at least one port to it. **/
 		Service service = Service.create(_serviceName);
 		service.addPort(_portName, SOAPBinding.SOAP11HTTP_BINDING, _endpointUrl);
@@ -29,7 +29,6 @@ public class SoapJaxWSInvoker implements ISOAPInvoker {
 			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY, false);
 
 		SOAPMessage response = (SOAPMessage) dispatch.invoke(_soapMessage);
-
 		return response;
 	}
 
