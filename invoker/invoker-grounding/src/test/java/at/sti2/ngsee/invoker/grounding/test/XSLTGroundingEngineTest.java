@@ -39,9 +39,9 @@ public class XSLTGroundingEngineTest {
 	public void setUp() throws Exception {
 
 		final URL liftingSchemaURL = new URL(
-				"http://demo.sti2.at/see/grounding/xslt/weather-lifting.xslt");
+				"http://sesa.sti2.at/services/xslt/weather-lifting.xslt");
 		final URL loweringSchemaURL = new URL(
-				"http://demo.sti2.at/see/grounding/xslt/weather-lowering.xslt");
+				"http://sesa.sti2.at/services/xslt/weather-lowering.xslt");
 
 		xsltGroundingEnginge = GroundingFactory.createGroundingEngine(
 				loweringSchemaURL, liftingSchemaURL);

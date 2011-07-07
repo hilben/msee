@@ -3,8 +3,10 @@
  */
 package at.sti2.ngsee.invoker.core.soap.test;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.namespace.QName;
 
@@ -21,14 +23,19 @@ public class InvokerCoreTest extends AbstractSoapTest {
 //	@Test
 	public void testWeatherService() throws Exception {
 		List<QName> emptyHeaders = new ArrayList<QName>();
-		String serviceID = "http://www.sti2.at/sesa/service/WeatherService";
+		String serviceID = "http://www.webserviceX.NET#GlobalWeather";
 		String operationName = "GetWeather";
 		
-		StringBuffer inputData = new StringBuffer();
-		inputData.append("<GetWeather xmlns='http://www.webserviceX.NET'>");
-		inputData.append("<CountryName>Austria</CountryName>");
-		inputData.append("<CityName>Innsbruck</CityName>");
-		inputData.append("</GetWeather>");
+		StringBuilder inputData = new StringBuilder();
+		String NL = System.getProperty("line.separator");
+		Scanner scanner = new Scanner(new FileInputStream(InvokerCoreTest.class.getResource("/weather-input.rdf.xml").getFile()));
+		try {
+		      while (scanner.hasNextLine()){
+			        inputData.append(scanner.nextLine() + NL);
+		      }
+		} finally {
+			scanner.close();
+		}
 		
 		for ( int count=0; count < LOOPS; count++ ) {
 			this.startTimer();
