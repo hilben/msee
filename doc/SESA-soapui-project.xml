@@ -232,34 +232,34 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
-    xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
-    xmlns:http="http://www.w3.org/2008/http-methods#"
-    xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
-    xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
-    xmlns:rest="http://www.wsmo.org/ns/hrests#"
-    xmlns:msm="&msm;">
+    	xmlns:sawsdl="http://www.w3.org/ns/sawsdl#"
+    	xmlns:http="http://www.w3.org/2008/http-methods#"
+    	xmlns:wl="http://www.wsmo.org/ns/wsmo-lite#"
+    	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+    	xmlns:rest="http://www.wsmo.org/ns/hrests#"
+    	xmlns:msm="&msm;">
 
-<rdf:Description rdf:about="#WeatherService">
-	<rdf:type rdf:resource="&msm;Service" />
-	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">North America</name>
-</rdf:Description>
+	<rdf:Description rdf:about="#WeatherService">
+		<rdf:type rdf:resource="&msm;Service" />
+		<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">North America</name>
+	</rdf:Description>
 
-<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#USA">
-	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#Country"/>
-	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">United States</name>
-	<continent xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NorthAmerica"/>
-</rdf:Description>
+	<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#USA">
+		<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#Country"/>
+		<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">United States</name>
+		<continent xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NorthAmerica"/>
+	</rdf:Description>
 
-<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#NY">
-	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#City"/>
-	<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New York</name>
-	<country xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#USA"/>
-</rdf:Description>
+	<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/Weather#NY">
+		<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/Weather#City"/>
+		<name xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:datatype="http://www.w3.org/2001/XMLSchema#string">New York</name>
+		<country xmlns="http://www.coin-ip.eu/tutorial/Weather#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#USA"/>
+	</rdf:Description>
 
-<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/WeatherGoal#request">
-	<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/WeatherProcess#WeatherRequest"/>
-	<city xmlns="http://www.coin-ip.eu/tutorial/WeatherProcess#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NY"/>
-</rdf:Description>
+	<rdf:Description rdf:about="http://www.coin-ip.eu/tutorial/WeatherGoal#request">
+		<rdf:type rdf:resource="http://www.coin-ip.eu/tutorial/WeatherProcess#WeatherRequest"/>
+		<city xmlns="http://www.coin-ip.eu/tutorial/WeatherProcess#" rdf:resource="http://www.coin-ip.eu/tutorial/Weather#NY"/>
+	</rdf:Description>
 
 </rdf:RDF>
 ]]]]>><![CDATA[

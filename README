@@ -56,4 +56,4 @@ RELEASE
 2) run "mvn clean install" and check that all unit tests work
 3) "mvn release:prepare"
 4) "mvn release:perform"
-5) check added comits and "push" them to remote repo
+5) check added commits and "push" them to remote repo

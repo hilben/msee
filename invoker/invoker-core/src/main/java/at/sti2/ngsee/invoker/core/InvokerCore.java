@@ -106,14 +106,5 @@ public class InvokerCore {
 		 */
 		return groundingEngine.lift(getBodyContent(outputData));
 	}
-	
-	public static void main(String[] args) throws Exception {
-		StringBuffer strbuffer = new StringBuffer();
-		strbuffer.append("<m:GetWeather xmlns:m=\"http://www.webserviceX.NET\">");
-		strbuffer.append("   <m:CityName>New York</m:CityName>");
-		strbuffer.append("   <m:CountryName>United States</m:CountryName>");
-		strbuffer.append("</m:GetWeather>");
-		InvokerCore.createSOAPMessage(strbuffer.toString()).writeTo(System.out);
-	}
 
 }

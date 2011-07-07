@@ -28,7 +28,7 @@ public class InvokerClient {
 	    String NL = System.getProperty("line.separator");
 		Scanner scanner = new Scanner(new FileInputStream(InvokerClient.class.getResource("/weather-input.rdf.xml").getFile()));
 		try {
-		      while (scanner.hasNextLine()){
+		      while ( scanner.hasNextLine() ){
 			        inputData.append(scanner.nextLine() + NL);
 		      }
 		} finally {
