@@ -24,9 +24,10 @@ public interface IDiscoveryWebService {
 	/**
 	 * Get more information about the operation. 
 	 * 
-	 * @param operation A URI that identifies the operation.
+	 * @param namespace The namespace related to the operation name.
+	 * @param operationName The operation name.
 	 * @return A RDF Representation of the Operation with Inputs, Outputs, Faults and related modelReferences.
 	 * @throws Exception
 	 */
-	public String lookup(URI operation) throws Exception;
+	public String lookup(URI namespace, String operationName) throws Exception;
 }

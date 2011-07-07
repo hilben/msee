@@ -6,6 +6,7 @@ COMPONENTS
 
 * Invoker
 * Registration
+* Discovery
 * Monitoring
 * Utilities
 
@@ -29,8 +30,8 @@ DEVELOPMENT
         - Eclipse
         - m2eclipse
 
-1)	Execute "git clone ssh://<username>@demo.sti2.at/var/scm/see/see-invoker.git" 
-	in your workspace folder, replace <username> with your account name on demo.sti2.at
+1)	Execute "git clone ssh://<username>@sesa.sti2.at/var/scm/see/see-invoker.git" 
+	in your workspace folder, replace <username> with your account name on sesa.sti2.at
 
 2)	Eclipse as IDE:
 		a) Install m2eclipse plugin
