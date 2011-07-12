@@ -18,16 +18,23 @@ import javax.wsdl.Service;
 import javax.wsdl.WSDLException;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
+import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
 import com.ibm.wsdl.extensions.http.HTTPAddressImpl;
 import com.ibm.wsdl.extensions.http.HTTPBindingImpl;
+import com.ibm.wsdl.extensions.http.HTTPOperationImpl;
+import com.ibm.wsdl.extensions.mime.MIMEMimeXmlImpl;
 import com.ibm.wsdl.extensions.soap.SOAPAddressImpl;
 import com.ibm.wsdl.extensions.soap.SOAPBindingImpl;
+import com.ibm.wsdl.extensions.soap.SOAPBodyImpl;
+import com.ibm.wsdl.extensions.soap.SOAPOperationImpl;
 import com.ibm.wsdl.extensions.soap12.SOAP12AddressImpl;
 import com.ibm.wsdl.extensions.soap12.SOAP12BindingImpl;
+import com.ibm.wsdl.extensions.soap12.SOAP12BodyImpl;
+import com.ibm.wsdl.extensions.soap12.SOAP12OperationImpl;
 
 import at.sti2.util.triplestore.QueryHelper;
 
@@ -116,9 +123,9 @@ public class Transformation2 {
 
 				if ( bindingType != null ) {
 					// Write the endpoint, binding and interface triples only if there exists a SOAP one. 
-					writeEndpointsToTriples(serviceName, endpointName, endpointAddress, _wsdlURI); 
-					writeBindingsToTriples(serviceName, bindingName, bindingType, _wsdlURI);
-					writeInterfaceToTriples(interfaceName, _wsdlURI);
+//					writeEndpointsToTriples(serviceName, endpointName, endpointAddress, _wsdlURI); 
+//					writeBindingsToTriples(serviceName, bindingName, bindingType, _wsdlURI);
+//					writeInterfaceToTriples(interfaceName, _wsdlURI);
 				}
 				
 				
@@ -130,11 +137,12 @@ public class Transformation2 {
         			
         			//Operation Input 
         			Input input = operation.getInput();
-        			input.getName();
-        			
         			Output output = operation.getOutput();
+        			Map<?, ?> faultsMap = operation.getFaults();
         			        			
-        			writeInterfaceOperationsToTriples(interfaceName, interfaceOperationName);
+//        			writeInterfaceOperationsToTriples(interfaceName, interfaceOperationName, input, output, _wsdlURI);
+        			
+//        			System.err.println(input);
         		}
 				
 				//Binding Operations
@@ -142,11 +150,25 @@ public class Transformation2 {
         		for ( Object operationObj : bindingsOperations ) {
         			BindingOperation bindingOperation = (BindingOperation) operationObj;
         			String bindingOperationName = bindingOperation.getName();
+        			String soapActionURI = null;
         			
-        			//TODO: SOAP ACTION
-//        			System.err.println(bindingOperation);
+        			List<?> bindingOperationElements = bindingOperation.getExtensibilityElements();
+            		for ( Object elementObj : bindingOperationElements ) {
+            			if ( elementObj instanceof HTTPOperationImpl ){
+            				//TODO: Feathers - HTTP Operations
+            				break;
+            			}
+            			if ( elementObj instanceof SOAPOperationImpl){
+            				soapActionURI = ((SOAPOperationImpl) elementObj).getSoapActionURI();
+            				break;
+            			}
+            			if ( elementObj instanceof SOAP12OperationImpl){
+            				soapActionURI = ((SOAP12OperationImpl) elementObj).getSoapActionURI();
+            				break;
+            			}
+            		}
         			
-        			writeBindingOperationsToTriples(serviceName, bindingOperationName, _wsdlURI);
+        			writeBindingOperationsToTriples(serviceName, bindingOperationName, soapActionURI, _wsdlURI);
         			
         			//Operation Inputs, Outputs and Faults
         			Operation oper = bindingOperation.getOperation();
@@ -209,7 +231,7 @@ public class Transformation2 {
 				QueryHelper.getRDFSURI("label") + " , " + serviceName);
 		logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
 				QueryHelper.getDCURI("creator") + " , " + "STI Innsbruck");
-//		
+		
 		logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
 				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Service"));
 		logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
@@ -289,11 +311,13 @@ public class Transformation2 {
 //		reposHandler.addResourceTriple(getBindingNode(serviceName, bindingName), QueryHelper.getWSDLURI("binding"), getBindingNode(serviceName, bindingName), _wsdlURI);
  	}
  	
- 	private static void writeBindingOperationsToTriples(String serviceName, String bindingOperationName, String _wsdlURI) {
+ 	private static void writeBindingOperationsToTriples(String serviceName, String bindingOperationName, String soapActionURI, String _wsdlURI) {
  		logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingOperationName) + " , " 
 				+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("BindingOperation"));
 		logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingOperationName) + " , " 
 				+ QueryHelper.getWSDLURI("action") + " , " + SERVICE_NS + bindingOperationName);
+		logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(serviceName, bindingOperationName) + " , " 
+				+ QueryHelper.getWSOAPURI("action") + " , " + soapActionURI);
 		
 		logger.info("BINDINGS OPERATION FOR SERVICE PARENT: Triple + Context: " + getBindingNode(serviceName, bindingOperationName) + " , " 
 				+ QueryHelper.getWSDLURI("bindingOperation") + " , " + getBindingOperationNode(serviceName, bindingOperationName));
@@ -321,11 +345,15 @@ public class Transformation2 {
 //		reposHandler.addLiteralTriple(getDescriptionNode(), QueryHelper.getWSDLURI("interface"), getInterfaceNode(interfaceName), _wsdlURI);
  	}
  	
- 	private static void writeInterfaceOperationsToTriples(String interfaceName, String interfaceOperationName) {
+ 	private static void writeInterfaceOperationsToTriples(String interfaceName, String interfaceOperationName, Input input, Output output, String _wsdlURI) {
  		logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
 				+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("InterfaceOperation"));
 		logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
 				+ QueryHelper.getRDFSURI("label") + " , " + interfaceOperationName);
+		logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
+				+ QueryHelper.getWSDLURI("interfaceMessageReference") + " , " + getInputNode(interfaceName, interfaceOperationName));
+		logger.info("INTERFACE OPERATION: Triple + Context: " + getInterfaceOperationNode(interfaceName, interfaceOperationName) + " , " 
+				+ QueryHelper.getWSDLURI("interfaceMessageReference") + " , " + getOutputNode(interfaceName, interfaceOperationName));
 		
 		logger.info("INTERFACE OPERATION FOR PARENT: Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
 				+ QueryHelper.getWSDLURI("interfaceOperation") + " , " + getInterfaceOperationNode(interfaceName, interfaceOperationName));
@@ -333,6 +361,8 @@ public class Transformation2 {
 		//Writing persistent
 //		reposHandler.addResourceTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("InterfaceOperation"), _wsdlURI);
 //		reposHandler.addLiteralTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getRDFURI("label"), interfaceOperationName, _wsdlURI);
+//		reposHandler.addResourceTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getWSDLURI("interfaceMessageReference"), getInputNode(interfaceName, interfaceOperationName), _wsdlURI);
+//		reposHandler.addResourceTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName), QueryHelper.getWSDLURI("interfaceMessageReference"), getOutputNode(interfaceName, interfaceOperationName), _wsdlURI);
 //		
 //		reposHandler.addLiteralTriple(getInterfaceNode(interfaceName), QueryHelper.getWSDLURI("interfaceOperation"), getInterfaceOperationNode(interfaceName, interfaceOperationName), _wsdlURI);
  	}
@@ -363,6 +393,14 @@ public class Transformation2 {
 	
 	private static String getServiceNode(String serviceName) {
 		return SERVICE_NS +"wsdl.service(" + serviceName + ")"; 
+	}
+	
+	private static String getInputNode(String interfaceName, String interfaceOperationName) {
+		return SERVICE_NS +"wsdl.input(" + interfaceName + "/" + interfaceOperationName + ")"; 
+	}
+	
+	private static String getOutputNode(String interfaceName, String interfaceOperationName) {
+		return SERVICE_NS +"wsdl.output(" + interfaceName + "/" + interfaceOperationName + ")"; 
 	}
 	
 	private static boolean isSoapProtocol(String transportProtocol) {
