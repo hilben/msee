@@ -13,33 +13,61 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<name>registration-core</name>
-	<url>http://maven.apache.org</url>
+        <repositories>
+                <repository>
+                        <id>sti-snapshots</id>
+                        <name>STI snapshots</name>
+                        <url>http://maven.sti2.at/archiva/repository/snapshots</url>
+                </repository>
+                <repository>
+                        <id>sti-external</id>
+                        <name>Maven STI external repository</name>
+                        <url>http://maven.sti2.at/archiva/repository/external</url>
+                </repository>
+        </repositories>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+        <name>registration-core</name>
+        <url>http://maven.apache.org</url>
 
-	<dependencies>
-		<dependency>
-			<groupId>at.sti2.ngsee.registration</groupId>
-			<artifactId>registration-api</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-wsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-ext-sawsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>at.sti2.ngsee.util</groupId>
-			<artifactId>util-triplestore-client</artifactId>
-		</dependency>
-	</dependencies>
+        <properties>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        </properties>
+
+        <dependencies>
+                <dependency>
+                        <groupId>at.sti2.ngsee.registration</groupId>
+                        <artifactId>registration-api</artifactId>
+                        <scope>compile</scope>
+                </dependency>
+                <dependency>
+                        <groupId>org.ow2.easywsdl</groupId>
+                        <artifactId>easywsdl-wsdl</artifactId>
+                        <version>2.1</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.ow2.easywsdl</groupId>
+                        <artifactId>easywsdl-ext-sawsdl</artifactId>
+                        <version>2.1</version>
+                </dependency>
+                <dependency>
+                        <groupId>wsdl4j</groupId>
+                        <artifactId>wsdl4j</artifactId>
+                        <version>1.6.2</version>
+                </dependency>
+                <dependency>
+                        <groupId>edu.uga.cs.lsdis</groupId>
+                        <artifactId>SAWSDL4J</artifactId>
+                        <version>M4</version>
+                </dependency>
+                <dependency>
+                        <groupId>jaxen</groupId>
+                        <artifactId>jaxen</artifactId>
+                        <version>1.1</version>
+                </dependency>
+                <dependency>
+                        <groupId>at.sti2.ngsee.util</groupId>
+                        <artifactId>util-triplestore-client</artifactId>
+                </dependency>
+        </dependencies>
 </project>
 
