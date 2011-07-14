@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -165,7 +166,9 @@ public class ServiceDiscovery {
 		transQuery.append("<" + _serviceID + "> rdf:type msm:Service . \n");
 		transQuery.append("<" + _serviceID + "> rdfs:label ?serviceLabel . \n");
 		transQuery.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdlLink . \n");
+		transQuery.append("OPTIONAL { \n");
 		transQuery.append("<" + _serviceID + "> dc:creator ?creator . \n");
+		transQuery.append("} \n");
 		transQuery.append("OPTIONAL { \n");
 		transQuery.append("<" + _serviceID + "> sawsdl:modelReference ?serviceModel . \n");
 		transQuery.append("} \n");
@@ -235,15 +238,15 @@ public class ServiceDiscovery {
 	
 	
 	public static void main(String[] args) throws Exception {
-//		List<URI> categoryList = new ArrayList<URI>();
-//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
-////		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
-//		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
+		List<URI> categoryList = new ArrayList<URI>();
+		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
 //		System.out.println("---");
 //		
 //		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
 		
-		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
+//		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
 	}
 	
 }
