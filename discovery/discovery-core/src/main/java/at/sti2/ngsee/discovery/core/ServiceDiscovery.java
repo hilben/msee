@@ -138,23 +138,27 @@ public class ServiceDiscovery {
 		transQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
 		transQuery.append("?inputMessage msm:hasPart ?inputMessagePart . \n");
 		transQuery.append("?inputMessagePart rdf:type msm:MessagePart . \n");
+		transQuery.append("?inputMessagePart msm:hasName ?inputMessagePartName . \n");
 		
 		transQuery.append("?operation msm:hasOutput ?outputMessage . \n");
 		transQuery.append("?outputMessage rdf:type msm:MessageContent . \n");
 		transQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
 		transQuery.append("?outputMessage msm:hasPart ?outputMessagePart . \n");
 		transQuery.append("?outputMessagePart rdf:type msm:MessagePart . \n");
+		transQuery.append("?outputMessagePart msm:hasName ?outputMessagePartName . \n");
 		
 		transQuery.append("?operation msm:hasInputFault ?inputFaultMessage . \n");
 		transQuery.append("?inputFaultMessage rdf:type msm:MessageContent . \n");
 		transQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
 		transQuery.append("?inputFaultMessage msm:hasPart ?inputFaultMessagePart . \n");
 		transQuery.append("?inputFaultMessagePart rdf:type msm:MessagePart . \n");
+		transQuery.append("?inputFaultMessagePart msm:hasName ?inputFaultMessagePartName . \n");
 		
 		transQuery.append("?operation msm:hasOutputFault ?outputFaultMessage . \n");
 		transQuery.append("?outputFaultMessage rdf:type msm:MessageContent . \n");
 		transQuery.append("?outputFaultMessage msm:hasPart ?outputFaultMessagePart . \n");
 		transQuery.append("?outputFaultMessagePart rdf:type msm:MessagePart . \n");
+		transQuery.append("?outputFaultMessagePart msm:hasName ?outputFaultMessagePartName . \n");
 		
 		transQuery.append("} WHERE { \n");
 		
@@ -162,7 +166,9 @@ public class ServiceDiscovery {
 		transQuery.append("?serviceID rdfs:label ?serviceLabel . \n");
 		transQuery.append("?serviceID rdfs:isDefinedBy ?wsdlLink . \n");
 		transQuery.append("?serviceID dc:creator ?creator . \n");
+		transQuery.append("OPTIONAL { \n");
 		transQuery.append("?serviceID sawsdl:modelReference ?serviceModel . \n");
+		transQuery.append("} \n");
 		transQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
 		
 		transQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");;
@@ -178,6 +184,7 @@ public class ServiceDiscovery {
 		transQuery.append("?inputMessage rdf:type wsdl:InputMessage . \n");
 		transQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
 		transQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
+		transQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
 		transQuery.append("OPTIONAL { \n");
 		transQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
 		transQuery.append("} \n");
@@ -188,6 +195,7 @@ public class ServiceDiscovery {
 		transQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
 		transQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
 		transQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
+		transQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
 		transQuery.append("OPTIONAL { \n");
 		transQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
 		transQuery.append("} \n");
@@ -198,6 +206,7 @@ public class ServiceDiscovery {
 		transQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
 		transQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
 		transQuery.append("?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n");
+		transQuery.append("?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n");
 		transQuery.append("OPTIONAL { \n");
 		transQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
 		transQuery.append("} \n");
@@ -208,6 +217,7 @@ public class ServiceDiscovery {
 		transQuery.append("?outputFaultMessage rdf:type wsdl:OutputMessage . \n");
 		transQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
 		transQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
+		transQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
 		transQuery.append("OPTIONAL { \n");
 		transQuery.append("?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n");
 		transQuery.append("} \n");
