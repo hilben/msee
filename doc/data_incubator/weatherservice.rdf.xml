@@ -30,9 +30,7 @@
                 <msm_ext:wsdlDescription rdf:resource="#wsdl.description()"/>
                 <sawsdl:modelReference rdf:resource="http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"/>
                 <rdfs:label>GlobalWeather</rdfs:label> <!-- wsdl:service.name -->
-                <dc:creator>Michael Rogger</dc:creator>
-                <dc:creator>Alex Oberhauser</dc:creator>
-                <dc:creator>Corneliu Stanciu</dc:creator>
+                <dc:creator>STI Innsbruck</dc:creator>
         </rdf:Description>
 
         <!-- WSDL BEGIN -->

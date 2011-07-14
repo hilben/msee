@@ -30,4 +30,13 @@ public interface IDiscoveryWebService {
 	 * @throws Exception
 	 */
 	public String lookup(URI namespace, String operationName) throws Exception;
+	
+	/**
+	 * Exports the internal RDF service model as iServe compatible MSM model.
+	 * 
+	 * @param serviceID The service ID
+	 * @return A iServe compatible MSM model (see {@link http://iserve.kmi.open.ac.uk/})
+	 * @throws Exception
+	 */
+	public String getIServeModel(String serviceID) throws Exception;
 }

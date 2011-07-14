@@ -4,6 +4,8 @@
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservice.discovery.ngsee.sti2.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="discover" type="tns:discover"/>
       <xs:element name="discoverResponse" type="tns:discoverResponse"/>
+      <xs:element name="getIServeModel" type="tns:getIServeModel"/>
+      <xs:element name="getIServeModelResponse" type="tns:getIServeModelResponse"/>
       <xs:element name="lookup" type="tns:lookup"/>
       <xs:element name="lookupResponse" type="tns:lookupResponse"/>
       <xs:complexType name="lookup">
@@ -13,6 +15,16 @@
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="lookupResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getIServeModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="serviceID" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getIServeModelResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="return" type="xs:string"/>
         </xs:sequence>
@@ -38,8 +50,14 @@
   <wsdl:message name="discoverResponse">
     <wsdl:part element="tns:discoverResponse" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getIServeModel">
+    <wsdl:part element="tns:getIServeModel" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="lookup">
     <wsdl:part element="tns:lookup" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIServeModelResponse">
+    <wsdl:part element="tns:getIServeModelResponse" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="discover">
     <wsdl:part element="tns:discover" name="parameters"></wsdl:part>
@@ -56,6 +74,11 @@
       <wsdl:output message="tns:lookupResponse" name="lookupResponse"></wsdl:output>
       <wsdl:fault message="tns:Exception" name="Exception"></wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="getIServeModel">
+      <wsdl:input message="tns:getIServeModel" name="getIServeModel"></wsdl:input>
+      <wsdl:output message="tns:getIServeModelResponse" name="getIServeModelResponse"></wsdl:output>
+      <wsdl:fault message="tns:Exception" name="Exception"></wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="discover">
       <wsdl:input message="tns:discover" name="discover"></wsdl:input>
       <wsdl:output message="tns:discoverResponse" name="discoverResponse"></wsdl:output>
@@ -70,6 +93,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="lookupResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIServeModel">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getIServeModel">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getIServeModelResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="Exception">
@@ -119,7 +154,14 @@
          <operationName>GetWeather</operationName>
       </web:lookup>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.discovery.ngsee.sti2.at/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://localhost:9090/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://see.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.discovery.ngsee.sti2.at/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getIServeModel" bindingOperationName="getIServeModel" type="Request-Response" outputName="getIServeModelResponse" inputName="getIServeModel" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherServiceIServeModel"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.discovery.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getIServeModel>
+         <serviceID>http://www.webserviceX.NET#GlobalWeather</serviceID>
+      </web:getIServeModel>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.discovery.ngsee.sti2.at/DiscoveryWebService/getIServeModel"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://see.sti2.at/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://localhost:9090/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://see.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://see.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://see.sti2.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="checkAvailability" type="tns:checkAvailability"/>

@@ -19,6 +19,8 @@ package at.sti2.ngsee.invoker.api.webservice;
 public interface IInvokerEndpoint {
 	
 	/**
+	 * Invokes a service and handles the lifting and lowering process and all 
+	 * low level processes needed for the invocation process.
 	 * 
 	 * @param serviceID The abstract Identifier of the service.
 	 * @param operationName The operation that should be called.
