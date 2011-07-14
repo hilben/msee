@@ -122,12 +122,12 @@ public class ServiceDiscovery {
 		transQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 		
 		transQuery.append("CONSTRUCT { \n");
-		transQuery.append("?serviceID rdf:type msm:Service . \n");
-		transQuery.append("?serviceID rdfs:label ?serviceLabel . \n");
-		transQuery.append("?serviceID rdfs:isDefinedBy ?wsdlLink . \n");
-		transQuery.append("?serviceID dc:creator ?creator . \n");
-		transQuery.append("?serviceID sawsdl:modelReference ?serviceModel . \n");
-		transQuery.append("?serviceID msm:hasOperation ?operation . \n");
+		transQuery.append("<" + _serviceID + "> rdf:type msm:Service . \n");
+		transQuery.append("<" + _serviceID + "> rdfs:label ?serviceLabel . \n");
+		transQuery.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdlLink . \n");
+		transQuery.append("<" + _serviceID + "> dc:creator ?creator . \n");
+		transQuery.append("<" + _serviceID + "> sawsdl:modelReference ?serviceModel . \n");
+		transQuery.append("<" + _serviceID + "> msm:hasOperation ?operation . \n");
 		
 		transQuery.append("?operation rdf:type msm:Operation . \n");
 		transQuery.append("?operation rdfs:label ?operationLabel . \n");
@@ -162,14 +162,14 @@ public class ServiceDiscovery {
 		
 		transQuery.append("} WHERE { \n");
 		
-		transQuery.append("?serviceID rdf:type msm:Service . \n");
-		transQuery.append("?serviceID rdfs:label ?serviceLabel . \n");
-		transQuery.append("?serviceID rdfs:isDefinedBy ?wsdlLink . \n");
-		transQuery.append("?serviceID dc:creator ?creator . \n");
+		transQuery.append("<" + _serviceID + "> rdf:type msm:Service . \n");
+		transQuery.append("<" + _serviceID + "> rdfs:label ?serviceLabel . \n");
+		transQuery.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdlLink . \n");
+		transQuery.append("<" + _serviceID + "> dc:creator ?creator . \n");
 		transQuery.append("OPTIONAL { \n");
-		transQuery.append("?serviceID sawsdl:modelReference ?serviceModel . \n");
+		transQuery.append("<" + _serviceID + "> sawsdl:modelReference ?serviceModel . \n");
 		transQuery.append("} \n");
-		transQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
+		transQuery.append("<" + _serviceID + "> msm_ext:wsdlDescription ?descriptionBlock . \n");
 		
 		transQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");;
 		
