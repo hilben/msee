@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
+import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -75,7 +76,9 @@ public class TriplestoreHandler {
 		
 		query.append("?bindingBlock rdfs:label ?portname . \n");
 		query.append("?bindingBlock wsdl:bindingOperation ?bindingOperationBlock . \n");
+		query.append("OPTIONAL { \n");
 		query.append("?bindingOperationBlock wsoap:action ?soapaction . \n");
+		query.append("} \n");
 		
 		query.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
 		query.append("?interfaceOperation rdfs:label \"" + _operationName + "\" . \n");
@@ -91,6 +94,7 @@ public class TriplestoreHandler {
 		query.append("?endpointBlock wsdl:address ?endpoint . \n");
 
 		query.append("}");
+		System.out.println(query);
 		
 		return query.toString();
 	}
@@ -113,7 +117,9 @@ public class TriplestoreHandler {
 			msmInstance.setOperationQName(new QName(namespace, _operationName));
 			msmInstance.setServiceQName(new QName(namespace, entry.getBinding("servicename").getValue().stringValue()));
 			msmInstance.setPortQName(new QName(namespace, entry.getBinding("portname").getValue().stringValue()));
-			msmInstance.setSOAPAction(entry.getBinding("soapaction").getValue().stringValue());
+			Binding soapAction = entry.getBinding("soapaction");
+			if ( null != soapAction )
+				msmInstance.setSOAPAction(soapAction.getValue().stringValue());
 			msmInstance.setEndpointURL(new URL(entry.getBinding("endpoint").getValue().stringValue()));
 			
 		}
