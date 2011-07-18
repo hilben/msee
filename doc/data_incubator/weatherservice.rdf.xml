@@ -55,8 +55,8 @@
         <rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
                 <rdf:type rdf:resource="&wsdl;InterfaceOperation" />
                 <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-                <wsdl:interfaceMessageReference rdf:resource="#Input1" />
-                <wsdl:interfaceMessageReference rdf:resource="#Output1" />
+                <wsdl:interfaceMessageReference rdf:resource="#wsdl.input(GetWeatherSoapIn)" />
+                <wsdl:interfaceMessageReference rdf:resource="#wsdl.output(GetWeatherSoapOut)" />
         </rdf:Description>
 
         <!-- wsdl binding (soap) -->
@@ -92,33 +92,33 @@
         <!-- WSDL END -->
 
         <!-- GetWeather Operation-->
-        <rdf:Description rdf:about="#Input1"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.input(GetWeatherSoapIn)"> <!-- wsdl:message -->
                 <!-- wsdl:IntputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;InputMessage"/>
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#In"/>
-                <wsdl:elementDeclaration rdf:resource="#Input1Part1"/>
+                <wsdl:elementDeclaration rdf:resource="#wsdl.inputPart(GetWeatherSoapIn/InputPart)"/>
                 <sawsdl:loweringSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lowering.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#Input1Part1"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#wsdl.inputPart(GetWeatherSoapIn/InputPart"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
-                <wsdl:localName>Input1Part1</wsdl:localName>
+                <wsdl:localName>InputPart</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#Output1"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.output(GetWeatherSoapOut)"> <!-- wsdl:message -->
                 <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;OutputMessage"/>
                 <!-- For exceptions use wsdl:InterfaceFaultReference -->
                 <wsdl:messageLabel rdf:resource="http://www.w3.org/ns/wsdl/in-out#Out"/>
-                <wsdl:elementDeclaration rdf:resource="#Output1Part1"/>
+                <wsdl:elementDeclaration rdf:resource="#wsdl.output(GetWeatherSoapOut/OutputPart)"/>
                 <sawsdl:liftingSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lifting.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#Output1Part1"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#wsdl.output(GetWeatherSoapOut/OutputPart)"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
-                <wsdl:localName>Output1Part1</wsdl:localName>
+                <wsdl:localName>OutputPart</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
         </rdf:Description>
 

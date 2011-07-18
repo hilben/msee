@@ -54,7 +54,7 @@ public class Transformation2 {
 	private static RepositoryHandler reposHandler;
 	
 	public static void main(String[] args) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException {
-		transformWSDL("file:///home/koni/globalweather.asmx");
+		transformWSDL("file:///home/koni/globalweather.sawsdl");
 	}
 	
  	private static void transformWSDL(String _wsdlURI) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException{
@@ -243,7 +243,7 @@ public class Transformation2 {
         		}
         	}
         }
-        reposHandler.commit();
+//        reposHandler.commit();
         System.out.println("********************   COMMIT   **************************");
 	}
  	
