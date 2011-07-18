@@ -38,7 +38,7 @@ public class RegistrationWebService implements IRegistrationEndpoint
 	}
 	
 	public String getVersion() {
-		logger.info("Registeration getVersion()");
-		return "v9999";
+		logger.info("Registeration - getVersion()");
+		return "v1.0";
 	}
 }
