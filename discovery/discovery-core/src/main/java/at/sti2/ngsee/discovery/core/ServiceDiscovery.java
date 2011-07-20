@@ -42,15 +42,15 @@ public class ServiceDiscovery {
 		discoveryQuery.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
 		discoveryQuery.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
 		discoveryQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
-		discoveryQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
+//		discoveryQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
 		discoveryQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		discoveryQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 
 		discoveryQuery.append("CONSTRUCT { \n");
-		discoveryQuery.append("?serviceID msm:hasOperation ?operationName . \n");
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?operationName . \n");
 		discoveryQuery.append("?serviceID wsdl:namespace ?namespace . \n");
 		discoveryQuery.append("} WHERE { \n");
-		discoveryQuery.append("?serviceID rdf:type msm:Service . \n");
+		discoveryQuery.append("?serviceID rdf:type msm_ext:Service . \n");
 		for ( URI category : _categoryList ) {
 			discoveryQuery.append("?serviceID sawsdl:modelReference <" + category + "> . \n");
 		}
@@ -78,7 +78,7 @@ public class ServiceDiscovery {
 		lookupQuery.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
 		lookupQuery.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
 		lookupQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
-		lookupQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
+//		lookupQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
 		lookupQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		lookupQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 		
@@ -87,7 +87,7 @@ public class ServiceDiscovery {
 		lookupQuery.append("?faultMessageReference ?p1 ?o1 . \n");
 		lookupQuery.append("} WHERE { \n");
 		
-		lookupQuery.append("?serviceID rdf:type msm:Service . \n");
+		lookupQuery.append("?serviceID rdf:type msm_ext:Service . \n");
 		lookupQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
 		lookupQuery.append("?descriptionBlock wsdl:namespace <" + _namespace + "> . \n");
 		lookupQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
@@ -162,7 +162,7 @@ public class ServiceDiscovery {
 		
 		transQuery.append("} WHERE { \n");
 		
-		transQuery.append("<" + _serviceID + "> rdf:type msm:Service . \n");
+		transQuery.append("<" + _serviceID + "> rdf:type msm_ext:Service . \n");
 		transQuery.append("<" + _serviceID + "> rdfs:label ?serviceLabel . \n");
 		transQuery.append("<" + _serviceID + "> rdfs:isDefinedBy ?wsdlLink . \n");
 		transQuery.append("OPTIONAL { \n");

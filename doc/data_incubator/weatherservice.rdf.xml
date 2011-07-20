@@ -24,7 +24,7 @@
 
         <!-- WEATHER SERVICE -->
         <rdf:Description rdf:about="#GlobalWeather">
-                <rdf:type rdf:resource="&msm;Service" />
+                <rdf:type rdf:resource="&msm_ext;Service" />
                 <rdfs:isDefinedBy rdf:resource="http://www.webservicex.com/globalweather.asmx?WSDL"/>
                 <!-- msm_ext:restDescription for RESTful Services -->
                 <msm_ext:wsdlDescription rdf:resource="#wsdl.description()"/>
@@ -116,7 +116,7 @@
                 <sawsdl:liftingSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lifting.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#wsdl.output(GetWeatherSoapOut/OutputPart)"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#wsdl.outputPart(GetWeatherSoapOut/OutputPart)"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>OutputPart</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
