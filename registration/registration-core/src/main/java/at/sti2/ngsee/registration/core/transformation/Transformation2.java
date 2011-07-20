@@ -246,8 +246,10 @@ public class Transformation2 {
         	}
         }
         
-		if ( SERVICE_NS != null && SERVICE_NAME != null )
+		if ( SERVICE_NS != null && SERVICE_NAME != null ){
+			reposHandler.commit();
         	return SERVICE_NS + SERVICE_NAME;
+		}
         return null;
 	}
  	
@@ -529,16 +531,11 @@ public class Transformation2 {
 		return categories;
 	}
 	
-	public static void commit() {
-		reposHandler.commit();
-        System.out.println("********************   COMMIT   **************************");
-	}
-	
 	public static void main(String[] args) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException {
 		String serviceID = transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
 		if ( serviceID != null ) {
 			System.out.println(serviceID);
-			commit();
+			reposHandler.commit();
 		}
 	}
 }
