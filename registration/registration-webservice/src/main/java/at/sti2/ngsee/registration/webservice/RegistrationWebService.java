@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
+import at.sti2.ngsee.registration.core.transformation.Transformation2;
 
 /**
  * 
@@ -32,9 +33,9 @@ public class RegistrationWebService implements IRegistrationEndpoint
 	protected static Logger logger = Logger.getLogger(RegistrationWebService.class);
 	
 	@WebMethod
-	public boolean register(@WebParam(name="wsdlURL")String _wsdlURL) {
+	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception{
 		logger.info("Registration of Web Service '" + _wsdlURL + "'");
-		return true;
+		return Transformation2.transformWSDL(_wsdlURL);
 	}
 	
 	public String getVersion() {

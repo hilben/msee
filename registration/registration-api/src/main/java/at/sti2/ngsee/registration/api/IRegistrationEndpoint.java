@@ -16,14 +16,14 @@ package at.sti2.ngsee.registration.api;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-
 public interface IRegistrationEndpoint {
 
 	/**
 	 * 
 	 * @param _wsdlURL The URL of the Web Service description (WSDL).
 	 * @return true if the service was register successfully, otherwise false.  
+	 * @throws Exception 
 	 */
-	public boolean register(String _wsdlURL);
+	public String register(String _wsdlURL) throws Exception;
 	
 }
