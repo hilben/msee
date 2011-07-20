@@ -243,13 +243,13 @@ public class Transformation2 {
         		}
         	}
         }
-//        reposHandler.commit();
+        reposHandler.commit();
         System.out.println("********************   COMMIT   **************************");
 	}
  	
  	private static void writeServiceToTriples(String serviceName, Vector<String> categories, String namespaceURI, String _wsdlURI) throws RepositoryException {
  		logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
-				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMURI("Service"));
+				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMEXTURI("Service"));
 		logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
 				QueryHelper.getRDFSURI("isDefinedBy") + " , " + _wsdlURI);
 		logger.info("SERVICE INFO : Triple + Context: " + SERVICE_NS + serviceName  + " , " + 
@@ -267,7 +267,7 @@ public class Transformation2 {
 		}
 		
 		logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
-				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Service"));
+				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMEXTURI("Service"));
 		logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode(serviceName)  + " , " + 
 				QueryHelper.getRDFSURI("label") + " , " + serviceName);
 		 
@@ -279,13 +279,13 @@ public class Transformation2 {
 				QueryHelper.getWSDLURI("namespace") + " , " + namespaceURI);
 
     	//Writing persistent
-		reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMURI("Service"), _wsdlURI);
+		reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMEXTURI("Service"), _wsdlURI);
 		reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("isDefinedBy"),  _wsdlURI, _wsdlURI);
 		reposHandler.addResourceTriple(SERVICE_NS + serviceName , QueryHelper.getMSMEXTURI("wsdlDescription"),  getDescriptionNode(), _wsdlURI);
 		reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
 		reposHandler.addLiteralTriple(SERVICE_NS + serviceName , QueryHelper.getDCURI("creator"),  "STI Innsbruck", _wsdlURI);
 	
-		reposHandler.addResourceTriple(getServiceNode(serviceName) , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Service"), _wsdlURI);
+		reposHandler.addResourceTriple(getServiceNode(serviceName) , QueryHelper.getRDFURI("type"),  QueryHelper.getMSMEXTURI("Service"), _wsdlURI);
 		reposHandler.addLiteralTriple(getServiceNode(serviceName) , QueryHelper.getRDFSURI("label"),  serviceName, _wsdlURI);
 		
 		reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Description"), _wsdlURI);
@@ -469,19 +469,19 @@ public class Transformation2 {
 	}
 	
 	private static String getInputMessageNode(String messageName) {
-		return SERVICE_NS + "wsdl.input(" + messageName + ")"; 
+		return SERVICE_NS + "wsdl.interfaceMessageReference(" + messageName + ")"; 
 	}
 	
 	private static String getOutputMessageNode(String messageName) {
-		return SERVICE_NS + "wsdl.output(" + messageName + ")"; 
+		return SERVICE_NS + "wsdl.interfaceMessageReference(" + messageName + ")"; 
 	}
 	
 	private static String getInputMessagePartNode(String messageName, String partName) {
-		return SERVICE_NS + "wsdl.inputPart(" + messageName + "/" + partName + ")"; 
+		return SERVICE_NS + "wsdl.interfaceMessageReference(" + messageName + "/" + partName + ")"; 
 	}
 	
 	private static String getOutputMessagePartNode(String messageName, String partName) {
-		return SERVICE_NS + "wsdl.outputPart(" + messageName + "/" + partName + ")"; 
+		return SERVICE_NS + "wsdl.interfaceMessageReference(" + messageName + "/" + partName + ")"; 
 	}
 	
 	private static String getInterfaceNode(String interfaceName) {

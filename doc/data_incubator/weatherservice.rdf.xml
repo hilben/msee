@@ -92,7 +92,7 @@
         <!-- WSDL END -->
 
         <!-- GetWeather Operation-->
-        <rdf:Description rdf:about="#wsdl.input(GetWeatherSoapIn)"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapIn)"> <!-- wsdl:message -->
                 <!-- wsdl:IntputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;InputMessage"/>
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
@@ -101,13 +101,13 @@
                 <sawsdl:loweringSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lowering.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#wsdl.inputPart(GetWeatherSoapIn/InputPart"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapIn/InputPart"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>InputPart</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#wsdl.output(GetWeatherSoapOut)"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapOut)"> <!-- wsdl:message -->
                 <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;OutputMessage"/>
                 <!-- For exceptions use wsdl:InterfaceFaultReference -->
@@ -116,7 +116,7 @@
                 <sawsdl:liftingSchemaMapping rdf:resource="http://sesa.sti2.at/services/xslt/weather-lifting.xslt"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#wsdl.outputPart(GetWeatherSoapOut/OutputPart)"> <!-- wsdl:message/wsdl:part -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapOut/OutputPart)"> <!-- wsdl:message/wsdl:part -->
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>OutputPart</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
