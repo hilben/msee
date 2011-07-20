@@ -38,7 +38,7 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
  * State:        		$State$<br>
  */
 
-@WebService(targetNamespace="http://see.sti2.at/")
+@WebService(targetNamespace="http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(
 		@WSDLDocumentation("SESA Invoker Component")
 	)

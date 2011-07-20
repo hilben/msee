@@ -8,9 +8,9 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.apache.log4j.Logger;
 
-@WebService(targetNamespace="http://see.sti2.at/")
+@WebService(targetNamespace="http://sesa.sti2.at/services/dummy/")
 @WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Invoker Component.")
+		@WSDLDocumentation("SESA Example Service")
 	)
 public class PingWebService {
 	protected static Logger logger = Logger.getLogger(PingWebService.class);

@@ -16,7 +16,7 @@
 	</modules>
 
 	<name>sesa-project</name>
-	<url>http://see.sti2.at</url>
+	<url>http://sesa.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,12 +24,12 @@
 
 	<issueManagement>
 		<system>Sourceforge</system>
-		<url>http://see.sti2.at</url>
+		<url>http://sesa.sti2.at</url>
 	</issueManagement>
 
 	<organization>
 		<name>Semantic Technology Institute Innsbruck</name>
-		<url>http://see.sti2.at</url>
+		<url>http://sesa.sti2.at</url>
 	</organization>
 
 	<developers>

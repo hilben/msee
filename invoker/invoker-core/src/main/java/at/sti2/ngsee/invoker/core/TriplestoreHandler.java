@@ -115,7 +115,7 @@ public class TriplestoreHandler {
 	
 	public static void main(String[] args) throws Exception {
 		InvokerMSM invokerMSM = TriplestoreHandler.getInvokerMSM("http://www.webserviceX.NET#GlobalWeather", "GetWeather");
-		System.out.println(invokerMSM.getLifingSchema());
+		System.out.println(invokerMSM.getOperationQName());
 	}
 	
 }
