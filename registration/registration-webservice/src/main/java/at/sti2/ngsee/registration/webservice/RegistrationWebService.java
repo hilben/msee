@@ -4,6 +4,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.cxf.annotations.WSDLDocumentation;
+import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
@@ -27,7 +29,10 @@ import at.sti2.ngsee.registration.core.transformation.Transformation2;
  * State:        		$State$<br>
  */
 
-@WebService(targetNamespace="http://see.sti2.at/")
+@WebService(targetNamespace="http://sesa.sti2.at/services/")
+@WSDLDocumentationCollection(
+		@WSDLDocumentation("SESA Discovery Component")
+	)
 public class RegistrationWebService implements IRegistrationEndpoint
 {	
 	protected static Logger logger = Logger.getLogger(RegistrationWebService.class);

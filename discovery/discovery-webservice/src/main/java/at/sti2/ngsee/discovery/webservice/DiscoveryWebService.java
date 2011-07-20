@@ -10,6 +10,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.cxf.annotations.WSDLDocumentation;
+import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.openrdf.rio.RDFFormat;
 
 import at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService;
@@ -18,7 +20,10 @@ import at.sti2.ngsee.discovery.core.ServiceDiscovery;
 /**
  * @author Alex Oberhauser
  */
-@WebService
+@WebService(targetNamespace="http://sesa.sti2.at/services/")
+@WSDLDocumentationCollection(
+		@WSDLDocumentation("SESA Discovery Component")
+	)
 public class DiscoveryWebService implements IDiscoveryWebService {
 	
 	/**
