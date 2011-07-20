@@ -537,7 +537,7 @@ public class Transformation2 {
 	public static void main(String[] args) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException {
 		String serviceID = transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
 		if ( serviceID != null ) {
-			System.err.println(serviceID);
+			System.out.println(serviceID);
 			commit();
 		}
 	}
