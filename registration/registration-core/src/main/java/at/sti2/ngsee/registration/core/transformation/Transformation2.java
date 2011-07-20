@@ -431,7 +431,7 @@ public class Transformation2 {
 		
 		//Writing persistent
 		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("BindingOperation"), _wsdlURI);
-		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSDLURI("action"), soapActionURI, _wsdlURI);
+		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
 				
 		reposHandler.addResourceTriple(getBindingNode(bindingName), QueryHelper.getWSDLURI("bindingOperation"), getBindingOperationNode(bindingOperationName), _wsdlURI);
  	}
