@@ -17,10 +17,7 @@
                                 <xs:sequence>
                                         <xs:element minOccurs="0" name="serviceID" type="xs:string"
                                                 sawsdl:modelReference="http://sesa.sti2.at/ns/minimal-service-model-ext#Service"/>
-                                        <!-- It is not the whole Operation
-                                             concept, but the rdfs:label -->
-                                        <xs:element minOccurs="0" name="operation" type="xs:string"
-                                                sawsdl:modelReference="http://sesa.sti2.at/ns/minimal-service-model-ext#Operation"/>
+                                        <xs:element minOccurs="0" name="operation" type="xs:string"/>
                                         <xs:element minOccurs="0" name="inputData" type="xs:string"/>
                                 </xs:sequence>
                         </xs:complexType>
