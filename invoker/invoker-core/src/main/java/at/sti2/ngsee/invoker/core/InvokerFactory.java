@@ -4,6 +4,7 @@
 package at.sti2.ngsee.invoker.core;
 
 import at.sti2.ngsee.invoker.api.core.ISOAPInvoker;
+import at.sti2.ngsee.invoker.core.rest.RESTInvoker;
 import at.sti2.ngsee.invoker.core.soap.SoapJaxWSInvoker;
 
 /**
@@ -26,6 +27,10 @@ public abstract class InvokerFactory {
 	
 	public static ISOAPInvoker createSOAPInvoker() {
 		return new SoapJaxWSInvoker();
+	}
+	
+	public static RESTInvoker createRESTInvoker() {
+		return new RESTInvoker();
 	}
 	
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
         <!ENTITY msm "http://cms-wg.sti2.org/ns/minimal-service-model#" >
-        <!ENTITY msm_ext "http://sesa.sti2.org/ns/minimal-service-model-ext#" >
+        <!ENTITY msm_ext "http://sesa.sti2.at/ns/minimal-service-model-ext#" >
         <!ENTITY wsdl "http://www.w3.org/ns/wsdl-rdf#" >
 ]>
 <rdf:RDF

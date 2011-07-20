@@ -33,19 +33,6 @@ import at.sti2.util.triplestore.RepositoryHandler;
  */
 public class TriplestoreHandler {
 	
-//	private static QName getStringToQName(String _value) { 
-//		String[] result = new String[2];
-//		result[0] = "";
-//		result[1] = "";
-//		String[] qnameParts = _value.split("/");
-//		for ( int count = 0; count < (qnameParts.length-1); count++ )
-//			result[0] += qnameParts[count] + "/";
-//		result[1] = qnameParts[qnameParts.length-1];
-////		if ( !_value.endsWith("/") )
-////			result[0] = (String) result[0].subSequence(0, result[0].length()-1);
-//		return new QName(result[0], result[1]);
-//	}
-	
 	/**
 	 * TODO: Only IN_OUT is supported. Make inputMessage and outputMessage optional to support also IN_ONLY and OUT_ONLY.
 	 * 
@@ -61,7 +48,7 @@ public class TriplestoreHandler {
 		query.append("PREFIX wsoap: <http://www.w3.org/ns/wsdl/soap#> \n");
 		query.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
 		query.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
-		query.append("PREFIX msm_ext: <http://sesa.sti2.org/ns/minimal-service-model-ext#> \n");
+		query.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		
 		query.append("SELECT ?servicename ?portname ?namespace ?lifting ?lowering ?wsdl ?soapaction ?endpoint WHERE { \n");
 		
@@ -94,7 +81,6 @@ public class TriplestoreHandler {
 		query.append("?endpointBlock wsdl:address ?endpoint . \n");
 
 		query.append("}");
-		System.out.println(query);
 		
 		return query.toString();
 	}

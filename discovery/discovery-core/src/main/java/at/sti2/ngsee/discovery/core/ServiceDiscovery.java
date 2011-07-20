@@ -43,18 +43,17 @@ public class ServiceDiscovery {
 		discoveryQuery.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
 		discoveryQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
 		discoveryQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
-		discoveryQuery.append("PREFIX msm_ext: <http://sesa.sti2.org/ns/minimal-service-model-ext#> \n");
+		discoveryQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		discoveryQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
-		
+
 		discoveryQuery.append("CONSTRUCT { \n");
 		discoveryQuery.append("?serviceID msm:hasOperation ?operationName . \n");
-		discoveryQuery.append("?serviceID wsdl:namespace ?namespace");
+		discoveryQuery.append("?serviceID wsdl:namespace ?namespace . \n");
 		discoveryQuery.append("} WHERE { \n");
 		discoveryQuery.append("?serviceID rdf:type msm:Service . \n");
 		for ( URI category : _categoryList ) {
 			discoveryQuery.append("?serviceID sawsdl:modelReference <" + category + "> . \n");
 		}
-		
 		discoveryQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
 		discoveryQuery.append("?descriptionBlock wsdl:namespace ?namespace . \n");
 		discoveryQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
@@ -80,7 +79,7 @@ public class ServiceDiscovery {
 		lookupQuery.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
 		lookupQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
 		lookupQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
-		lookupQuery.append("PREFIX msm_ext: <http://sesa.sti2.org/ns/minimal-service-model-ext#> \n");
+		lookupQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		lookupQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 		
 		lookupQuery.append("CONSTRUCT { \n");
@@ -119,7 +118,7 @@ public class ServiceDiscovery {
 		transQuery.append("PREFIX dc: <http://purl.org/dc/elements/1.1/> \n");
 		transQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
 		transQuery.append("PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> \n");
-		transQuery.append("PREFIX msm_ext: <http://sesa.sti2.org/ns/minimal-service-model-ext#> \n");
+		transQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
 		transQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 		
 		transQuery.append("CONSTRUCT { \n");
@@ -242,11 +241,13 @@ public class ServiceDiscovery {
 		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
 		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
-//		System.out.println("---");
-//		
-//		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
+		System.out.println("---");
 		
-//		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
+		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
+		System.out.println("---");
+		
+		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
+		System.out.println("---");
 	}
 	
 }

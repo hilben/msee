@@ -4027,7 +4027,7 @@
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
 \f0\fs24 \cf0 msm:http://cms-wg.sti2.org/ns/minimal-service-model#\
-msm_ext:http://sesa.sti2.org/ns/minimal-service-model-ext#\
+msm_ext:http://sesa.sti2.at/ns/minimal-service-model-ext#\
 ex:http://www.webserviceX.NET\
 wsdl:http://www.w3.org/ns/wsdl-rdf#\
 wsoap:http://www.w3.org/ns/wsdl/soap#\

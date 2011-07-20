@@ -17,7 +17,7 @@ public class QueryHelper {
 	public static final String SAWSDL_NS = "http://www.w3.org/ns/sawsdl#";
 	public static final String WSDL_NS = "http://www.w3.org/ns/wsdl-rdf#";
 	public static final String WL_NS = "http://www.wsmo.org/ns/wsmo-lite#";
-	public static final String MSMEXT_NS = "http://sesa.sti2.org/ns/minimal-service-model-ext#";
+	public static final String MSMEXT_NS = "http://sesa.sti2.at/ns/minimal-service-model-ext#";
 	public static final String WSOAP_NS = "http://www.w3.org/ns/wsdl/soap#";
 	
 	public static String getMSMEXTURI(String _property) {
