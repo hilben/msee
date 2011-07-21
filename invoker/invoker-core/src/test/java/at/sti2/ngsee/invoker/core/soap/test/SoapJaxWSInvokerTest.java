@@ -54,7 +54,7 @@ public class SoapJaxWSInvokerTest extends AbstractSoapTest {
 		return inputMessage;
 	}
 	
-	@Test
+//	@Test
 	public void testDummyService1() throws Exception {
 		String namespace = "http://see.sti2.at/";
 		QName serviceName = new QName(namespace, "PingWebServiceService");

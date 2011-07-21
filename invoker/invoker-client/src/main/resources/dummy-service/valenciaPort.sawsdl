@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ValenciaPortWebServiceService"
+        targetNamespace="http://sesa.sti2.at/services/dummy/"
+        xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://sesa.sti2.at/services/dummy/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:sawsdl="http://www.w3.org/ns/sawsdl"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <wsdl:types>
+                <xs:schema elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/dummy/" version="1.0" xmlns:tns="http://sesa.sti2.at/services/dummy/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <xs:element name="submitFALForm" type="tns:submitFALForm"
+                                sawsdl:loweringSchemaMapping="http://sesa.sti2.at/services/xslt/valenciaport-lowering.xslt"/>
+                        <xs:element name="submitFALFormResponse" type="tns:submitFALFormResponse"
+                                sawsdl:liftingSchemaMapping="http://sesa.sti2.at/services/xslt/valenciaport-lifting.xslt"/>
+                        <xs:complexType name="submitFALForm">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="falForm" type="tns:generalDeclarationBean"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="generalDeclarationBean">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="arravialOrDepartureTime" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="generalDeclarationId" type="xs:string"/>
+                                        <xs:element maxOccurs="unbounded" minOccurs="0" name="lastPortOfCall" nillable="true" type="tns:portBean"/>
+                                        <xs:element minOccurs="0" name="numberOfCrew" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="numberOfPassengers" type="xs:string"/>
+                                        <xs:element maxOccurs="unbounded" minOccurs="0" name="ports" nillable="true" type="tns:portBean"/>
+                                        <xs:element minOccurs="0" name="ship" type="tns:shipBean"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="portBean">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="portCode" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="portName" type="xs:string"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="shipBean">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="callSign" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="flagState" type="tns:countryBean"/>
+                                        <xs:element name="grossTonnage" type="xs:int"/>
+                                        <xs:element name="IMONumber" type="xs:int"/>
+                                        <xs:element name="netTonnage" type="xs:int"/>
+                                        <xs:element minOccurs="0" name="shipMasterName" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="shipName" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="shipType" type="xs:string"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="countryBean">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="countryName" type="xs:string"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="submitFALFormResponse">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="GeneralDeclarationResponse" type="tns:generalDeclarationResponseBean"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                        <xs:complexType name="generalDeclarationResponseBean">
+                                <xs:sequence>
+                                        <xs:element minOccurs="0" name="ID" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="shipID" type="xs:string"/>
+                                </xs:sequence>
+                        </xs:complexType>
+                </xs:schema>
+        </wsdl:types>
+        <wsdl:message name="submitFALForm">
+                <wsdl:part element="tns:submitFALForm" name="parameters">
+                </wsdl:part>
+        </wsdl:message>
+        <wsdl:message name="submitFALFormResponse">
+                <wsdl:part element="tns:submitFALFormResponse" name="parameters">
+                </wsdl:part>
+        </wsdl:message>
+        <wsdl:portType name="ValenciaPortWebService">
+                <wsdl:documentation>SESA e-Freight Dummy Service.</wsdl:documentation>
+                <wsdl:operation name="submitFALForm">
+                        <wsdl:input message="tns:submitFALForm" name="submitFALForm">
+                        </wsdl:input>
+                        <wsdl:output message="tns:submitFALFormResponse" name="submitFALFormResponse">
+                        </wsdl:output>
+                </wsdl:operation>
+        </wsdl:portType>
+        <wsdl:binding name="ValenciaPortWebServiceServiceSoapBinding" type="tns:ValenciaPortWebService">
+                <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+                <wsdl:operation name="submitFALForm">
+                        <soap:operation soapAction="" style="document"/>
+                        <wsdl:input name="submitFALForm">
+                                <soap:body use="literal"/>
+                        </wsdl:input>
+                        <wsdl:output name="submitFALFormResponse">
+                                <soap:body use="literal"/>
+                        </wsdl:output>
+                </wsdl:operation>
+        </wsdl:binding>
+        <wsdl:service name="ValenciaPortWebServiceService"
+                sawsdl:modelReference="http://www.sti2.at/E-Freight/ServiceCategories#CustomsAuthorityPreArrival
+                http://www.sti2.at/E-Freight/ServiceCategories#Maritime
+                http://www.sti2.at/E-Freight/ServiceCategories#SendArrivalNotification
+                http://www.sti2.at/E-Freight/ServiceCategories#CustomsAuthorityPreDeparture">
+                <wsdl:port binding="tns:ValenciaPortWebServiceServiceSoapBinding" name="ValenciaPortWebServicePort">
+                        <soap:address location="http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"/>
+                </wsdl:port>
+        </wsdl:service>
+</wsdl:definitions>

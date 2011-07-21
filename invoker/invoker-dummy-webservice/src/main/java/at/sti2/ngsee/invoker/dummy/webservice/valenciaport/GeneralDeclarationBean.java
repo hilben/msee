@@ -1,8 +1,6 @@
 package at.sti2.ngsee.invoker.dummy.webservice.valenciaport;
 
 public class GeneralDeclarationBean {
-	
-	private Boolean isArrival=true;
 	private String arravialOrDepartureTime="";
 	private String generalDeclarationId="";
 	private String numberOfCrew="";
@@ -11,15 +9,6 @@ public class GeneralDeclarationBean {
 	private PortBean[] lastPortOfCall=null;
 	
 	private ShipBean ship=null;
-	
-	
-	public Boolean getIsArrival() {
-		return isArrival;
-	}
-
-	public void setIsArrival(Boolean isArrival) {
-		this.isArrival = isArrival;
-	}
 
 	public GeneralDeclarationBean() {
 		// TODO Auto-generated constructor stub
