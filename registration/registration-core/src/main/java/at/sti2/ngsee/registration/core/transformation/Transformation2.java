@@ -433,7 +433,15 @@ public class Transformation2 {
 		
 		//Writing persistent
 		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("BindingOperation"), _wsdlURI);
-		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
+		/**
+		 * XXX: Fix this. SOAPAction could be also only a string or empty
+		 */
+		if ( soapActionURI != null ) 
+			try {
+				reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 				
 		reposHandler.addResourceTriple(getBindingNode(bindingName), QueryHelper.getWSDLURI("bindingOperation"), getBindingOperationNode(bindingOperationName), _wsdlURI);
  	}

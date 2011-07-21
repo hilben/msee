@@ -9,8 +9,9 @@
          http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="pingWebService" implementor="at.sti2.ngsee.invoker.dummy.webservice.PingWebService"
-		address="/ping">
+		address="/pingWebService">
 	</jaxws:endpoint>
+
 	<jaxws:endpoint id="valenciaPortWebService" implementor="at.sti2.ngsee.invoker.dummy.webservice.ValenciaPortWebService"
 		address="/valenciatPortWebService">
 	</jaxws:endpoint>
