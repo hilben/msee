@@ -31,7 +31,7 @@ import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.api.grounding.exception.GroundingException;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
 
-public class XSLTGroundingEngineTest {
+public class WeatherXSLTTest {
 
 	private IGroundingEngine xsltGroundingEnginge;
 
@@ -49,7 +49,7 @@ public class XSLTGroundingEngineTest {
 
 	@Test
 	public void testLowering() throws IOException, GroundingException {
-		String rdfInputData = loadResource("weather-input.rdf.xml");
+		String rdfInputData = loadResource("weather/weather-input.rdf.xml");
 		String loweredData = xsltGroundingEnginge.lower(rdfInputData);
 		
 		assertNotNull(loweredData);
@@ -58,7 +58,7 @@ public class XSLTGroundingEngineTest {
 
 	@Test
 	public void testLifting() throws IOException, GroundingException {
-		String xmlInputData = loadResource("WeatherResponse.xml");
+		String xmlInputData = loadResource("weather/WeatherResponse.xml");
 		String liftedData = xsltGroundingEnginge.lift(xmlInputData);
 		
 		assertNotNull(liftedData);
