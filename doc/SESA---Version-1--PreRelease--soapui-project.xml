@@ -268,6 +268,16 @@
          <operationName>GetWeather</operationName>
       </ser:lookup>
    </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call><con:call name="SubmitFALForm"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:lookup>
+         <!--Optional:-->
+         <namespace>http://sesa.sti2.at/services/dummy/</namespace>
+         <!--Optional:-->
+         <operationName>submitFALForm</operationName>
+      </ser:lookup>
+   </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
