@@ -5,7 +5,7 @@
 
         <xsl:output method="xml" version="1.0"
                 indent="yes"
-                standalone="no"
+                standalone="yes"
                 omit-xml-declaration="no"/>
 
         <xsl:template match="/rdf:RDF">

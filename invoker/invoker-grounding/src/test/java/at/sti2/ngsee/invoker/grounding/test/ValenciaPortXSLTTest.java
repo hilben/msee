@@ -47,7 +47,7 @@ public class ValenciaPortXSLTTest {
 
 	@Test
 	public void testLowering() throws IOException, GroundingException {
-		String rdfInputData = loadResource("ValenciaPort/falform1-input.rdf");
+		String rdfInputData = loadResource("ValenciaPort/falform1.rdf");
 		String loweredData = xsltGroundingEnginge.lower(rdfInputData);
 		
 		assertNotNull(loweredData);
@@ -56,7 +56,7 @@ public class ValenciaPortXSLTTest {
 
 //	@Test
 	public void testLifting() throws IOException, GroundingException {
-		String xmlInputData = loadResource("weather/WeatherResponse.xml");
+		String xmlInputData = loadResource("ValenciaPort/response.xml");
 		String liftedData = xsltGroundingEnginge.lift(xmlInputData);
 		
 		assertNotNull(liftedData);
