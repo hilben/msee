@@ -38,8 +38,8 @@ public class ValenciaPortXSLTTest {
 	@Before
 	public void setUp() throws Exception {
 
-		final URL liftingSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lowering.xslt");
-		final URL loweringSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lifting.xslt");
+		final URL loweringSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lowering.xslt");
+		final URL liftingSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lifting.xslt");
 
 		xsltGroundingEnginge = GroundingFactory.createGroundingEngine(
 				loweringSchemaURL, liftingSchemaURL);
@@ -54,7 +54,7 @@ public class ValenciaPortXSLTTest {
 		assertNotSame(loweredData, "");
 	}
 
-//	@Test
+	@Test
 	public void testLifting() throws IOException, GroundingException {
 		String xmlInputData = loadResource("ValenciaPort/response.xml");
 		String liftedData = xsltGroundingEnginge.lift(xmlInputData);
