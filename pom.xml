@@ -18,7 +18,6 @@
 	<name>sesa-project</name>
 	<url>http://sesa.sti2.at</url>
 
-        <licenses>LICENSE.txt</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
