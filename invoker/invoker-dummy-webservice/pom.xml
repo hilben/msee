@@ -41,7 +41,6 @@
 
 		<pluginManagement>
 			<plugins>
-			
 				<plugin><!--use mvn tomcat:deploy or mvn tomcat:undeploy -->
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>tomcat-maven-plugin</artifactId>
@@ -54,6 +53,23 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-java2ws-plugin</artifactId>
+					<version>${cxf.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-jaxws</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-simple</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 
 				<plugin>
 					<groupId>org.apache.cxf</groupId>
@@ -64,10 +80,10 @@
 							<phase>process-classes</phase>
 							<configuration>
 								<className>at.sti2.ngsee.invoker.dummy.webservice.PingWebService</className>
-								<!-- <genServer>true</genServer> -->
+								<genServer>true</genServer>
 								<genWsdl>true</genWsdl>
 								<verbose>true</verbose>
-								<!-- <argline>-s ${project.build.directory}/generated-sources/</argline> -->
+								<argline>-s ${project.build.directory}/generated-sources/</argline>
 							</configuration>
 							<goals>
 								<goal>java2ws</goal>
@@ -103,6 +119,11 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>edu.uga.cs.lsdis</groupId>
+			<artifactId>SAWSDL4J</artifactId>
+			<version>M4</version>
 		</dependency>
 	</dependencies>
 

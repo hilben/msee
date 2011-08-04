@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:submitFALFormResponse xmlns:ns2="http://sesa.sti2.at/services/dummy/">
+  <GeneralDeclarationResponse>
+    <ID>#FAL_Form1_3f8b09d5-c430-4b6a-934b-f5e4ad25977b</ID>
+    <shipID>9HVG8</shipID>
+  </GeneralDeclarationResponse>
+</ns2:submitFALFormResponse>

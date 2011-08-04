@@ -1,5 +1,18 @@
 /**
- * ServiceDiscovery.java - at.sti2.ngsee.discovery.core
+ * Copyright (C) 2011 STI Innsbruck, UIBK
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 package at.sti2.ngsee.discovery.core;
 
@@ -46,8 +59,35 @@ public class ServiceDiscovery {
 		discoveryQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 
 		discoveryQuery.append("CONSTRUCT { \n");
-		discoveryQuery.append("?serviceID msm_ext:hasOperation ?operationName . \n");
-		discoveryQuery.append("?serviceID wsdl:namespace ?namespace . \n");
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?inputMessage . \n");
+		
+		discoveryQuery.append("?inputMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
+		discoveryQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
+		discoveryQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
+		discoveryQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
+
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?outputMessage . \n");
+		discoveryQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
+		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
+		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
+		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
+		
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?inputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
+		discoveryQuery.append("?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n");
+		discoveryQuery.append("?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n");
+		discoveryQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
+				
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?outputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
+		discoveryQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
+		discoveryQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
+		discoveryQuery.append("?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n");
+		
 		discoveryQuery.append("} WHERE { \n");
 		discoveryQuery.append("?serviceID rdf:type msm_ext:Service . \n");
 		for ( URI category : _categoryList ) {
@@ -58,6 +98,53 @@ public class ServiceDiscovery {
 		discoveryQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
 		discoveryQuery.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
 		discoveryQuery.append("?interfaceOperation rdfs:label ?operationName . \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?inputMessage . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation sawsdl:modelReference ?operationModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("?inputMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
+		discoveryQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
+		discoveryQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?outputMessage . \n");
+		discoveryQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
+		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
+		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
+		discoveryQuery.append("?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n");
+		discoveryQuery.append("?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceFaultReference ?outputFaultMessage . \n");
+		discoveryQuery.append("?outputFaultMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
+		discoveryQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
+		discoveryQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
 		
 		discoveryQuery.append("}");
 
@@ -236,16 +323,17 @@ public class ServiceDiscovery {
 	
 	public static void main(String[] args) throws Exception {
 		List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
 		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
 		System.out.println("---");
 		
-		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
-		System.out.println("---");
-		
-		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
-		System.out.println("---");
+//		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
+//		System.out.println("---");
+//		
+//		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
+//		System.out.println("---");
 	}
 	
 }

@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2011 STI Innsbruck, UIBK
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
 package at.sti2.ngsee.invoker.grounding.test;
 
 /**
@@ -31,17 +47,15 @@ import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.api.grounding.exception.GroundingException;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
 
-public class XSLTGroundingEngineTest {
+public class ValenciaPortXSLTTest {
 
 	private IGroundingEngine xsltGroundingEnginge;
 
 	@Before
 	public void setUp() throws Exception {
 
-		final URL liftingSchemaURL = new URL(
-				"http://sesa.sti2.at/services/xslt/weather-lifting.xslt");
-		final URL loweringSchemaURL = new URL(
-				"http://sesa.sti2.at/services/xslt/weather-lowering.xslt");
+		final URL loweringSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lowering.xslt");
+		final URL liftingSchemaURL = ClassLoader.getSystemResource("./ValenciaPort/valenciaport-lifting.xslt");
 
 		xsltGroundingEnginge = GroundingFactory.createGroundingEngine(
 				loweringSchemaURL, liftingSchemaURL);
@@ -49,7 +63,7 @@ public class XSLTGroundingEngineTest {
 
 	@Test
 	public void testLowering() throws IOException, GroundingException {
-		String rdfInputData = loadResource("weather-input.rdf.xml");
+		String rdfInputData = loadResource("ValenciaPort/falform1.rdf");
 		String loweredData = xsltGroundingEnginge.lower(rdfInputData);
 		
 		assertNotNull(loweredData);
@@ -58,7 +72,7 @@ public class XSLTGroundingEngineTest {
 
 	@Test
 	public void testLifting() throws IOException, GroundingException {
-		String xmlInputData = loadResource("WeatherResponse.xml");
+		String xmlInputData = loadResource("ValenciaPort/response.xml");
 		String liftedData = xsltGroundingEnginge.lift(xmlInputData);
 		
 		assertNotNull(liftedData);
@@ -79,5 +93,9 @@ public class XSLTGroundingEngineTest {
 		in.close();
 		return result.toString();
 	}
+	
+//	private URL getURL(String resource) throws IOException{
+//		
+//	}
 
 }
