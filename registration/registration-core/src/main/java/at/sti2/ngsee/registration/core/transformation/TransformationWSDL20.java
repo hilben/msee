@@ -1,259 +1,142 @@
 package at.sti2.ngsee.registration.core.transformation;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
+import java.net.URL;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.wsdl.Binding;
-import javax.wsdl.BindingOperation;
-import javax.wsdl.Input;
-import javax.wsdl.Message;
-import javax.wsdl.Operation;
-import javax.wsdl.Output;
-import javax.wsdl.Part;
-import javax.wsdl.Port;
-import javax.wsdl.PortType;
-import javax.wsdl.Service;
-import javax.wsdl.Types;
-import javax.wsdl.WSDLException;
-import javax.wsdl.factory.WSDLFactory;
-import javax.wsdl.xml.WSDLReader;
-import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import com.ibm.wsdl.extensions.http.HTTPAddressImpl;
-import com.ibm.wsdl.extensions.http.HTTPBindingImpl;
-import com.ibm.wsdl.extensions.http.HTTPOperationImpl;
-import com.ibm.wsdl.extensions.soap.SOAPAddressImpl;
-import com.ibm.wsdl.extensions.soap.SOAPBindingImpl;
-import com.ibm.wsdl.extensions.soap.SOAPOperationImpl;
-import com.ibm.wsdl.extensions.soap12.SOAP12AddressImpl;
-import com.ibm.wsdl.extensions.soap12.SOAP12BindingImpl;
-import com.ibm.wsdl.extensions.soap12.SOAP12OperationImpl;
+import org.ow2.easywsdl.extensions.sawsdl.SAWSDLFactory;
+import org.ow2.easywsdl.extensions.sawsdl.api.Binding;
+import org.ow2.easywsdl.extensions.sawsdl.api.BindingOperation;
+import org.ow2.easywsdl.extensions.sawsdl.api.Description;
+import org.ow2.easywsdl.extensions.sawsdl.api.Endpoint;
+import org.ow2.easywsdl.extensions.sawsdl.api.InterfaceType;
+import org.ow2.easywsdl.extensions.sawsdl.api.Operation;
+import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLReader;
+import org.ow2.easywsdl.extensions.sawsdl.api.Service;
+import org.ow2.easywsdl.extensions.sawsdl.api.Types;
+import org.ow2.easywsdl.extensions.sawsdl.api.schema.Element;
+import org.ow2.easywsdl.extensions.sawsdl.api.schema.Schema;
+import org.ow2.easywsdl.schema.api.XmlException;
+import org.ow2.easywsdl.wsdl.api.abstractItf.AbsItfBinding.BindingConstants;
 
 import at.sti2.ngsee.registration.core.common.Config;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
 
-import edu.uga.cs.lsdis.sawsdl.*;
-import edu.uga.cs.lsdis.sawsdl.extensions.schema.Schema;
-import edu.uga.cs.lsdis.sawsdl.impl.util.SchemaUtils;
-
 /**
- * 
- * @author Corneliu Stanciu
+ * <b>Purpose:</b>
+ * <br>
+ * <b>Description:</b>
+ * <br>
+ * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
+ * <b>Company:</b>       STI Innsbruck<br>
  *
+ * @author      Corneliu Stanciu<br>
+ * @version     $Id$<br>
+ * Date of creation:  13.04.2011<br>
+ * File:         $Source$<br>
+ * Modifier:     $Author$<br>
+ * Revision:     $Revision$<br>
+ * State:        $State$<br>
  */
-public class Transformation2 {
+public class TransformationWSDL20 {
 	
-	private static Logger logger = Logger.getLogger(Transformation2.class);
+	private static Logger logger = Logger.getLogger(TransformationWSDL11.class);
 	private static String SERVICE_NS;
 	private static String SERVICE_NAME;
 	private static RepositoryHandler reposHandler;
+	private final static String SOAP_NS = "http://schemas.xmlsoap.org/soap/http";
 	
- 	public static String transformWSDL(String _wsdlURI) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException{
- 		System.setProperty("javax.wsdl.factory.WSDLFactory", "edu.uga.cs.lsdis.sawsdl.impl.factory.WSDLFactoryImpl");
- 		
- 		WSDLReader wsdlReader = WSDLFactory.newInstance().newWSDLReader();
-        Definition definition = (Definition) wsdlReader.readWSDL(_wsdlURI);
-        
-        Config cfg = new Config();
+	public static void main(String[] args) throws MalformedURLException, IOException, URISyntaxException, XmlException, RepositoryException  {
+//		transformWSDL("http://www.w3.org/2002/ws/sawsdl/spec/wsdl/order#");
+//		transformWSDL("http://www.w3.org/2002/ws/sawsdl/spec/wsdl/order11");
+//		transformWSDL("http://www.webservicex.com/globalweather.asmx?WSDL");
+//		transformWSDL("http://sigimera.networld.to:8080/services/sigimeraID?wsdl");
+//		transformWSDL("http://iserve.kmi.open.ac.uk/page/documents/6a2eca65-64cb-4a5d-aa7d-93161f9c3bb9/new2.sawsdl");
+//		transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
+		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");
+//		transformWSDL("file:///home/koni/sawsdl_2.0.wsdl");
+//		transformWSDL("file:///tmp/xslt");
+	}
+	
+	public static void transformWSDL(String _wsdlURI) throws MalformedURLException, IOException, URISyntaxException, XmlException, RepositoryException {
+				
+		Config cfg = new Config();
 		reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
 		
-		Types types = definition.getTypes();
-		List<Schema> schemaList = SchemaUtils.getSchemas(types);
-		Schema schema = schemaList.get(0);
+		// Read a SAWSDL description
+		SAWSDLReader reader = SAWSDLFactory.newInstance().newSAWSDLReader();
+		Description desc = reader.read(new URL(_wsdlURI));
 		
-		HashMap<String, String> llMap = new HashMap<String, String>();
-		NodeList elements = schema.getElement().getChildNodes();
-		for ( int count=0; count < elements.getLength(); count++ ) {
-			Node item = elements.item(count);
-			if ( item.getNodeType() == Node.ELEMENT_NODE ) {
-				Node liftingSchemaNode = item.getAttributes().getNamedItem("sawsdl:liftingSchemaMapping");
-				Node loweringSchemaNode = item.getAttributes().getNamedItem("sawsdl:loweringSchemaMapping");
-				if ( liftingSchemaNode != null ) 
-					llMap.put(item.getAttributes().getNamedItem("name").getNodeValue(), liftingSchemaNode.getNodeValue());
-//					System.out.println("NODE:" + item.getAttributes().getNamedItem("name") + "--" + liftingSchemaNode.getNodeValue());
-				if ( loweringSchemaNode != null )
-					llMap.put(item.getAttributes().getNamedItem("name").getNodeValue(), loweringSchemaNode.getNodeValue());
-//					System.out.println("NODE:" + item.getAttributes().getNamedItem("name") + "--" + loweringSchemaNode.getNodeValue());
+		
+		Types types = desc.getTypes();
+		List<Schema> schemas = types.getSchemas();
+		for ( Schema schema : schemas ) {
+			List<Element> elements = schema.getElements();
+			
+			for ( Element elem : elements ) {
+				System.out.println(elem.getLiftingSchemaMapping());
+				System.out.println(elem.getLoweringSchemaMapping());
 			}
 		}
 		
-		
-        //Service
-        Map<?, ?> services = definition.getServices();
-        for ( Object serviceVal : services.values() ) {
-        	Service service = (Service) serviceVal;
-        	SERVICE_NAME = service.getQName().getLocalPart();
-        	String namespaceURI = service.getQName().getNamespaceURI();
-        	SERVICE_NS = service.getQName().getNamespaceURI() + "#";
-        	
-        	QName serviceCategories = (QName) service.getExtensionAttribute(new QName("http://www.w3.org/ns/sawsdl", "modelReference"));
-        	Vector<String> categories = extractModelReference(serviceCategories);
-        	
-        	writeServiceToTriples(categories, namespaceURI, _wsdlURI);
-        	
-        	//Port
-        	Map<?, ?> ports = service.getPorts();
-        	for ( Object portKey : ports.values() ) {
-        		Port port = (Port) portKey;
-        		
-        		// Endpoint
-        		String endpointName = port.getName();
-        		String endpointAddress = null;
-        		
-        		List<?> portElements = port.getExtensibilityElements();
-        		for ( Object elementObj : portElements ) {
-        			if ( elementObj instanceof HTTPAddressImpl ){
-        				endpointAddress = ((HTTPAddressImpl) elementObj).getLocationURI();
-        				break;
-        			}
-        			if ( elementObj instanceof SOAPAddressImpl ){
-        				endpointAddress = ((SOAPAddressImpl) elementObj).getLocationURI();
-        				break;
-        			}
-        			if ( elementObj instanceof SOAP12AddressImpl ){
-        				endpointAddress = ((SOAP12AddressImpl) elementObj).getLocationURI();
-        				break;
-        			}	
-        		}
-	
-        		if ( endpointAddress != null)
-        			writeEndpointsToTriples(endpointName, endpointAddress, _wsdlURI);
-        		
-        		//Binding
-				Binding binding = port.getBinding();
-				String bindingName = binding.getQName().getLocalPart();
-				String bindingType = null;
-				
-				List<?> bindingElements = binding.getExtensibilityElements();
-				for ( Object elementObj : bindingElements ) {
-					if ( elementObj instanceof HTTPBindingImpl ){
-//						bindingType = ((HTTPBindingImpl) elementObj).getVerb();
-        				break;
-        			}
-					if ( elementObj instanceof SOAP12BindingImpl ){
-						bindingType = ((SOAP12BindingImpl) elementObj).getTransportURI();
-        				break;
-        			}
-					if ( elementObj instanceof SOAPBindingImpl ){
-						bindingType = ((SOAPBindingImpl) elementObj).getTransportURI();
-        				break;
-        			}
-				}
-				
-				if ( bindingType != null ) 
-					writeBindingsToTriples(bindingName, bindingType, _wsdlURI);
-				
-				//Interface (Port type)
-				PortType portType = binding.getPortType();
-				String interfaceName = portType.getQName().getLocalPart();
-				
-				if ( interfaceName != null )
-					writeInterfaceToTriples(interfaceName, _wsdlURI);
-				
-				//Interface Operation ( Port type Operation)
-        		List<?> operations = portType.getOperations();
-        		for ( Object operationObj : operations ) {
-        			Operation operation = (Operation) operationObj;
-        			String interfaceOperationName = operation.getName();
-        			
-        			String inputName = null;
-        			String outputName = null;
-        			
-        			//Operation Input and Output
-        			Input input = operation.getInput();
-        			Output output = operation.getOutput();
-        			
-        			//TODO: Extract Faults and write into triples
-//        			Map<?, ?> faultsMap = operation.getFaults();
-
-        			//Input
-        			if ( input != null ) {
-        				Message inputMessage = input.getMessage();
-        				if ( inputMessage != null ) {
-        					inputName = inputMessage.getQName().getLocalPart();
-        					
-        					Map<?,?> inputParts = inputMessage.getParts();
-                			for ( Object partObj : inputParts.values() ) {
-                				Part inputPart = (Part) partObj;
-                				QName elemName = inputPart.getElementName();
-                				
-                				if ( elemName != null )
-                					writeInputMessagePartToTriples(inputName, inputPart.getName(), namespaceURI, llMap.get(elemName.getLocalPart()) , _wsdlURI);
-                			}
-        					writeInputMessageToTriples(interfaceName, interfaceOperationName, inputName, _wsdlURI);
-        				}
-        			}
-
-        			//Output
-        			if ( output != null ){
-        				Message outputMessage = output.getMessage();
-        				if ( outputMessage != null) {
-        					outputName = outputMessage.getQName().getLocalPart();
-        					
-        					Map<?,?> outputParts = outputMessage.getParts();
-                			for ( Object partObj : outputParts.values() ) {
-                				Part outputPart = (Part) partObj;
-                				QName elemName = outputPart.getElementName();
-                				
-                				if ( elemName != null )
-                					writeOutputMessagePartToTriples(outputName, outputPart.getName(), namespaceURI, llMap.get(elemName.getLocalPart()), _wsdlURI);
-                			}
-        					writeOutputMessageToTriples(interfaceName, interfaceOperationName, outputName, _wsdlURI);
-        				}
-        			}
-        			
-        			if ( inputName != null && outputName != null ) 
-        				writeInterfaceOperationsToTriples(interfaceName, interfaceOperationName, _wsdlURI);
-        		}
-				
-				//Binding Operations
-        		List<?> bindingsOperations = binding.getBindingOperations();
-        		for ( Object operationObj : bindingsOperations ) {
-        			BindingOperation bindingOperation = (BindingOperation) operationObj;
-        			String bindingOperationName = bindingOperation.getName();
-        			String soapActionURI = null;
-        			
-        			List<?> bindingOperationElements = bindingOperation.getExtensibilityElements();
-            		for ( Object elementObj : bindingOperationElements ) {
-            			if ( elementObj instanceof HTTPOperationImpl ){
-            				//TODO: HTTP Operations - Feathers 
-            				break;
-            			}
-            			if ( elementObj instanceof SOAPOperationImpl){
-            				soapActionURI = ((SOAPOperationImpl) elementObj).getSoapActionURI();
-            				break;
-            			}
-            			if ( elementObj instanceof SOAP12OperationImpl){
-            				soapActionURI = ((SOAP12OperationImpl) elementObj).getSoapActionURI();
-            				break;
-            			}
-            		}        			
-
-            		if ( soapActionURI != null )
-            			writeBindingOperationsToTriples(bindingName, bindingOperationName, soapActionURI, _wsdlURI);
-        		}
-        	}
-        }
-        
-		if ( SERVICE_NS != null && SERVICE_NAME != null ){
-			reposHandler.commit();
-        	return SERVICE_NS + SERVICE_NAME;
+		//Writing general information about services in triples
+		for( Service service : desc.getServices() ) {
+			
+			SERVICE_NAME = service.getQName().getLocalPart();
+			SERVICE_NS = service.getQName().getNamespaceURI() + "#";
+			String namespaceURI = service.getQName().getNamespaceURI();
+			
+			List<URI> serviceCategories = service.getModelReference();
+			
+//			System.out.println(service.getModelReference());
+			
+//			writeServiceToTriples(serviceCategories, namespaceURI, _wsdlURI);
+			
+			//Writing end-points triples
+			for(Endpoint endpoint : service.getEndpoints()) {
+				String endpointName = endpoint.getName();
+				String endpointAddress = endpoint.getAddress();
+												
+//				writeEndpointsToTriples(endpointName, endpointAddress, _wsdlURI);
+			}
 		}
-        return null;
+		
+		//Writing bindings triples
+		for ( Binding binding : desc.getBindings() ) {
+			String bindingName = binding.getQName().getLocalPart();
+			String bindingType = binding.getTypeOfBinding().value().toString();
+				
+				writeBindingsToTriples(bindingName, bindingType, _wsdlURI);
+				
+				for ( BindingOperation bindingOperation : binding.getBindingOperations() ) {
+					String bindingOperationName = bindingOperation.getQName().getLocalPart(); 
+					String soapAction = bindingOperation.getSoapAction();
+
+					writeBindingOperationsToTriples(bindingName, bindingOperationName, soapAction, _wsdlURI);
+				}
+//			}
+		}
+	
+		//Parse Interface
+		for(InterfaceType wsdlInterface : desc.getInterfaces()){
+			String interfaceName = wsdlInterface.getQName().getLocalPart();
+			
+			
+			for( Operation interfaceOperation : wsdlInterface.getOperations() ){
+				String interfaceOperationName = interfaceOperation.getQName().getLocalPart();
+				
+			}
+		}
+//		reposHandler.shutdown();
 	}
- 	
- 	private static void writeServiceToTriples(Vector<String> categories, String namespaceURI, String _wsdlURI) throws RepositoryException {
+	
+	private static void writeServiceToTriples(List<URI> serviceCategories, String namespaceURI, String _wsdlURI) throws RepositoryException {
  		logger.info("SERVICE INFO : Triple + Context: " + getServiceID()  + " , " + 
 				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getMSMEXTURI("Service"));
 		logger.info("SERVICE INFO : Triple + Context: " + getServiceID()  + " , " + 
@@ -265,11 +148,11 @@ public class Transformation2 {
 		logger.info("SERVICE INFO : Triple + Context: " + getServiceID()  + " , " + 
 				QueryHelper.getDCURI("creator") + " , " + "STI Innsbruck");
 		
-		for ( String category : categories ) {
+		for ( URI category : serviceCategories ) {
 			logger.info("SERVICE INFO : Triple + Context: " + getServiceID()  + " , " + 
 					QueryHelper.getSAWSDLURI("modelReference") + " , " + category);
 			
-			reposHandler.addResourceTriple(getServiceID() , QueryHelper.getSAWSDLURI("modelReference"), category, _wsdlURI);
+			reposHandler.addResourceTriple(getServiceID() , QueryHelper.getSAWSDLURI("modelReference"), category.toString(), _wsdlURI);
 		}
 		
 		logger.info("WSDL SERVICE INFO : Triple + Context: " + getServiceNode()  + " , " + 
@@ -297,6 +180,33 @@ public class Transformation2 {
 		reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Description"), _wsdlURI);
 		reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getWSDLURI("service"),  getServiceNode(), _wsdlURI);
 		reposHandler.addResourceTriple(getDescriptionNode() , QueryHelper.getWSDLURI("namespace"),  namespaceURI, _wsdlURI);
+ 	}
+	
+	private static void writeEndpointsToTriples(String endpointName, String endpointAddress, String _wsdlURI) throws RepositoryException {
+ 		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
+				+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Endpoint"));
+		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
+				+ QueryHelper.getRDFSURI("label") + " , " + endpointName);
+		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
+				+ QueryHelper.getWSDLURI("address") + " , " + endpointAddress);
+		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
+				+ QueryHelper.getWSDLURI("useBinding") + " , " + getBindingNode(endpointName));
+		
+		logger.info("SERVICE ENDPOINTS : Triple + Context: " + getServiceNode() + " , " 
+				+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(endpointName));
+		
+		logger.info("DESCRIPTION ENDPOINTS : Triple + Context: " + getDescriptionNode() + " , " 
+				+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(endpointName));
+		
+		//Writing persistent
+		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Endpoint"), _wsdlURI);
+		reposHandler.addLiteralTriple(getEndpointNode(endpointName) , QueryHelper.getRDFSURI("label"),  endpointName, _wsdlURI);
+		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getWSDLURI("address"),  endpointAddress, _wsdlURI);
+		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getWSDLURI("useBinding"),  getEndpointNode(endpointName), _wsdlURI);
+		
+		reposHandler.addResourceTriple(getServiceNode() , QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(endpointName), _wsdlURI);
+		
+		reposHandler.addResourceTriple(getDescriptionNode() ,QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(endpointName), _wsdlURI);
  	}
  	
  	private static void writeInputMessagePartToTriples(String inputName, String inputPartName, String namespaceURI, String loweringURI, String _wsdlURI) throws RepositoryException {
@@ -370,32 +280,7 @@ public class Transformation2 {
 		reposHandler.addResourceTriple(getInterfaceOperationNode(interfaceName, interfaceOperationName) , QueryHelper.getWSDLURI("interfaceMessageReference"), getOutputMessageNode(outputName), _wsdlURI);
 	}
 
- 	private static void writeEndpointsToTriples(String endpointName, String endpointAddress, String _wsdlURI) throws RepositoryException {
- 		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
-				+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Endpoint"));
-		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
-				+ QueryHelper.getRDFSURI("label") + " , " + endpointName);
-		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
-				+ QueryHelper.getWSDLURI("address") + " , " + endpointAddress);
-		logger.info("ENDPOINTS : Triple + Context: " + getEndpointNode(endpointName) + " , " 
-				+ QueryHelper.getWSDLURI("useBinding") + " , " + getBindingNode(endpointName));
-		
-		logger.info("SERVICE ENDPOINTS : Triple + Context: " + getServiceNode() + " , " 
-				+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(endpointName));
-		
-		logger.info("DESCRIPTION ENDPOINTS : Triple + Context: " + getDescriptionNode() + " , " 
-				+ QueryHelper.getWSDLURI("endpoint") + " , " + getEndpointNode(endpointName));
-		
-		//Writing persistent
-		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("Endpoint"), _wsdlURI);
-		reposHandler.addLiteralTriple(getEndpointNode(endpointName) , QueryHelper.getRDFSURI("label"),  endpointName, _wsdlURI);
-		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getWSDLURI("address"),  endpointAddress, _wsdlURI);
-		reposHandler.addResourceTriple(getEndpointNode(endpointName) , QueryHelper.getWSDLURI("useBinding"),  getEndpointNode(endpointName), _wsdlURI);
-		
-		reposHandler.addResourceTriple(getServiceNode() , QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(endpointName), _wsdlURI);
-		
-		reposHandler.addResourceTriple(getDescriptionNode() ,QueryHelper.getWSDLURI("endpoint"),  getEndpointNode(endpointName), _wsdlURI);
- 	}
+ 	
  	
  	private static void writeBindingsToTriples(String bindingName, String bindingType, String _wsdlURI) throws RepositoryException, URISyntaxException {
  		logger.info("BINDINGS : Triple + Context: " + getBindingNode(bindingName) + " , " 
@@ -518,24 +403,9 @@ public class Transformation2 {
 		return SERVICE_NS + SERVICE_NAME;
 	}
 	
-	private static Vector<String> extractModelReference(QName serviceCategories) {
-		Vector<String> categories = new Vector<String>();
-		String list = serviceCategories.getLocalPart().replaceAll("  ", " ").replaceAll("http:", "").replaceAll("//", "");
-		String[] serviceCategoriesList = list.split(" ");
-		for ( String category : serviceCategoriesList ) {
-			if ( !category.isEmpty() ) {
-				categories.add("http://" + category);
-//				System.err.println(category);
-			}
-		}
-		return categories;
-	}
-	
-	public static void main(String[] args) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException {
-		String serviceID = transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
-		if ( serviceID != null ) {
-			System.out.println(serviceID);
-			reposHandler.commit();
-		}
+	private static boolean isSoapProtocol(String transportProtocol) {
+		if ( transportProtocol.equalsIgnoreCase(SOAP_NS) )
+			return true;
+		return false;
 	}
 }

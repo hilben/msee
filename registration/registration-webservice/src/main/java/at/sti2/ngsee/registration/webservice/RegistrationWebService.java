@@ -9,7 +9,7 @@ import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
-import at.sti2.ngsee.registration.core.transformation.Transformation2;
+import at.sti2.ngsee.registration.core.transformation.TransformationWSDL11;
 
 /**
  * 
@@ -40,7 +40,7 @@ public class RegistrationWebService implements IRegistrationEndpoint
 	@WebMethod
 	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception{
 		logger.info("Registration of Web Service '" + _wsdlURL + "'");
-		return Transformation2.transformWSDL(_wsdlURL);
+		return TransformationWSDL11.transformWSDL(_wsdlURL);
 	}
 	
 	public String getVersion() {

@@ -26,6 +26,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<cxf.version>2.3.3</cxf.version>
+		<saxon.version>8.7</saxon.version>
+		<axis.version>1.5.4</axis.version>
 	</properties>
 
 	<!-- DEPENDENCY MANAGEMENT -->
@@ -65,7 +67,19 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
+                        <!-- xslt and xquery processor (needed for xslt 2.0) 
+                        <dependency>
+                                <groupId>net.sf.saxon</groupId>
+                                <artifactId>saxon</artifactId>
+                                <version>${saxon.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>net.sf.saxon</groupId>
+                                <artifactId>saxon-dom</artifactId>
+                                <version>${saxon.version}</version>
+                        </dependency>
 
+-->
 			<!-- tools -->
 			<dependency>
 				<groupId>log4j</groupId>
