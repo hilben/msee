@@ -7,14 +7,14 @@
 
         <groupId>at.sti2.ngsee.monitoring</groupId>
         <artifactId>monitoring-api</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>1.0</version>
         <packaging>jar</packaging>
         <name>Web Service Monitoring Framework - API</name>
 
         <parent>
                 <groupId>at.sti2.ngsee.monitoring</groupId>
                 <artifactId>monitoring-project</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
+                <version>1.0</version>
                 <relativePath>../pom.xml</relativePath>
         </parent>
 

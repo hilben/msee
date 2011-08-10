@@ -3,13 +3,13 @@
 
 	<groupId>at.sti2.ngsee.invoker</groupId>
 	<artifactId>invoker-client</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>at.sti2.ngsee.invoker</groupId>
 		<artifactId>invoker-project</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 

@@ -3,13 +3,13 @@
 
   	<groupId>at.sti2.ngsee.registration</groupId>
   	<artifactId>registration-api</artifactId>
-  	<version>0.0.2-SNAPSHOT</version>
+  	<version>1.0</version>
   	<packaging>jar</packaging>
   
     <parent>
         <groupId>at.sti2.ngsee.registration</groupId>
         <artifactId>registration-project</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
   	</parent>
 
