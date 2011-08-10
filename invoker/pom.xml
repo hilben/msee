@@ -3,13 +3,13 @@
 
 	<groupId>at.sti2.ngsee.invoker</groupId>
 	<artifactId>invoker-project</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>at.sti2.ngsee</groupId>
 		<artifactId>sesa-project</artifactId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -87,7 +87,7 @@
 			<dependency>
 				<groupId>at.sti2.ngsee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
-				<version>1.0</version>
+				<version>1.1-SNAPSHOT</version>
 			</dependency>
 
 			<!-- LIBARIES -->
