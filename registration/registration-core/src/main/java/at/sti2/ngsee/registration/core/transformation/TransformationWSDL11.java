@@ -68,9 +68,9 @@ import edu.uga.cs.lsdis.sawsdl.impl.util.SchemaUtils;
  * @author Corneliu Stanciu
  *
  */
-public class Transformation2 {
+public class TransformationWSDL11 {
 	
-	private static Logger logger = Logger.getLogger(Transformation2.class);
+	private static Logger logger = Logger.getLogger(TransformationWSDL11.class);
 	private static String SERVICE_NS;
 	private static String SERVICE_NAME;
 	private static RepositoryHandler reposHandler;
@@ -449,15 +449,7 @@ public class Transformation2 {
 		
 		//Writing persistent
 		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getRDFURI("type"),  QueryHelper.getWSDLURI("BindingOperation"), _wsdlURI);
-		/**
-		 * XXX: Fix this. SOAPAction could be also only a string or empty
-		 */
-		if ( soapActionURI != null ) 
-			try {
-				reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
 				
 		reposHandler.addResourceTriple(getBindingNode(bindingName), QueryHelper.getWSDLURI("bindingOperation"), getBindingOperationNode(bindingOperationName), _wsdlURI);
  	}
@@ -557,9 +549,6 @@ public class Transformation2 {
 	
 	public static void main(String[] args) throws WSDLException, FileNotFoundException, IOException, RepositoryException, URISyntaxException {
 		String serviceID = transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
-		if ( serviceID != null ) {
-			System.out.println(serviceID);
-			reposHandler.commit();
-		}
+		System.out.println(serviceID);
 	}
 }
