@@ -91,7 +91,15 @@ public class ServiceDiscovery {
 		discoveryQuery.append("} WHERE { \n");
 		discoveryQuery.append("?serviceID rdf:type msm_ext:Service . \n");
 		for ( URI category : _categoryList ) {
+			/**
+			 * TODO: Check this part.
+			 */
+			discoveryQuery.append("{ \n");
+			discoveryQuery.append("<" + category + "> rdfs:subClassOf* ?superClass . \n");
+			discoveryQuery.append("?serviceID sawsdl:modelReference ?superClass . \n");
+			discoveryQuery.append("} UNION { \n");
 			discoveryQuery.append("?serviceID sawsdl:modelReference <" + category + "> . \n");
+			discoveryQuery.append("} \n");
 		}
 		discoveryQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
 		discoveryQuery.append("?descriptionBlock wsdl:namespace ?namespace . \n");
@@ -326,12 +334,13 @@ public class ServiceDiscovery {
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
 		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
+//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
 		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
 		System.out.println("---");
 		
 //		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
 //		System.out.println("---");
-//		
+		
 //		System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather", RDFFormat.N3));
 //		System.out.println("---");
 	}
