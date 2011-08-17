@@ -22,6 +22,7 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceException;
 
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
@@ -65,5 +66,15 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	@Override
 	public String getIServeModel(@WebParam(name="serviceID")String _serviceID) throws Exception {
 		return ServiceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
+	}
+
+	/**
+	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List, java.util.List, java.util.List)
+	 */
+	@WebMethod(operationName="discoverAdvanced")
+	@Override
+	public String discover(List<URI> categoryList, List<URI> inputParamList,
+			List<URI> outputParamList) throws Exception {
+		throw new WebServiceException("Not implemented!");
 	}
 }

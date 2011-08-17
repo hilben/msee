@@ -28,11 +28,21 @@ public interface IDiscoveryWebService {
 	/**
 	 * Search Behaviour: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)
 	 * 
-	 * @param _categoryList A list of categories. A category is a link to a concept in a taxonomy.
+	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
 	 * @return Services with related operation (that match the goal) in RDF Representation
 	 * @throws Exception
 	 */
 	public String discover(List<URI> categoryList) throws Exception;
+	
+	/**
+	 * 
+	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
+	 * @param inputParamList A list of input parameters (match mechanism!?!)
+	 * @param outputParamList A list of output parameters (match mechanism!?!)
+	 * @return Services with related operation (that match the goal) in RDF Representation
+	 * @throws Exception
+	 */
+	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws Exception;
 	
 	/**
 	 * Get more information about the operation. 
