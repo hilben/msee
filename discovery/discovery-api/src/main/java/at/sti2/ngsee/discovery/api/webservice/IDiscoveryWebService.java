@@ -35,6 +35,7 @@ public interface IDiscoveryWebService {
 	public String discover(List<URI> categoryList) throws Exception;
 	
 	/**
+	 * TODO: Specify how the inputs/outputs are combined (conjunction/disjunction!?!)
 	 * 
 	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
 	 * @param inputParamList A list of input parameters (match mechanism!?!)

@@ -47,6 +47,139 @@ public class ServiceDiscovery {
 		return new RepositoryHandler(prop.getProperty("sesame.endpoint"), prop.getProperty("sesame.reposid"));
 	}
 	
+	/**
+	 * TODO: Take into account outputParamList, inputParamList
+	 * 
+	 * @param _categoryList
+	 * @param inputParamList
+	 * @param outputParamList
+	 * @param _outputFormat
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws QueryEvaluationException
+	 * @throws RepositoryException
+	 * @throws MalformedQueryException
+	 * @throws RDFHandlerException
+	 * @throws UnsupportedRDFormatException
+	 */
+	public static String discover(List<URI> _categoryList,List<URI> inputParamList, List<URI> outputParamList, RDFFormat _outputFormat) throws FileNotFoundException, IOException, QueryEvaluationException, RepositoryException, MalformedQueryException, RDFHandlerException, UnsupportedRDFormatException {
+		RepositoryHandler reposHandler = getReposHandler();
+		
+		StringBuffer discoveryQuery = new StringBuffer();
+
+		discoveryQuery.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+		discoveryQuery.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		discoveryQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
+		discoveryQuery.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
+		discoveryQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+
+		discoveryQuery.append("CONSTRUCT { \n");
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?inputMessage . \n");
+		
+		discoveryQuery.append("?inputMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
+		discoveryQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
+		discoveryQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
+		discoveryQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
+
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?outputMessage . \n");
+		discoveryQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
+		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
+		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
+		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
+		
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?inputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
+		discoveryQuery.append("?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n");
+		discoveryQuery.append("?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n");
+		discoveryQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
+				
+		discoveryQuery.append("?serviceID msm_ext:hasOperation ?outputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
+		discoveryQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
+		discoveryQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
+		discoveryQuery.append("?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n");
+		
+		discoveryQuery.append("} WHERE { \n");
+		discoveryQuery.append("?serviceID rdf:type msm_ext:Service . \n");
+		for ( URI category : _categoryList ) {
+			/**
+			 * TODO: Check this part.
+			 */
+			discoveryQuery.append("{ \n");
+			discoveryQuery.append("<" + category + "> rdfs:subClassOf* ?superClass . \n");
+			discoveryQuery.append("?serviceID sawsdl:modelReference ?superClass . \n");
+			discoveryQuery.append("} UNION { \n");
+			discoveryQuery.append("?serviceID sawsdl:modelReference <" + category + "> . \n");
+			discoveryQuery.append("} \n");
+		}
+		discoveryQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
+		discoveryQuery.append("?descriptionBlock wsdl:namespace ?namespace . \n");
+		discoveryQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
+		discoveryQuery.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
+		discoveryQuery.append("?interfaceOperation rdfs:label ?operationName . \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?inputMessage . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation sawsdl:modelReference ?operationModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("?inputMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
+		discoveryQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
+		discoveryQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?outputMessage . \n");
+		discoveryQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
+		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
+		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+		
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n");
+		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
+		discoveryQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
+		discoveryQuery.append("?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n");
+		discoveryQuery.append("?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?operation wsdl:interfaceFaultReference ?outputFaultMessage . \n");
+		discoveryQuery.append("?outputFaultMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
+		discoveryQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
+		discoveryQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
+		discoveryQuery.append("OPTIONAL { \n");
+		discoveryQuery.append("?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n");
+		discoveryQuery.append("} \n");
+		discoveryQuery.append("} \n");
+		
+		discoveryQuery.append("}");
+
+		GraphQueryResult queryResult = reposHandler.constructSPARQL(discoveryQuery.toString());
+
+		ByteArrayOutputStream out =  new ByteArrayOutputStream();
+		QueryResultIO.write(queryResult, _outputFormat, out);
+
+		return out.toString();
+	}
+	
 	public static String discover(List<URI> _categoryList, RDFFormat _outputFormat) throws FileNotFoundException, IOException, QueryEvaluationException, RepositoryException, MalformedQueryException, RDFHandlerException, UnsupportedRDFormatException {
 		RepositoryHandler reposHandler = getReposHandler();
 		

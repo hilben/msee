@@ -50,6 +50,16 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 	
 	/**
+	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List, java.util.List, java.util.List)
+	 */
+	@WebMethod(operationName="discoverAdvanced")
+	@Override
+	public String discover(List<URI> categoryList, List<URI> inputParamList,
+			List<URI> outputParamList) throws Exception {
+		throw new WebServiceException("Not implemented!");
+	}
+	
+	/**
 	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI, java.lang.String)
 	 */
 	@WebMethod
@@ -68,13 +78,4 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 		return ServiceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
 	}
 
-	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List, java.util.List, java.util.List)
-	 */
-	@WebMethod(operationName="discoverAdvanced")
-	@Override
-	public String discover(List<URI> categoryList, List<URI> inputParamList,
-			List<URI> outputParamList) throws Exception {
-		throw new WebServiceException("Not implemented!");
-	}
 }
