@@ -55,8 +55,8 @@
         <rdf:Description rdf:about="#wsdl.interfaceOperation(GlobalWeatherSoap/GetWeather)">
                 <rdf:type rdf:resource="&wsdl;InterfaceOperation" />
                 <rdfs:label>GetWeather</rdfs:label> <!-- wsdl:binding/wsdl:operation.name -->
-                <wsdl:interfaceMessageReference rdf:resource="#wsdl.input(GetWeatherSoapIn)" />
-                <wsdl:interfaceMessageReference rdf:resource="#wsdl.output(GetWeatherSoapOut)" />
+                <wsdl:interfaceMessageReference rdf:resource="#wsdl.interfaceMessageReference(GlobalWeatherSoap/GetWeather/In)" />
+                <wsdl:interfaceMessageReference rdf:resource="#wsdl.interfaceMessageReference(GlobalWeatherSoap/GetWeather/Out)" />
         </rdf:Description>
 
         <!-- wsdl binding (soap) -->
@@ -80,6 +80,8 @@
                 <rdf:type rdf:resource="&wsdl;Service" />
                 <rdfs:label>GlobalWeather</rdfs:label>
                 <wsdl:endpoint rdf:resource="#wsdl.endpoint(GlobalWeather/GlobalWeatherSoap)" />
+                <sawsdl:modelReference rdf:resource="http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"/>
+                <sawsdl:modelReference rdf:resource="http://www.sti2.at/E-Freight/ServiceCategories#Maritime"/>
         </rdf:Description>
 
         <!-- wsdl port/endpoint (soap) -->
@@ -92,7 +94,7 @@
         <!-- WSDL END -->
 
         <!-- GetWeather Operation-->
-        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapIn)"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GlobalWeatherSoap/GetWeather/In)"> <!-- wsdl:message -->
                 <!-- wsdl:IntputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;InputMessage"/>
                 <rdf:type rdf:resource="&wsdl;InterfaceMessageReference"/>
@@ -105,9 +107,11 @@
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>GetWeather</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
+                <sawsdl:modelReference rdf:resource="http://www.w3.org/TR/xmlschema-2/#string"/>
+                <sawsdl:modelReference rdf:resource="http://www.w3.org/TR/xmlschema-2/#string"/>
         </rdf:Description>
 
-        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GetWeatherSoapOut)"> <!-- wsdl:message -->
+        <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GlobalWeatherSoap/GetWeather/Out)"> <!-- wsdl:message -->
                 <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->
                 <rdf:type rdf:resource="&wsdl;OutputMessage"/>
                 <!-- For exceptions use wsdl:InterfaceFaultReference -->
@@ -120,6 +124,7 @@
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>GetWeatherResponse</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
+                <sawsdl:modelReference rdf:resource="http://www.w3.org/TR/xmlschema-2/#string"/>
         </rdf:Description>
 
 </rdf:RDF>

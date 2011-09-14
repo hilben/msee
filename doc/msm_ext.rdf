@@ -141,5 +141,4 @@
                 <rdfs:domain rdf:resource="&msm;Service" />
                 <rdfs:range rdf:resource="&msm;Description" />
         </rdfs:Property>
-
 </rdf:RDF>

@@ -118,22 +118,7 @@ public class TransformationWSDL20 {
 			
 			for ( Element elem : elements ) {
 				String elemID = elem.getQName().getPrefix() + ":" + elem.getQName().getLocalPart();
-				
 				elementsMap.put(elemID, elem);
-//				Object complexType = elem.getType();
-//				if ( complexType instanceof ComplexTypeImpl ){
-//					System.err.println("COMPLEX TYPE " + ((ComplexTypeImpl) complexType).getSequence().getElements());
-//					Sequence complexSequence = ((ComplexTypeImpl) complexType).getSequence();
-//					if ( complexSequence != null ){
-//						List<Element> complexSequenceElem = complexSequence.getElements();
-//						for ( Element subelem : complexSequenceElem ) {
-//							System.err.println(subelem.getType().getQName());
-//						}
-//					}
-//    			}
-//    			if ( complexType instanceof SimpleTypeImpl ){
-////    				System.err.println("SIMPLE TYPE " + ((SimpleTypeImpl) complexType).getQName());
-//    			}
 			}
 		}
 		
@@ -144,10 +129,7 @@ public class TransformationWSDL20 {
 			SERVICE_NS = service.getQName().getNamespaceURI() + "#";
 			NAMESPACE_URI = service.getQName().getNamespaceURI();
 			
-			List<URI> serviceCategories = service.getModelReference();
-			
-			System.out.println(service.getModelReference());
-			
+			List<URI> serviceCategories = service.getModelReference();			
 			writeServiceToTriples(serviceCategories, NAMESPACE_URI, _wsdlURI);
 			
 			//Writing end-points triples
@@ -172,7 +154,6 @@ public class TransformationWSDL20 {
 
 					writeBindingOperationsToTriples(bindingName, bindingOperationName, soapAction, _wsdlURI);
 				}
-//			}
 		}
 	
 		//Parse Interface
@@ -196,8 +177,9 @@ public class TransformationWSDL20 {
 				
 				Element elemIn = elementsMap.get(getElementName(doc, interfaceOperationName, "input"));
 				List<URI> loweringSchemas = elemIn.getLoweringSchemaMapping();
+				List<URI> inputParamModelReference = elemIn.getModelReference();
 				
-				writeElementDeclaration(elemIn.getQName(), interfaceName, interfaceOperationName, inputMsgLabelName, _wsdlURI);
+				writeElementDeclaration(elemIn.getQName(), interfaceName, interfaceOperationName, inputMsgLabelName, inputParamModelReference, _wsdlURI);
 				writeInputInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, inputMsgLabelName, pattern, loweringSchemas, _wsdlURI);
 				
 				//Output
@@ -209,8 +191,9 @@ public class TransformationWSDL20 {
 				
 				Element elemOut = elementsMap.get(getElementName(doc, interfaceOperationName, "output"));
 				List<URI> liftingSchemas = elemOut.getLiftingSchemaMapping();
+				List<URI> outputParamModelReference = elemOut.getModelReference();
 				
-				writeElementDeclaration(elemOut.getQName(), interfaceName, interfaceOperationName, outputMsgLabelName, _wsdlURI);
+				writeElementDeclaration(elemOut.getQName(), interfaceName, interfaceOperationName, outputMsgLabelName, outputParamModelReference, _wsdlURI);
 				writeOutputInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, outputMsgLabelName, pattern, liftingSchemas, _wsdlURI);
 
 			}
@@ -222,7 +205,7 @@ public class TransformationWSDL20 {
         return null;
 	}
 	
-	private static void writeElementDeclaration(QName elementQName, String interfaceName, String operationName, String messageLabel, String _wsdlURI) throws RepositoryException {
+	private static void writeElementDeclaration(QName elementQName, String interfaceName, String operationName, String messageLabel, List<URI> modelReferences, String _wsdlURI) throws RepositoryException {
 		logger.info("ELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(elementQName.getLocalPart())  + " , " + 
 				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("QName"));
 		logger.info("ELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(elementQName.getLocalPart())  + " , " + 
@@ -233,11 +216,20 @@ public class TransformationWSDL20 {
 		logger.info("ELEMENT DECL FOR INPUT INTERFACE MSG REF INFO : Triple + Context: " + getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel) + " , " + 
 				QueryHelper.getWSDLURI("elementDeclaration") + " , " + getElementDeclarationNode(elementQName.getLocalPart()));
 		
+		for ( URI modelReferece : modelReferences) {
+			logger.info("ELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(elementQName.getLocalPart())  + " , " + 
+					QueryHelper.getSAWSDLURI("modelReference") + " , " + modelReferece);
+		}
+		
 		reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("QName"), _wsdlURI);
 		reposHandler.addLiteralTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getWSDLURI("localName"), elementQName.getLocalPart(), _wsdlURI);
 		reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getWSDLURI("namespace"), elementQName.getNamespaceURI(), _wsdlURI);
 		
 		reposHandler.addResourceTriple(getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel), QueryHelper.getWSDLURI("elementDeclaration"), getElementDeclarationNode(elementQName.getLocalPart()), _wsdlURI);
+		
+		for ( URI modelReferece : modelReferences) {
+			reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getSAWSDLURI("modelReference"), modelReferece.toString(), _wsdlURI);
+		}
 	}
 	
 	private static void writeServiceToTriples(List<URI> serviceCategories, String namespaceURI, String _wsdlURI) throws RepositoryException {
@@ -418,14 +410,14 @@ public class TransformationWSDL20 {
  		logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
 				+ QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("Interface"));	
 		logger.info("INTERFACE : Triple + Context: " + getInterfaceNode(interfaceName) + " , " 
-				+ QueryHelper.getRDFURI("label") + " , " + interfaceName);
+				+ QueryHelper.getRDFSURI("label") + " , " + interfaceName);
 		
 		logger.info("INTERFACE FOR DESCRIPTION : Triple + Context: " + getDescriptionNode() + " , " 
 				+ QueryHelper.getWSDLURI("interface") + " , " + getInterfaceNode(interfaceName));
 		
 		//Writing persistent
 		reposHandler.addResourceTriple(getInterfaceNode(interfaceName), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("Interface"), _wsdlURI);
-		reposHandler.addLiteralTriple(getInterfaceNode(interfaceName), QueryHelper.getRDFURI("label"), interfaceName, _wsdlURI);
+		reposHandler.addLiteralTriple(getInterfaceNode(interfaceName), QueryHelper.getRDFSURI("label"), interfaceName, _wsdlURI);
 		
 		reposHandler.addResourceTriple(getDescriptionNode(), QueryHelper.getWSDLURI("interface"), getInterfaceNode(interfaceName), _wsdlURI);
  	}
@@ -492,3 +484,18 @@ public class TransformationWSDL20 {
 		return XMLParsing.getNodeAttribute(inputNode, "element");
 	}
 }
+
+//Object complexType = elem.getType();
+//if ( complexType instanceof ComplexTypeImpl ){
+//	System.err.println("COMPLEX TYPE " + ((ComplexTypeImpl) complexType).getSequence().getElements());
+//	Sequence complexSequence = ((ComplexTypeImpl) complexType).getSequence();
+//	if ( complexSequence != null ){
+//		List<Element> complexSequenceElem = complexSequence.getElements();
+//		for ( Element subelem : complexSequenceElem ) {
+//			System.err.println(subelem.getType().getQName());
+//		}
+//	}
+//}
+//if ( complexType instanceof SimpleTypeImpl ){
+////	System.err.println("SIMPLE TYPE " + ((SimpleTypeImpl) complexType).getQName());
+//}
