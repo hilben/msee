@@ -48,7 +48,14 @@ public class ServiceDiscovery {
 	}
 	
 	/**
-	 * TODO: Take into account outputParamList, inputParamList
+	 * TODO: Unchecked outputParamList, inputParamList<p/>
+	 * 
+	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)
+	 * outputs: conjunction (o2 AND o2 AND ... AND oM)<p/>
+	 * 
+	 * <b>Argumentation for this approach:<b><br/>
+	 * I do not care if I need less input as available to reach my goal, 
+	 * but I want as output all the information that I specify/need. 
 	 * 
 	 * @param _categoryList
 	 * @param inputParamList
@@ -63,7 +70,7 @@ public class ServiceDiscovery {
 	 * @throws RDFHandlerException
 	 * @throws UnsupportedRDFormatException
 	 */
-	public static String discover(List<URI> _categoryList,List<URI> inputParamList, List<URI> outputParamList, RDFFormat _outputFormat) throws FileNotFoundException, IOException, QueryEvaluationException, RepositoryException, MalformedQueryException, RDFHandlerException, UnsupportedRDFormatException {
+	public static String discover(List<URI> _categoryList, List<URI> _inputParamList, List<URI> _outputParamList, RDFFormat _outputFormat) throws FileNotFoundException, IOException, QueryEvaluationException, RepositoryException, MalformedQueryException, RDFHandlerException, UnsupportedRDFormatException {
 		RepositoryHandler reposHandler = getReposHandler();
 		
 		StringBuffer discoveryQuery = new StringBuffer();
@@ -88,8 +95,7 @@ public class ServiceDiscovery {
 		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
 		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
 		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
-		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
-		
+
 		discoveryQuery.append("?serviceID msm_ext:hasOperation ?inputFaultMessage . \n");
 		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:InputMessage . \n");
 		discoveryQuery.append("?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n");
@@ -132,21 +138,37 @@ public class ServiceDiscovery {
 		discoveryQuery.append("?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n");
 		discoveryQuery.append("?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n");
 		discoveryQuery.append("?inputMessagePart wsdl:localName ?inputMessagePartName . \n");
-		discoveryQuery.append("OPTIONAL { \n");
-		discoveryQuery.append("?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n");
-		discoveryQuery.append("} \n");
+//		discoveryQuery.append("OPTIONAL { \n");
+		
+		int count = 0;
+		for ( URI inputParam : _inputParamList ) {
+			discoveryQuery.append("{ ?inputMessagePart sawsdl:modelReference <" + inputParam + "> . } \n");
+			count++;
+			if ( count != _inputParamList.size() )
+				discoveryQuery.append(" UNION \n");
+		}
+		
+//		discoveryQuery.append("} \n");
 		discoveryQuery.append("} \n");
 		
-		discoveryQuery.append("OPTIONAL { \n");
+		if ( _outputParamList.size() == 0 )
+			discoveryQuery.append("OPTIONAL { \n");
 		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?outputMessage . \n");
 		discoveryQuery.append("?outputMessage rdf:type wsdl:OutputMessage . \n");
 		discoveryQuery.append("?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n");
 		discoveryQuery.append("?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n");
 		discoveryQuery.append("?outputMessagePart wsdl:localName ?outputMessagePartName . \n");
-		discoveryQuery.append("OPTIONAL { \n");
+//		discoveryQuery.append("OPTIONAL { \n");
 		discoveryQuery.append("?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n");
-		discoveryQuery.append("} \n");
-		discoveryQuery.append("} \n");
+
+		for ( URI outputParam : _outputParamList ) {
+			discoveryQuery.append("?outputMessagePart sawsdl:modelReference <" + outputParam + "> . \n");
+		}
+		
+//		discoveryQuery.append("} \n");
+		
+		if ( _outputParamList.size() == 0 )
+			discoveryQuery.append("} \n");
 		
 		discoveryQuery.append("OPTIONAL { \n");
 		discoveryQuery.append("?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n");
@@ -177,6 +199,7 @@ public class ServiceDiscovery {
 		ByteArrayOutputStream out =  new ByteArrayOutputStream();
 		QueryResultIO.write(queryResult, _outputFormat, out);
 
+		
 		return out.toString();
 	}
 	
@@ -468,8 +491,15 @@ public class ServiceDiscovery {
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
 		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
-		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
-		System.out.println("---");
+//		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
+//		System.out.println("---");
+		
+		List<URI> inputParamList = new ArrayList<URI>();
+		inputParamList.add(new URI("http://example.org/inputParam1"));
+		inputParamList.add(new URI("http://example.org/inputParam2"));
+		List<URI> outputParamList = new ArrayList<URI>();
+		outputParamList.add(new URI("http://example.org/outputParam1"));
+		System.out.println(ServiceDiscovery.discover(categoryList, inputParamList, outputParamList, RDFFormat.N3));
 		
 //		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
 //		System.out.println("---");
