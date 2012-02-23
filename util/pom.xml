@@ -22,6 +22,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<saxon.version>8.7</saxon.version>
 	</properties>
 
 	<issueManagement>
@@ -45,5 +46,21 @@
 			<name>Corneliu Stanciu</name>
 		</developer>
 	</developers>
+
+        <dependencyManagement>
+                <dependencies>
+                        <!-- xslt and xquery processor (needed for xslt 2.0) -->
+                        <dependency>
+                                <groupId>net.sf.saxon</groupId>
+                                <artifactId>saxon</artifactId>
+                                <version>${saxon.version}</version>
+                        </dependency>
+                        <dependency>
+                                <groupId>net.sf.saxon</groupId>
+                                <artifactId>saxon-dom</artifactId>
+                                <version>${saxon.version}</version>
+                        </dependency>
+                </dependencies>
+        </dependencyManagement>
 
 </project>
