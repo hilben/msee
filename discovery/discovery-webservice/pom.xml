@@ -3,13 +3,13 @@
 
 	<groupId>at.sti2.ngsee.discovery</groupId>
 	<artifactId>discovery-webservice</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<packaging>war</packaging>
 
 	<parent>
 		<groupId>at.sti2.ngsee.discovery</groupId>
 		<artifactId>discovery-project</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
