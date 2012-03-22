@@ -28,10 +28,6 @@
                         <artifactId>grounding-api</artifactId>
                 </dependency>
                 <dependency>
-                        <groupId>${project.parent.groupId}</groupId>
-                        <artifactId>grounding-grounding</artifactId>
-                </dependency>
-                <dependency>
                         <groupId>at.sti2.ngsee.util</groupId>
                         <artifactId>util-triplestore-client</artifactId>
                 </dependency>
