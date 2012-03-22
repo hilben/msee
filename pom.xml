@@ -12,6 +12,7 @@
 		<module>discovery</module>
 		<module>monitoring</module>
 		<module>util</module>
+		<module>grounding</module>
 	</modules>
 
 	<name>sesa-project</name>
