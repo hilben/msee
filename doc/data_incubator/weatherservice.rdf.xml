@@ -107,9 +107,24 @@
                 <rdf:type rdf:resource="&wsdl;QName"/>
                 <wsdl:localName>GetWeather</wsdl:localName>
                 <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
-                <sawsdl:modelReference rdf:resource="http://www.w3.org/TR/xmlschema-2/#string"/>
-                <sawsdl:modelReference rdf:resource="http://www.w3.org/TR/xmlschema-2/#string"/>
+                <wsdl:elementDeclaration rdf:resource="#wsdl.elementDeclaration(CityName)"/>
+                <wsdl:elementDeclaration rdf:resource="#wsdl.elementDeclaration(CountryName)"/>
         </rdf:Description>
+
+        <rdf:Description rdf:about="#wsdl.elementDeclaration(CityName)"> <!-- wsdl:message/wsdl:part -->
+                <rdf:type rdf:resource="&wsdl;QName"/>
+                <wsdl:localName>CityName</wsdl:localName>
+                <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
+                <sawsdl:modelReference rdf:resource="http://example.org/geo#City"/>
+        </rdf:Description>
+
+        <rdf:Description rdf:about="#wsdl.elementDeclaration(CountryName)"> <!-- wsdl:message/wsdl:part -->
+                <rdf:type rdf:resource="&wsdl;QName"/>
+                <wsdl:localName>CountryName</wsdl:localName>
+                <wsdl:namespace rdf:resource="http://www.webserviceX.NET"/>
+                <sawsdl:modelReference rdf:resource="http://example.org/geo#Country"/>
+        </rdf:Description>
+
 
         <rdf:Description rdf:about="#wsdl.interfaceMessageReference(GlobalWeatherSoap/GetWeather/Out)"> <!-- wsdl:message -->
                 <!-- wsdl:OutputMessage subClassOf msm:MessageContent -->

@@ -104,7 +104,7 @@ public class ServiceDiscovery {
 		discoveryQuery.append("?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n");
 				
 		discoveryQuery.append("?serviceID msm_ext:hasOperation ?outputFaultMessage . \n");
-		discoveryQuery.append("?inputFaultMessage rdf:type wsdl:OutputMessage . \n");
+		discoveryQuery.append("?outputFaultMessage rdf:type wsdl:OutputMessage . \n");
 		discoveryQuery.append("?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n");
 		discoveryQuery.append("?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n");
 		discoveryQuery.append("?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n");
@@ -126,8 +126,8 @@ public class ServiceDiscovery {
 		discoveryQuery.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
 		discoveryQuery.append("?descriptionBlock wsdl:namespace ?namespace . \n");
 		discoveryQuery.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
-		discoveryQuery.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
-		discoveryQuery.append("?interfaceOperation rdfs:label ?operationName . \n");
+		discoveryQuery.append("?interfaceBlock wsdl:interfaceOperation ?operation . \n");
+		discoveryQuery.append("?operation rdfs:label ?operationName . \n");
 		
 		discoveryQuery.append("OPTIONAL { \n");
 		discoveryQuery.append("?operation wsdl:interfaceMessageReference ?inputMessage . \n");
@@ -198,7 +198,6 @@ public class ServiceDiscovery {
 
 		ByteArrayOutputStream out =  new ByteArrayOutputStream();
 		QueryResultIO.write(queryResult, _outputFormat, out);
-
 		
 		return out.toString();
 	}
@@ -484,22 +483,21 @@ public class ServiceDiscovery {
 		return out.toString();
 	}
 	
-	
 	public static void main(String[] args) throws Exception {
 		List<URI> categoryList = new ArrayList<URI>();
-//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
-		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
+//		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
-//		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
+		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
 //		System.out.println("---");
 		
 		List<URI> inputParamList = new ArrayList<URI>();
-		inputParamList.add(new URI("http://example.org/inputParam1"));
-		inputParamList.add(new URI("http://example.org/inputParam2"));
+		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
+		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList.add(new URI("http://example.org/outputParam1"));
-		System.out.println(ServiceDiscovery.discover(categoryList, inputParamList, outputParamList, RDFFormat.N3));
+		outputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
+//		System.out.println(ServiceDiscovery.discover(categoryList, inputParamList, outputParamList, RDFFormat.N3));
 		
 //		System.out.println(ServiceDiscovery.lookup(new URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));	
 //		System.out.println("---");
