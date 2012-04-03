@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import at.sti2.ngsee.grounding.api.IAvailabilityCheck;
 import at.sti2.ngsee.grounding.api.IGroundingEndpoint;
 import at.sti2.ngsee.grounding.api.IGroundingEngine;
+import at.sti2.ngsee.grounding.api.data.DebugResponse;
 import at.sti2.ngsee.grounding.core.GroundingFactory;
 
 /**
@@ -78,6 +79,34 @@ public class GroundingWebService implements IGroundingEndpoint, IAvailabilityChe
 		
 		String rdfInstance = engine.lift(_inputMessage);
 		return engine.lower(rdfInstance);
+	}
+	
+	/**
+	 * @see at.sti2.ngsee.grounding.api.IGroundingEndpoint#transform(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@WebMethod
+	@Override
+	public DebugResponse transform_debug(@WebParam(name="inputMessage")String _inputMessage,
+			@WebParam(name="xsltToOntologyURL")String _xsltToOntology,
+			@WebParam(name="xsltToOutputURL")String _xsltToOutput) throws Exception {
+		DebugResponse response = new DebugResponse(_inputMessage, _xsltToOntology, _xsltToOutput);
+		
+		long startProcessTime = System.currentTimeMillis();
+		IGroundingEngine engine = GroundingFactory.createGroundingEngine(new URL(_xsltToOutput), new URL(_xsltToOntology));
+		
+		long liftProcessTime = System.currentTimeMillis();
+		String rdfInstance = engine.lift(_inputMessage);
+		response.setInput2OntologyExecutionTime((System.currentTimeMillis() - liftProcessTime));
+		
+		long lowerProcessTime = System.currentTimeMillis();
+		String outputInstance = engine.lower(rdfInstance);
+		response.setOntology2OutputExecutionTime((System.currentTimeMillis() - lowerProcessTime));
+		
+		response.setIntermediateMessage(rdfInstance);
+		response.setOutputMessage(outputInstance);
+		
+		response.setTotalExecutionTime((System.currentTimeMillis() - startProcessTime));
+		return response;
 	}
 
 }

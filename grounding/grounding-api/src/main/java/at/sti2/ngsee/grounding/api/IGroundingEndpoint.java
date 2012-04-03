@@ -16,6 +16,8 @@
  */
 package at.sti2.ngsee.grounding.api;
 
+import at.sti2.ngsee.grounding.api.data.DebugResponse;
+
 /**
  * <b>Purpose:</b>
  * <br>
@@ -44,5 +46,7 @@ public interface IGroundingEndpoint {
 	 * @return
 	 */
 	public String transform(String inputMessage, String xsltToOntology, String xsltToOutput) throws Exception;
+	
+	public DebugResponse transform_debug(String inputMessage, String xsltToOntology, String xsltToOutput) throws Exception;
 
 }
