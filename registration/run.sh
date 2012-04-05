@@ -1,5 +1,5 @@
 #!/bin/bash
-mvn clean install; \
+/home/koni/programs/maven/apache-maven-3.0.3/bin/mvn clean install; \
 cd registration-webservice; \
-mvn jetty:run; \
+/home/koni/programs/maven/apache-maven-3.0.3/bin/mvn jetty:run; \
 cd ..

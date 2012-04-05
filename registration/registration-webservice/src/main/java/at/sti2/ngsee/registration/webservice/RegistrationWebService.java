@@ -22,10 +22,9 @@ import javax.jws.WebService;
 
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
-import org.apache.log4j.Logger;
 
 import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
-import at.sti2.ngsee.registration.core.transformation.TransformationWSDL11;
+import at.sti2.ngsee.registration.core.transformation.TransformationWSDL;
 
 /**
  * 
@@ -47,20 +46,20 @@ import at.sti2.ngsee.registration.core.transformation.TransformationWSDL11;
 
 @WebService(targetNamespace="http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Discovery Component")
+		@WSDLDocumentation("SESA Registration Component")
 	)
 public class RegistrationWebService implements IRegistrationEndpoint
-{	
-	protected static Logger logger = Logger.getLogger(RegistrationWebService.class);
-	
+{		
+	/**
+	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#register(java.lang.String)
+	 */
+	@Override
 	@WebMethod
 	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception{
-		logger.info("Registration of Web Service '" + _wsdlURL + "'");
-		return TransformationWSDL11.transformWSDL(_wsdlURL);
+		return TransformationWSDL.transformWSDL(_wsdlURL);
 	}
 	
 	public String getVersion() {
-		logger.info("Registeration - getVersion()");
 		return "v1.0";
 	}
 }

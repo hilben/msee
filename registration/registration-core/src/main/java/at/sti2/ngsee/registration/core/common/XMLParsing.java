@@ -72,6 +72,22 @@ public abstract class XMLParsing {
 	}
 	
 	/**
+	 * Search a single subnode of a node by the given attribute name. 
+	 * 
+	 * @param _parent The parent node.
+	 * @param _nodename The name of the parent node as string. 
+	 * @return The searched subnode or null if the node name was not found or was mistyped.
+	 */
+	public static Node getSubnodeFromAttribute(Node _parent, String _attributename) {
+		try{
+			Node node = _parent.selectSingleNode("./*[@name='" + _attributename + "']");
+			return node;
+		}catch( NullPointerException e){
+			return null;
+		}
+	}
+	
+	/**
 	 * Search all subnodes of a node by the given node name.
 	 * 
 	 * @param _parent The parent node.

@@ -11,7 +11,7 @@ public class WSDLRecogniser {
 	}
 
 	public boolean isWSDL11() {
-		Node portType = XMLParsing.getNode(this.doc, "portType");
+		Node portType = XMLParsing.getNode(this.doc, "wsdl:portType");
 		if ( portType != null )
 			return true;
 		return false;
