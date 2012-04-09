@@ -24,13 +24,13 @@
 	</properties>
 
 	<issueManagement>
-		<system>Sourceforge</system>
-		<url>http://sesa.sti2.at</url>
+		<system>Redmine</system>
+		<url>http://redmine.sesa.sti2.at</url>
 	</issueManagement>
 
 	<organization>
 		<name>Semantic Technology Institute Innsbruck</name>
-		<url>http://sesa.sti2.at</url>
+		<url>http://www.sti2.at</url>
 	</organization>
 
 	<developers>
@@ -61,7 +61,7 @@
 
 
 	<scm>
-		<connection>scm:git:ssh://sesa.sti2.at:/var/scm/see/sesa.git</connection>
+		<connection>scm:git:git@sesa.sti2.at:sesa-core.git</connection>
 		<!-- <url>scm:git:ssh://sesa.sti2.at:/var/scm/see/sesa.git</url> -->
 		<!-- <developerConnection>scm:git:git@github.com:tobrien/git-demo.git</developerConnection> -->
 	</scm>
