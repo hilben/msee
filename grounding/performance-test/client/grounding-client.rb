@@ -38,7 +38,7 @@ class GroundingClient
         puts "|--> Ontology to Output              : #{xml.xpath('//ontology2OutputExecutionTime/text()')} milliseconds"
     end
 
-    def average_execution(x_times)
+    def average_execution(x_times, filename)
         client = Savon::Client.new do
             wsdl.document = WSDL_URL
         end
@@ -68,10 +68,14 @@ class GroundingClient
         totalAverage /= x_times
         liftingAverage /= x_times
         loweringAverage /= x_times
+
+        File.open(filename, 'a+') {|f| f.write("#{get_node_count} #{totalAverage}\n") }
+
         puts "Average values with #{x_times} cycles"
         puts "Total (server-side) Execution Time (Average) : #{totalAverage} milliseconds"
-        puts "|--> Input to Ontology (Average})            : #{xml.xpath(liftingAverage)} milliseconds"
-        puts "|--> Ontology to Output (Average)            : #{xml.xpath(loweringAverage)} milliseconds"
+        puts "|--> Input to Ontology (Average})            : #{liftingAverage} milliseconds"
+        puts "|--> Ontology to Output (Average)            : #{loweringAverage} milliseconds"
+        #puts "Output Message: #{xml.xpath('//intermediateMessage/text()')}"
     end
 
     def execute
@@ -94,12 +98,15 @@ class GroundingClient
     end
 end
 
-groundingGS1 = GroundingClient.new("perf_xml/gs1_example.xml", "http://localhost:3000/efreight/gs1_tep_demonstration/gs12ontology.xslt", "http://localhost:3000/efreight/gs1_tep_demonstration/ontology2tep.xslt")
-groundingGS1.output_performance_measurements(groundingGS1.execute)
-puts groundingGS1.get_node_count
-for i in 1..4
+#groundingGS1 = GroundingClient.new("perf_xml/gs1_example.xml", "http://localhost:3000/efreight/gs1_tep_demonstration/gs12ontology.xslt", "http://localhost:3000/efreight/gs1_tep_demonstration/ontology2tep.xslt")
+#groundingGS1.output_performance_measurements(groundingGS1.execute)
+
+filename = "performance.xgraph"
+
+File.open(filename, 'w') {|f| f.write("") }
+for i in 0..6
     groundingGS1 = GroundingClient.new("perf_xml/gs1_example_#{i}.xml", "http://localhost:3000/efreight/gs1_tep_demonstration/gs12ontology.xslt", "http://localhost:3000/efreight/gs1_tep_demonstration/ontology2tep.xslt")
-    groundingGS1.average_execution(4)
+    groundingGS1.average_execution(10, filename)
     puts groundingGS1.get_node_count
 end
 
