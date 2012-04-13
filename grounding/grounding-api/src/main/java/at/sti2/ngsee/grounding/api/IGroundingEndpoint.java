@@ -47,6 +47,19 @@ public interface IGroundingEndpoint {
 	 */
 	public String transform(String inputMessage, String xsltToOntology, String xsltToOutput) throws Exception;
 	
+	/**
+	 * <p>Invokes a service and handles the lifting and lowering process and all 
+	 * low level processes needed for the invocation process.</p>
+	 * 
+	 * <p>Additional it returns deubging information, such as the inputMessage, 
+	 * the two XSLT scripts, total execution time and execution times for lifting
+	 * and lowering.</p>
+	 * 
+	 * @param serviceID The abstract Identifier of the service.
+	 * @param operationName The operation that should be called.
+	 * @param rdfData The data described in RDF.
+	 * @return
+	 */
 	public DebugResponse transform_debug(String inputMessage, String xsltToOntology, String xsltToOutput) throws Exception;
 
 }

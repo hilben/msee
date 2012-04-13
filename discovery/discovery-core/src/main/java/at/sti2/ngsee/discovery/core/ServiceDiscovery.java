@@ -36,8 +36,9 @@ import org.openrdf.rio.UnsupportedRDFormatException;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
+ * TODO: We support SPARQL 1.1: Optimize the SPARQL queries with the help of paths.
+ * 
  * @author Alex Oberhauser
- *
  */
 public class ServiceDiscovery {
 	
@@ -49,13 +50,6 @@ public class ServiceDiscovery {
 	
 	/**
 	 * TODO: Unchecked outputParamList, inputParamList<p/>
-	 * 
-	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)
-	 * outputs: conjunction (o2 AND o2 AND ... AND oM)<p/>
-	 * 
-	 * <b>Argumentation for this approach:<b><br/>
-	 * I do not care if I need less input as available to reach my goal, 
-	 * but I want as output all the information that I specify/need. 
 	 * 
 	 * @param _categoryList
 	 * @param inputParamList
@@ -113,9 +107,6 @@ public class ServiceDiscovery {
 		discoveryQuery.append("} WHERE { \n");
 		discoveryQuery.append("?serviceID rdf:type msm_ext:Service . \n");
 		for ( URI category : _categoryList ) {
-			/**
-			 * TODO: Check this part.
-			 */
 			discoveryQuery.append("{ \n");
 			discoveryQuery.append("<" + category + "> rdfs:subClassOf* ?superClass . \n");
 			discoveryQuery.append("?serviceID sawsdl:modelReference ?superClass . \n");

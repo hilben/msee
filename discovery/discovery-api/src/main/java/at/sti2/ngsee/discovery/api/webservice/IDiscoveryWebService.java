@@ -26,7 +26,7 @@ import java.util.List;
 public interface IDiscoveryWebService {
 	
 	/**
-	 * Search Behaviour: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)
+	 * Search Behavior: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)
 	 * 
 	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
 	 * @return Services with related operation (that match the goal) in RDF Representation
@@ -35,7 +35,12 @@ public interface IDiscoveryWebService {
 	public String discover(List<URI> categoryList) throws Exception;
 	
 	/**
-	 * TODO: Specify how the inputs/outputs are combined (conjunction/disjunction!?!)
+	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)
+	 * outputs: conjunction (o2 AND o2 AND ... AND oM)<p/>
+	 * 
+	 * <b>Argumentation for this approach:<b><br/>
+	 * I do not care if I need less input as available to reach my goal, 
+	 * but I want as output all the information that I specify/need.
 	 * 
 	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
 	 * @param inputParamList A list of input parameters (match mechanism!?!)
@@ -46,7 +51,7 @@ public interface IDiscoveryWebService {
 	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws Exception;
 	
 	/**
-	 * Get more information about the operation. 
+	 * Get more information about the specified operation. 
 	 * 
 	 * @param namespace The namespace related to the operation name.
 	 * @param operationName The operation name.
