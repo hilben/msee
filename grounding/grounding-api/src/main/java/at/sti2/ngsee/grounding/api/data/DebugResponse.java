@@ -22,9 +22,9 @@ public class DebugResponse {
 	/**
 	 * Exectuion Time
 	 */
-	private long totalExecutionTime;
-	private long input2OntologyExecutionTime;
-	private long ontology2OutputExecutionTime;
+	private double totalExecutionTime;
+	private double input2OntologyExecutionTime;
+	private double ontology2OutputExecutionTime;
 	
 	/**
 	 * Needed for serialization to/from SOAP message
@@ -87,27 +87,27 @@ public class DebugResponse {
 	}
 	
 	
-	public void setTotalExecutionTime(long _totalExecutionTime) {
+	public void setTotalExecutionTime(double _totalExecutionTime) {
 		this.totalExecutionTime = _totalExecutionTime;
 	}
 	
-	public void setInput2OntologyExecutionTime(long _input2OntologyExecutionTime) {
+	public void setInput2OntologyExecutionTime(double _input2OntologyExecutionTime) {
 		this.input2OntologyExecutionTime = _input2OntologyExecutionTime;
 	}
 	
-	public void setOntology2OutputExecutionTime(long _ontology2OutputExecutionTime) {
+	public void setOntology2OutputExecutionTime(double _ontology2OutputExecutionTime) {
 		this.ontology2OutputExecutionTime = _ontology2OutputExecutionTime;
 	}
 	
-	public long getTotalExecutionTime() {
+	public double getTotalExecutionTime() {
 		return this.totalExecutionTime;
 	}
 	
-	public long getInput2OntologyExecutionTime() {
+	public double getInput2OntologyExecutionTime() {
 		return this.input2OntologyExecutionTime;
 	}
 	
-	public long getOntology2OutputExecutionTime() {
+	public double getOntology2OutputExecutionTime() {
 		return this.ontology2OutputExecutionTime;
 	}
 	

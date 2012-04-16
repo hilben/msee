@@ -91,21 +91,21 @@ public class GroundingWebService implements IGroundingEndpoint, IAvailabilityChe
 			@WebParam(name="xsltToOutputURL")String _xsltToOutput) throws Exception {
 		DebugResponse response = new DebugResponse(_inputMessage, _xsltToOntology, _xsltToOutput);
 		
-		long startProcessTime = System.currentTimeMillis();
+		long startProcessTime = System.nanoTime();
 		IGroundingEngine engine = GroundingFactory.createGroundingEngine(new URL(_xsltToOutput), new URL(_xsltToOntology));
 		
-		long liftProcessTime = System.currentTimeMillis();
+		long liftProcessTime = System.nanoTime();
 		String rdfInstance = engine.lift(_inputMessage);
-		response.setInput2OntologyExecutionTime((System.currentTimeMillis() - liftProcessTime));
+		response.setInput2OntologyExecutionTime((System.nanoTime() - liftProcessTime)/1000000.0);
 		
-		long lowerProcessTime = System.currentTimeMillis();
+		long lowerProcessTime = System.nanoTime();
 		String outputInstance = engine.lower(rdfInstance);
-		response.setOntology2OutputExecutionTime((System.currentTimeMillis() - lowerProcessTime));
+		response.setOntology2OutputExecutionTime((System.nanoTime() - lowerProcessTime)/1000000.0);
 		
 		response.setIntermediateMessage(rdfInstance);
 		response.setOutputMessage(outputInstance);
 		
-		response.setTotalExecutionTime((System.currentTimeMillis() - startProcessTime));
+		response.setTotalExecutionTime((System.nanoTime() - startProcessTime)/1000000.0);
 		return response;
 	}
 
