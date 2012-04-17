@@ -102,10 +102,11 @@ public class GroundingWebService implements IGroundingEndpoint, IAvailabilityChe
 		String outputInstance = engine.lower(rdfInstance);
 		response.setOntology2OutputExecutionTime((System.nanoTime() - lowerProcessTime)/1000000.0);
 		
+		response.setTotalExecutionTime((System.nanoTime() - startProcessTime)/1000000.0);
+		
 		response.setIntermediateMessage(rdfInstance);
 		response.setOutputMessage(outputInstance);
 		
-		response.setTotalExecutionTime((System.nanoTime() - startProcessTime)/1000000.0);
 		return response;
 	}
 
