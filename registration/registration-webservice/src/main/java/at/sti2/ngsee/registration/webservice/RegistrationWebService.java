@@ -40,6 +40,7 @@ import at.sti2.ngsee.registration.core.transformation.TransformationWSDL;
  * Date of creation:  	23.04.2011<br>
  * File:         		$Source$<br>
  * Modifier:     		$Author$<br>
+ * Last modified:  		23.05.2012<br>
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
@@ -61,5 +62,14 @@ public class RegistrationWebService implements IRegistrationEndpoint
 	
 	public String getVersion() {
 		return "v1.0";
+	}
+	
+	public static void main(String[] argv) {
+		RegistrationWebService r = new RegistrationWebService();
+		try {
+			r.register("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
 	}
 }

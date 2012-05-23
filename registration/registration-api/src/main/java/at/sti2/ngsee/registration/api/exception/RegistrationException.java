@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 STI Innsbruck, UIBK
+ * Copyright (C) 2012 STI Innsbruck, UIBK
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,31 +14,46 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.registration.api.webservice;
+package at.sti2.ngsee.registration.api.exception;
 
 /**
- * <b>Purpose:</b>
- * <br>
+ * <b>Purpose:</b> This exception indicates an error during execution of the registration engine.<br>
  * <b>Description:</b>
  * <br>
- * <b>Copyright:</b>     Copyright (c) 2011 STI<br>
+ * <b>Copyright:</b>     Copyright (c) 2012 STI<br>
  * <b>Company:</b>       STI Innsbruck<br>
  *
  * @author      Corneliu Stanciu<br>
  * @version     $Id$<br>
- * Date of creation:  17.03.2011<br>
+ * Date of creation:  23.05.2012<br>
  * File:         $Source$<br>
  * Modifier:     $Author$<br>
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public interface IRegistrationEndpoint {
 
-	/**
-	 * 
-	 * @param _wsdlURL The URL of the Web Service description (WSDL).
-	 * @return true if the service was register successfully, otherwise false.  
-	 */
-	public boolean register(String _wsdlURL);
+public class RegistrationException extends Exception {
+
+	private static final long serialVersionUID = -2289179077479549018L;
 	
+	public RegistrationException() {
+		super();
+	}
+	
+	public RegistrationException(String message) {
+		super(message);
+	}
+	
+	public RegistrationException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
+	public RegistrationException(Throwable cause) {
+        super(cause);
+    }
+	
+	public RegistrationException(String message, String cause) {
+        super(cause);
+    }
+
 }

@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.dom4j.DocumentException;
 import org.openrdf.repository.RepositoryException;
 import org.ow2.easywsdl.wsdl.api.Binding;
 import org.ow2.easywsdl.wsdl.api.BindingOperation;
@@ -31,10 +29,10 @@ import org.ow2.easywsdl.extensions.sawsdl.api.schema.Schema;
 import org.ow2.easywsdl.extensions.sawsdl.impl.schema.ComplexTypeImpl;
 import org.ow2.easywsdl.extensions.wsdl4complexwsdl.WSDL4ComplexWsdlFactory;
 import org.ow2.easywsdl.extensions.wsdl4complexwsdl.api.Description;
+import org.ow2.easywsdl.extensions.wsdl4complexwsdl.api.WSDL4ComplexWsdlException;
 import org.ow2.easywsdl.extensions.wsdl4complexwsdl.api.WSDL4ComplexWsdlReader;
-import org.ow2.easywsdl.schema.api.XmlException;
-import org.xml.sax.SAXException;
 
+import at.sti2.ngsee.registration.api.exception.RegistrationException;
 import at.sti2.ngsee.registration.core.common.Config;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
@@ -48,141 +46,167 @@ public class TransformationWSDL {
 	private static RepositoryHandler reposHandler;
 	private static HashMap<QName, Element> elementsMap;
 	
-	public static void main(String[] args) throws MalformedURLException, IOException, URISyntaxException, XmlException, RepositoryException, ParserConfigurationException, SAXException, DocumentException  {
+	public static void main(String[] args) throws RegistrationException   {
 //		transformWSDL("file:///home/koni/globalweather.sawsdl");
 //		transformWSDL("file:///home/koni/sawsdl_2.0.wsdl");
-		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");
+		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");		
+//		transformWSDL("http://www.w3.org/2002/ws/sawsdl/CR/wsdl2.0/00-all.wsd");
 	}
 	
-	public static String transformWSDL(String _wsdlURI) throws MalformedURLException, URISyntaxException, IOException, XmlException, RepositoryException {
-		Config cfg = new Config();
-		reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
-		
-		// Read a SAWSDL description
-		SAWSDLReader readerSAWSDL = SAWSDLFactory.newInstance().newSAWSDLReader();
-		org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL = readerSAWSDL.read(new URL(_wsdlURI));
-		
-		WSDL4ComplexWsdlReader reader = WSDL4ComplexWsdlFactory.newInstance().newWSDLReader();
-		Description desc = reader.read(new URL(_wsdlURI));
-		desc.addImportedDocumentsInWsdl();
-		
-		elementsMap = new HashMap<QName, Element>();
-		Types types = descSAWSDL.getTypes();
-		List<Schema> schemas = types.getSchemas();
-		for ( org.ow2.easywsdl.extensions.sawsdl.api.schema.Schema schema : schemas ) {
-			List<Element> elements = schema.getElements();
-			
-			for (Element elem : elements ) {
-				Object obj = elem.getType();
-				if ( obj instanceof ComplexTypeImpl ) {
-					ComplexTypeImpl type = (ComplexTypeImpl) obj;
-					List<Element> subElements = type.getSequence().getElements();
-					
-					for ( Element subElem : subElements ) {
-						elementsMap.put(subElem.getQName(), subElem);
-					}
-				}
-				elementsMap.put(elem.getQName(), elem);
+	public static String transformWSDL(String _wsdlURI) throws RegistrationException {
+		try {
+			try {
+				Config cfg = new Config();		
+				reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
+			}catch (Exception e) {
+				throw new RegistrationException("The repository endpoint od ID cound NOT be found.", e.getCause());
 			}
-		}
 		
-		//Services
-		for( Service service : desc.getServices() ) {
+			// Read a SAWSDL description
+			SAWSDLReader readerSAWSDL = SAWSDLFactory.newInstance().newSAWSDLReader();
+			WSDL4ComplexWsdlReader reader = WSDL4ComplexWsdlFactory.newInstance().newWSDLReader();
 			
-			SERVICE_NAME = service.getQName().getLocalPart();
-			SERVICE_NS = service.getQName().getNamespaceURI() + "#";
-			NAMESPACE_URI = service.getQName().getNamespaceURI();
+			org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL;
+			Description desc;
+			try{
+				URL wsdlURI = new URL(_wsdlURI);
+				descSAWSDL = readerSAWSDL.read(wsdlURI);
+				
+				desc = reader.read(wsdlURI);				
+			}catch(MalformedURLException e){
+				throw new RegistrationException("The provided URL is malformed.", e.getCause());
+			} catch (IOException e) {
+				throw new RegistrationException("The provided WSDL could NOT be found.", e.getCause());			
+			}					
 			
-			org.ow2.easywsdl.extensions.sawsdl.api.Service serviceSAWSDL = descSAWSDL.getService(service.getQName());
-			List<URI> categories = serviceSAWSDL.getModelReference();
+			desc.addImportedDocumentsInWsdl();
 			
-			writeServiceToTriples(categories, NAMESPACE_URI, _wsdlURI);
+			elementsMap = new HashMap<QName, Element>();
+			Types types = descSAWSDL.getTypes();
+			List<Schema> schemas = types.getSchemas();
+			for ( org.ow2.easywsdl.extensions.sawsdl.api.schema.Schema schema : schemas ) {
+				List<Element> elements = schema.getElements();
+				
+				for (Element elem : elements ) {
+					Object obj = elem.getType();
+					if ( obj instanceof ComplexTypeImpl ) {
+						ComplexTypeImpl type = (ComplexTypeImpl) obj;
+						List<Element> subElements = type.getSequence().getElements();
 						
-			//End-points
-			for(Endpoint endpoint : service.getEndpoints()) {
-				String endpointName = endpoint.getName();
-				String endpointAddress = endpoint.getAddress();
-				
-				writeEndpointsToTriples(endpointName, endpointAddress, _wsdlURI);
-								
-				//Bindings
-				Binding binding = endpoint.getBinding();
-				String bindingName = binding.getQName().getLocalPart();
-				String bindingType = binding.getTypeOfBinding().value().toString();
-				
-				writeBindingsToTriples(bindingName, bindingType, _wsdlURI);
-														
-				for ( BindingOperation bindingOperation : binding.getBindingOperations() ) {
-					String bindingOperationName = bindingOperation.getQName().getLocalPart(); 
-					String soapAction = bindingOperation.getSoapAction();
-					
-					writeBindingOperationsToTriples(bindingName, bindingOperationName, soapAction, _wsdlURI);
+						for ( Element subElem : subElements ) {
+							elementsMap.put(subElem.getQName(), subElem);
+						}
+					}
+					elementsMap.put(elem.getQName(), elem);
 				}
+			}
+			
+			//Services
+			for( Service service : desc.getServices() ) {
 				
-				//Interface
-				InterfaceType wsdlInterface = binding.getInterface();
-				String interfaceName = wsdlInterface.getQName().getLocalPart();
+				SERVICE_NAME = service.getQName().getLocalPart();
+				SERVICE_NS = service.getQName().getNamespaceURI() + "#";
+				NAMESPACE_URI = service.getQName().getNamespaceURI();
 				
-				writeInterfaceToTriples(interfaceName, _wsdlURI);
+				org.ow2.easywsdl.extensions.sawsdl.api.Service serviceSAWSDL = descSAWSDL.getService(service.getQName());
+				List<URI> categories = serviceSAWSDL.getModelReference();
 				
-				for( Operation interfaceOperation : wsdlInterface.getOperations() ) {
-					String interfaceOperationName = interfaceOperation.getQName().getLocalPart();
-					String pattern = interfaceOperation.getPattern().toString();
+				writeServiceToTriples(categories, NAMESPACE_URI, _wsdlURI);
+							
+				//End-points
+				for(Endpoint endpoint : service.getEndpoints()) {
+					String endpointName = endpoint.getName();
+					String endpointAddress = endpoint.getAddress();
 					
-					writeInterfaceOperationsToTriples(interfaceName, interfaceOperationName, _wsdlURI);
+					writeEndpointsToTriples(endpointName, endpointAddress, _wsdlURI);
+									
+					//Bindings
+					Binding binding = endpoint.getBinding();
+					String bindingName = binding.getQName().getLocalPart();
+					String bindingType = binding.getTypeOfBinding().value().toString();
 					
-					
-					//Input
-					Input input = interfaceOperation.getInput();
-					QName inputMsgLabel = input.getMessageName();
-					String inputMsgLabelName = null;
-					if ( inputMsgLabel != null )
-						inputMsgLabelName = inputMsgLabel.getLocalPart();
-					
-					writeInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, inputMsgLabelName, pattern, _wsdlURI);
-					
-					org.ow2.easywsdl.schema.api.Element inputElem = input.getElement();
-					if ( inputElem != null ) {
-						writeElementDeclaration(inputElem.getQName(), interfaceName, interfaceOperationName,inputMsgLabelName, _wsdlURI);
+					writeBindingsToTriples(bindingName, bindingType, _wsdlURI);
+															
+					for ( BindingOperation bindingOperation : binding.getBindingOperations() ) {
+						String bindingOperationName = bindingOperation.getQName().getLocalPart(); 
+						String soapAction = bindingOperation.getSoapAction();
 						
-						Object intype = inputElem.getType();
-						if ( intype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl ) {
-							org.ow2.easywsdl.schema.impl.ComplexTypeImpl complexType = (org.ow2.easywsdl.schema.impl.ComplexTypeImpl) intype;
-							List<org.ow2.easywsdl.schema.api.Element> elements = complexType.getSequence().getElements();
-							for ( org.ow2.easywsdl.schema.api.Element elem : elements ) {
-								writeSubelementDeclaration(inputElem.getQName(), elem.getQName(), _wsdlURI);
+						writeBindingOperationsToTriples(bindingName, bindingOperationName, soapAction, _wsdlURI);
+					}
+					
+					//Interface
+					InterfaceType wsdlInterface = binding.getInterface();
+					String interfaceName = wsdlInterface.getQName().getLocalPart();
+					
+					writeInterfaceToTriples(interfaceName, _wsdlURI);
+					
+					for( Operation interfaceOperation : wsdlInterface.getOperations() ) {
+						String interfaceOperationName = interfaceOperation.getQName().getLocalPart();
+						String pattern = interfaceOperation.getPattern().toString();
+						
+						writeInterfaceOperationsToTriples(interfaceName, interfaceOperationName, _wsdlURI);
+						
+						
+						//Input
+						Input input = interfaceOperation.getInput();
+						QName inputMsgLabel = input.getMessageName();
+						String inputMsgLabelName = null;
+						if ( inputMsgLabel != null )
+							inputMsgLabelName = inputMsgLabel.getLocalPart();
+						
+						writeInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, inputMsgLabelName, pattern, _wsdlURI);
+						
+						org.ow2.easywsdl.schema.api.Element inputElem = input.getElement();
+						if ( inputElem != null ) {
+							writeElementDeclaration(inputElem.getQName(), interfaceName, interfaceOperationName,inputMsgLabelName, _wsdlURI);
+							
+							Object intype = inputElem.getType();
+							if ( intype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl ) {
+								org.ow2.easywsdl.schema.impl.ComplexTypeImpl complexType = (org.ow2.easywsdl.schema.impl.ComplexTypeImpl) intype;
+								List<org.ow2.easywsdl.schema.api.Element> elements = complexType.getSequence().getElements();
+								for ( org.ow2.easywsdl.schema.api.Element elem : elements ) {
+									writeSubelementDeclaration(inputElem.getQName(), elem.getQName(), _wsdlURI);
+								}
+							}
+						}
+						
+						//Output
+						Output output = interfaceOperation.getOutput();
+						QName outputMsgLabel = output.getMessageName();
+						String outputMsgLabelName = null;
+						if ( outputMsgLabel != null )
+							outputMsgLabelName = outputMsgLabel.getLocalPart();
+						
+						writeInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, outputMsgLabelName, pattern, _wsdlURI);
+						
+						org.ow2.easywsdl.schema.api.Element outputElem = output.getElement();
+						if ( outputElem != null ) {
+							writeElementDeclaration(outputElem.getQName(), interfaceName, interfaceOperationName,outputMsgLabelName, _wsdlURI);
+							
+							Object outtype = outputElem.getType();
+							if ( outtype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl ) {
+								org.ow2.easywsdl.schema.impl.ComplexTypeImpl complexType = (org.ow2.easywsdl.schema.impl.ComplexTypeImpl) outtype;
+								List<org.ow2.easywsdl.schema.api.Element> elements = complexType.getSequence().getElements();
+								for ( org.ow2.easywsdl.schema.api.Element elem : elements ) {
+									writeSubelementDeclaration(outputElem.getQName(), elem.getQName(), _wsdlURI);
+								}
 							}
 						}
 					}
-					
-					//Output
-					Output output = interfaceOperation.getOutput();
-					QName outputMsgLabel = output.getMessageName();
-					String outputMsgLabelName = null;
-					if ( outputMsgLabel != null )
-						outputMsgLabelName = outputMsgLabel.getLocalPart();
-					
-					writeInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, outputMsgLabelName, pattern, _wsdlURI);
-					
-					org.ow2.easywsdl.schema.api.Element outputElem = output.getElement();
-					if ( outputElem != null ) {
-						writeElementDeclaration(outputElem.getQName(), interfaceName, interfaceOperationName,outputMsgLabelName, _wsdlURI);
-						
-						Object outtype = outputElem.getType();
-						if ( outtype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl ) {
-							org.ow2.easywsdl.schema.impl.ComplexTypeImpl complexType = (org.ow2.easywsdl.schema.impl.ComplexTypeImpl) outtype;
-							List<org.ow2.easywsdl.schema.api.Element> elements = complexType.getSequence().getElements();
-							for ( org.ow2.easywsdl.schema.api.Element elem : elements ) {
-								writeSubelementDeclaration(outputElem.getQName(), elem.getQName(), _wsdlURI);
-							}
-						}
-					}
 				}
-			}
+			}			
+		} catch (URISyntaxException e) {
+			throw new RegistrationException("The URI syntax is not well formed.", e.getCause());							
+		} catch (SAWSDLException e) {
+			throw new RegistrationException("Errors durring parsing the service.", e.getCause());		
+		} catch (WSDL4ComplexWsdlException e) {
+			throw new RegistrationException("Errors durring parsing the service.", e.getCause());
+		} catch (RepositoryException e) {
+			throw new RegistrationException("Errors durring saving of triples into repository.", e.getCause());
 		}
 		
 		if ( SERVICE_NS != null && SERVICE_NAME != null ){
-			reposHandler.commit();
+			//reposHandler.commit();
         	return SERVICE_NS + SERVICE_NAME;
 		}
 		return null;
