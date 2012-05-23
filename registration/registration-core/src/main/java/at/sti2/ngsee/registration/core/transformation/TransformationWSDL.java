@@ -111,6 +111,11 @@ public class TransformationWSDL {
 				org.ow2.easywsdl.extensions.sawsdl.api.Service serviceSAWSDL = descSAWSDL.getService(service.getQName());
 				List<URI> categories = serviceSAWSDL.getModelReference();
 				
+				if ( categories.size() == 0 )
+					throw new RegistrationException(
+							"The service MUST be at least annotated with one service category. " +
+							"For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
+				
 				writeServiceToTriples(categories, NAMESPACE_URI, _wsdlURI);
 							
 				//End-points
@@ -158,6 +163,7 @@ public class TransformationWSDL {
 						
 						org.ow2.easywsdl.schema.api.Element inputElem = input.getElement();
 						if ( inputElem != null ) {
+							checkAnnotations(inputElem.getQName());
 							writeElementDeclaration(inputElem.getQName(), interfaceName, interfaceOperationName,inputMsgLabelName, _wsdlURI);
 							
 							Object intype = inputElem.getType();
@@ -174,13 +180,14 @@ public class TransformationWSDL {
 						Output output = interfaceOperation.getOutput();
 						QName outputMsgLabel = output.getMessageName();
 						String outputMsgLabelName = null;
-						if ( outputMsgLabel != null )
+						if ( outputMsgLabel != null )							
 							outputMsgLabelName = outputMsgLabel.getLocalPart();
 						
 						writeInterfaceMessageReferenceToTriples(interfaceName, interfaceOperationName, outputMsgLabelName, pattern, _wsdlURI);
 						
 						org.ow2.easywsdl.schema.api.Element outputElem = output.getElement();
 						if ( outputElem != null ) {
+							checkAnnotations(outputElem.getQName());
 							writeElementDeclaration(outputElem.getQName(), interfaceName, interfaceOperationName,outputMsgLabelName, _wsdlURI);
 							
 							Object outtype = outputElem.getType();
@@ -211,7 +218,7 @@ public class TransformationWSDL {
 		}
 		return null;
 	}
-	
+
 	private static void writeSubelementDeclaration(QName elementQName, QName subelementQName, String _wsdlURI) throws RepositoryException, SAWSDLException {
 		logger.info("SUBELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(subelementQName.getLocalPart())  + " , " + 
 				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("QName"));
@@ -240,7 +247,7 @@ public class TransformationWSDL {
 		reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getWSDLURI("elementDeclaration"), getElementDeclarationNode(subelementQName.getLocalPart()), _wsdlURI);
 	}
 	
-	private static void writeElementDeclaration(QName elementQName, String interfaceName, String operationName, String messageLabel, String _wsdlURI) throws RepositoryException, SAWSDLException {
+	private static void writeElementDeclaration(QName elementQName, String interfaceName, String operationName, String messageLabel, String _wsdlURI) throws RepositoryException, SAWSDLException, RegistrationException {		
 		logger.info("ELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(elementQName.getLocalPart())  + " , " + 
 				QueryHelper.getRDFURI("type") + " , " + QueryHelper.getWSDLURI("QName"));
 		logger.info("ELEMENT DECL INFO : Triple + Context: " + getElementDeclarationNode(elementQName.getLocalPart())  + " , " + 
@@ -251,8 +258,7 @@ public class TransformationWSDL {
 		logger.info("ELEMENT DECL FOR INPUT INTERFACE MSG REF INFO : Triple + Context: " + getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel) + " , " + 
 				QueryHelper.getWSDLURI("elementDeclaration") + " , " + getElementDeclarationNode(elementQName.getLocalPart()));
 		
-		
-		List<URI> loweringURIs = elementsMap.get(elementQName).getLoweringSchemaMapping();
+		List<URI> loweringURIs = elementsMap.get(elementQName).getLoweringSchemaMapping();						
 		for ( URI loweringURI : loweringURIs ) {
  			logger.info("INPUT INTERFACE MSG REF INFO : Triple + Context: " + getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel)  + " , " + 
 				QueryHelper.getSAWSDLURI("loweringSchemaMapping") + " , " + loweringURI);
@@ -261,10 +267,10 @@ public class TransformationWSDL {
  			reposHandler.addResourceTriple(getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel) , QueryHelper.getSAWSDLURI("loweringSchemaMapping"), loweringURI.toString(), _wsdlURI);
  		}
 		
-		List<URI> liftingURIs = elementsMap.get(elementQName).getLoweringSchemaMapping();
+		List<URI> liftingURIs = elementsMap.get(elementQName).getLiftingSchemaMapping();								
 		for ( URI liftingURI : liftingURIs ) {
 			logger.info("OUTPUT INTERFACE MSG REF INFO : Triple + Context: " + getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel)  + " , " + 
-					QueryHelper.getSAWSDLURI("loweringSchemaMapping") + " , " + liftingURI);
+					QueryHelper.getSAWSDLURI("liftingSchemaMapping") + " , " + liftingURI);
 		
 			//Writing persistent
 			reposHandler.addResourceTriple(getInterfaceMessageReferenceNode(interfaceName, operationName, messageLabel) , QueryHelper.getSAWSDLURI("liftingSchemaMapping"), liftingURI.toString(), _wsdlURI);
@@ -277,7 +283,7 @@ public class TransformationWSDL {
 			
 			//Writing persistent
 			reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getSAWSDLURI("modelReference"), modelReferece.toString(), _wsdlURI);
-		}
+		}			
 		
 		//Writing persistent
 		reposHandler.addResourceTriple(getElementDeclarationNode(elementQName.getLocalPart()), QueryHelper.getRDFURI("type"), QueryHelper.getWSDLURI("QName"), _wsdlURI);
@@ -504,5 +510,18 @@ public class TransformationWSDL {
 	
 	private static String getDescriptionNode() {
 		return SERVICE_NS + "wsdl.description()";
+	}
+	
+	
+	//Checking if the elements have elements annotated with "loweringSchemaMapping" or "liftingSchemaMapping"
+	private static void checkAnnotations(QName elementQName) throws RegistrationException, SAWSDLException {
+		List<URI> loweringURIs = elementsMap.get(elementQName).getLoweringSchemaMapping();
+		List<URI> liftingURIs = elementsMap.get(elementQName).getLiftingSchemaMapping();		
+				
+		if ( loweringURIs.size() == 0 && liftingURIs.size() == 0 ){
+			throw new RegistrationException(
+					"The service MUST contains at least one element anotated with liftingSchemaMapping. " +
+					"For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
+		}
 	}
 }

@@ -51,9 +51,4 @@ public class RegistrationException extends Exception {
 	public RegistrationException(Throwable cause) {
         super(cause);
     }
-	
-	public RegistrationException(String message, String cause) {
-        super(cause);
-    }
-
 }
