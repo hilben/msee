@@ -54,9 +54,9 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	 */
 	@WebMethod(operationName="discoverAdvanced")
 	@Override
-	public String discover(List<URI> categoryList, List<URI> inputParamList,
-			List<URI> outputParamList) throws Exception {
-		throw new WebServiceException("Not implemented!");
+	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
+			List<URI> _outputParamList) throws Exception {
+		return ServiceDiscovery.discover(_categoryList, _inputParamList, _outputParamList, RDFFormat.RDFXML);
 	}
 	
 	/**
