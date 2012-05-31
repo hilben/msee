@@ -233,14 +233,9 @@ public class RepositoryHandler {
 		this.connection.clear(contextURI);
 	}
 
-	public void commit() {
-		try {
-			if ( this.connection != null )
-				this.connection.commit();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void commit() throws RepositoryException {
+		if ( this.connection != null )
+			this.connection.commit();
 	}
 
 	public void shutdown() {
@@ -256,6 +251,5 @@ public class RepositoryHandler {
 				this.repository = null;
 			}
 		}
-	}
-	
+	}	
 }

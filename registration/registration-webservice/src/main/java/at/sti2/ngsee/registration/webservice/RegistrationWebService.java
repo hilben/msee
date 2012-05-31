@@ -52,24 +52,12 @@ import at.sti2.ngsee.registration.core.transformation.TransformationWSDL;
 public class RegistrationWebService implements IRegistrationEndpoint
 {		
 	/**
+	 * @throws Exception 
 	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#register(java.lang.String)
 	 */
 	@Override
 	@WebMethod
-	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception{
-		return TransformationWSDL.transformWSDL(_wsdlURL);
-	}
-	
-	public String getVersion() {
-		return "v1.0";
-	}
-	
-	public static void main(String[] argv) {
-		RegistrationWebService r = new RegistrationWebService();
-		try {
-			r.register("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");
-		} catch (Exception e) {
-			System.out.println("ERROR");
-		}
+	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception {
+			return TransformationWSDL.transformWSDL(_wsdlURL);
 	}
 }

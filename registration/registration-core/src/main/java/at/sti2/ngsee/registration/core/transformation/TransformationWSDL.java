@@ -1,5 +1,6 @@
 package at.sti2.ngsee.registration.core.transformation;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -54,30 +55,17 @@ public class TransformationWSDL {
 	}
 	
 	public static String transformWSDL(String _wsdlURI) throws RegistrationException {
-		try {
-			try {
-				Config cfg = new Config();		
-				reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
-			}catch (Exception e) {
-				throw new RegistrationException("The repository endpoint od ID cound NOT be found.", e.getCause());
-			}
+		try {					
+			Config cfg = new Config();
+			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
 		
 			// Read a SAWSDL description
 			SAWSDLReader readerSAWSDL = SAWSDLFactory.newInstance().newSAWSDLReader();
 			WSDL4ComplexWsdlReader reader = WSDL4ComplexWsdlFactory.newInstance().newWSDLReader();
 			
-			org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL;
-			Description desc;
-			try{
-				URL wsdlURI = new URL(_wsdlURI);
-				descSAWSDL = readerSAWSDL.read(wsdlURI);
-				
-				desc = reader.read(wsdlURI);				
-			}catch(MalformedURLException e){
-				throw new RegistrationException("The provided URL is malformed.", e.getCause());
-			} catch (IOException e) {
-				throw new RegistrationException("The provided WSDL could NOT be found.", e.getCause());			
-			}					
+			URL wsdlURI = new URL(_wsdlURI);
+			org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL = readerSAWSDL.read(wsdlURI);						
+			Description desc = reader.read(wsdlURI);			
 			
 			desc.addImportedDocumentsInWsdl();
 			
@@ -201,22 +189,30 @@ public class TransformationWSDL {
 						}
 					}
 				}
-			}			
+			}
+			
+			//TODO: fix the RepositoryException thrown by reposHandler.commit() which is NOT catched 
+			if ( SERVICE_NS != null && SERVICE_NAME != null ){
+				reposHandler.commit();
+				return SERVICE_NS + SERVICE_NAME;
+			}
+			return null;
+		
+		} catch (RepositoryException e) {
+			throw new RegistrationException("Errors durring saving of triples into repository.", e.getCause());
+		} catch (FileNotFoundException e) {
+			throw new RegistrationException("The configuration file was NOT found.", e.getCause());
+		} catch(MalformedURLException e){
+			throw new RegistrationException("The provided URL is malformed.", e.getCause());
 		} catch (URISyntaxException e) {
 			throw new RegistrationException("The URI syntax is not well formed.", e.getCause());							
 		} catch (SAWSDLException e) {
 			throw new RegistrationException("Errors durring parsing the service.", e.getCause());		
 		} catch (WSDL4ComplexWsdlException e) {
 			throw new RegistrationException("Errors durring parsing the service.", e.getCause());
-		} catch (RepositoryException e) {
-			throw new RegistrationException("Errors durring saving of triples into repository.", e.getCause());
-		}
-		
-		if ( SERVICE_NS != null && SERVICE_NAME != null ){
-			//reposHandler.commit();
-        	return SERVICE_NS + SERVICE_NAME;
-		}
-		return null;
+		} catch (IOException e) {
+			throw new RegistrationException("The repository endpoint ID or the WSDL file could NOT be found.", e.getCause());
+		}			
 	}
 
 	private static void writeSubelementDeclaration(QName elementQName, QName subelementQName, String _wsdlURI) throws RepositoryException, SAWSDLException {
@@ -426,16 +422,13 @@ public class TransformationWSDL {
 		/**
 		 * XXX: Fix this. SOAPAction could be also only a string or empty
 		 */
-		if ( soapActionURI != null ) 
-			try {
-				logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(bindingOperationName) + " , " 
-						+ QueryHelper.getWSOAPURI("action") + " , " + soapActionURI);
+		if ( soapActionURI != null ) { 
+			logger.info("BINDINGS OPERATION: Triple + Context: " + getBindingOperationNode(bindingOperationName) + " , " 
+					+ QueryHelper.getWSOAPURI("action") + " , " + soapActionURI);
 				
-				//Writing persistent
-				reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			//Writing persistent
+			reposHandler.addResourceTriple(getBindingOperationNode(bindingOperationName), QueryHelper.getWSOAPURI("action"), soapActionURI, _wsdlURI);
+		}
 				
 		reposHandler.addResourceTriple(getBindingNode(bindingName), QueryHelper.getWSDLURI("bindingOperation"), getBindingOperationNode(bindingOperationName), _wsdlURI);
  	}
