@@ -35,11 +35,32 @@ package at.sti2.ngsee.registration.api;
 public interface IRegistrationEndpoint {
 
 	/**
+	 * Register a WSDL service. The service MUST contain annotations in order to be stored into the triple store.
+	 * For more info see  http://www.sesa.sti2.at/doc/service_annotation
 	 * 
-	 * @param _wsdlURL The URL of the Web Service description (WSDL).
-	 * @return true if the service was register successfully, otherwise false.  
-	 * @throws Exception 
+	 * @param _serviceURI The URI of the Web Service description (WSDL).
+	 * @return The URI through which the service can be deleted or updated.
+	 * @throws Exception
 	 */
-	public String register(String _wsdlURL) throws Exception;
+	public String register(String _serviceURI) throws Exception;
+	
+	/**
+	 * Delete a service from triple store.
+	 * 
+	 * @param _serviceURI The URI of the service which needs to be deleted.
+	 * @return The URI of the deleted service, if the process was successful, otherwise will throw an exception. 
+	 * @throws Exception
+	 */
+	public String delete(String _serviceURI) throws Exception;
+	
+	/**
+	 * Update a service by deleting the old one and registering the new service.
+	 * 
+	 * @param _oldServiceURI The URI of the service which needs to be updated.
+	 * @param _newServiceURI The URI of the service which includes the updates.
+	 * @return The URI through which the service can be deleted or updated.
+	 * @throws Exception
+	 */
+	public String update(String _oldServiceURI, String _newServiceURI) throws Exception;
 	
 }

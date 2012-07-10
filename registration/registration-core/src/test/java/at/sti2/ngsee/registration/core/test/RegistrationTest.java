@@ -25,7 +25,7 @@ import javax.wsdl.WSDLException;
 import org.junit.Assert;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.registration.core.transformation.TransformationWSDL11;
+import at.sti2.ngsee.registration.core.management.TransformationWSDL11;
 
 import org.junit.Test;
 

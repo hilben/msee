@@ -24,7 +24,8 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 
 import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
-import at.sti2.ngsee.registration.core.transformation.TransformationWSDL;
+import at.sti2.ngsee.registration.core.management.ServiceManagement;
+import at.sti2.ngsee.registration.core.management.TransformationWSDL;
 
 /**
  * 
@@ -40,7 +41,7 @@ import at.sti2.ngsee.registration.core.transformation.TransformationWSDL;
  * Date of creation:  	23.04.2011<br>
  * File:         		$Source$<br>
  * Modifier:     		$Author$<br>
- * Last modified:  		23.05.2012<br>
+ * Last modified:  		10.07.2012<br>
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
@@ -59,5 +60,27 @@ public class RegistrationWebService implements IRegistrationEndpoint
 	@WebMethod
 	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception {
 			return TransformationWSDL.transformWSDL(_wsdlURL);
+	}
+
+	/**
+	 * @throws Exception 
+	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#delete(java.lang.String)
+	 */
+	@Override
+	@WebMethod
+	public String delete(@WebParam(name="serviceURI")String _serviceURI) throws Exception {
+		return ServiceManagement.delete(_serviceURI);
+	}
+
+	/**
+	 * @throws Exception 
+	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#update(java.lang.String,java.lang.String)
+	 */
+	@Override
+	@WebMethod
+	public String update(@WebParam(name="oldServiceURI")String _oldServiceURI, 
+			@WebParam(name="newServiceURI")String _newServiceURI)
+			throws Exception {
+		return ServiceManagement.update(_oldServiceURI, _newServiceURI);
 	}
 }

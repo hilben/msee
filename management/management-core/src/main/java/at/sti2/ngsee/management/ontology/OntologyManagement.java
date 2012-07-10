@@ -1,4 +1,4 @@
-package at.sti2.ngsee.management.service;
+package at.sti2.ngsee.management.ontology;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,12 +14,12 @@ import at.sti2.ngsee.management.api.exception.ManagementException;
 import at.sti2.ngsee.management.common.Config;
 import at.sti2.util.triplestore.RepositoryHandler;
 
-public abstract class ServiceManagement {	
+public abstract class OntologyManagement {	
 	private static RepositoryHandler reposHandler;
 	
 	public static String add(String _ontologyURL) throws ManagementException {
 		// Initialising the repository
-		ServiceManagement.initRepo();
+		OntologyManagement.initRepo();
 		
 		//Read data from URL into string buffer
 		URL url;
@@ -48,28 +48,28 @@ public abstract class ServiceManagement {
 		return _ontologyURL;
 	}
 	
-	public static boolean delete(String _ontologyURL) throws ManagementException{
+	public static String delete(String _ontologyURL) throws ManagementException{
 		// Initialising the repository
-		ServiceManagement.initRepo();
+		OntologyManagement.initRepo();
 		try {
-			//Delete the graph from repository and it shutdown
+			//Delete the graph from repository and shut it down
 			reposHandler.deleteContext(_ontologyURL);
 			reposHandler.shutdown();
 			
-			return true;			
+			return _ontologyURL;			
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	public static String update(String _oldOntologyURL, String _newOntologyURL) throws ManagementException {
 		// Initialising the repository
-		ServiceManagement.initRepo();
+		OntologyManagement.initRepo();
 		
 		//Update through delete and add functionality
-		delete(_oldOntologyURL);
-		add(_newOntologyURL);
+		OntologyManagement.delete(_oldOntologyURL);
+		OntologyManagement.add(_newOntologyURL);
 		return _newOntologyURL;
 	}
 	

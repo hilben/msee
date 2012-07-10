@@ -53,9 +53,9 @@ public interface IManagementEndpoint {
 	 * Deleting a service by giving the URI.
 	 * 
 	 * @param _ontologyURI The URL of ontology which will be deleted. 
-	 * @return true if the ontology was successfully deleted, otherwise an exception with more detailed information. 
+	 * @return The URL if the ontology was successfully deleted, otherwise an exception with more detailed information. 
 	 */
-	public boolean deleteOntology(String _ontologyURL) throws Exception;		
+	public String deleteOntology(String _ontologyURL) throws Exception;		
 	
 	/**
 	 * Updating a ontology by deleting the saved one and adding the updated ontology.

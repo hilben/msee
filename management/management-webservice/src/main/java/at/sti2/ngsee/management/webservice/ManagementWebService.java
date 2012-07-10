@@ -24,7 +24,7 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 
 import at.sti2.ngsee.management.api.IManagementEndpoint;
-import at.sti2.ngsee.management.service.ServiceManagement;
+import at.sti2.ngsee.management.ontology.OntologyManagement;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class ManagementWebService implements IManagementEndpoint
 	@Override
 	@WebMethod
 	public String addOntology(@WebParam(name="ontologyURL")String _ontologyURL) throws Exception {
-		return  ServiceManagement.add(_ontologyURL);
+		return  OntologyManagement.add(_ontologyURL);
 	}
 
 	/**
@@ -67,8 +67,8 @@ public class ManagementWebService implements IManagementEndpoint
 	 */
 	@Override
 	@WebMethod
-	public boolean deleteOntology(@WebParam(name="ontologyURL")String _ontologyURI) throws Exception {
-		return ServiceManagement.delete(_ontologyURI);
+	public String deleteOntology(@WebParam(name="ontologyURL")String _ontologyURI) throws Exception {
+		return OntologyManagement.delete(_ontologyURI);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class ManagementWebService implements IManagementEndpoint
 	public String updateOntology(
 				@WebParam(name="oldOntologyURL")String _oldOntologyURI, 
 				@WebParam(name="newOntologyURL")String _newOntologyURL) throws Exception {		
-		return ServiceManagement.update(_oldOntologyURI, _newOntologyURL);
+		return OntologyManagement.update(_oldOntologyURI, _newOntologyURL);
 	}
 	
 	/**
