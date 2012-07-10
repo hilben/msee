@@ -193,7 +193,7 @@ public class TransformationWSDL {
 			
 			//TODO: fix the RepositoryException thrown by reposHandler.commit() which is NOT catched 
 			if ( SERVICE_NS != null && SERVICE_NAME != null ){
-				reposHandler.shutdown();
+				reposHandler.commit();
 				return SERVICE_NS + SERVICE_NAME;
 			}
 			return null;
