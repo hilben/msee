@@ -243,7 +243,7 @@ public class RepositoryHandler {
 			try {
 				this.connection.commit();
 				this.connection.close();
-//				this.repository.shutDown();
+				this.repository.shutDown();
 			} catch (RepositoryException e) {
 				e.printStackTrace();
 			} finally {

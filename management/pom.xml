@@ -55,6 +55,11 @@
 				<artifactId>util-triplestore-client</artifactId>
 				<version>1.2-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>at.sti2.ngsee.registration</groupId>
+				<artifactId>registration-core</artifactId>
+				<version>1.2-SNAPSHOT</version>
+			</dependency>
 
 			<!-- libraries -->
 			<dependency>

@@ -24,6 +24,7 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 
 import at.sti2.ngsee.management.api.IManagementEndpoint;
+import at.sti2.ngsee.management.service.ServiceManagement;
 
 /**
  * 
@@ -36,7 +37,7 @@ import at.sti2.ngsee.management.api.IManagementEndpoint;
  *
  * @author      		Corneliu Stanciu<br>
  * @version     		$Id$<br>
- * Date of creation:  	        9.07.2012<br>
+ * Date of creation:  	9.07.2012<br>
  * File:         		$Source$<br>
  * Modifier:     		$Author$<br>
  * Last modified:  		9.07.2012<br>
@@ -49,7 +50,39 @@ import at.sti2.ngsee.management.api.IManagementEndpoint;
 		@WSDLDocumentation("SESA Management Component")
 	)
 public class ManagementWebService implements IManagementEndpoint
-{
+{	
+	/**
+	 * @throws Exception 
+	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#addOntology
+	 */
+	@Override
+	@WebMethod
+	public String addOntology(@WebParam(name="ontologyURL")String _ontologyURL) throws Exception {
+		return  ServiceManagement.add(_ontologyURL);
+	}
+
+	/**
+	 * @throws Exception 
+	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#deleteOntology
+	 */
+	@Override
+	@WebMethod
+	public boolean deleteOntology(@WebParam(name="ontologyURL")String _ontologyURI) throws Exception {
+		return ServiceManagement.delete(_ontologyURI);
+	}
+
+	/**
+	 * @throws Exception 
+	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#updateOntology
+	 */
+	@Override
+	@WebMethod
+	public String updateOntology(
+				@WebParam(name="oldOntologyURL")String _oldOntologyURI, 
+				@WebParam(name="newOntologyURL")String _newOntologyURL) throws Exception {		
+		return ServiceManagement.update(_oldOntologyURI, _newOntologyURL);
+	}
+	
 	/**
 	 * @throws Exception 
 	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#managementTesting
@@ -58,27 +91,5 @@ public class ManagementWebService implements IManagementEndpoint
 	@WebMethod
 	public String managementTesting() throws Exception {
 			return "Testing";
-	}
-
-	/**
-	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#deleteService
-	 */
-	@Override
-	@WebMethod
-	public boolean deleteService(String _serviceURI) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#updateService
-	 */
-	@Override
-	@WebMethod
-	public String updateService(String _oldServiceURI, String _newWsdlURL) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

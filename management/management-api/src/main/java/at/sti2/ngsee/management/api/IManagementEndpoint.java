@@ -42,19 +42,27 @@ public interface IManagementEndpoint {
 	public String managementTesting() throws Exception;
 	
 	/**
-	 * Deleting a service by giving the URI.
 	 * 
-	 * @param _serviceURI The URI of service which will be deleted. 
-	 * @return true if the service was successfully deleted, otherwise an exception with more detailed information. 
+	 * @param _ontologyURL The URL of the ontology which should be added.
+	 * @return The URL of the added ontology
+	 * @throws Exception 
 	 */
-	public boolean deleteService(String _serviceURI);		
+	public String addOntology(String _ontologyURL) throws Exception;
 	
 	/**
-	 * Updating a service by deleting the saved one and registering the updated service.
+	 * Deleting a service by giving the URI.
 	 * 
-	 * @param _oldServiceURI The URI of the service which need to be updated.
-	 * @param _newWsdlURL The URL of the updated service.
-	 * @return The service URI of the new updated service.
+	 * @param _ontologyURI The URL of ontology which will be deleted. 
+	 * @return true if the ontology was successfully deleted, otherwise an exception with more detailed information. 
 	 */
-	public String updateService(String _oldServiceURI, String _newWsdlURL);
+	public boolean deleteOntology(String _ontologyURL) throws Exception;		
+	
+	/**
+	 * Updating a ontology by deleting the saved one and adding the updated ontology.
+	 * 
+	 * @param _oldOntologyURI The URI of the ontology which need to be updated.
+	 * @param _newOntologyURL The URL of the updated ontology.
+	 * @return The URL of the updated ontology.
+	 */
+	public String updateOntology(String _oldOntologyURL, String _newOntologyURL) throws Exception;
 }
