@@ -16,6 +16,7 @@
  */
 package at.sti2.wsmf.core.common;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -38,7 +39,9 @@ public class Config {
 	
 	private Config() throws IOException {
 		this.prop = new Properties();
-		InputStream configIS = PersistentHandler.class.getResourceAsStream("/default.properties");
+//		InputStream configIS = PersistentHandler.class.getResourceAsStream("/default.properties");
+		//change back only for testing reasons TODO
+		InputStream configIS = new FileInputStream("C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
 		if ( configIS != null ) 
 			this.prop.load(configIS);
 	}
@@ -69,5 +72,16 @@ public class Config {
 	
 	public String getEndpointMasterNamespace() {
 		return this.prop.getProperty("endpoint.master.url");
+	}
+	
+	@Deprecated
+	public static void main(String argss[]) {
+		try {
+			System.out.println(Config.getInstance().toString());
+			System.out.println(Config.getInstance().getTripleStoreEndpoint());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

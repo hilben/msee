@@ -3,7 +3,6 @@
 
 	<groupId>at.sti2.ngsee.monitoring</groupId>
 	<artifactId>monitoring-project</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Web Service Monitoring Framework</name>
 	<url>http://www.sti-innsbruck.at</url>
@@ -20,12 +19,11 @@
 		<module>monitoring-core</module>
 		<module>monitoring-webservice</module>
 		<module>monitoring-channellistener-example</module>
+		<!-- <module>monitoring-webservices-examples</module> !-->
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cxf.version>2.3.3</cxf.version>
-		<saxon.version>8.7</saxon.version>
 	</properties>
 
 	<organization>

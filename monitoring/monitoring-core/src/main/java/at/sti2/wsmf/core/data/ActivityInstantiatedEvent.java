@@ -31,7 +31,8 @@ import at.sti2.wsmf.core.common.Config;
  * @author Alex Oberhauser
  */
 public class ActivityInstantiatedEvent {
-	Logger log = Logger.getLogger(ActivityInstantiatedEvent.class);
+//	Logger log = Logger.getLogger(ActivityInstantiatedEvent.class); TODO: change back
+	Logger log = Logger.getRootLogger(); //TODO change back
 	
 	private String endpoint = null;
 	private final String identifier;

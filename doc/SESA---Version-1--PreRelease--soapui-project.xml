@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="SESA - Version 1 (PreRelease)" resourceRoot="" soapui-version="3.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="RegistrationWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}RegistrationWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="RegistrationWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="SESA - Version 1 (PreRelease)" resourceRoot="" soapui-version="4.5.1" abortOnError="false" runType="SEQUENTIAL" activeEnvironment="Default" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="RegistrationWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}RegistrationWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="RegistrationWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="getVersion" type="tns:getVersion"/>
@@ -80,7 +80,7 @@
    <soapenv:Body>
       <ser:getVersion/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/RegistrationWebService/getVersion"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="register" bindingOperationName="register" type="Request-Response" outputName="registerResponse" inputName="register" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/registration-webservice/services/register</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/RegistrationWebService/getVersion"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="register" bindingOperationName="register" type="Request-Response" outputName="registerResponse" inputName="register" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/registration-webservice/services/register</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:register>
@@ -95,7 +95,7 @@
          <wsdlURL>http://sesa.sti2.at/services/valenciaPort.sawsdl</wsdlURL>
       </ser:register>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/RegistrationWebService/register"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/RegistrationWebService/register"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="DiscoveryWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}DiscoveryWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DiscoveryWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="discover" type="tns:discover"/>
@@ -234,7 +234,7 @@
          <categoryList>http://www.sti2.at/E-Freight/ServiceCategories#Maritime</categoryList>
       </ser:discover>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call><con:call name="BusinessCategory"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call><con:call name="BusinessCategory"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:discover>
@@ -242,7 +242,7 @@
          <categoryList>http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS</categoryList>
       </ser:discover>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getIServeModel" bindingOperationName="getIServeModel" type="Request-Response" outputName="getIServeModelResponse" inputName="getIServeModel" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="ExportWeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/discover"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getIServeModel" bindingOperationName="getIServeModel" type="Request-Response" outputName="getIServeModelResponse" inputName="getIServeModel" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="ExportWeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/discovery-webservice/services/discovery</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:getIServeModel>
@@ -278,7 +278,7 @@
          <operationName>submitFALForm</operationName>
       </ser:lookup>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/DiscoveryWebService/lookup"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InvokerWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/}InvokerWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InvokerWebServiceService" targetNamespace="http://sesa.sti2.at/services/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="checkAvailability" type="tns:checkAvailability"/>
@@ -374,7 +374,7 @@
    <soapenv:Body>
       <ser:checkAvailability/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/checkAvailability"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="invoke" bindingOperationName="invoke" type="Request-Response" outputName="invokeResponse" inputName="invoke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/checkAvailability"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="invoke" bindingOperationName="invoke" type="Request-Response" outputName="invokeResponse" inputName="invoke" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="WeatherService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:invoke>
@@ -428,7 +428,7 @@
 	</inputData>
       </ser:invoke>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call><con:call name="ValenciaPort"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[h<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call><con:call name="ValenciaPort"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-webservice/services/invoker</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:invoke>
@@ -503,4 +503,176 @@
 	 </inputData>
       </ser:invoke>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/InvokerWebService/invoke"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ValenciaPortWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://sesa.sti2.at/services/dummy/}ValenciaPortWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ValenciaPortWebServiceService" targetNamespace="http://sesa.sti2.at/services/dummy/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://sesa.sti2.at/services/dummy/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://sesa.sti2.at/services/dummy/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="submitFALForm" type="tns:submitFALForm"/>
+      <xs:element name="submitFALFormResponse" type="tns:submitFALFormResponse"/>
+      <xs:complexType name="submitFALForm">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="falForm" type="tns:generalDeclarationBean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="generalDeclarationBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arravialOrDepartureTime" type="xs:string"/>
+          <xs:element minOccurs="0" name="generalDeclarationId" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="lastPortOfCall" nillable="true" type="tns:portBean"/>
+          <xs:element minOccurs="0" name="numberOfCrew" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberOfPassengers" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="ports" nillable="true" type="tns:portBean"/>
+          <xs:element minOccurs="0" name="ship" type="tns:shipBean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="portBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="portCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="portName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="shipBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="callSign" type="xs:string"/>
+          <xs:element minOccurs="0" name="flagState" type="tns:countryBean"/>
+          <xs:element name="grossTonnage" type="xs:int"/>
+          <xs:element name="IMONumber" type="xs:int"/>
+          <xs:element name="netTonnage" type="xs:int"/>
+          <xs:element minOccurs="0" name="shipMasterName" type="xs:string"/>
+          <xs:element minOccurs="0" name="shipName" type="xs:string"/>
+          <xs:element minOccurs="0" name="shipType" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="countryBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="submitFALFormResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="GeneralDeclarationResponse" type="tns:generalDeclarationResponseBean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="generalDeclarationResponseBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ID" type="xs:string"/>
+          <xs:element minOccurs="0" name="shipID" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="submitFALForm">
+    <wsdl:part element="tns:submitFALForm" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="submitFALFormResponse">
+    <wsdl:part element="tns:submitFALFormResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ValenciaPortWebService">
+    <wsdl:documentation>SESA e-Freight Dummy Service.</wsdl:documentation>
+    <wsdl:operation name="submitFALForm">
+      <wsdl:input message="tns:submitFALForm" name="submitFALForm"></wsdl:input>
+      <wsdl:output message="tns:submitFALFormResponse" name="submitFALFormResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ValenciaPortWebServiceServiceSoapBinding" type="tns:ValenciaPortWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="submitFALForm">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="submitFALForm">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="submitFALFormResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ValenciaPortWebServiceService">
+    <wsdl:port binding="tns:ValenciaPortWebServiceServiceSoapBinding" name="ValenciaPortWebServicePort">
+      <soap:address location="http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="submitFALForm" bindingOperationName="submitFALForm" type="Request-Response" outputName="submitFALFormResponse" inputName="submitFALForm" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService</con:endpoint><con:request><![CDATA[<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP-ENV:Header/><SOAP-ENV:Body>
+<dum:submitFALForm xmlns:dum="http://sesa.sti2.at/services/dummy/" 
+xmlns:e="http://demo.sti2.at/efreight/ontologies/FalFormsOntology.rdf#" 
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <falForm>
+      <arravialOrDepartureTime>http://demo.sti2.at/efreight/ontologies/FalFormsOntology.rdf#Arrival</arravialOrDepartureTime>
+      <generalDeclarationId>#FAL_Form1_3f8b09d5-c430-4b6a-934b-f5e4ad25977b</generalDeclarationId>
+      <lastPortOfCall>
+         <portCode>AEAUH</portCode>
+         <portName>Abu Dhabi</portName>
+      </lastPortOfCall>
+      <numberOfCrew>24</numberOfCrew>
+      <numberOfPassengers>2</numberOfPassengers>
+      <ports>
+         <portCode>ESVLC</portCode>
+         <portName>Valencia</portName>
+      </ports>
+      <ship>
+         <callSign>9HVG8</callSign>
+         <flagState>
+            <countryCode>MT</countryCode>
+            <countryName>Malta</countryName>
+         </flagState>
+         <grossTonnage>140000</grossTonnage>
+         <IMONumber>9191254</IMONumber>
+         <netTonnage>40000</netTonnage>
+         <shipMasterName>Jan Tore Pedersen</shipMasterName>
+         <shipName>BACCARA</shipName>
+         <shipType/>
+      </ship>
+   </falForm>
+</dum:submitFALForm>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/dummy/ValenciaPortWebService/submitFALForm"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Default"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dum="http://sesa.sti2.at/services/dummy/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header/>
+   <soapenv:Body><dum:submitFALForm>
+         <!--Optional:-->
+         <falForm>
+            <!--Optional:-->
+            <arravialOrDepartureTime>?</arravialOrDepartureTime>
+            <!--Optional:-->
+            <generalDeclarationId>?</generalDeclarationId>
+            <!--Zero or more repetitions:-->
+            <lastPortOfCall>
+               <!--Optional:-->
+               <portCode>?</portCode>
+               <!--Optional:-->
+               <portName>?</portName>
+            </lastPortOfCall>
+            <!--Optional:-->
+            <numberOfCrew>?</numberOfCrew>
+            <!--Optional:-->
+            <numberOfPassengers>?</numberOfPassengers>
+            <!--Zero or more repetitions:-->
+            <ports>
+               <!--Optional:-->
+               <portCode>?</portCode>
+               <!--Optional:-->
+               <portName>?</portName>
+            </ports>
+            <!--Optional:-->
+            <ship>
+               <!--Optional:-->
+               <callSign>?</callSign>
+               <!--Optional:-->
+               <flagState>
+                  <!--Optional:-->
+                  <countryCode>?</countryCode>
+                  <!--Optional:-->
+                  <countryName>?</countryName>
+               </flagState>
+               <grossTonnage>?</grossTonnage>
+               <IMONumber>?</IMONumber>
+               <netTonnage>?</netTonnage>
+               <!--Optional:-->
+               <shipMasterName>?</shipMasterName>
+               <!--Optional:-->
+               <shipName>?</shipName>
+               <!--Optional:-->
+               <shipType>?</shipType>
+            </ship>
+         </falForm>
+      </dum:submitFALForm>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/dummy/ValenciaPortWebService/submitFALForm"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

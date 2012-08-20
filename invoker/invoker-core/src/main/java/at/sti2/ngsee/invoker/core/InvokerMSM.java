@@ -27,6 +27,8 @@ import at.sti2.ngsee.invoker.api.core.IInvokerMSM;
  */
 public class InvokerMSM implements IInvokerMSM {
 	private URL loweringSchema;
+
+
 	private URL liftingSchema;
 	private URL wsdl;
 	private String soapAction;
@@ -116,4 +118,14 @@ public class InvokerMSM implements IInvokerMSM {
 	@Override
 	public URL getEndpointURL() { return this.endpointURL; }
 
+	
+	@Override
+	public String toString() {
+		return "InvokerMSM [loweringSchema=" + loweringSchema
+				+ ", liftingSchema=" + liftingSchema + ", wsdl=" + wsdl
+				+ ", soapAction=" + soapAction + ", operationQName="
+				+ operationQName + ", serviceName=" + serviceName
+				+ ", portQName=" + portQName + ", endpointURL=" + endpointURL
+				+ "]";
+	}
 }

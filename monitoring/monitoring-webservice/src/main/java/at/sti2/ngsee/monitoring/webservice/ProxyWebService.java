@@ -36,28 +36,32 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
  */
 @WebService
 public class ProxyWebService implements IProxyWebService {
-	
-	@WebMethod(exclude=true)
-	private SOAPMessage generateSOAPMessage(String _soapMessageString) throws SOAPException {
+
+	@WebMethod(exclude = true)
+	private SOAPMessage generateSOAPMessage(String _soapMessageString)
+			throws SOAPException {
 		MessageFactory msgFactory = MessageFactory.newInstance();
 		SOAPMessage msg = msgFactory.createMessage();
 		msg.getSOAPHeader();
 		SOAPPart soapPart = msg.getSOAPPart();
-		
-		StreamSource msgSrc = new StreamSource(new StringReader(_soapMessageString));
+
+		StreamSource msgSrc = new StreamSource(new StringReader(
+				_soapMessageString));
 		soapPart.setContent(msgSrc);
 		msg.saveChanges();
 		return msg;
 	}
-	
+
 	/**
 	 * @see at.sti2.wsmf.api.ws.IProxyWebService#invoke(java.lang.String)
 	 */
 	@WebMethod
 	@Override
-	public String invoke(@WebParam(name="soapRequest")String _soapRequest,
-			@WebParam(name="soapAction")String _soapAction) throws Exception {
-		return InvocationHandler.invoke(this.generateSOAPMessage(_soapRequest), _soapAction, new ActivityInstantiatedEvent(), _soapRequest.length());
+	public String invoke(@WebParam(name = "soapRequest") String _soapRequest,
+			@WebParam(name = "soapAction") String _soapAction) throws Exception {
+		return InvocationHandler.invoke(this.generateSOAPMessage(_soapRequest),
+				_soapAction, new ActivityInstantiatedEvent(),
+				_soapRequest.length());
 	}
 
 }

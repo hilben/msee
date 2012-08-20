@@ -51,8 +51,8 @@ public interface InvokerWebService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "invoke", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.Invoke")
-    @ResponseWrapper(localName = "invokeResponse", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.InvokeResponse")
+    @RequestWrapper(localName = "invoke", targetNamespace = "http://sesa.sti2.at/services/", className = "at.sti2.see.Invoke")
+    @ResponseWrapper(localName = "invokeResponse", targetNamespace = "http://sesa.sti2.at/services/", className = "at.sti2.see.InvokeResponse")
     public String invoke(
         @WebParam(name = "serviceID", targetNamespace = "")
         String serviceID,
@@ -70,8 +70,8 @@ public interface InvokerWebService {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "checkAvailability", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.CheckAvailability")
-    @ResponseWrapper(localName = "checkAvailabilityResponse", targetNamespace = "http://see.sti2.at/", className = "at.sti2.see.CheckAvailabilityResponse")
+    @RequestWrapper(localName = "checkAvailability", targetNamespace = "http://sesa.sti2.at/services/", className = "at.sti2.see.CheckAvailability")
+    @ResponseWrapper(localName = "checkAvailabilityResponse", targetNamespace = "http://sesa.sti2.at/services/", className = "at.sti2.see.CheckAvailabilityResponse")
     public boolean checkAvailability();
 
 }

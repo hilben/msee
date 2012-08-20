@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.sti2.ngsee</groupId>
@@ -13,6 +14,7 @@
 		<module>monitoring</module>
 		<module>util</module>
 		<module>grounding</module>
+		<!-- <module>ranking</module> -->
 	</modules>
 
 	<name>sesa-project</name>
@@ -21,6 +23,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<cxf.version>2.4.1</cxf.version>
+		<saxon.version>8.7</saxon.version>
+		<axis.version>1.5.4</axis.version>
 	</properties>
 
 	<issueManagement>
@@ -42,6 +47,9 @@
 		</developer>
 		<developer>
 			<name>Corneliu Stanciu</name>
+		</developer>
+		<developer>
+			<name>Benjamin Hiltpolt</name>
 		</developer>
 	</developers>
 
@@ -78,6 +86,18 @@
 			<name>STI snapshots</name>
 			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
 		</repository>
+		<!-- SOA4ALL -->
+		<repository>
+			<id>soa4all-repo</id>
+			<name>SOA4all</name>
+			<url>http://87.213.46.9:8080/nexus-webapp-1.3.1/content/repositories/public/</url>
+		</repository>
+		<repository>
+			<id>sesame repo</id>
+			<name>sesame</name>
+			<url>http://repo.aduna-software.org/maven2/releases/</url>
+		</repository>
+
 		<repository>
 			<id>sti-external</id>
 			<name>Maven STI external repository</name>
@@ -103,6 +123,28 @@
 			<id>phloc</id>
 			<name>phloc</name>
 			<url>http://repo.phloc.com/maven2/</url>
+		</repository>
+
+		<repository>
+			<id>semweb4j-repo</id>
+			<name>Semweb4j.org maven repo</name>
+			<url>http://semweb4j.org/repo/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>semweb4j-snapshots</id>
+			<name>Semweb4j.org maven snapshot repo</name>
+			<url>http://semweb4j.org/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -139,7 +181,8 @@
 							<requireJavaVersion>
 								<version>[1.6,)</version>
 							</requireJavaVersion>
-							<versionRule implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
+							<versionRule
+								implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
 						</rules>
 					</configuration>
 					<executions>

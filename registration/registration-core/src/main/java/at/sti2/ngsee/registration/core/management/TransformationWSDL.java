@@ -50,7 +50,8 @@ public class TransformationWSDL {
 	public static void main(String[] args) throws RegistrationException   {
 //		transformWSDL("file:///home/koni/globalweather.sawsdl");
 //		transformWSDL("file:///home/koni/sawsdl_2.0.wsdl");
-		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");		
+//		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");		
+		transformWSDL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy?wsdl");
 //		transformWSDL("http://www.w3.org/2002/ws/sawsdl/CR/wsdl2.0/00-all.wsd");
 	}
 	

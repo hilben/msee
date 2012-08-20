@@ -57,9 +57,14 @@ public class WebServiceEndpoint {
 		String subject = this.endpoint.toExternalForm();
 		Config cfg = Config.getInstance();
 		String webserviceURI = cfg.getInstancePrefix() + cfg.getWebServiceName();
+		
+		
 		this.persHandler.updateResourceTriple(subject, QueryHelper.getRDFURI("type"), QueryHelper.getWSMFURI("Endpoint"), subject);
 		this.persHandler.updateResourceTriple(subject, QueryHelper.getWSMFURI("isRelatedToWebService"),
-				webserviceURI, subject);
+				webserviceURI, subject); 
+		
+		this.persHandler.commit();//delete?
+		
 		this.initAvailabilityState();
 	}
 	

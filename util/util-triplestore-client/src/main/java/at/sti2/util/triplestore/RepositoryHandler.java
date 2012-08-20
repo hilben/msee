@@ -84,7 +84,7 @@ public class RepositoryHandler {
 		this.repository = new HTTPRepository(this.serverEndpoint, this.repositoryID);
 		this.connection = this.repository.getConnection();
 		this.valueFactory = this.connection.getValueFactory();
-		this.connection.setAutoCommit(false);
+		this.connection.setAutoCommit(true); //TODO: autocommit deactivated?
 	}
 	
 	public synchronized void updateResourceTriple(String _subject, String _predicate, String _object, String _context) throws RepositoryException {

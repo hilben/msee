@@ -1,9 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.sti2.ngsee.invoker</groupId>
 	<artifactId>invoker-project</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -27,9 +27,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cxf.version>2.4.1</cxf.version>
-		<saxon.version>8.7</saxon.version>
-		<axis.version>1.5.4</axis.version>
+
 	</properties>
 
 	<issueManagement>
@@ -51,6 +49,9 @@
 		</developer>
 		<developer>
 			<name>Corneliu Stanciu</name>
+		</developer>
+		<developer>
+			<name>Benjamin Hiltpolt</name>
 		</developer>
 	</developers>
 
@@ -84,6 +85,16 @@
 				<artifactId>invoker-grounding</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			 <dependency>
+				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<artifactId>monitoring-api</artifactId>
+				<version>1.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<artifactId>monitoring-core</artifactId>
+				<version>1.2-SNAPSHOT</version>
+			</dependency> 
 			<dependency>
 				<groupId>at.sti2.ngsee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
@@ -92,154 +103,154 @@
 
 			<!-- LIBARIES -->
 			<!-- cxf -->
-                        <dependency>
-                                <groupId>org.apache.cxf</groupId>
-                                <artifactId>cxf-bundle</artifactId>
-                                <version>${cxf.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>org.apache.cxf</groupId>
-                                <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                                <version>${cxf.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>org.apache.cxf</groupId>
-                                <artifactId>cxf-rt-transports-http</artifactId>
-                                <version>${cxf.version}</version>
-                        </dependency>
-                        <!-- axis -->
-<!--                         <dependency> -->
-<!--                                 <groupId>org.apache.axis2</groupId> -->
-<!--                                 <artifactId>axis2-kernel</artifactId> -->
-<!--                                 <version>${axis.version}</version> -->
-<!--                         </dependency> -->
-<!--                         <dependency> -->
-<!--                                 <groupId>org.apache.axis2</groupId> -->
-<!--                                 <artifactId>axis2-transport-local</artifactId> -->
-<!--                                 <version>${axis.version}</version> -->
-<!--                         </dependency> -->
-<!--                         <dependency> -->
-<!--                                 <groupId>org.apache.axis2</groupId> -->
-<!--                                 <artifactId>axis2-transport-http</artifactId> -->
-<!--                                 <version>${axis.version}</version> -->
-<!--                         </dependency> -->
-                        <dependency>
-                                <groupId>dom4j</groupId>
-                                <artifactId>dom4j</artifactId>
-                                <version>1.6.1</version>
-                        </dependency>
-                        <!-- xslt and xquery processor (needed for xslt 2.0) -->
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon-dom</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<!-- axis -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.apache.axis2</groupId> -->
+			<!-- <artifactId>axis2-kernel</artifactId> -->
+			<!-- <version>${axis.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.apache.axis2</groupId> -->
+			<!-- <artifactId>axis2-transport-local</artifactId> -->
+			<!-- <version>${axis.version}</version> -->
+			<!-- </dependency> -->
+			<!-- <dependency> -->
+			<!-- <groupId>org.apache.axis2</groupId> -->
+			<!-- <artifactId>axis2-transport-http</artifactId> -->
+			<!-- <version>${axis.version}</version> -->
+			<!-- </dependency> -->
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+			<!-- xslt and xquery processor (needed for xslt 2.0) -->
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon-dom</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
 
-                        <!-- TOOLS -->
-                        <dependency>
-                                <groupId>log4j</groupId>
-                                <artifactId>log4j</artifactId>
-                                <version>1.2.16</version>
-                                <!-- Because the JDK1.6 already include the Java Activation API, otherwise 
-                                        this could generate ClassLoading en Linkage errors -->
-                                <exclusions>
-                                        <exclusion>
-                                                <groupId>javax.activation</groupId>
-                                                <artifactId>activation</artifactId>
-                                        </exclusion>
-                                </exclusions>
-                        </dependency>
-                        <dependency>
-                                <groupId>junit</groupId>
-                                <artifactId>junit</artifactId>
-                                <version>4.5</version>
-                                <scope>test</scope>
-                        </dependency>
-                </dependencies>
-        </dependencyManagement>
+			<!-- TOOLS -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+				<!-- Because the JDK1.6 already include the Java Activation API, otherwise 
+					this could generate ClassLoading en Linkage errors -->
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.5</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-        <build>
-                <pluginManagement>
-                        <plugins>
-                                <plugin>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-assembly-plugin</artifactId>
-                                        <version>2.2.1</version>
-                                        <configuration>
-                                                <descriptors>
-                                                        <descriptor>src/assembly/jaxws-jar.xml</descriptor>
-                                                </descriptors>
-                                                <appendAssemblyId>true</appendAssemblyId>
-                                                <attach>true</attach>
-                                        </configuration>
-                                        <executions>
-                                                <execution>
-                                                        <id>make-assembly</id>
-                                                        <phase>package</phase>
-                                                        <goals>
-                                                                <goal>single</goal>
-                                                        </goals>
-                                                </execution>
-                                        </executions>
-                                </plugin>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2.1</version>
+					<configuration>
+						<descriptors>
+							<descriptor>src/assembly/jaxws-jar.xml</descriptor>
+						</descriptors>
+						<appendAssemblyId>true</appendAssemblyId>
+						<attach>true</attach>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-                                <plugin><!--use mvn tomcat:deploy or mvn tomcat:undeploy -->
-                                        <groupId>org.codehaus.mojo</groupId>
-                                        <artifactId>tomcat-maven-plugin</artifactId>
-                                        <version>1.1</version>
-                                        <configuration>
-                                                <!-- settings.xml needs <server>...</server> with username/credentials. 
-                                                        see http://mojo.codehaus.org/tomcat-maven-plugin/configuration.html -->
-                                                <server>sesa-tomcat6</server>
-                                                <url>http://sesa.sti2.at:8080/manager</url>
-                                        </configuration>
-                                </plugin>
+				<plugin><!--use mvn tomcat:deploy or mvn tomcat:undeploy -->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<version>1.1</version>
+					<configuration>
+						<!-- settings.xml needs <server>...</server> with username/credentials. 
+							see http://mojo.codehaus.org/tomcat-maven-plugin/configuration.html -->
+						<server>sesa-tomcat6</server>
+						<url>http://sesa.sti2.at:8080/manager</url>
+					</configuration>
+				</plugin>
 
-                                <plugin>
-                                        <groupId>org.apache.cxf</groupId>
-                                        <artifactId>cxf-java2ws-plugin</artifactId>
-                                        <version>${cxf.version}</version>
-                                        <dependencies>
-                                                <dependency>
-                                                        <groupId>org.apache.cxf</groupId>
-                                                        <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                                                        <version>${cxf.version}</version>
-                                                </dependency>
-                                                <dependency>
-                                                        <groupId>org.apache.cxf</groupId>
-                                                        <artifactId>cxf-rt-frontend-simple</artifactId>
-                                                        <version>${cxf.version}</version>
-                                                </dependency>
-                                        </dependencies>
-                                </plugin>
+				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-java2ws-plugin</artifactId>
+					<version>${cxf.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-jaxws</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-simple</artifactId>
+							<version>${cxf.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 
-                                <plugin>
-                                        <groupId>org.mortbay.jetty</groupId>
-                                        <artifactId>maven-jetty-plugin</artifactId>
-                                        <version>6.1.10</version>
-                                </plugin>
+				<plugin>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>maven-jetty-plugin</artifactId>
+					<version>6.1.10</version>
+				</plugin>
 
-                        </plugins>
-                </pluginManagement>
-        </build>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 
-        <!-- DEPENDENCIES -->
-        <!-- these dependencies are included in every child project -->
-        <dependencies>
-                <dependency>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                </dependency>
-        </dependencies>
+	<!-- DEPENDENCIES -->
+	<!-- these dependencies are included in every child project -->
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>

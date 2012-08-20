@@ -32,11 +32,14 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "InvokerWebServiceService", targetNamespace = "http://see.sti2.at/", wsdlLocation = "http://localhost:9090/invoker-webservice/services/invoker?wsdl")
+@WebServiceClient(name = "InvokerWebServiceService", targetNamespace = "http://sesa.sti2.at/services/", wsdlLocation = "http://localhost:9090/invoker-webservice/services/invoker?wsdl")
 public class InvokerWebServiceService
     extends Service
 {
 
+	private static final String NAMESPACE = "http://sesa.sti2.at/services/";
+//	private static final String NAMESPACE = "http://see.sti2.at"; //old?
+	
     private final static URL INVOKERWEBSERVICESERVICE_WSDL_LOCATION;
     private final static Logger logger = Logger.getLogger(at.sti2.see.InvokerWebServiceService.class.getName());
 
@@ -58,7 +61,8 @@ public class InvokerWebServiceService
     }
 
     public InvokerWebServiceService() {
-        super(INVOKERWEBSERVICESERVICE_WSDL_LOCATION, new QName("http://see.sti2.at/", "InvokerWebServiceService"));
+    
+    	super(INVOKERWEBSERVICESERVICE_WSDL_LOCATION, new QName(NAMESPACE, "InvokerWebServiceService"));
     }
 
     /**
@@ -68,7 +72,7 @@ public class InvokerWebServiceService
      */
     @WebEndpoint(name = "InvokerWebServicePort")
     public InvokerWebService getInvokerWebServicePort() {
-        return super.getPort(new QName("http://see.sti2.at/", "InvokerWebServicePort"), InvokerWebService.class);
+        return super.getPort(new QName(NAMESPACE, "InvokerWebServicePort"), InvokerWebService.class);
     }
 
     /**
@@ -80,7 +84,7 @@ public class InvokerWebServiceService
      */
     @WebEndpoint(name = "InvokerWebServicePort")
     public InvokerWebService getInvokerWebServicePort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://see.sti2.at/", "InvokerWebServicePort"), InvokerWebService.class, features);
+        return super.getPort(new QName(NAMESPACE, "InvokerWebServicePort"), InvokerWebService.class, features);
     }
 
 }

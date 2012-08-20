@@ -322,7 +322,11 @@ public class PersistentHandler {
 	}
 	
 	public synchronized void commit() {
-		this.reposHandler.commit();
+		try {
+			this.reposHandler.commit();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

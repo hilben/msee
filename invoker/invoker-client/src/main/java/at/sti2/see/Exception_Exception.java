@@ -25,7 +25,7 @@ import javax.xml.ws.WebFault;
  * Generated source version: 2.1
  * 
  */
-@WebFault(name = "Exception", targetNamespace = "http://see.sti2.at/")
+@WebFault(name = "Exception", targetNamespace = "http://sesa.sti2.at/services/")
 public class Exception_Exception
     extends java.lang.Exception
 {

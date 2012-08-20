@@ -1,9 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.ngsee.invoker</groupId>
+	<groupId>at.sti2.ngsee.invoker.dummy</groupId>
 	<artifactId>invoker-dummy-webservice</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<parent>
@@ -105,6 +104,37 @@
 					</configuration>
 				</plugin>
 
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.cxf
+										</groupId>
+										<artifactId>
+											cxf-java2ws-plugin
+										</artifactId>
+										<versionRange>
+											[2.4.1,)
+										</versionRange>
+										<goals>
+											<goal>java2ws</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -123,6 +153,11 @@
 			<groupId>edu.uga.cs.lsdis</groupId>
 			<artifactId>SAWSDL4J</artifactId>
 			<version>M4</version>
+		</dependency>
+		<dependency>
+			<groupId>at.sti2.ngsee.invoker</groupId>
+			<artifactId>invoker-client</artifactId>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

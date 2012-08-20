@@ -5,9 +5,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<groupId>at.sti2.ngsee.monitoring</groupId>
 	<artifactId>monitoring-core</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Web Service Monitoring Framework - Core</name>
 
@@ -35,26 +33,32 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+				<!-- axis -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-kernel</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.geronimo.specs</groupId>
 					<artifactId>geronimo-activation_1.1_spec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.ws.commons.schema</groupId>
+					<artifactId>XmlSchema</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-local</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-http</artifactId>
-			<version>1.5.4</version>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 
