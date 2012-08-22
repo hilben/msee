@@ -39,15 +39,14 @@ public abstract class OntologyManagement {
 			
 			return _ontologyURL;
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw new ManagementException("The URL is not valid.: " + e.getLocalizedMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ManagementException("The file was not found: " + e.getLocalizedMessage());
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ManagementException(e.getLocalizedMessage());
 		} catch (RDFParseException e) {
-			e.printStackTrace();
-		}		
-		return null;
+			throw new ManagementException(e.getLocalizedMessage());
+		}
 	}
 	
 	public static String delete(String _ontologyURL) throws ManagementException{
@@ -60,9 +59,8 @@ public abstract class OntologyManagement {
 			
 			return _ontologyURL;			
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ManagementException(e.getMessage());
 		}
-		return null;
 	}
 	
 	public static String update(String _oldOntologyURL, String _newOntologyURL) throws ManagementException {
