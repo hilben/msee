@@ -22,8 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,10 +31,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPConstants;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.transform.Result;
@@ -51,18 +46,15 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
-import org.openrdf.repository.RepositoryException;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import at.sti2.ngsee.invoker.api.core.ISOAPInvoker;
 import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
-import at.sti2.wsmf.core.EndpointHandler;
 import at.sti2.wsmf.core.InvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
-import at.sti2.wsmf.core.data.WebServiceEndpoint;
+import at.sti2.wsmf.core.common.Config;
 
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
@@ -126,6 +118,7 @@ public class InvokerCore {
 		 */
 		InvokerMSM msmObject = TriplestoreHandler.getInvokerMSM(_serviceID,
 				_operationName);
+		
 
 		IGroundingEngine groundingEngine = GroundingFactory
 				.createGroundingEngine(msmObject.getLoweringSchema(),
@@ -136,10 +129,11 @@ public class InvokerCore {
 		 */
 		String loweredInputData = groundingEngine.lower(_inputData);
 
+		
 		/*
 		 * Starting the invocation process
 		 */
-//		ISOAPInvoker soapInvoker = InvokerFactory.createSOAPInvoker();
+		
 		logger.info("Invoking Web Service '" + msmObject.getWSDL()
 				+ "' with input data '" + loweredInputData + "'");
 
@@ -160,11 +154,13 @@ public class InvokerCore {
 			loweredSOAPMessage.writeTo(out);
 			String strMsg = new String(out.toByteArray());
 			
-			
-			// TODO: determine size / handle return 
 			/*
 			 * Monitoring!
 			 */
+			Config.getDefaultConfig().setEndpointMasterURL(msmObject.getEndpointURL().toExternalForm());
+			Config.getDefaultConfig().setWebServiceName(_operationName);
+			
+			
 			returnMsg = generateSOAPMessage(InvocationHandler.invoke(generateSOAPMessage(strMsg),
 					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(),
 					strMsg.length()));
@@ -182,27 +178,9 @@ public class InvokerCore {
 			e.printStackTrace();
 		}
 
-		//Old return! maybe change back
-//		SOAPMessage outputData = soapInvoker.invoke(
-//				msmObject.getServiceQName(), msmObject.getPortQName(),
-//				msmObject.getEndpointURL().toExternalForm(),
-//				msmObject.getSOAPAction(), loweredSOAPMessage);
-//		
-//		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		outputData.writeTo(out);
-//		String strMsg3 = new String(out.toByteArray());
-//		
-//		
-//		logger.info("return msg_old" + strMsg3);
-
-		/**
-		 * TODO: Here comes the rest of the monitoring code.
-		 */
-
 		/*
 		 * Return the lifted data
 		 */
-//		return groundingEngine.lift(getBodyContent(outputData)); //old return, maybe change back?
 		return groundingEngine.lift(getBodyContent(returnMsg));
 	}
 
@@ -261,6 +239,10 @@ public class InvokerCore {
 		// new WebServiceEndpoint(new
 		// URL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy")));
 
+		
+		Config.getDefaultConfig().setEndpointMasterURL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy");
+		Config.getDefaultConfig().setWebServiceName("RandomNumberWebService");
+		
 		logger.info("RESULTS: "
 				+ InvocationHandler.invoke(message, null,
 						new ActivityInstantiatedEvent(), os.size()));

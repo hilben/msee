@@ -62,7 +62,7 @@ public class PersistentHandler {
 	}
 	
 	private PersistentHandler() throws FileNotFoundException, IOException {
-		Config cfg = Config.getInstance();
+		Config cfg = Config.getDefaultConfig();
 		this.triplestoreEndpoint = cfg.getTripleStoreEndpoint();
 		this.repositoryID = cfg.getTripleStoreReposID();
 		this.reposHandler = new RepositoryHandler(this.triplestoreEndpoint, this.repositoryID);
@@ -88,7 +88,7 @@ public class PersistentHandler {
 	public static String getQoSParamID(String _endpoint, QoSParamKey _type) {
 		String qosParamID = "unknown";
 		try {
-			Config cfg = Config.getInstance();
+			Config cfg = Config.getDefaultConfig();
 			qosParamID = cfg.getInstancePrefix() 
 					+ _type + "_"
 					+ HashValueHandler.computeSHA1(_endpoint);
@@ -101,7 +101,7 @@ public class PersistentHandler {
 	public static String getQoSParamID(String _endpoint, QoSThresholdKey _key) {
 		String qosParamID = "unknown";
 		try {
-			Config cfg = Config.getInstance();
+			Config cfg = Config.getDefaultConfig();
 			qosParamID = cfg.getInstancePrefix() 
 					+ _key + "_"
 					+ HashValueHandler.computeSHA1(_endpoint);

@@ -62,7 +62,8 @@ public class InvocationHandler {
 	private static Logger log = Logger.getLogger(InvocationHandler.class);
 	private static final int TIME_OUT_MS = 12000;
 	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 60;
-
+	
+	
 	/**
 	 * JAX-WS Invocation Implementation.
 	 * 
@@ -74,9 +75,14 @@ public class InvocationHandler {
 	 * @throws IOException
 	 */
 	private static String _invoke(String _endpointURL,
-			SOAPMessage _soapMessage, String _soapAction) throws SOAPException,
+			SOAPMessage _soapMessage, String _soapAction, Config config) throws SOAPException,
 			IOException {
-		Config cfg = Config.getInstance();
+		
+		Config cfg = Config.getDefaultConfig();
+		if (config != null) {
+			cfg = config;
+		} 
+		
 		QName serviceName = new QName(cfg.getWebServiceNamespace(),
 				cfg.getWebServiceName());
 		QName portName = serviceName;
@@ -140,7 +146,7 @@ public class InvocationHandler {
 			soapBody.addChildElement(new QName("ftp://wrongnamespace", "a"
 					+ UUID.randomUUID().toString()));
 			soapMessage.saveChanges();
-			_invoke(_endpoint, soapMessage, _soapAction);
+			_invoke(_endpoint, soapMessage, _soapAction,null);
 			return true;
 		} catch (SOAPFaultException e) {
 			return true;
@@ -157,7 +163,7 @@ public class InvocationHandler {
 		try {
 			WSInvocationStateChannelHandler stateChannel = WSInvocationStateChannelHandler
 					.getInstance();
-			stateChannel.sendState(Config.getInstance().getInstancePrefix()
+			stateChannel.sendState(Config.getDefaultConfig().getInstancePrefix()
 					+ _activeInstance.getIdentifier(),
 					_activeInstance.getState());
 		} catch (QueryEvaluationException e) {
@@ -179,7 +185,7 @@ public class InvocationHandler {
 			QoSParamValue _value) {
 		try {
 			WSQoSChannelHandler qosChannel = WSQoSChannelHandler.getInstance();
-			qosChannel.sendState(Config.getInstance().getInstancePrefix()
+			qosChannel.sendState(Config.getDefaultConfig().getInstancePrefix()
 					+ _activeInstance.getIdentifier(), _value);
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to send qos value message, through exception: "
@@ -211,7 +217,8 @@ public class InvocationHandler {
 			throws Exception {
 		log.setLevel(Level.DEBUG);
 
-		WSAvailabilityChecker.getInstance(WS_AVAILABILITY_TIMEOUT_MINUTES); //TODO: change back
+		WSAvailabilityChecker.getInstance(WS_AVAILABILITY_TIMEOUT_MINUTES); // TODO:
+																			// check
 		EndpointHandler endpointHandler = EndpointHandler.getInstance();
 		WebServiceEndpoint currentWS = endpointHandler.getCurrentActiveWS();
 		String endpoint = currentWS.getEndpoint().toExternalForm();
@@ -226,12 +233,10 @@ public class InvocationHandler {
 			log.error("Could not print out the SOAP Message!");
 		}
 
-//		ServiceClient serviceClient = new ServiceClient();  //TODO: change back
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(endpoint));
 		opts.setAction(_soapAction);
 		opts.setTimeOutInMilliSeconds(TIME_OUT_MS);
-//		serviceClient.setOptions(opts);//TODO: change back
 
 		/* ***************************
 		 * Monitoring Block Start
@@ -281,7 +286,7 @@ public class InvocationHandler {
 			 */
 
 			long beforeInvocation = System.currentTimeMillis();
-			result = _invoke(endpoint, _soapMessage, _soapAction); // <<=
+			result = _invoke(endpoint, _soapMessage, _soapAction, null); // <<=
 																	// Invocation
 			long afterInvocation = System.currentTimeMillis();
 			try {
@@ -380,9 +385,6 @@ public class InvocationHandler {
 			 */
 			throw new Exception(e);
 		} finally {
-//			serviceClient.cleanup();//TODO: change back
-//			serviceClient.cleanupTransport();//TODO: change back
-//			serviceClient.removeHeaders();//TODO: change back
 		}
 	}
 

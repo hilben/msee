@@ -123,7 +123,7 @@ public class TestInvocationHandler extends TestCase{
 		}
 		
 		System.out.println(InvocationHandler.isWebServiceAvailable("http://example.org", null));
-		System.out.println(Config.getInstance().getEndpointMaster());
+		System.out.println(Config.getDefaultConfig().getEndpointMaster());
 		System.out.println("Sesa Valencia Port Service: " + InvocationHandler.isWebServiceAvailable("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService", null));
 		System.out.println("Localhost Dummy Service: " + InvocationHandler.isWebServiceAvailable("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy", null));
 	}

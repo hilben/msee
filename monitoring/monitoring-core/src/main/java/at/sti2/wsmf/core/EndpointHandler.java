@@ -55,7 +55,7 @@ public class EndpointHandler {
 	}
 
 	private EndpointHandler() throws IOException, RepositoryException {
-		Config cfg = Config.getInstance();
+		Config cfg = Config.getDefaultConfig();
 		this.persHandler = PersistentHandler.getInstance();
 		this.masterWS = new WebServiceEndpoint(new URL(cfg.getEndpointMaster()));
 		this.instancePrefix = cfg.getInstancePrefix();

@@ -38,6 +38,10 @@ import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
 public class WSAvailabilityTimerTask extends TimerTask {
 	private Logger log = Logger.getLogger(WSAvailabilityTimerTask.class);
 	
+	public WSAvailabilityTimerTask() {
+		
+	}
+	
 	private WSAvailabilityState updateAvailabilityState(WebServiceEndpoint _webservice) throws RepositoryException, RDFParseException, FileNotFoundException, IOException {
 		WSAvailabilityState oldstate = _webservice.getAvailabilityStatus();
 		URL endpoint = _webservice.getEndpoint();

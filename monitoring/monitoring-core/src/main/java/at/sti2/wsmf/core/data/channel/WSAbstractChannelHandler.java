@@ -41,7 +41,7 @@ public abstract class WSAbstractChannelHandler {
 	protected WSAbstractChannelHandler(String _channelPostfix) throws IOException {
 		this.channelPostfix = _channelPostfix;
 		this.persHandler = PersistentHandler.getInstance();
-		this.cfg = Config.getInstance();
+		this.cfg = Config.getDefaultConfig();
 		this.channelURL = this.cfg.getInstancePrefix() + "_" + cfg.getWebServiceName() + "_" + _channelPostfix;
 	}
 	

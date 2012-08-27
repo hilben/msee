@@ -31,8 +31,7 @@ import at.sti2.wsmf.core.common.Config;
  * @author Alex Oberhauser
  */
 public class ActivityInstantiatedEvent {
-//	Logger log = Logger.getLogger(ActivityInstantiatedEvent.class); TODO: change back
-	Logger log = Logger.getRootLogger(); //TODO change back
+	Logger log = Logger.getLogger(ActivityInstantiatedEvent.class);
 	
 	private String endpoint = null;
 	private final String identifier;
@@ -43,7 +42,7 @@ public class ActivityInstantiatedEvent {
 	public ActivityInstantiatedEvent() throws IOException, RepositoryException {
 		this.identifier = UUID.randomUUID().toString();
 		this.state = WSInvocationState.None;
-		Config cfg = Config.getInstance();
+		Config cfg = Config.getDefaultConfig();
 		this.subject = cfg.getInstancePrefix() + this.identifier;
 		this.persHandler = PersistentHandler.getInstance();
 		
