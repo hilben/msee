@@ -19,33 +19,38 @@ package at.sti2.wsmf.core.common;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
+import org.openrdf.repository.RepositoryException;
+
+import at.sti2.wsmf.core.EndpointHandler;
+import at.sti2.wsmf.core.EndpointHandlerManager;
+
 /**
- * @author Alex Oberhauser
+ * @author Benjamin Hiltpolt
  * 
+ *         Stores and manages a Config file for every Endpoint
  */
 public class Config {
-	private static Config instance = null;
+
 	private final Properties prop;
 
-	private String masterEndpointURL;
-	private String masterEndpointNamespace;
-	private String webServiceName;
-	
-	private String webServiceNamespace;
+	private static Config instance = null;
 
 	private String triplestoreEndpoint;
 	private String triplestoreReposid;
-	
-	private String instancePrefix;
 
-	public static Config getDefaultConfig() throws IOException {
-		if (null == instance)
-			instance = new Config();
-		return instance;
+	private String instanceprefix;
+
+	public static Config getConfig() throws IOException {
+		if (instance == null) {
+			return new Config();
+		} else {
+			return instance;
+		}
 	}
-	
+
 	private Config() throws IOException {
 		this.prop = new Properties();
 		// InputStream configIS =
@@ -56,17 +61,19 @@ public class Config {
 		if (configIS != null) {
 			this.prop.load(configIS);
 
-			this.masterEndpointNamespace = this.prop
-					.getProperty("endpoint.master.url");
-			this.masterEndpointURL = this.prop
-					.getProperty("endpoint.master.url");
-			this.webServiceName = this.prop.getProperty("endpoint.servicename");
+			this.triplestoreEndpoint = this.prop
+					.getProperty("triplestore.endpoint");
+			this.triplestoreReposid = this.prop
+					.getProperty("triplestore.reposid");
 			
-			this.triplestoreEndpoint =this.prop.getProperty("triplestore.endpoint");
-			this.triplestoreReposid = this.prop.getProperty("triplestore.reposid");
-			this.instancePrefix = this.prop.getProperty("instance.prefixuri");
-			this.webServiceNamespace = this.prop.getProperty("endpoint.namespace");
+			this.instanceprefix = this.prop.getProperty("instance.prefixuri");
+
 		}
+	}
+	
+	
+	public String getInstancePrefix() {
+		return this.instanceprefix;
 	}
 
 	public String getTripleStoreEndpoint() {
@@ -77,45 +84,4 @@ public class Config {
 		return this.triplestoreReposid;
 	}
 
-	public String getInstancePrefix() {
-		return this.instancePrefix;
-	}
-
-	public String getWebServiceName() {
-		return this.webServiceName;
-	}
-
-	public void setWebServiceName(String webServiceName) {
-		this.webServiceName = webServiceName;
-	}
-
-	public String getWebServiceNamespace() {
-		return webServiceNamespace;
-	}
-
-	public String getEndpointMaster() {
-		return this.masterEndpointURL;
-	}
-
-	public void setEndpointMasterURL(String masterEndpointURL) {
-		this.masterEndpointURL = masterEndpointURL;
-	}
-
-	public String getEndpointMasterNamespace() {
-		return this.masterEndpointNamespace;
-	}
-
-	@Deprecated
-	public static void main(String argss[]) {
-		try {
-			System.out.println(Config.getDefaultConfig().toString());
-			System.out.println(Config.getDefaultConfig().getTripleStoreEndpoint());
-
-			System.out.println(Config.getDefaultConfig().getEndpointMaster());
-			System.out.println(Config.getDefaultConfig().getWebServiceName());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

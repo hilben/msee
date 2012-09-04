@@ -58,9 +58,9 @@ public class ProxyWebService implements IProxyWebService {
 	@WebMethod
 	@Override
 	public String invoke(@WebParam(name = "soapRequest") String _soapRequest,
-			@WebParam(name = "soapAction") String _soapAction) throws Exception {
+			@WebParam(name = "soapAction") String _soapAction,  @WebParam(name="endpointURL")String endpointURL) throws Exception {
 		return InvocationHandler.invoke(this.generateSOAPMessage(_soapRequest),
-				_soapAction, new ActivityInstantiatedEvent(),
+				_soapAction, new ActivityInstantiatedEvent(endpointURL),
 				_soapRequest.length());
 	}
 

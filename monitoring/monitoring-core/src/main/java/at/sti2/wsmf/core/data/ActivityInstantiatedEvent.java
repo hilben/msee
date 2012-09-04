@@ -25,7 +25,7 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 /**
  * @author Alex Oberhauser
@@ -39,10 +39,11 @@ public class ActivityInstantiatedEvent {
 	private String subject;
 	private PersistentHandler persHandler;
 	
-	public ActivityInstantiatedEvent() throws IOException, RepositoryException {
+	public ActivityInstantiatedEvent(String endpoint) throws IOException, RepositoryException {
 		this.identifier = UUID.randomUUID().toString();
 		this.state = WSInvocationState.None;
-		Config cfg = Config.getDefaultConfig();
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(endpoint);
+		this.setEndpoint(endpoint);
 		this.subject = cfg.getInstancePrefix() + this.identifier;
 		this.persHandler = PersistentHandler.getInstance();
 		

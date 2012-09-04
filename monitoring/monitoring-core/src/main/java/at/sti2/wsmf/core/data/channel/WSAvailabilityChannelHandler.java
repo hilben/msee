@@ -30,6 +30,7 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 /**
  * @author Alex Oberhauser
@@ -45,7 +46,7 @@ public class WSAvailabilityChannelHandler extends WSAbstractChannelHandler {
 	}
 	
 	private WSAvailabilityChannelHandler() throws IOException, RepositoryException {
-		super("wsavailabilitychannel"); 
+		super("wsavailabilitychannel","WSAvailabilityChannelHandler"); 
 	}
 	
 	private String buildMessage(String _invocationInstance, String _namespace, String _operationName, WSAvailabilityState _state) {

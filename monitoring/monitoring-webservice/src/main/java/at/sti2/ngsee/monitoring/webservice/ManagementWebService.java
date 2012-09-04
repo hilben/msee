@@ -92,34 +92,5 @@ public class ManagementWebService implements IManagementWebService {
 		return persHandler.getThresholdValue(_endpoint, _key);
 	}
 
-	/**
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#addEndpoint(java.lang.String)
-	 */
-	@WebMethod
-	@Override
-	public void addEndpoint(@WebParam(name="endpoint")URL _endpoint) throws Exception {
-		new at.sti2.wsmf.core.data.WebServiceEndpoint(_endpoint);
-	}
-
-	/**
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#listEndpoints()
-	 */
-	@Override
-	public URL[] listEndpoints() throws Exception {
-		EndpointHandler handler = EndpointHandler.getInstance();
-		Vector<URL> fallbackWS = handler.getFallbackWS();
-		return fallbackWS.toArray(new URL[fallbackWS.size()]);
-	}
-
-	/**
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#removeEndpoint()
-	 */
-	@WebMethod
-	@Override
-	public void removeEndpoint(@WebParam(name="endpoint")URL _endpoint) throws Exception {
-		EndpointHandler handler = EndpointHandler.getInstance();
-		handler.removeFallbackWS(_endpoint);
-		PersistentHandler.getInstance().deleteEndpoint(_endpoint);
-	}
 	
 }

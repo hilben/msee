@@ -53,7 +53,7 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 	}
 	
 	private WSQoSChannelHandler() throws IOException, RepositoryException {
-		super("wsqoschannel");
+		super("wsqoschannel","WSQoSChannelHandler");
 	}
 	
 	private String buildMessage(String _invocationInstance, String _namespace, String _operationName, QoSParamValue _value) {

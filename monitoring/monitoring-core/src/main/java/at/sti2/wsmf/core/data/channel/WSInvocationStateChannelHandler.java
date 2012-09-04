@@ -45,7 +45,7 @@ public class WSInvocationStateChannelHandler extends WSAbstractChannelHandler {
 	}
 	
 	private WSInvocationStateChannelHandler() throws IOException, RepositoryException {
-		super("wsstatechannel"); 
+		super("wsstatechannel","WSInvocationStateChannelHandler"); 
 	}
 	
 	private String buildMessage(String _invocationInstance, String _namespace, String _operationName, WSInvocationState _state) {

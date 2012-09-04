@@ -1,0 +1,108 @@
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Service> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.org/racer.wsdl#Obligation> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.org/racer.wsdl#PriceAndDiscounts> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.org/racer.wsdl#DeliveryTime> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.org/racer.wsdl#Rewards> .
+
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/2000/01/rdf-schema#label> "racer" .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.example.org/racer.wsdl#> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.wsmo.org/ns/wsmo-lite#hasOperation> <http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Operation> .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> <http://www.w3.org/2000/01/rdf-schema#label> "ShipmentOrder" .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> <http://www.wsmo.org/ns/wsmo-lite#hasInputMessage> <http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/In)> .
+<http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/In)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+
+<http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/In)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.com/racer/reqShip> .
+
+<http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> <http://www.wsmo.org/ns/wsmo-lite#hasOutputMessage> <http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/Out)> .
+<http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/Out)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+
+<http://www.example.org/racer.wsdl#wsl.message(racer/ShipmentOrder/Out)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.com/racer/resShip> .
+
+<http://www.example.org/racer.wsdl#wsl.operation(racer/ShipmentOrder)> <http://www.wsmo.org/ns/wsmo-lite#hasOutputFault> <http://www.example.org/racer.wsdl#wsl.fault(racer/ShipmentOrder/Out/InvalidOrder)> .
+<http://www.example.org/racer.wsdl#wsl.fault(racer/ShipmentOrder/Out/InvalidOrder)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+<http://www.example.org/racer.wsdl#wsl.service(racer)> <http://www.wsmo.org/ns/wsmo-lite#hasOperation> <http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Operation> .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> <http://www.w3.org/2000/01/rdf-schema#label> "invokePrice" .
+<http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> <http://www.wsmo.org/ns/wsmo-lite#hasInputMessage> <http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/In)> .
+<http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/In)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+
+<http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/In)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.com/racer/reqPrice> .
+
+<http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> <http://www.wsmo.org/ns/wsmo-lite#hasOutputMessage> <http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/Out)> .
+<http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/Out)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+
+<http://www.example.org/racer.wsdl#wsl.message(racer/invokePrice/Out)> <http://www.w3.org/ns/sawsdl#modelReference> <http://www.example.com/racer/resPrice> .
+
+<http://www.example.org/racer.wsdl#wsl.operation(racer/invokePrice)> <http://www.wsmo.org/ns/wsmo-lite#hasOutputFault> <http://www.example.org/racer.wsdl#wsl.fault(racer/invokePrice/Out/InvalidOrder)> .
+<http://www.example.org/racer.wsdl#wsl.fault(racer/invokePrice/Out/InvalidOrder)> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ns/wsmo-lite#Message> .
+
+<http://www.w3.org/2000/xmlns#racer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://www.example.org/racer.wsdl#> .
+<http://www.w3.org/2000/xmlns#so> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://sws-ranking/Shipment.wsml#> .
+<http://www.w3.org/2000/xmlns#loc> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://sws-ranking/Location.wsml#> .
+<http://www.w3.org/2000/xmlns#list> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://sws-ranking/ListOntology.wsml#> .
+<http://www.w3.org/2000/xmlns#pay> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://www.wsmo.org/ontologies/nfp/paymentNFPOntology#> .
+<http://www.w3.org/2000/xmlns#dc> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://purl.org/dc/elements/1.1#> .
+<http://www.w3.org/2000/xmlns#wsml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://www.wsmo.org/wsml/wsml-syntax/> .
+<http://www.w3.org/2000/xmlns#pref> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#> .
+
+<http://www.example.org/racer.wsdl#Obligation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#NonFunctionalParameter> .
+<http://www.example.org/racer.wsdl#Obligation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "
+
+ 	_\"http://www.example.org/racer.wsdl#computeObligation\"(?order, ?value):-  
+        ?order[ _\"http://sws-ranking/Shipment.wsml#packageToSend\" hasValue ?package, _\"http://sws-ranking/Shipment.wsml#paymentMethod\" hasValue ?paymentMethod]
+         memberOf _\"http://sws-ranking/Shipment.wsml#ShipmentOrderRequest\" and
+        ?package[_\"http://sws-ranking/Shipment.wsml#packageStatus\" hasValue ?status, _\"http://sws-ranking/Shipment.wsml#declaredValue\" hasValue ?value] and
+        (?status = _\"http://sws-ranking/Shipment.wsml#packageDamaged\" or ?status = _\"http://sws-ranking/Shipment.wsml#packageLost\") and ?value =< 250 .           
+
+ 	_\"http://www.example.org/racer.wsdl#computeObligation\"(?order, 250):-  
+        ?order[ _\"http://sws-ranking/Shipment.wsml#packageToSend\" hasValue ?package, _\"http://sws-ranking/Shipment.wsml#paymentMethod\" hasValue ?paymentMethod]
+         memberOf _\"http://sws-ranking/Shipment.wsml#ShipmentOrderRequest\" and
+        ?package[_\"http://sws-ranking/Shipment.wsml#packageStatus\" hasValue ?status, _\"http://sws-ranking/Shipment.wsml#declaredValue\" hasValue ?value] and
+        (?status = _\"http://sws-ranking/Shipment.wsml#packageDamaged\" or ?status = _\"http://sws-ranking/Shipment.wsml#packageLost\") and ?value > 250 .
+
+    _\"http://www.example.org/racer.wsdl#computeObligation\"(?order, 0):-
+        ?order[ _\"http://sws-ranking/Shipment.wsml#packageToSend\" hasValue ?package, _\"http://sws-ranking/Shipment.wsml#paymentMethod\" hasValue ?paymentMethod]
+         memberOf _\"http://sws-ranking/Shipment.wsml#ShipmentOrderRequest\" and
+        ?package[_\"http://sws-ranking/Shipment.wsml#packageStatus\" hasValue ?status] and
+        ?status != _\"http://sws-ranking/Shipment.wsml#packageDamaged\" and ?status != _\"http://sws-ranking/Shipment.wsml#packageLost\"."^^<http://www.wsmo.org/wsml/wsml-syntax#AxiomLiteral> .
+<http://www.example.org/racer.wsdl#Obligation> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#predicate> <http://www.example.org/racer.wsdl#computeObligation> .
+
+<http://www.example.org/racer.wsdl#PriceAndDiscounts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#NonFunctionalParameter> .
+<http://www.example.org/racer.wsdl#PriceAndDiscounts> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "      
+	   _\"http://www.example.org/racer.wsdl#computePriceAndDiscounts\"(?order,?price):-
+	     ?order[ _\"http://sws-ranking/Shipment.wsml#packageToSend\" hasValue ?package, _\"http://sws-ranking/Shipment.wsml#paymentMethod\" hasValue ?paymentMethod]
+          memberOf _\"http://sws-ranking/Shipment.wsml#ShipmentOrderRequest\" and	     	
+	     ?package[_\"http://sws-ranking/Shipment.wsml#declaredValue\" hasValue ?value, _\"http://sws-ranking/Shipment.wsml#weight\" hasValue ?weight] and
+	     ?price = (?weight * 0.25)."^^<http://www.wsmo.org/wsml/wsml-syntax#AxiomLiteral> .
+<http://www.example.org/racer.wsdl#PriceAndDiscounts> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#predicate> <http://www.example.org/racer.wsdl#computePriceAndDiscounts> .
+
+<http://www.example.org/racer.wsdl#DeliveryTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#NonFunctionalParameter> .
+<http://www.example.org/racer.wsdl#DeliveryTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "   
+
+
+		_\"http://www.example.org/racer.wsdl#computeDeliveryTime\"(?package, ?deliveryTime):- ?package[_\"http://sws-ranking/Shipment.wsml#length\" hasValue ?length, _\"http://sws-ranking/Shipment.wsml#width\" hasValue ?width, _\"http://sws-ranking/Shipment.wsml#height\" hasValue ?height] memberOf _\"http://sws-ranking/Shipment.wsml#Package\" and 
+		?volume = (?length * ?width * ?height) and ?volume > 20 and ?volume < 80 and ?deliveryTime = 2 .
+     
+		_\"http://www.example.org/racer.wsdl#computeDeliveryTime\"(?package, ?deliveryTime):- ?package[_\"http://sws-ranking/Shipment.wsml#length\" hasValue ?length, _\"http://sws-ranking/Shipment.wsml#width\" hasValue ?width, _\"http://sws-ranking/Shipment.wsml#height\" hasValue ?height] memberOf _\"http://sws-ranking/Shipment.wsml#Package\" and 
+		?volume = (?length * ?width * ?height) and ?volume < 20 and ?deliveryTime = 1 .
+					
+		_\"http://www.example.org/racer.wsdl#computeDeliveryTime\"(?package, ?deliveryTime):- ?package[_\"http://sws-ranking/Shipment.wsml#length\" hasValue ?length, _\"http://sws-ranking/Shipment.wsml#width\" hasValue ?width, _\"http://sws-ranking/Shipment.wsml#height\" hasValue ?height] memberOf _\"http://sws-ranking/Shipment.wsml#Package\" and 
+		?volume = (?length * ?width * ?height) and ?volume = 20 and ?deliveryTime = 1 .	
+
+		_\"http://www.example.org/racer.wsdl#computeDeliveryTime\"(?package, ?deliveryTime):- ?package[_\"http://sws-ranking/Shipment.wsml#length\" hasValue ?length, _\"http://sws-ranking/Shipment.wsml#width\" hasValue ?width, _\"http://sws-ranking/Shipment.wsml#height\" hasValue ?height] memberOf _\"http://sws-ranking/Shipment.wsml#Package\" and 
+		?volume = (?length * ?width * ?height) and ?volume = 80 and ?deliveryTime = 2 .	
+		
+		_\"http://www.example.org/racer.wsdl#computeDeliveryTime\"(?package, ?deliveryTime):- ?package[_\"http://sws-ranking/Shipment.wsml#length\" hasValue ?length, _\"http://sws-ranking/Shipment.wsml#width\" hasValue ?width, _\"http://sws-ranking/Shipment.wsml#height\" hasValue ?height] memberOf _\"http://sws-ranking/Shipment.wsml#Package\" and 
+		?volume = (?length * ?width * ?height) and ?volume > 80 and ?deliveryTime = 3 ."^^<http://www.wsmo.org/wsml/wsml-syntax#AxiomLiteral> .
+<http://www.example.org/racer.wsdl#DeliveryTime> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#predicate> <http://www.example.org/racer.wsdl#computeDeliveryTime> .
+
+<http://www.example.org/racer.wsdl#Rewards> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#NonFunctionalParameter> .
+<http://www.example.org/racer.wsdl#Rewards> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "      
+		_\"http://www.example.org/racer.wsdl#computeRewards\"(?order, ?rewardPoints):-
+	     ?order[_\"http://sws-ranking/Shipment.wsml#paymentMethod\" hasValue ?paymentMethod, _\"http://sws-ranking/Shipment.wsml#packageToSend\" hasValue ?package]
+          memberOf _\"http://sws-ranking/Shipment.wsml#ShipmentOrderRequest\" and	     	
+	     ?package[_\"http://sws-ranking/Shipment.wsml#declaredValue\" hasValue ?value, _\"http://sws-ranking/Shipment.wsml#weight\" hasValue ?weight] and
+	     ?rewardPoints = (?weight * 2)."^^<http://www.wsmo.org/wsml/wsml-syntax#AxiomLiteral> .
+<http://www.example.org/racer.wsdl#Rewards> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#predicate> <http://www.example.org/racer.wsdl#computeRewards> .
+

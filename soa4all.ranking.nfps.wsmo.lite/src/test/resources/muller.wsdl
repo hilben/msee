@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/muller/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" name="muller"
+	targetNamespace="http://www.example.org/muller/">
+	<wsdl:documentation>
+		this is a fake service. All the informations are imaginary. But it is
+		closed to the
+		real world. After studying some real world postal services, we created
+		this fake
+		service. It has some special originalities.
+  </wsdl:documentation>
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.example.org/muller/"
+			elementFormDefault="qualified">
+			<!-- request -->
+			<xs:element name="shipmentOrderRequest" type="tns:shipmentOrderRequestType" />
+			<xs:element name="invokePriceRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="country" type="xs:string" />
+						<xs:element name="packageInformation" type="tns:packageType"
+							minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- response -->
+			<xs:element name="shipmentOrderResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="pickupDate" type="xs:dateTime" />
+						<xs:element name="price" type="xs:decimal" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="invokePriceResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="price" type="xs:decimal" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- types -->
+			<xs:complexType name="packageType">
+				<xs:annotation>
+					<xs:documentation>
+						NOTE: - we have a weight limit for each package of 50 pound. -
+					</xs:documentation>
+				</xs:annotation>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="quantity" type="xs:nonNegativeInteger" />
+					<xs:element name="weight" type="xs:nonNegativeInteger" />
+					<xs:element name="length" type="xs:nonNegativeInteger" />
+					<xs:element name="height" type="xs:nonNegativeInteger" />
+					<xs:element name="width" type="xs:nonNegativeInteger" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="contactInformationType">
+				<xs:sequence>
+					<xs:element name="phone" type="xs:string" />
+					<xs:element name="EMail" type="xs:string" />
+					<xs:element name="fax" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="addressFromType">
+				<xs:sequence>
+					<xs:element name="firstname" type="xs:string" />
+					<xs:element name="lastname" type="xs:string" />
+					<xs:element name="address" type="xs:string" />
+					<xs:element name="location" type="tns:locationType" />
+					<xs:element name="contactInformation" type="tns:contactInformationType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="addressToType">
+				<xs:sequence>
+					<xs:element name="firstname" type="xs:string" />
+					<xs:element name="lastname" type="xs:string" />
+					<xs:element name="address" type="xs:string" />
+					<xs:element name="location" type="tns:locationType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="locationType">
+				<xs:sequence>
+					<xs:element name="postalCode" type="xs:string" />
+					<xs:element name="country" type="xs:string" />
+					<xs:element name="state" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="shipmentDateType">
+				<xs:annotation>
+					<xs:documentation>
+						there should be at least 2 hour between the earliest and the latest
+						pickup
+						date. the carrier can be order max 2 working days in advance. Also the
+						latest
+						pickup date can be only 5 working days in advance. note, for getting the
+						best
+						price there should be minimum 3 working days between the earliest and
+						latest
+						pickup date.
+          </xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="earliestPickupDate" type="xs:dateTime" />
+					<xs:element name="latestPickupDate" type="xs:dateTime" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="shipmentOrderRequestType">
+				<xs:sequence>
+					<xs:element name="addressFrom" type="tns:addressFromType" />
+					<xs:element name="shipmentDate" type="tns:shipmentDateType" />
+					<xs:element name="packageInformation" type="tns:packageType"
+						maxOccurs="unbounded" minOccurs="1" />
+					<xs:element name="addressTo" type="tns:addressToType" />
+				</xs:sequence>
+			</xs:complexType>
+			<!-- Fault elements -->
+			<xs:element name="InvalidOrder">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fault" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="InvalidOrderFault">
+		<wsdl:part element="tns:InvalidOrder" name="InvalidOrderFault" />
+	</wsdl:message>
+	<wsdl:message name="shipmentOrderResponse">
+		<wsdl:part element="tns:shipmentOrderResponse" name="shipmentOrderResponse" />
+	</wsdl:message>
+	<wsdl:message name="shipmentOrderRequest">
+		<wsdl:part element="tns:shipmentOrderRequest" name="shipmentOrderRequest" />
+	</wsdl:message>
+	<wsdl:message name="invokePriceResponse">
+		<wsdl:part name="invokePriceResponse" element="tns:invokePriceResponse" />
+	</wsdl:message>
+	<wsdl:message name="invokePriceRequest">
+		<wsdl:part name="invokePriceRequest" element="tns:invokePriceRequest" />
+	</wsdl:message>
+	<wsdl:portType name="muller">
+		<wsdl:operation name="ShipmentOrder">
+			<wsdl:input message="tns:shipmentOrderRequest" />
+			<wsdl:output message="tns:shipmentOrderResponse" />
+			<wsdl:fault name="InvalidOrder" message="tns:InvalidOrderFault"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="invokePrice">
+			<wsdl:documentation>
+				We have weekly changing rates. You can get the actually rate for the
+				next 7
+				working days.
+      </wsdl:documentation>
+			<wsdl:input message="tns:invokePriceRequest" />
+			<wsdl:output message="tns:invokePriceResponse" />
+			<wsdl:fault name="InvalidOrder" message="tns:InvalidOrderFault"></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="mullerSOAP" type="tns:muller">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="ShipmentOrder">
+			<soap:operation soapAction="ShipmentOrder" />
+			<wsdl:input>
+				<soap:body parts="shipmentOrderRequest" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="shipmentOrderResponse" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvalidOrder">
+				<soap:fault name="InvalidOrder" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="invokePrice">
+			<soap:operation soapAction="invokePrice" />
+			<wsdl:input>
+				<soap:body parts="invokePriceRequest" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="invokePriceResponse" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvalidOrder">
+				<soap:fault name="InvalidOrder" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="muller"
+		sawsdl:modelReference="http://www.example.org/muller.wsdl#Obligation 
+                          http://www.example.org/muller.wsdl#PriceAndDiscounts
+                          http://www.example.org/muller.wsdl#DeliveryTime
+                          http://www.example.org/muller.wsdl#Rewards">
+		<wsdl:port binding="tns:mullerSOAP" name="mullerSOAP">
+			<soap:address location="http://sws-challenge.org/shipper/v2/muller" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

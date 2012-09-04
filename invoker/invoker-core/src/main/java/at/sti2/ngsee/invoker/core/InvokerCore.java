@@ -54,7 +54,7 @@ import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
 import at.sti2.wsmf.core.InvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
@@ -157,12 +157,14 @@ public class InvokerCore {
 			/*
 			 * Monitoring!
 			 */
-			Config.getDefaultConfig().setEndpointMasterURL(msmObject.getEndpointURL().toExternalForm());
-			Config.getDefaultConfig().setWebServiceName(_operationName);
+			String endpointURL = msmObject.getEndpointURL().toExternalForm();
+			
+			WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(endpointURL);
+			cfg.setWebServiceName(_operationName);
 			
 			
 			returnMsg = generateSOAPMessage(InvocationHandler.invoke(generateSOAPMessage(strMsg),
-					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(),
+					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(endpointURL),
 					strMsg.length()));
 			
 			out = new ByteArrayOutputStream();
@@ -194,7 +196,7 @@ public class InvokerCore {
 	 * @return
 	 * @throws SOAPException
 	 */
-	private static SOAPMessage generateSOAPMessage(String _soapMessageString)
+	public static SOAPMessage generateSOAPMessage(String _soapMessageString)
 			throws SOAPException {
 		MessageFactory msgFactory = MessageFactory.newInstance();
 		SOAPMessage msg = msgFactory.createMessage();
@@ -208,43 +210,5 @@ public class InvokerCore {
 		return msg;
 	}
 	
-	@Deprecated
-	public static void main(String args[]) throws Exception {
-		StringBuilder inputData = new StringBuilder();
-		String NL = System.getProperty("line.separator");
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new FileInputStream(InvokerCore.class
-					.getResource("/test_monitoring.xml").getFile()));
-		} catch (FileNotFoundException e) {
 
-			System.exit(0);
-			e.printStackTrace();
-		}
-		try {
-			while (scanner.hasNextLine()) {
-				inputData.append(scanner.nextLine() + NL);
-			}
-		} finally {
-			scanner.close();
-		}
-
-		SOAPMessage message = generateSOAPMessage(inputData.toString());
-
-		message.saveChanges();
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		message.writeTo(os);
-
-		// EndpointHandler.getInstance().changeCurrentActiveWS(
-		// new WebServiceEndpoint(new
-		// URL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy")));
-
-		
-		Config.getDefaultConfig().setEndpointMasterURL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy");
-		Config.getDefaultConfig().setWebServiceName("RandomNumberWebService");
-		
-		logger.info("RESULTS: "
-				+ InvocationHandler.invoke(message, null,
-						new ActivityInstantiatedEvent(), os.size()));
-	}
 }

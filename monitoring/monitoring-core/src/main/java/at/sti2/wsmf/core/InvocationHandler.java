@@ -48,7 +48,7 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSInvocationStateChannelHandler;
@@ -75,13 +75,10 @@ public class InvocationHandler {
 	 * @throws IOException
 	 */
 	private static String _invoke(String _endpointURL,
-			SOAPMessage _soapMessage, String _soapAction, Config config) throws SOAPException,
+			SOAPMessage _soapMessage, String _soapAction, WebServiceEndpointConfig config) throws SOAPException,
 			IOException {
 		
-		Config cfg = Config.getDefaultConfig();
-		if (config != null) {
-			cfg = config;
-		} 
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(_endpointURL);
 		
 		QName serviceName = new QName(cfg.getWebServiceNamespace(),
 				cfg.getWebServiceName());
@@ -163,7 +160,7 @@ public class InvocationHandler {
 		try {
 			WSInvocationStateChannelHandler stateChannel = WSInvocationStateChannelHandler
 					.getInstance();
-			stateChannel.sendState(Config.getDefaultConfig().getInstancePrefix()
+			stateChannel.sendState(WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getInstancePrefix()
 					+ _activeInstance.getIdentifier(),
 					_activeInstance.getState());
 		} catch (QueryEvaluationException e) {
@@ -185,7 +182,7 @@ public class InvocationHandler {
 			QoSParamValue _value) {
 		try {
 			WSQoSChannelHandler qosChannel = WSQoSChannelHandler.getInstance();
-			qosChannel.sendState(Config.getDefaultConfig().getInstancePrefix()
+			qosChannel.sendState(WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getInstancePrefix()
 					+ _activeInstance.getIdentifier(), _value);
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to send qos value message, through exception: "
@@ -215,11 +212,11 @@ public class InvocationHandler {
 	public static String invoke(SOAPMessage _soapMessage, String _soapAction,
 			ActivityInstantiatedEvent _activeInstance, int _soapMessageSize)
 			throws Exception {
-		log.setLevel(Level.DEBUG);
 
-		WSAvailabilityChecker.getInstance(WS_AVAILABILITY_TIMEOUT_MINUTES); // TODO:
+//		WSAvailabilityChecker.getInstance(WS_AVAILABILITY_TIMEOUT_MINUTES); // TODO:
 																			// check
-		EndpointHandler endpointHandler = EndpointHandler.getInstance();
+		
+		EndpointHandler endpointHandler = WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getEndPointHandler();
 		WebServiceEndpoint currentWS = endpointHandler.getCurrentActiveWS();
 		String endpoint = currentWS.getEndpoint().toExternalForm();
 

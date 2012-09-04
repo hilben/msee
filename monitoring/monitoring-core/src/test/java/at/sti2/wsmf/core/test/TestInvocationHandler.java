@@ -40,7 +40,7 @@ import org.openrdf.repository.RepositoryException;
 
 
 import at.sti2.wsmf.core.InvocationHandler;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
@@ -102,15 +102,15 @@ public class TestInvocationHandler extends TestCase{
 			soapBody = message.getSOAPBody();
 
 		SOAPElement operationElement = soapBody.addChildElement(new QName("http://sesa.sti2.at/services/", "invoke", "sesa")); //namespace?
-		operationElement.addChildElement("serviceID").setTextContent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService");
-		operationElement.addChildElement("operation").setTextContent("submitFALForm");	
-		operationElement.addChildElement("inputData").setTextContent(inputData.toString());
+//		operationElement.addChildElement("serviceID").setTextContent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService");
+//		operationElement.addChildElement("operation").setTextContent("submitFALForm");	
+//		operationElement.addChildElement("inputData").setTextContent(inputData.toString());
 
 		
 		message.saveChanges();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);
-		String responseMessage = InvocationHandler.invoke(message, null, new ActivityInstantiatedEvent(), os.size());
+		String responseMessage = InvocationHandler.invoke(message, null, new ActivityInstantiatedEvent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"), os.size());
 		
 //		System.out.println(responseMessage);
 		
@@ -123,7 +123,7 @@ public class TestInvocationHandler extends TestCase{
 		}
 		
 		System.out.println(InvocationHandler.isWebServiceAvailable("http://example.org", null));
-		System.out.println(Config.getDefaultConfig().getEndpointMaster());
+//		System.out.println(WebServiceEndpointConfig.getDefaultConfig().getEndpointMaster());
 		System.out.println("Sesa Valencia Port Service: " + InvocationHandler.isWebServiceAvailable("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService", null));
 		System.out.println("Localhost Dummy Service: " + InvocationHandler.isWebServiceAvailable("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy", null));
 	}

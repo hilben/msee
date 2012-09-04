@@ -26,7 +26,7 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
 
 /**
@@ -38,6 +38,8 @@ public class EndpointHandler {
 
 	private PersistentHandler persHandler;
 
+	
+	private WebServiceEndpointConfig cfg;
 	private static EndpointHandler instance = null;
 	private String instancePrefix;
 	private String webserviceID;
@@ -47,15 +49,9 @@ public class EndpointHandler {
 	 */
 	private WebServiceEndpoint currentActiveWS;
 
-	public static EndpointHandler getInstance() throws IOException,
-			RepositoryException {
-		if (null == instance)
-			instance = new EndpointHandler();
-		return instance;
-	}
 
-	private EndpointHandler() throws IOException, RepositoryException {
-		Config cfg = Config.getDefaultConfig();
+	public EndpointHandler(WebServiceEndpointConfig cfg) throws IOException, RepositoryException {
+		this.cfg = cfg;
 		this.persHandler = PersistentHandler.getInstance();
 		this.masterWS = new WebServiceEndpoint(new URL(cfg.getEndpointMaster()));
 		this.instancePrefix = cfg.getInstancePrefix();

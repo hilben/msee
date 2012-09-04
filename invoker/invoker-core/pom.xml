@@ -83,4 +83,8 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
 	</dependencies>
+	
+	
+	
+	
 </project>

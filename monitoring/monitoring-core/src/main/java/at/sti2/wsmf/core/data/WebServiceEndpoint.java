@@ -31,7 +31,7 @@ import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
@@ -55,7 +55,7 @@ public class WebServiceEndpoint {
 		this.endpoint = _endpoint;
 		this.persHandler = PersistentHandler.getInstance();
 		String subject = this.endpoint.toExternalForm();
-		Config cfg = Config.getDefaultConfig();
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(subject);
 		String webserviceURI = cfg.getInstancePrefix() + cfg.getWebServiceName();
 		
 		this.persHandler.updateResourceTriple(subject, QueryHelper.getRDFURI("type"), QueryHelper.getWSMFURI("Endpoint"), subject);

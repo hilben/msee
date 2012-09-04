@@ -27,6 +27,7 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 /**
  * @author Alex Oberhauser
@@ -37,16 +38,18 @@ public abstract class WSAbstractChannelHandler {
 	private Config cfg;
 	private String channelURL;
 	private final String channelPostfix;
+	private String strName;//TODO:?? what is this
 	
-	protected WSAbstractChannelHandler(String _channelPostfix) throws IOException {
+	protected WSAbstractChannelHandler(String _channelPostfix, String strName) throws IOException {
 		this.channelPostfix = _channelPostfix;
 		this.persHandler = PersistentHandler.getInstance();
-		this.cfg = Config.getDefaultConfig();
-		this.channelURL = this.cfg.getInstancePrefix() + "_" + cfg.getWebServiceName() + "_" + _channelPostfix;
+		this.cfg = Config.getConfig();
+		this.strName = strName;
+		this.channelURL = this.cfg.getInstancePrefix() + "_" + this.strName + "_" + _channelPostfix;
 	}
 	
 	protected String getContextURL(URL _endpoint) {
-		return _endpoint + "_" + this.cfg.getWebServiceName() + "_" + this.channelPostfix;
+		return _endpoint + "_" +this.strName + "_" + this.channelPostfix;
 	}
 	
 	public Vector<ChannelSubscriber> getSubscriber() throws QueryEvaluationException, RepositoryException, MalformedQueryException {

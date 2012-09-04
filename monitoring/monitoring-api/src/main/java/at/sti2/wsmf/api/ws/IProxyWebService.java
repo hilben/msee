@@ -16,15 +16,22 @@
  */
 package at.sti2.wsmf.api.ws;
 
+import javax.jws.WebParam;
+
 /**
  * @author Alex Oberhauser
  */
 public interface IProxyWebService {
-	
+
 	/**
-	 * @param _soapMessage
+	 * @param _soapRequest
 	 * @param _soapAction
+	 * @param endpointURL
 	 * @return
+	 * @throws Exception
 	 */
-	public String invoke(String _soapMessage, String _soapAction) throws Exception;
+	public String invoke(@WebParam(name = "soapRequest") String _soapRequest,
+			@WebParam(name = "soapAction") String _soapAction,
+			@WebParam(name = "endpointURL") String endpointURL)
+			throws Exception;
 }

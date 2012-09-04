@@ -29,6 +29,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFParseException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
+import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
 
@@ -37,9 +39,10 @@ import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
  */
 public class WSAvailabilityTimerTask extends TimerTask {
 	private Logger log = Logger.getLogger(WSAvailabilityTimerTask.class);
+	private WebServiceEndpoint webserviceendpoint;
 	
-	public WSAvailabilityTimerTask() {
-		
+	public WSAvailabilityTimerTask(WebServiceEndpoint webserviceendpoint) {
+		this.webserviceendpoint = webserviceendpoint;
 	}
 	
 	private WSAvailabilityState updateAvailabilityState(WebServiceEndpoint _webservice) throws RepositoryException, RDFParseException, FileNotFoundException, IOException {
@@ -73,7 +76,7 @@ public class WSAvailabilityTimerTask extends TimerTask {
 		Vector<URL> checkedURL = new Vector<URL>();
 		EndpointHandler endpointHandler;
 		try {
-			endpointHandler = EndpointHandler.getInstance();
+			endpointHandler = WebServiceEndpointConfig.getConfig(this.webserviceendpoint.getEndpoint()).getEndPointHandler();
 			
 			WebServiceEndpoint currentActiveWS = endpointHandler.getCurrentActiveWS();
 			WSAvailabilityState currentActiveWSState = this.updateAvailabilityState(currentActiveWS);

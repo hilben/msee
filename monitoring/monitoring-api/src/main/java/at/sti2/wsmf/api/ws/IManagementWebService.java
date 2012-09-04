@@ -59,11 +59,5 @@ public interface IManagementWebService {
 	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value) throws Exception;
 	public QoSThresholdValue getQoSThresholdValue(URL endpoint, QoSThresholdKey key) throws Exception;
 
-	/*
-	 * Adaption API
-	 */
-	public void addEndpoint(URL endpoint) throws Exception;
-	public URL[] listEndpoints() throws Exception;
-	public void removeEndpoint(URL endpoint) throws Exception;
 
 }
