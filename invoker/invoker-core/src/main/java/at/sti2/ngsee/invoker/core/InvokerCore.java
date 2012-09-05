@@ -17,13 +17,10 @@
 package at.sti2.ngsee.invoker.core;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -53,8 +50,8 @@ import org.xml.sax.SAXException;
 import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
 import at.sti2.wsmf.core.InvocationHandler;
-import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
+import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);

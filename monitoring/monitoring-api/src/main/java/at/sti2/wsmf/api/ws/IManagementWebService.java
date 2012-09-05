@@ -58,6 +58,14 @@ public interface IManagementWebService {
 	
 	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value) throws Exception;
 	public QoSThresholdValue getQoSThresholdValue(URL endpoint, QoSThresholdKey key) throws Exception;
+	
+	/**
+	 * 
+	 * Returns all endpoints currently monitored by the monitoring framework
+	 * @return
+	 * @throws Exception
+	 */
+	public String[] listEndpoints() throws Exception;
 
 
 }

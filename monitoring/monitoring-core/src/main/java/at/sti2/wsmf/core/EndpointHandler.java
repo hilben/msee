@@ -44,6 +44,8 @@ public class EndpointHandler {
 	private String instancePrefix;
 	private String webserviceID;
 	private WebServiceEndpoint masterWS;
+	
+	
 	/**
 	 * The Web Service that is currently used for invocation.
 	 */

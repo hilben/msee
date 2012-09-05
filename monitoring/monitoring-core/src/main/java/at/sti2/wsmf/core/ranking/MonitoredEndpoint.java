@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.soa4all.ranking.qos;
+package at.sti2.wsmf.core.ranking;
 
 /**
  * @author Benjamin Hiltpolt

@@ -35,7 +35,7 @@ public class TestWebServicesInvokation {
 			"Banana", "EndpointHandler", "Benjamin", "Hello World",
 			"This is some longer text for testing purposes", "Semantic Web",
 			"lalalaLalala", "www.google.com", "RandomWord", "___A___" };
-
+	
 	@Deprecated
 	public static void main(String args[]) throws Exception {
 
@@ -45,7 +45,7 @@ public class TestWebServicesInvokation {
 				.invokeWebServiceViaMonitoring(ENDPOINT + "randomnumber",
 						"RandomNumberWebService", TestWebServicesSOAPMessages
 								.getRandomNumberWebServiceSOAP((int) (Math
-										.random() * 10000)));
+										.random() * 1000)));
 		TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
 				+ "randomstring", "RandomStringWebService",
 				TestWebServicesSOAPMessages
@@ -78,6 +78,7 @@ public class TestWebServicesInvokation {
 				.getConfig(endpointUrl);
 		cfg.setWebServiceName(webServiceName);
 
+		
 		logger.info("RESULTS: "
 				+ InvocationHandler.invoke(message, null,
 						new ActivityInstantiatedEvent(endpointUrl), os.size()));

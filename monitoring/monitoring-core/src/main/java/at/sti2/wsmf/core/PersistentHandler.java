@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -47,6 +48,11 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
 /**
  * @author Alex Oberhauser
+ * 
+ * @author Benjamin Hiltpolt
+ * 
+ * 
+ * The {@link PersistentHandler} handled several operations to query the web service monitoring repository
  */
 public class PersistentHandler {
 	private static Logger log = Logger.getLogger(PersistentHandler.class);
@@ -247,6 +253,29 @@ public class PersistentHandler {
 				QueryHelper.getDCURI("modified"), DateHelper.getXSDDateTime(),
 				endpoint);
 	}
+	
+	
+	/**
+	 *  Returns a Vector of all Endpoint monitored by the Repository
+	 	TODO: implement
+	 * @throws MalformedQueryException 
+	 * @throws RepositoryException 
+	 * @throws QueryEvaluationException 
+	 */
+	public List<String> getEndpoints() throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+		StringBuffer selectSPARQL = new StringBuffer();
+		selectSPARQL.append("SELECT distinct ?endpoints WHERE { ");
+		selectSPARQL.append("  ?x wsmf:relatedTo ?endpoints . ");
+		selectSPARQL.append("}");
+		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());
+		Vector<String> resultVector = new Vector<String>();
+		
+		while ( result.hasNext() ) {
+			resultVector.add(result.next().getBinding("endpoints").getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
+		}
+		
+		return resultVector;
+	}
 
 	/**
 	 * @return
@@ -328,6 +357,30 @@ public class PersistentHandler {
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * @deprecated
+	 * @param args
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws MalformedQueryException 
+	 * @throws RepositoryException 
+	 * @throws QueryEvaluationException 
+	 */
+	public static void main (String args[]) throws FileNotFoundException, IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
+		PersistentHandler ph = new PersistentHandler();
+		
+//		System.out.println(ph.getInstanceIDs());
+		
+		for (String s : ph.getEndpoints()) {
+			System.out.println(s);
+			System.out.println(ph.getQoSParam(new URL(s), QoSParamKey.RequestTotal));
+		}
+		
+		
 	}
 	
 }
