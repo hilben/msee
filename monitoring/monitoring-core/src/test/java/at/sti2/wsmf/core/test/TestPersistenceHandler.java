@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import junit.framework.TestCase;
+
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
 import at.sti2.wsmf.core.PersistentHandler;
-import junit.framework.TestCase;
 
 /**
  * @author Benjamin Hiltpolt
@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  */
 public class TestPersistenceHandler extends TestCase {
 
-	public static final String URL[] = {
+	public static final String[] URL = {
 			"http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
 			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
 			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
@@ -55,11 +55,17 @@ public class TestPersistenceHandler extends TestCase {
 						QoSParamKey.RequestTotal));
 
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeAverage));
+						QoSParamKey.PayloadSizeRequestAverage));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeMaximum));
+						QoSParamKey.PayloadSizeRequestMaximum));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeMinimum));
+						QoSParamKey.PayloadSizeRequestMinimum));
+				System.out.println(phandler.getQoSParam(new URL(URL[i]),
+						QoSParamKey.PayloadSizeResponseAverage));
+				System.out.println(phandler.getQoSParam(new URL(URL[i]),
+						QoSParamKey.PayloadSizeResponseMaximum));
+				System.out.println(phandler.getQoSParam(new URL(URL[i]),
+						QoSParamKey.PayloadSizeResponseMinimum));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.RequestFailed));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
@@ -72,6 +78,9 @@ public class TestPersistenceHandler extends TestCase {
 						QoSParamKey.ResponseTimeMaximum));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.ResponseTimeMinimum));
+
+				
+				System.out.println(phandler.getInvocationState("http://sti2.at/wsmf/instances#6a3e6e34-f2f9-49cc-8d53-388b07027126"));
 
 			}
 		} catch (QueryEvaluationException e) {

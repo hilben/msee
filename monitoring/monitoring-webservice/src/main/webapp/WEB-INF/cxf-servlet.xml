@@ -8,15 +8,18 @@
          http://cxf.apache.org/jaxws
          http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<jaxws:endpoint id="proxyWebService" implementor="at.sti2.ngsee.monitoring.webservice.ProxyWebService"
+	<jaxws:endpoint id="proxyWebService"
+		implementor="at.sti2.ngsee.monitoring.webservice.ProxyWebService"
 		address="/proxy">
 	</jaxws:endpoint>
 
-	<jaxws:endpoint id="eventStreamWebService" implementor="at.sti2.ngsee.monitoring.webservice.EventStreamWebService"
+	<jaxws:endpoint id="eventStreamWebService"
+		implementor="at.sti2.ngsee.monitoring.webservice.EventStreamWebService"
 		address="/events">
 	</jaxws:endpoint>
 
-	<jaxws:endpoint id="managementWebService" implementor="at.sti2.ngsee.monitoring.webservice.ManagementWebService"
+	<jaxws:endpoint id="managementWebService"
+		implementor="at.sti2.ngsee.monitoring.webservice.ManagementWebService"
 		address="/management">
 	</jaxws:endpoint>
 </beans>

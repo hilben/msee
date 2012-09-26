@@ -74,11 +74,11 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		QoSParamKey paramType = _value.getType();
 		switch ( paramType ) {
-			case PayloadSizeAverage:
-			case PayloadSizeMaximum:
-			case PayloadSizeMinimum:
-				long maxPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeMaximum).getValue());
-				long minPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeMinimum).getValue());
+			case PayloadSizeRequestAverage:
+			case PayloadSizeRequestMaximum:
+			case PayloadSizeRequestMinimum:
+				long maxPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMaximum).getValue());
+				long minPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMinimum).getValue());
 				long payloadValue = new Long(_value.getValue());
 				log.info("[QoSThreshold] Payload Size " + minPayload + " <= " + payloadValue + " <= " + maxPayload);
 				if ( minPayload == -1 || maxPayload == -1 )
@@ -144,7 +144,7 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 		
 		availabilityHandler.sendState("http://example.org/endpointInstanceExample", WSAvailabilityState.WSAvailable);
 		stateHandler.sendState("http://example.org/invocationInstanceExample", WSInvocationState.Completed);
-		qosHandler.sendState("http://example.org/endpointInstanceExample", new QoSParamValue(QoSParamKey.PayloadSizeAverage, "28", QoSUnit.Bytes));
+		qosHandler.sendState("http://example.org/endpointInstanceExample", new QoSParamValue(QoSParamKey.PayloadSizeRequestAverage, "28", QoSUnit.Bytes));
 	}
 	
 }

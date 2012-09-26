@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.wsmf.core.ranking;
+package at.sti2.wsmf.api.data.qos.ranking;
 
 import java.util.HashMap;
 import java.util.Map;

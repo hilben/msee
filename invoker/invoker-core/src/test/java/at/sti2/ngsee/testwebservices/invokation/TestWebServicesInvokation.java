@@ -35,33 +35,43 @@ public class TestWebServicesInvokation {
 			"Banana", "EndpointHandler", "Benjamin", "Hello World",
 			"This is some longer text for testing purposes", "Semantic Web",
 			"lalalaLalala", "www.google.com", "RandomWord", "___A___" };
-	
+
 	@Deprecated
 	public static void main(String args[]) throws Exception {
 
 		for (int i = 0; i < 80; i++) {
-		
-		TestWebServicesInvokation
-				.invokeWebServiceViaMonitoring(ENDPOINT + "randomnumber",
-						"RandomNumberWebService", TestWebServicesSOAPMessages
-								.getRandomNumberWebServiceSOAP((int) (Math
-										.random() * 1000)));
-		TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-				+ "randomstring", "RandomStringWebService",
-				TestWebServicesSOAPMessages
-						.getRandomStringWebServiceSOAP(getRandomWord()));
-		TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-				+ "reversestring", "ReverseStringWebService",
-				TestWebServicesSOAPMessages
-						.getReverseStringWebServiceSOAP(getRandomWord()));
-		TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-				+ "stringmulti", "StringMultiplierWebService",
-				TestWebServicesSOAPMessages
-						.getStringMultiplierWebServiceSOAP(getRandomWord()));
-		TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-				+ "stringuppercase", "StringUppercaseWebService",
-				TestWebServicesSOAPMessages
-						.getStringUppercaseWebServiceSOAP(getRandomWord()));
+			try {
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "reversestring", "ReverseStringWebService",
+					TestWebServicesSOAPMessages
+							.getReverseStringWebServiceSOAP("HalloHallo"));
+			TestWebServicesInvokation
+					.invokeWebServiceViaMonitoring(ENDPOINT + "randomnumber",
+							"RandomNumberWebService",
+							TestWebServicesSOAPMessages
+									.getRandomNumberWebServiceSOAP((int) (Math
+											.random() * 1000)));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "randomstring", "RandomStringWebService",
+					TestWebServicesSOAPMessages
+							.getRandomStringWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "reversestring", "ReverseStringWebService",
+					TestWebServicesSOAPMessages
+							.getReverseStringWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation
+					.invokeWebServiceViaMonitoring(
+							ENDPOINT + "stringmulti",
+							"StringMultiplierWebService",
+							TestWebServicesSOAPMessages
+									.getStringMultiplierWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "stringuppercase", "StringUppercaseWebService",
+					TestWebServicesSOAPMessages
+							.getStringUppercaseWebServiceSOAP(getRandomWord()));
+			} catch (Exception e){
+				logger.error(e);
+			}
 		}
 	}
 
@@ -78,7 +88,9 @@ public class TestWebServicesInvokation {
 				.getConfig(endpointUrl);
 		cfg.setWebServiceName(webServiceName);
 
-		
+		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
+				+ os.toString());
+
 		logger.info("RESULTS: "
 				+ InvocationHandler.invoke(message, null,
 						new ActivityInstantiatedEvent(endpointUrl), os.size()));

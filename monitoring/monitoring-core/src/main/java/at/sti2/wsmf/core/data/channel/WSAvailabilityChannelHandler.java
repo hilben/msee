@@ -30,7 +30,6 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.InvocationHandler;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 /**
  * @author Alex Oberhauser

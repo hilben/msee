@@ -6,15 +6,15 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-                        <source>target/classes/at/sti2/ngsee/monitoring/webservice/ProxyWebService.class</source>
+			<source>target/classes/at/sti2/ngsee/monitoring/webservice/ProxyWebService.class</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 		<file>
-                        <source>target/classes/at/sti2/ngsee/monitoring/webservice/EventStreamWebService.class</source>
+			<source>target/classes/at/sti2/ngsee/monitoring/webservice/EventStreamWebService.class</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 		<file>
-                        <source>target/classes/at/sti2/ngsee/monitoring/webservice/ManagementWebService.class</source>
+			<source>target/classes/at/sti2/ngsee/monitoring/webservice/ManagementWebService.class</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 	</files>

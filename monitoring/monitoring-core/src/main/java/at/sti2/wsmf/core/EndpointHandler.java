@@ -37,23 +37,17 @@ public class EndpointHandler {
 	private static Logger log = Logger.getLogger(EndpointHandler.class);
 
 	private PersistentHandler persHandler;
-
-	
-	private WebServiceEndpointConfig cfg;
-	private static EndpointHandler instance = null;
 	private String instancePrefix;
 	private String webserviceID;
 	private WebServiceEndpoint masterWS;
-	
-	
+
 	/**
 	 * The Web Service that is currently used for invocation.
 	 */
 	private WebServiceEndpoint currentActiveWS;
 
-
-	public EndpointHandler(WebServiceEndpointConfig cfg) throws IOException, RepositoryException {
-		this.cfg = cfg;
+	public EndpointHandler(WebServiceEndpointConfig cfg) throws IOException,
+			RepositoryException {
 		this.persHandler = PersistentHandler.getInstance();
 		this.masterWS = new WebServiceEndpoint(new URL(cfg.getEndpointMaster()));
 		this.instancePrefix = cfg.getInstancePrefix();

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.wsmf.core.ranking;
+package at.sti2.wsmf.core.test;
 
 /**
  * @author Benjamin Hiltpolt
@@ -23,7 +23,7 @@ public class MonitoredEndpoint {
 	 */
 	public MonitoredEndpoint(String EndpointName, float responseTimeAverage,
 			float payloadSizeAverage, int requestsTotal) {
-		super();
+
 		this.endpointName = EndpointName;
 		this.responseTimeAverage = responseTimeAverage;
 		this.payloadSizeAverage = payloadSizeAverage;

@@ -16,14 +16,37 @@
  */
 package at.sti2.wsmf.api.data.qos;
 
+/**
+ * @author Benjamin Hiltpolt
+ *
+ *
+ * This enum represents all possible QoS Parameters (should be used for monitoring webservice)
+ */
 public enum QoSParamKey {
+	
 	RequestTotal,
 	RequestSuccessful,
 	RequestFailed,
+	
 	ResponseTimeMinimum,
 	ResponseTimeMaximum,
 	ResponseTimeAverage,
-	PayloadSizeMinimum,
-	PayloadSizeAverage,
-	PayloadSizeMaximum
+	
+	PayloadSizeRequestMinimum,
+	PayloadSizeRequestAverage,
+	PayloadSizeRequestMaximum,
+	
+	PayloadSizeResponseMinimum,
+	PayloadSizeResponseAverage,
+	PayloadSizeResponseMaximum,
+	
+	
+
+	MonitoredTime,
+	AvailableTime,
+	UnavailableTime,
+	
+	//TODO
+	RequestsPerHour
+	
 }

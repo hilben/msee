@@ -32,15 +32,11 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-
 import at.sti2.wsmf.core.InvocationHandler;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**

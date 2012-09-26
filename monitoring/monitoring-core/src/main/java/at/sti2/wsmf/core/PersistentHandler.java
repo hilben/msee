@@ -40,7 +40,6 @@ import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.core.common.Config;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.HashValueHandler;
 import at.sti2.wsmf.core.data.channel.ChannelSubscriber;
@@ -83,7 +82,7 @@ public class PersistentHandler {
 		selectSPARQL.append("}");
 		
 		WSAvailabilityState state = WSAvailabilityState.WSNotChecked;
-		TupleQueryResult queryResult = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());;
+		TupleQueryResult queryResult = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());
 		if ( queryResult.hasNext() ) {
 			BindingSet entry = queryResult.next();
 			String stateString = entry.getBinding("availabilityState").getValue().stringValue().replace(QueryHelper.WSMF_NS, "");
@@ -139,7 +138,7 @@ public class PersistentHandler {
 		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
 		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");	
 		selectSPARQL.append("}");
-		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());;
+		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());
 		if ( result.hasNext() )
 			return result.next().getBinding("qosValue").getValue().stringValue();
 		else 
@@ -166,6 +165,7 @@ public class PersistentHandler {
 		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
 		selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");	
 		selectSPARQL.append("}");
+		System.out.println(selectSPARQL);
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper.getNamespacePrefix() + selectSPARQL.toString());
 		if ( result.hasNext() ) {
 			BindingSet entry = result.next();
@@ -299,6 +299,8 @@ public class PersistentHandler {
 	}
 	
 	/**
+	 * 
+	 * TODO: not working anymore! FIX!
 	 * @param _activityStartedEvent
 	 * @return
 	 * @throws MalformedQueryException 
@@ -316,7 +318,7 @@ public class PersistentHandler {
 		WSInvocationState state = null;
 		if  ( result.hasNext() ) {
 			String stateString = result.next().getBinding("invocationState").getValue().stringValue().replace(QueryHelper.WSMF_NS, "");
-			state = WSInvocationState.valueOf(stateString);;
+			state = WSInvocationState.valueOf(stateString);
 		}
 		return state;
 	}

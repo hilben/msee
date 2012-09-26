@@ -26,7 +26,6 @@ import java.util.Properties;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.core.EndpointHandler;
-import at.sti2.wsmf.core.EndpointHandlerManager;
 
 /**
  * @author Alex Oberhauser
@@ -41,12 +40,15 @@ public class WebServiceEndpointConfig {
 	private final Properties prop;
 
 	private String masterEndpointURL;
+
 	private String masterEndpointNamespace;
+
 	private String webServiceName;
 
 	private String webServiceNamespace;
 
 	private String triplestoreEndpoint;
+
 	private String triplestoreReposid;
 
 	private String instancePrefix;
@@ -69,7 +71,7 @@ public class WebServiceEndpointConfig {
 			System.out.println("not contained");
 			WebServiceEndpointConfig newCfg = new WebServiceEndpointConfig(
 					endpointURL);
-//			instances.put(endpointURL, newCfg);
+			// instances.put(endpointURL, newCfg);
 			return newCfg;
 
 		} else {
@@ -104,11 +106,13 @@ public class WebServiceEndpointConfig {
 			this.instancePrefix = this.prop.getProperty("instance.prefixuri");
 			this.webServiceNamespace = this.prop
 					.getProperty("endpoint.namespace");
+			
+			configIS.close();
 		}
 
 		this.masterEndpointURL = masterEndpointURL;
-		
-	 instances.put(masterEndpointURL, this);
+
+		instances.put(masterEndpointURL, this);
 
 		try {
 			this.endpointhandler = new EndpointHandler(this);
@@ -183,5 +187,9 @@ public class WebServiceEndpointConfig {
 
 	public EndpointHandler getEndPointHandler() {
 		return this.endpointhandler;
+	}
+	
+	public static void main(String args[]) throws IOException {
+		System.out.println(WebServiceEndpointConfig.getConfig("http://asd").getWebServiceNamespace());
 	}
 }

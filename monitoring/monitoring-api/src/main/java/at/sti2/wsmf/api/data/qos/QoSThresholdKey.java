@@ -21,6 +21,8 @@ public enum QoSThresholdKey {
 	RequestsMaximum,
 	ResponseTimeMinimum,
 	ResponseTimeMaximum,
-	PayloadSizeMinimum,
-	PayloadSizeMaximum
+	PayloadSizeRequestMinimum,
+	PayloadSizeRequestMaximum,
+	PayloadSizeRespondMinimum,
+	PayloadSizeRespondMaximum
 }

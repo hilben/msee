@@ -30,53 +30,55 @@ import at.sti2.wsmf.core.data.WebServiceEndpoint;
 
 /**
  * @author Alex Oberhauser
- *
+ * 
  */
 public class WSAvailabilityChecker {
-	
-	
+
 	private static HashMap<String, WSAvailabilityChecker> instances = new HashMap<String, WSAvailabilityChecker>();
-	
-	private static String endpoint;
-	
-	private static Logger log = Logger.getLogger(WSAvailabilityChecker.class);
+
+	private static Logger logger = Logger.getLogger(WSAvailabilityChecker.class);
 	private static WSAvailabilityChecker instance = null;
-	
+
 	private final Timer timer = new Timer();
 	private final int minutes;
-	
-	public static WSAvailabilityChecker getInstance(String endpoint, int _minutes) {
-		if ( null == instances.get(endpoint) )
-			{instance = new WSAvailabilityChecker(_minutes);
-			instances.put(endpoint, instance);}
-		
-		return instance;
+
+	private final String endpoint;
+
+	public static void startAvailabilityChecking(String endpoint,
+			int _minutes) {
+		if (null == instances.get(endpoint)) {
+			instance = new WSAvailabilityChecker(endpoint, _minutes);
+			instances.put(endpoint, instance);
+		}
 	}
-	
-	private WSAvailabilityChecker(int _minutes) {
+
+	private WSAvailabilityChecker(String endpoint, int _minutes) {
+		this.endpoint = endpoint;
 		this.minutes = _minutes;
 		this.start();
 	}
-	
-	
-	//TODO: Exception Handling!!!
+
+
 	public void start() {
-		log.info("Web Service availability checks scheduled for each '" + this.minutes + "' minutes");
-        try {
-			this.timer.schedule(new WSAvailabilityTimerTask(new WebServiceEndpoint(new URL(endpoint))), 10, minutes * 60 * 1000);
+		logger.info("Web Service availability checks scheduled for each '"
+				+ this.minutes + "' minutes");
+		try {
+			this.timer.schedule(new WSAvailabilityTimerTask(
+					new WebServiceEndpoint(new URL(endpoint)),minutes), minutes*60,
+					minutes * 60 * 1000);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getLocalizedMessage());
 			e.printStackTrace();
 		}
-    }
+	}
 
 }

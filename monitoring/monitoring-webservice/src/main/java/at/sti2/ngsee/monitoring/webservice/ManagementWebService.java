@@ -16,8 +16,6 @@
  */
 package at.sti2.ngsee.monitoring.webservice;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +28,13 @@ import javax.jws.WebService;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
 import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
+import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.api.ws.IManagementWebService;
-import at.sti2.wsmf.core.EndpointHandler;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 import at.sti2.wsmf.core.ranking.QoSParamsEndpointRankingTable;
 import at.sti2.wsmf.core.ranking.QoSRankingEngine;
-import at.sti2.wsmf.core.ranking.QoSRankingPreferencesTemplate;
 
 /**
  * @author Alex Oberhauser
@@ -80,6 +77,14 @@ public class ManagementWebService implements IManagementWebService {
 			@WebParam(name = "key") QoSParamKey _key) throws Exception {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		return persHandler.getQoSParam(_endpoint, _key);
+	}
+	
+	
+	public String getQoSParam2(
+			@WebParam(name = "endpoint") URL _endpoint,
+			@WebParam(name = "key") QoSParamKey _key) throws Exception {
+		PersistentHandler persHandler = PersistentHandler.getInstance();
+		return persHandler.getQoSParam(_endpoint, _key).toString();
 	}
 
 	/**
@@ -129,40 +134,33 @@ public class ManagementWebService implements IManagementWebService {
 		return ret;
 	}
 
-	// TODO: put in other class and logging
-	public String[] getRankedEndpoints(String[] endpoints) throws Exception {
 
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSRankedEndpoint(QoSRankingPreferencesTemplate, String[])
+	 */
+	// TODO: put in other class 
+	// TODO: logging
+	// TODO: testing
+	public List<String> getQoSRankedEndpoints(QoSParamKey[] keys,Float[] preferenceValues, String[] endpoints) throws Exception{
+		return QoSRankingEngine.getQoSRankedEndpoints(keys, preferenceValues, endpoints);
+
+	}
+	
+
+	public static void main(String args[]) throws Exception {
 		// Set up the ranked QoSParams and fill the corresponding tables
 		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
 
+		
+		//Create random preferences for testing purposes
 		for (QoSParamKey q : QoSParamKey.values()) {
-			qosRankingTemplate.addPropertyAndImportance(q,
-					(float) (Math.random() + 0.1));
-		}
-
-		List<QoSParamsEndpointRankingTable> qosTables = new ArrayList<QoSParamsEndpointRankingTable>();
-		for (String ep : endpoints) {
-			qosTables.add(new QoSParamsEndpointRankingTable(ep,
-					qosRankingTemplate));
+			qosRankingTemplate.addPropertyAndImportance(q,	(float)(Math.random()+0.1));
 		}
 		
-		for (QoSParamsEndpointRankingTable t : qosTables) {
-			t.retrieveQoSParamValues();
-		}
-
-		QoSRankingEngine.rankQoSParamsTables(qosTables, qosRankingTemplate);
-
-		String[] ret = new String[qosTables.size()];
-
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = qosTables.get(i).getName();
-		}
-
-		return ret;
+//		System.out.println(new ManagementWebService().getQoSRankedEndpoints(qosRankingTemplate,new ManagementWebService().listEndpoints()));
 	}
 
-	public static void main(String args[]) throws Exception {
-		new ManagementWebService().getRankedEndpoints(new ManagementWebService().listEndpoints());
-	}
+
+
 
 }

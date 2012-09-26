@@ -23,7 +23,8 @@ public enum QoSUnit {
 	Requests,
 	/* TIME */
 	Milliseconds,
+	Minutes,
 	/* SIZE */
 	Bytes,
-	Unknown,
+	Unknown, 
 }

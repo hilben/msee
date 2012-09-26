@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +16,8 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
+import at.sti2.wsmf.api.data.qos.ranking.IQoSParamsEndpointRankingTable;
+import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.core.PersistentHandler;
 
 /**
@@ -26,8 +27,7 @@ import at.sti2.wsmf.core.PersistentHandler;
  * A table to store all ranked QoSParams of an endpoint.
  * 
  */
-public class QoSParamsEndpointRankingTable implements
-		Comparable<QoSParamsEndpointRankingTable> {
+public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingTable{
 
 	
 	private static Logger logger = Logger.getLogger(QoSParamsEndpointRankingTable.class);
@@ -43,7 +43,7 @@ public class QoSParamsEndpointRankingTable implements
 	 * @param template
 	 */
 	public QoSParamsEndpointRankingTable(String endpointName,
-			QoSRankingPreferencesTemplate template) {
+			QoSRankingPreferencesTemplate template)  {
 		this.endpointName = endpointName;
 
 		for (QoSParamKey s : template.getQoSParams()) {
@@ -52,23 +52,18 @@ public class QoSParamsEndpointRankingTable implements
 	}
 
 
-	/**
-	 * 
-	 * Get the ordering value of a QoS
-	 * @param property
-	 * @return
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#getRankingValueForProperty(at.sti2.wsmf.api.data.qos.QoSParamKey)
 	 */
+	@Override
 	public Float getRankingValueForProperty(QoSParamKey property) {
 		return this.propIdentifiersOrderingValues.get(property);
 	}
 
-	/**
-	 * Sets the ranking value of a QosParam
-	 * 
-	 * @param property
-	 * @param value
-	 * @throws Exception
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#setRankingValueForProperty(at.sti2.wsmf.api.data.qos.QoSParamKey, java.lang.Float)
 	 */
+	@Override
 	public void setRankingValueForProperty(QoSParamKey property, Float value)
 			throws Exception {
 		if (this.propIdentifiersOrderingValues.containsKey(property)) {
@@ -80,10 +75,10 @@ public class QoSParamsEndpointRankingTable implements
 	
 	
 	
-	/**
-	 * 
-	 *  Retrieves the Values of its ranked QoSParams of its endpoint
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#retrieveQoSParamValues()
 	 */
+	@Override
 	public void retrieveQoSParamValues() {
 		
 		PersistentHandler persistentHandler = null;
@@ -97,9 +92,13 @@ public class QoSParamsEndpointRankingTable implements
 		
 		for (QoSParamKey key : this.getQoSParams()) {
 			try {
-				this.setRankingValueForProperty(key, Float
+				
+				//handle invalid values or QoS for which no values were determined
+				float value = Float
 						.parseFloat(persistentHandler.getQoSValue(this.endpointName,
-								key)));
+								key));
+				
+				this.setRankingValueForProperty(key, value);
 			} catch (NumberFormatException e1) {
 				logger.error(e1.getCause());
 			} catch (QueryEvaluationException e1) {
@@ -125,11 +124,10 @@ public class QoSParamsEndpointRankingTable implements
 	}
 
 
-	/**
-	 * 
-	 * Sum up all ordering values of the table
-	 * @return
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#getSummedUpValues()
 	 */
+	@Override
 	public float getSummedUpValues() {
 		float retVal = 0;
 		for (QoSParamKey s : this.propIdentifiersOrderingValues.keySet()) {
@@ -145,18 +143,18 @@ public class QoSParamsEndpointRankingTable implements
 	public String toString() {
 		String ret = "";
 
-		ret += "#####################################################\n";
+		ret += "#####################################################"+System.getProperty("line.separator");
 
 		ret += this.endpointName + "\n";
 
 		for (QoSParamKey s : this.propIdentifiersOrderingValues.keySet()) {
-			ret += s + ": " + this.getRankingValueForProperty(s) + "\n";
+			ret += s + ": " + this.getRankingValueForProperty(s) +System.getProperty("line.separator");
 		}
 		ret += "\n";
 
-		ret += "Summed up: " + this.getSummedUpValues() + "\n";
+		ret += "Summed up: " + this.getSummedUpValues() +System.getProperty("line.separator");
 
-		ret += "#####################################################\n";
+		ret += "#####################################################"+System.getProperty("line.separator");
 
 		return ret;
 	}
@@ -166,7 +164,11 @@ public class QoSParamsEndpointRankingTable implements
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(QoSParamsEndpointRankingTable o) {
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#compareTo(at.sti2.wsmf.core.ranking.QoSParamsEndpointRankingTable)
+	 */
+	@Override
+	public int compareTo(IQoSParamsEndpointRankingTable o) {
 
 		if (this.getSummedUpValues() <= o.getSummedUpValues()) {
 			return 1;
@@ -178,11 +180,14 @@ public class QoSParamsEndpointRankingTable implements
 		return 0;
 	}
 
-	/**
-	 * @return
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.core.ranking.asdfd#getName()
 	 */
+	@Override
 	public String getName() {
 		return this.endpointName;
 	}
+
+
 
 }

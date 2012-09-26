@@ -18,6 +18,7 @@ package at.sti2.wsmf.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -27,7 +28,9 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.SOAPBinding;
@@ -39,7 +42,6 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -57,13 +59,19 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
 /**
  * @author Alex Oberhauser
+ * 
+ * @author Benjamin Hiltpolt The {@link InvocationHandler} invokes web services
+ *         and stores monitoring informations about the webservice also it
+ *         starts an AvailabilityChecker for the invoked webservice
+ * 
  */
 public class InvocationHandler {
 	private static Logger log = Logger.getLogger(InvocationHandler.class);
 	private static final int TIME_OUT_MS = 12000;
-	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 60;
-	
-	
+
+	// TODO: change back to reasonable time
+	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 5;
+
 	/**
 	 * JAX-WS Invocation Implementation.
 	 * 
@@ -75,11 +83,12 @@ public class InvocationHandler {
 	 * @throws IOException
 	 */
 	private static String _invoke(String _endpointURL,
-			SOAPMessage _soapMessage, String _soapAction, WebServiceEndpointConfig config) throws SOAPException,
-			IOException {
-		
-		WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(_endpointURL);
-		
+			SOAPMessage _soapMessage, String _soapAction,
+			WebServiceEndpointConfig config) throws SOAPException, IOException {
+
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+				.getConfig(_endpointURL);
+
 		QName serviceName = new QName(cfg.getWebServiceNamespace(),
 				cfg.getWebServiceName());
 		QName portName = serviceName;
@@ -100,10 +109,12 @@ public class InvocationHandler {
 					null);
 		}
 
-		SOAPMessage response = (SOAPMessage) dispatch.invoke(_soapMessage);
+		SOAPMessage response = dispatch.invoke(_soapMessage);
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		response.writeTo(os);
+		os.close();
+
 		return os.toString();
 	}
 
@@ -134,6 +145,16 @@ public class InvocationHandler {
 		serviceClient.removeHeaders();
 	}
 
+	/**
+	 * 
+	 * Check whether an service is available by sending an invalid soap
+	 * envelope. By catching the exception its possible to evaluate the
+	 * availability of the service
+	 * 
+	 * @param _endpoint
+	 * @param _soapAction
+	 * @return
+	 */
 	public static boolean isWebServiceAvailable(String _endpoint,
 			String _soapAction) {
 		try {
@@ -143,7 +164,7 @@ public class InvocationHandler {
 			soapBody.addChildElement(new QName("ftp://wrongnamespace", "a"
 					+ UUID.randomUUID().toString()));
 			soapMessage.saveChanges();
-			_invoke(_endpoint, soapMessage, _soapAction,null);
+			_invoke(_endpoint, soapMessage, _soapAction, null);
 			return true;
 		} catch (SOAPFaultException e) {
 			return true;
@@ -160,8 +181,10 @@ public class InvocationHandler {
 		try {
 			WSInvocationStateChannelHandler stateChannel = WSInvocationStateChannelHandler
 					.getInstance();
-			stateChannel.sendState(WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getInstancePrefix()
-					+ _activeInstance.getIdentifier(),
+			stateChannel.sendState(
+					WebServiceEndpointConfig.getConfig(
+							_activeInstance.getEndpoint()).getInstancePrefix()
+							+ _activeInstance.getIdentifier(),
 					_activeInstance.getState());
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to send state changed message, through exception: "
@@ -182,8 +205,10 @@ public class InvocationHandler {
 			QoSParamValue _value) {
 		try {
 			WSQoSChannelHandler qosChannel = WSQoSChannelHandler.getInstance();
-			qosChannel.sendState(WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getInstancePrefix()
-					+ _activeInstance.getIdentifier(), _value);
+			qosChannel.sendState(
+					WebServiceEndpointConfig.getConfig(
+							_activeInstance.getEndpoint()).getInstancePrefix()
+							+ _activeInstance.getIdentifier(), _value);
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to send qos value message, through exception: "
 					+ e.getLocalizedMessage());
@@ -213,10 +238,12 @@ public class InvocationHandler {
 			ActivityInstantiatedEvent _activeInstance, int _soapMessageSize)
 			throws Exception {
 
-//		WSAvailabilityChecker.getInstance(WS_AVAILABILITY_TIMEOUT_MINUTES); // TODO:
-																			// check
-		
-		EndpointHandler endpointHandler = WebServiceEndpointConfig.getConfig(_activeInstance.getEndpoint()).getEndPointHandler();
+		// TODO: check and test
+		WSAvailabilityChecker.startAvailabilityChecking(
+				_activeInstance.getEndpoint(), WS_AVAILABILITY_TIMEOUT_MINUTES);
+
+		EndpointHandler endpointHandler = WebServiceEndpointConfig.getConfig(
+				_activeInstance.getEndpoint()).getEndPointHandler();
 		WebServiceEndpoint currentWS = endpointHandler.getCurrentActiveWS();
 		String endpoint = currentWS.getEndpoint().toExternalForm();
 
@@ -226,8 +253,9 @@ public class InvocationHandler {
 		try {
 			_soapMessage.writeTo(os);
 			log.info("SOAP Message     : " + os);
-		} catch (SOAPException e3) {
+		} catch (SOAPException e) {
 			log.error("Could not print out the SOAP Message!");
+			log.error(e.getCause());
 		}
 
 		Options opts = new Options();
@@ -246,24 +274,25 @@ public class InvocationHandler {
 			sendQoSValue(_activeInstance, new QoSParamValue(
 					QoSParamKey.RequestTotal, totalRequests + "",
 					QoSUnit.Requests));
-		} catch (QueryEvaluationException e1) {
+		} catch (QueryEvaluationException e) {
 			log.error("Not able to increment total requests value, through exception: "
-					+ e1.getLocalizedMessage());
-		} catch (RepositoryException e1) {
+					+ e.getLocalizedMessage());
+		} catch (RepositoryException e) {
 			log.error("Not able to increment total requests value, through exception: "
-					+ e1.getLocalizedMessage());
-		} catch (MalformedQueryException e1) {
+					+ e.getLocalizedMessage());
+		} catch (MalformedQueryException e) {
 			log.error("Not able to increment total requests value, through exception: "
-					+ e1.getLocalizedMessage());
+					+ e.getLocalizedMessage());
 		}
 		try {
-			currentWS.changePayloadSize(_soapMessageSize);
-		} catch (QueryEvaluationException e2) {
+			currentWS.changePayloadSizeRequest(_soapMessageSize);
+			_activeInstance.setPayloadSizeRequest(_soapMessageSize);
+		} catch (QueryEvaluationException e) {
 			log.error("Not able to change payload size, through exception: "
-					+ e2.getLocalizedMessage());
-		} catch (MalformedQueryException e2) {
+					+ e.getLocalizedMessage());
+		} catch (MalformedQueryException e) {
 			log.error("Not able to change payload size, through exception: "
-					+ e2.getLocalizedMessage());
+					+ e.getLocalizedMessage());
 		}
 
 		/*
@@ -283,15 +312,40 @@ public class InvocationHandler {
 			 */
 
 			long beforeInvocation = System.currentTimeMillis();
-			result = _invoke(endpoint, _soapMessage, _soapAction, null); // <<=
-																	// Invocation
+
+			/*
+			 * Invocation
+			 */
+			result = _invoke(endpoint, _soapMessage, _soapAction, null);
+			/*
+			 * End of Invocation
+			 */
+
+			/*
+			 * Calculate the size of the response soap message
+			 */
+			SOAPMessage message = InvocationHandler.generateSOAPMessage(result);
+
+			message.saveChanges();
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			message.writeTo(stream);
+			
+			_activeInstance.setPayloadSizeResponse(stream.size());
+			currentWS.changePayloadSizeResponse(stream.size());
+			
+         
+			
 			long afterInvocation = System.currentTimeMillis();
 			try {
 				long responseTime = (afterInvocation - beforeInvocation);
 				Vector<QoSParamValue> changedValues = currentWS
 						.changeResponseTime(responseTime);
-				for (QoSParamValue entry : changedValues)
+				for (QoSParamValue entry : changedValues) {
 					sendQoSValue(_activeInstance, entry);
+				}
+				
+				_activeInstance.setResponseTime(responseTime);
+
 			} catch (RepositoryException e1) {
 				log.error("Not able to change the response time, through exception: "
 						+ e1.getLocalizedMessage());
@@ -382,7 +436,30 @@ public class InvocationHandler {
 			 */
 			throw new Exception(e);
 		} finally {
+			// TODO: handle finally
 		}
+	}
+
+	/**
+	 * 
+	 * Generates a SOAPMessage object out of a string
+	 * 
+	 * @param _soapMessageString
+	 * @return
+	 * @throws SOAPException
+	 */
+	public static SOAPMessage generateSOAPMessage(String _soapMessageString)
+			throws SOAPException {
+		MessageFactory msgFactory = MessageFactory.newInstance();
+		SOAPMessage msg = msgFactory.createMessage();
+		msg.getSOAPHeader();
+		SOAPPart soapPart = msg.getSOAPPart();
+
+		StreamSource msgSrc = new StreamSource(new StringReader(
+				_soapMessageString));
+		soapPart.setContent(msgSrc);
+		msg.saveChanges();
+		return msg;
 	}
 
 }

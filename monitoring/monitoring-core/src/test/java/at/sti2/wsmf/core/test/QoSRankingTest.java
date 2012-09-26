@@ -30,10 +30,10 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
+import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.ranking.QoSParamsEndpointRankingTable;
 import at.sti2.wsmf.core.ranking.QoSRankingEngine;
-import at.sti2.wsmf.core.ranking.QoSRankingPreferencesTemplate;
 
 /**
  * @author Benjamin Hiltpolt
@@ -43,14 +43,16 @@ public class QoSRankingTest extends TestCase {
 
 	protected static Logger logger = Logger.getLogger(QoSRankingTest.class);
 
-	// public static String URL[] = {
-	// "http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringuppercase",
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomstring",
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringmulti"
-	// };
+	
+	//some hardcoded endpoints
+	 public static String URL[] = {
+	 "http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
+	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
+	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
+	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringuppercase",
+	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomstring",
+	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringmulti"
+	 };
 
 	public static void testQoSRanking() {
 		// initialize the persistent handler
@@ -67,17 +69,22 @@ public class QoSRankingTest extends TestCase {
 		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
 
 		
-		for (QoSParamKey q : QoSParamKey.values()) {
-			qosRankingTemplate.addPropertyAndImportance(q,	(float)(Math.random()+0.1));
-		}
+		//Create random preferences for testing purposes
+//		for (QoSParamKey q : QoSParamKey.values()) {
+//			qosRankingTemplate.addPropertyAndImportance(q,	(float)(Math.random()+0.1));
+//		}
 		
-		// Set up preferences for the QoSParams
-//		qosRankingTemplate.addPropertyAndImportance(
-//				QoSParamKey.ResponseTimeAverage, -6.0f);
-//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.RequestTotal,
-//				2.0f);
-//		qosRankingTemplate.addPropertyAndImportance(
-//				QoSParamKey.PayloadSizeAverage, 5.0f);
+//		// Set up preferences for the QoSParams
+		qosRankingTemplate.addPropertyAndImportance(
+				QoSParamKey.ResponseTimeAverage, -2.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.RequestTotal,
+				2.0f);
+		qosRankingTemplate.addPropertyAndImportance(
+				QoSParamKey.PayloadSizeRequestAverage, 5.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.PayloadSizeResponseAverage, 2.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime, 1.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime, 2.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime, -5.0f);
 
 		// Create a list with QosOrderingValueTables for all the endpoints
 		ArrayList<QoSParamsEndpointRankingTable> endpointQoSParamsRankingTable = new ArrayList<QoSParamsEndpointRankingTable>();
@@ -104,7 +111,10 @@ public class QoSRankingTest extends TestCase {
 			table.retrieveQoSParamValues();
 
 			endpointQoSParamsRankingTable.add(table);
-
+			
+			
+			//to fasten it up
+//			break;
 		}
 
 		// Use the ranking engine to get a ordered list
@@ -120,6 +130,10 @@ public class QoSRankingTest extends TestCase {
 			rank++;
 		}
 
+	}
+	
+	public static void main(String args[]) {
+		System.out.println("asdfasdfasdfasdfasdfa");
 	}
 
 }

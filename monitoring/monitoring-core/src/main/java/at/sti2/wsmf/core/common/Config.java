@@ -19,13 +19,7 @@ package at.sti2.wsmf.core.common;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Properties;
-
-import org.openrdf.repository.RepositoryException;
-
-import at.sti2.wsmf.core.EndpointHandler;
-import at.sti2.wsmf.core.EndpointHandlerManager;
 
 /**
  * @author Benjamin Hiltpolt
@@ -39,6 +33,7 @@ public class Config {
 	private static Config instance = null;
 
 	private String triplestoreEndpoint;
+
 	private String triplestoreReposid;
 
 	private String instanceprefix;
@@ -65,13 +60,13 @@ public class Config {
 					.getProperty("triplestore.endpoint");
 			this.triplestoreReposid = this.prop
 					.getProperty("triplestore.reposid");
-			
+
 			this.instanceprefix = this.prop.getProperty("instance.prefixuri");
 
+			configIS.close();
 		}
 	}
-	
-	
+
 	public String getInstancePrefix() {
 		return this.instanceprefix;
 	}
