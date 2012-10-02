@@ -17,6 +17,7 @@
 package at.sti2.wsmf.api.ws;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 import at.sti2.wsmf.api.data.qos.IQoSParamValue;
@@ -37,8 +38,24 @@ import at.sti2.wsmf.api.data.state.WSInvocationState;
  * 
  * @author Alex Oberhauser
  */
+/**
+ * @author Benjamin Hiltpolt
+ *
+ */
 public interface IManagementWebService {
 
+	
+	
+	/**
+	 * @param endpoint
+	 * @param key
+	 * @param from
+	 * @param to
+	 * @return
+	 * @throws Exception
+	 */
+	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key, Date from, Date to) throws Exception;
+	
 	/*
 	 * Common Operations
 	 */

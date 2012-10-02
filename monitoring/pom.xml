@@ -20,6 +20,7 @@
 		<module>monitoring-webservice</module>
 		<module>monitoring-channellistener-example</module>
 		<!-- <module>monitoring-webservices-examples</module> !-->
+		<module>monitoring-jsonservice</module>
 	</modules>
 
 	<properties>

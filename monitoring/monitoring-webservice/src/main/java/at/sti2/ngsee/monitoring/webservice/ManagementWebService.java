@@ -18,6 +18,7 @@ package at.sti2.ngsee.monitoring.webservice;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -78,10 +79,8 @@ public class ManagementWebService implements IManagementWebService {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		return persHandler.getQoSParam(_endpoint, _key);
 	}
-	
-	
-	public String getQoSParam2(
-			@WebParam(name = "endpoint") URL _endpoint,
+
+	public String getQoSParam2(@WebParam(name = "endpoint") URL _endpoint,
 			@WebParam(name = "key") QoSParamKey _key) throws Exception {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		return persHandler.getQoSParam(_endpoint, _key).toString();
@@ -134,33 +133,49 @@ public class ManagementWebService implements IManagementWebService {
 		return ret;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSRankedEndpoint(QoSRankingPreferencesTemplate, String[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSRankedEndpoint(
+	 * QoSRankingPreferencesTemplate, String[])
 	 */
-	// TODO: put in other class 
+	// TODO: put in other class
 	// TODO: logging
 	// TODO: testing
-	public List<String> getQoSRankedEndpoints(QoSParamKey[] keys,Float[] preferenceValues, String[] endpoints) throws Exception{
-		return QoSRankingEngine.getQoSRankedEndpoints(keys, preferenceValues, endpoints);
+	public List<String> getQoSRankedEndpoints(QoSParamKey[] keys,
+			Float[] preferenceValues, String[] endpoints) throws Exception {
+		return QoSRankingEngine.getQoSRankedEndpoints(keys, preferenceValues,
+				endpoints);
 
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.sti2.wsmf.api.ws.IManagementWebService#getQoSParametersInTimeFrame
+	 * (java.net.URL, at.sti2.wsmf.api.data.qos.QoSParamKey, java.util.Date,
+	 * java.util.Date) TODO: implements
+	 */
+	@Override
+	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key,
+			Date from, Date to) throws Exception {
+		Float[] f = new Float[100];
+
+		for (int i = 0; i < f.length; i++) {
+			f[i] = (float) (Math.random()*100);
+		}
+
+		return f;
+	}
 
 	public static void main(String args[]) throws Exception {
-		// Set up the ranked QoSParams and fill the corresponding tables
-		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
+		Float[] f = new ManagementWebService().getQoSParametersInTimeFrame(
+				null, null, null, null);
 
-		
-		//Create random preferences for testing purposes
-		for (QoSParamKey q : QoSParamKey.values()) {
-			qosRankingTemplate.addPropertyAndImportance(q,	(float)(Math.random()+0.1));
+		for (Float x : f) {
+			System.out.println(x);
 		}
-		
-//		System.out.println(new ManagementWebService().getQoSRankedEndpoints(qosRankingTemplate,new ManagementWebService().listEndpoints()));
 	}
-
-
-
 
 }

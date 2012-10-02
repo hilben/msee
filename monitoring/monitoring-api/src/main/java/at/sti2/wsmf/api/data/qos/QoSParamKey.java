@@ -28,25 +28,25 @@ public enum QoSParamKey {
 	RequestSuccessful,
 	RequestFailed,
 	
+	ResponseTime,
 	ResponseTimeMinimum,
 	ResponseTimeMaximum,
 	ResponseTimeAverage,
-	
+
+	PayloadSizeRequest,
 	PayloadSizeRequestMinimum,
 	PayloadSizeRequestAverage,
 	PayloadSizeRequestMaximum,
-	
+
+
+	PayloadSizeResponse,
 	PayloadSizeResponseMinimum,
 	PayloadSizeResponseAverage,
 	PayloadSizeResponseMaximum,
 	
-	
-
 	MonitoredTime,
 	AvailableTime,
 	UnavailableTime,
 	
-	//TODO
-	RequestsPerHour
 	
 }

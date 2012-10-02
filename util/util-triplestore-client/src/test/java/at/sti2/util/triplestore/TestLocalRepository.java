@@ -28,7 +28,7 @@ public class TestLocalRepository extends TestCase {
 		RepositoryHandler repohandler = null;
 		try {
 			repohandler = new RepositoryHandler(
-					"http://localhost:8080/openrdf-sesame", "wsmf");
+					"http://localhost/openrdf-sesame", "wsmf");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.toString());
