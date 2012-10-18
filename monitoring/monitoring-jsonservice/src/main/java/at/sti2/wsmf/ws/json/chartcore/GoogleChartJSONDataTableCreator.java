@@ -25,6 +25,8 @@ public class GoogleChartJSONDataTableCreator {
 		this.columns.add(column);
 	}
 	
+
+	
 	public void addRow(String ... rowentries) {
 		
 		ArrayList<String> s = new ArrayList<String>();

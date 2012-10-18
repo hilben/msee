@@ -46,8 +46,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -66,23 +64,23 @@ import at.sti2.wsmf.ws.json.chartcore.GoogleChartJSONDataTableCreator;
 public class ChartResource {
 
 	@GET
-	@Produces({ "application/json" })
-	public String getSomeStuff(@QueryParam("endpoint") String endpoint,
-			@QueryParam("qosParamKey") String qosParamKey) {
-		
+	@Produces({ "application/javascript" })
+	public String getSomeStuff(@QueryParam("endpoint") List<String> endpoints,
+			@QueryParam("qosParamKey") List<String> qosParamKeys) {
 
 		// msg = new JSONObject(pdata);
 		// String endpoint = msg.getString("endpoint");
 		// String qosParamKey = msg.getString("qosParamKey");
 
-		return asJson(endpoint, qosParamKey).toString();
+		return "ajaxCallSucceed(" + asJson(endpoints, qosParamKeys).toString()
+				+ ")";
 	}
 
 	/**
 	 * @return
 	 * 
 	 */
-	private JSONObject asJson(String endpoint, String qosParamKey) {
+	private JSONObject asJson(List<String> endpoints, List<String> qosParamKeys) {
 		try {
 
 			// String teststring =
@@ -100,28 +98,55 @@ public class ChartResource {
 			}
 
 			GoogleChartJSONDataTableCreator j = new GoogleChartJSONDataTableCreator();
-			j.addColum(new ChartColumnDataTableEntry("", endpoint, "string"));
-			j.addColum(new ChartColumnDataTableEntry("", qosParamKey,
-					"number"));
 
-			List<QoSParamAtTime> data = new ArrayList<QoSParamAtTime>();
-
-			try {
-				// data = ph
-				// .getQoSTimeframe(
-				// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
-				// "ResponseTime", null, null);
-				data = ph.getQoSTimeframe(endpoint, qosParamKey, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			for (String endpoint : endpoints) {
+				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "date"));
+			}
+			for (String qosParamKey : qosParamKeys) {
+				j.addColum(new ChartColumnDataTableEntry(qosParamKey, qosParamKey,
+						"number"));
 			}
 
-			Collections.sort(data);
+			// Iterate over all endpoints
+			for (String endpoint : endpoints) {
 
-			for (QoSParamAtTime p : data) {
-				System.out.println(p.getTime() + "," + p.getQosParamValue());
-				j.addRow("\"" + p.getTime() + "\"", p.getQosParamValue());
+				int countQoSParams = 1;
+
+				// For all qosParamKeys receive them
+				for (String qosParamKey : qosParamKeys) {
+
+					List<QoSParamAtTime> data = new ArrayList<QoSParamAtTime>();
+
+					// Receive data of this QoSParam
+					try {
+						data = ph.getQoSTimeframe(endpoint, qosParamKey, null,
+								null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					// Sort it based on Date
+					Collections.sort(data);
+
+
+					for (QoSParamAtTime p : data) {
+						
+						String row[] = new String[qosParamKeys.size() + 1];
+						System.out.println(p.getTime() + "," + qosParamKey
+								+ "->" + p.getQosParamValue());
+
+						
+						row[0] = "\"" + p.getTime() + "\"";
+						for (int i = 1; i < row.length; i++) {
+							row[i] = "null";
+						}
+						row[countQoSParams] = p.getQosParamValue();
+						j.addRow(row);
+					}
+
+
+					countQoSParams++;
+				}
 			}
 
 			System.out.println(j.toJSON());
@@ -148,10 +173,15 @@ public class ChartResource {
 		//
 		// j.addRow("\"Pepperoni\"", "11");
 
-		System.out
-				.println(new ChartResource()
-						.asJson("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
-								"ResponseTime"));
+		ArrayList<String> endpoints = new ArrayList<String>();
+		ArrayList<String> qosParamKeys = new ArrayList<String>();
+
+		endpoints
+				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
+		qosParamKeys.add("ResponseTime");
+//		qosParamKeys.add("PayloadsizeResponse");
+//		qosParamKeys.add("AvailableTime");
+		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
 		// System.out.println(j.toJSON());
 	}
 }

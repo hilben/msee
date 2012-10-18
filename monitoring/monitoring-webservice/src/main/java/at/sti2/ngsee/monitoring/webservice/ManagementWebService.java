@@ -163,7 +163,7 @@ public class ManagementWebService implements IManagementWebService {
 		Float[] f = new Float[100];
 
 		for (int i = 0; i < f.length; i++) {
-			f[i] = (float) (Math.random()*100);
+			f[i] = (float) (Math.random() * 100);
 		}
 
 		return f;
@@ -176,6 +176,53 @@ public class ManagementWebService implements IManagementWebService {
 		for (Float x : f) {
 			System.out.println(x);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getCategories()
+	 */
+	@Override
+	public List<String> getCategories() throws Exception {
+		// TODO: dummy function
+		List<String> categories = new ArrayList<String>();
+		categories.add("Maritime");
+		categories.add("SendArrivalNotification");
+		categories.add("CustomsAuthorityPreDeparture");
+		categories.add("CustomsAuthorityPreArrival");
+		for (int i = 0; i <= 2; i++) {
+			categories.add("TestCategory" + i);
+		}
+
+		return categories;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getEndpointsForCategory()
+	 */
+	@Override
+	public List<String> getEndpointsForCategory(String category)
+			throws Exception {
+
+		String[] allendpoints = this.listEndpoints();
+
+		List<String> endpoints = new ArrayList<String>();
+
+		for (int i = 0; i < allendpoints.length; i++) {
+			if (Math.random() > 0.5) {
+				endpoints.add(allendpoints[i]);
+			}
+		}
+		
+		int m = (int)(Math.random()*10);
+		for (int i = 0; i < m; i++) {
+			endpoints.add("http://example.org/"+category+"/service"+i);
+		}
+
+		return endpoints;
 	}
 
 }

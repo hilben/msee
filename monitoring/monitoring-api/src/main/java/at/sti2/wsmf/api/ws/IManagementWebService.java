@@ -40,12 +40,10 @@ import at.sti2.wsmf.api.data.state.WSInvocationState;
  */
 /**
  * @author Benjamin Hiltpolt
- *
+ * 
  */
 public interface IManagementWebService {
 
-	
-	
 	/**
 	 * @param endpoint
 	 * @param key
@@ -54,46 +52,73 @@ public interface IManagementWebService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key, Date from, Date to) throws Exception;
-	
+	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key,
+			Date from, Date to) throws Exception;
+
 	/*
 	 * Common Operations
 	 */
 	public String[] listInstanceIDs() throws Exception;
-	
+
 	/*
 	 * Invocation State API
 	 */
-	public WSInvocationState getInvocationState(String activityStartedEvent) throws Exception;
-	
+	public WSInvocationState getInvocationState(String activityStartedEvent)
+			throws Exception;
+
 	/*
 	 * QoS API
 	 */
 	/**
-	 * @param key {@link QoSParamKey}
+	 * @param key
+	 *            {@link QoSParamKey}
 	 * @return {@link IQoSParamValue}
 	 */
-	public IQoSParamValue getQoSParam(URL endpoint, QoSParamKey key) throws Exception;
-	
-	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value) throws Exception;
-	public QoSThresholdValue getQoSThresholdValue(URL endpoint, QoSThresholdKey key) throws Exception;
-	
+	public IQoSParamValue getQoSParam(URL endpoint, QoSParamKey key)
+			throws Exception;
+
+	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value)
+			throws Exception;
+
+	public QoSThresholdValue getQoSThresholdValue(URL endpoint,
+			QoSThresholdKey key) throws Exception;
+
 	/**
 	 * 
 	 * Returns all endpoints currently monitored by the monitoring framework
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public String[] listEndpoints() throws Exception;
-	
-	
+
 	/**
 	 * @param qosRankingTemplate
 	 * @param endpoints
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getQoSRankedEndpoints(QoSParamKey[] key,Float[] preferenceValue, String[] endpoints) throws Exception;
+	public List<String> getQoSRankedEndpoints(QoSParamKey[] key,
+			Float[] preferenceValue, String[] endpoints) throws Exception;
 
+	/**
+	 * 
+	 * TODO: Dummy function / conceptional work missing
+	 * 
+	 * Returns all categories
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getCategories() throws Exception;
 
+	/**
+	 * TODO: Dummy function / conceptional work missing
+	 * 
+	 * Returns all endpoints part of a certain category
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getEndpointsForCategory(String category) throws Exception;
 }

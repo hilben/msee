@@ -1,7 +1,7 @@
 /**
  * 
  */
-package java.at.sti2.ngsee.monitoring.webservice;
+package at.sti2.ngsee.monitoring.webservice;
 
 import junit.framework.TestCase;
 
