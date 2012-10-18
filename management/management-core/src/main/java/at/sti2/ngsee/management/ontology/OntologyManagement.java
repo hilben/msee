@@ -35,17 +35,18 @@ public abstract class OntologyManagement {
 			
 			//Store the data into repository and it shutdown.
 			reposHandler.storeEntity(content.toString(), _ontologyURL, RDFFormat.RDFXML, _ontologyURL);
-			reposHandler.shutdown();			
+			reposHandler.shutdown();
+			
+			return _ontologyURL;
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw new ManagementException("The URL is not valid.: " + e.getLocalizedMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ManagementException("The file was not found: " + e.getLocalizedMessage());
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ManagementException(e.getLocalizedMessage());
 		} catch (RDFParseException e) {
-			e.printStackTrace();
-		}		
-		return _ontologyURL;
+			throw new ManagementException(e.getLocalizedMessage());
+		}
 	}
 	
 	public static String delete(String _ontologyURL) throws ManagementException{
@@ -58,19 +59,21 @@ public abstract class OntologyManagement {
 			
 			return _ontologyURL;			
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			throw new ManagementException(e.getMessage());
 		}
-		return null;
 	}
 	
 	public static String update(String _oldOntologyURL, String _newOntologyURL) throws ManagementException {
 		// Initialising the repository
 		OntologyManagement.initRepo();
 		
-		//Update through delete and add functionality
-		OntologyManagement.delete(_oldOntologyURL);
-		OntologyManagement.add(_newOntologyURL);
-		return _newOntologyURL;
+		//Update through delete and add functionality		
+		if ( OntologyManagement.add(_newOntologyURL) != null ) {
+			OntologyManagement.delete(_oldOntologyURL);	
+			return _newOntologyURL;
+		}
+		
+		return null;
 	}
 	
 	/**

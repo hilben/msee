@@ -33,10 +33,14 @@ public abstract class ServiceManagement {
 	public static String update(String _oldServiceURI, String _newServiceURI) throws RegistrationException {
 		// Initialising the repository
 		ServiceManagement.initRepo();
-		
+
 		//Update through delete and add functionality
-		ServiceManagement.delete(_oldServiceURI);		
-		return TransformationWSDL.transformWSDL(_newServiceURI);
+		String registredServiceURI = TransformationWSDL.transformWSDL(_newServiceURI);
+		if ( registredServiceURI != null ) {
+			ServiceManagement.delete(_oldServiceURI);
+			return registredServiceURI;
+		}		
+		return null;
 	}
 	
 	/**
