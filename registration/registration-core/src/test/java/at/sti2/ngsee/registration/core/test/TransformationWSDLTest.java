@@ -43,7 +43,7 @@ public class TransformationWSDLTest {
 	 * Test method for {@link at.sti2.ngsee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
 	 */
 	@Test
-	public void testTransformWSDL() {
+	public void testTransformWSDLPass() {
 		for (URL url : webservicePass) {
 			logger.info("Tranform: " + url);
 			
@@ -54,6 +54,14 @@ public class TransformationWSDLTest {
 				fail(e.toString());
 			}
 		}
+
+	}
+	
+	/**
+	 * Test method for {@link at.sti2.ngsee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
+	 */
+	@Test
+	public void testTransformWSDLFail() {
 		for (URL url : webservicefail) {
 			logger.info("Tranform: " + url);
 			
@@ -68,5 +76,6 @@ public class TransformationWSDLTest {
 			}
 		}
 	}
+	
 
 }

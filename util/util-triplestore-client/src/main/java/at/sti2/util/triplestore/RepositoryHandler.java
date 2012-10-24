@@ -56,10 +56,17 @@ public class RepositoryHandler {
 	private Repository repository;
 	private RepositoryConnection connection = null;
 	private ValueFactory valueFactory = null;
-
+    private boolean autocommit = true;
+	
 	public RepositoryHandler(String _serverEndpoint, String _repositoryID) throws FileNotFoundException, IOException {
 		this.serverEndpoint = _serverEndpoint;
 		this.repositoryID = _repositoryID;
+	}
+	
+	public RepositoryHandler(String _serverEndpoint, String _repositoryID, boolean autocommit) throws FileNotFoundException, IOException {
+		this.serverEndpoint = _serverEndpoint;
+		this.repositoryID = _repositoryID;
+		this.autocommit = autocommit;
 	}
 	
 	public synchronized ValueFactory getValueFactory() { return this.valueFactory; }
@@ -84,8 +91,12 @@ public class RepositoryHandler {
 		this.repository = new HTTPRepository(this.serverEndpoint, this.repositoryID);
 		this.connection = this.repository.getConnection();
 		this.valueFactory = this.connection.getValueFactory();
-		this.connection.setAutoCommit(true); //TODO: autocommit deactivated?
-	}
+		if (this.autocommit) {
+		this.connection.setAutoCommit(true); //TODO: autocommit deactivated? TEST !
+		} else {
+			this.connection.setAutoCommit(false);
+		}
+		}
 	
 	public synchronized void updateResourceTriple(String _subject, String _predicate, String _object, String _context) throws RepositoryException {
 		this.delete(_subject, _predicate);
