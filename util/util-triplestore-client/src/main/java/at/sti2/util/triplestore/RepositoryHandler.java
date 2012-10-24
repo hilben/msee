@@ -193,8 +193,9 @@ public class RepositoryHandler {
 	}
 	
 	public void addResourceTriple(String _subject, String _property, String _value, String _context) throws RepositoryException {
-		if ( this.connection == null )
+		if ( this.connection == null ) {
 			this.init();
+		}
 		Statement statement = this.valueFactory.createStatement(this.valueFactory.createURI(_subject),
 				this.valueFactory.createURI(_property), this.valueFactory.createURI(_value),
 				this.valueFactory.createURI(_context));

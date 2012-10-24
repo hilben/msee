@@ -47,12 +47,13 @@ public class TransformationWSDL {
 	private static RepositoryHandler reposHandler;
 	private static HashMap<QName, Element> elementsMap;
 	
-	public static void main(String[] args) throws RegistrationException   {
+	public static void main(String[] args) throws RegistrationException, RepositoryException   {
 //		transformWSDL("file:///home/koni/globalweather.sawsdl");
 //		transformWSDL("file:///home/koni/sawsdl_2.0.wsdl");
 //		transformWSDL("file:///home/koni/development/sti/wsdl-2.0-testcase/00-all.wsdl");		
-		transformWSDL("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy?wsdl");
+		transformWSDL("file:////C:/Users/benhil.STI/Desktop/00-all.wsdl");
 //		transformWSDL("http://www.w3.org/2002/ws/sawsdl/CR/wsdl2.0/00-all.wsd");
+//		new TransformationWSDL().writeServiceToTriples(6, "res", "file:////C:/Users/benhil.STI/Desktop/00-all.wsdl");
 	}
 	
 	public static String transformWSDL(String _wsdlURI) throws RegistrationException {
@@ -97,13 +98,18 @@ public class TransformationWSDL {
 				SERVICE_NS = service.getQName().getNamespaceURI() + "#";
 				NAMESPACE_URI = service.getQName().getNamespaceURI();
 				
-				org.ow2.easywsdl.extensions.sawsdl.api.Service serviceSAWSDL = descSAWSDL.getService(service.getQName());
-				List<URI> categories = serviceSAWSDL.getModelReference();
 				
-				if ( categories.size() == 0 )
+				/*
+				 * Get categories
+				 */
+				org.ow2.easywsdl.extensions.sawsdl.api.Service serviceSAWSDL = descSAWSDL.getService(service.getQName());
+				final List<URI> categories = serviceSAWSDL.getModelReference();
+				
+				if ( categories.size() == 0 ) {
 					throw new RegistrationException(
 							"The service MUST be at least annotated with one service category. " +
 							"For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
+					}
 				
 				writeServiceToTriples(categories, NAMESPACE_URI, _wsdlURI);
 							
@@ -518,4 +524,5 @@ public class TransformationWSDL {
 					"For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 		}
 	}
+	
 }

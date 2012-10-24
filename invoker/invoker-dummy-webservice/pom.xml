@@ -149,11 +149,11 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
-		<dependency>
+	<!--<dependency>
 			<groupId>edu.uga.cs.lsdis</groupId>
 			<artifactId>SAWSDL4J</artifactId>
 			<version>M4</version>
-		</dependency>
+		</dependency>  -->	
 		<dependency>
 			<groupId>at.sti2.ngsee.invoker</groupId>
 			<artifactId>invoker-client</artifactId>

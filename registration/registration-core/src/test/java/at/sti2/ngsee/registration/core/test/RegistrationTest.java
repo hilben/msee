@@ -16,36 +16,63 @@
  */
 package at.sti2.ngsee.registration.core.test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.wsdl.WSDLException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.registration.core.management.TransformationWSDL11;
-
-import org.junit.Test;
+import at.sti2.ngsee.registration.api.exception.RegistrationException;
+import at.sti2.ngsee.registration.core.management.TransformationWSDL;
 
 /**
  * @author Corneliu Stanciu
  */
 public class RegistrationTest {
-	
-	@Test
-	public void testWSDL() throws FileNotFoundException, RepositoryException, WSDLException, IOException, URISyntaxException {
-		String serviceID = TransformationWSDL11.transformWSDL("http://sesa.sti2.at/services/globalweather.sawsdl");
 
-		Assert.assertTrue(checkServiceID(serviceID));
+	private Logger logger = Logger.getLogger(RegistrationTest.class);
+
+    private List<URL> webservicePass = new ArrayList<URL>();
+    private List<URL> webservicefail = new ArrayList<URL>();
+    
+	/**
+	 * 
+	 */
+	@Before
+	public void setUp() {
+		webservicePass = TestWebserviceExtractor.getPassingWSDLs();
+		webservicefail = TestWebserviceExtractor.getFailingWSDLs();
 	}
-	
+
+	@Test
+	public void testWSDL() throws RepositoryException,
+			WSDLException, IOException, URISyntaxException,
+			RegistrationException {
+
+		for (URL url : webservicePass) {
+
+			logger.info("Test WSDL " + url);
+
+			String serviceID = TransformationWSDL.transformWSDL(url
+					.toExternalForm());
+
+			Assert.assertTrue(checkServiceID(serviceID));
+		}
+	}
+
 	private boolean checkServiceID(String serviceID) {
 		boolean hasServiceID = false;
-		if ( serviceID != null)
+		if (serviceID != null)
 			hasServiceID = true;
-		
+
 		return hasServiceID;
 	}
 }

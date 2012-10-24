@@ -86,12 +86,12 @@
 			<name>STI snapshots</name>
 			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
 		</repository>
-		<!-- SOA4ALL -->
+		<!-- SOA4ALL Offline!
 		<repository>
 			<id>soa4all-repo</id>
 			<name>SOA4all</name>
 			<url>http://87.213.46.9:8080/nexus-webapp-1.3.1/content/repositories/public/</url>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>sesame repo</id>
 			<name>sesame</name>
