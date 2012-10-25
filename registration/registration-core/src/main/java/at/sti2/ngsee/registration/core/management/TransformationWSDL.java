@@ -39,8 +39,11 @@ import at.sti2.ngsee.registration.core.common.Config;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
+ * 
+ * @author 
+ * 
  * @author Benjamin Hiltpolt
- *
+ * 
  */
 public class TransformationWSDL {
 
@@ -59,13 +62,21 @@ public class TransformationWSDL {
 		transformWSDL("file:////C:/Users/benhil.STI/Desktop/00-all.wsdl");
 	}
 
+	/**
+	 * 
+	 * Transforms a WSDL file by adding its information into the triple store if valid
+	 * 
+	 * @param _wsdlURI the url of the wsdl file
+	 * @return
+	 * @throws RegistrationException if there occur any parsing, repository, etc. error this exception is thrown
+	 */
 	public static String transformWSDL(String _wsdlURI)
 			throws RegistrationException {
 		try {
 			Config cfg = new Config();
-			RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(),
-					cfg.getSesameReposID(),false);
-			
+			RepositoryHandler reposHandler = new RepositoryHandler(
+					cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
+
 			WSDLtoRepositoryWriter repowriter = null;
 
 			// Read a SAWSDL description
@@ -106,14 +117,16 @@ public class TransformationWSDL {
 			for (Service service : desc.getServices()) {
 
 				String SERVICE_NAME = service.getQName().getLocalPart();
-				String serviceNamespace = service.getQName().getNamespaceURI() + "#";
+				String serviceNamespace = service.getQName().getNamespaceURI()
+						+ "#";
 				String namespaceURI = service.getQName().getNamespaceURI();
-				
+
 				if (serviceNamespace == null || SERVICE_NAME == null) {
 					return null;
 				}
-				
-				repowriter = new WSDLtoRepositoryWriter(reposHandler, SERVICE_NAME, serviceNamespace, elementsMap);
+
+				repowriter = new WSDLtoRepositoryWriter(reposHandler,
+						SERVICE_NAME, serviceNamespace, elementsMap);
 
 				/*
 				 * Get categories
@@ -128,15 +141,16 @@ public class TransformationWSDL {
 									+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 				}
 
-				repowriter.writeServiceToTriples(categories, namespaceURI, _wsdlURI);
+				repowriter.writeServiceToTriples(categories, namespaceURI,
+						_wsdlURI);
 
 				// End-points
 				for (Endpoint endpoint : service.getEndpoints()) {
 					String endpointName = endpoint.getName();
 					String endpointAddress = endpoint.getAddress();
 
-					repowriter.writeEndpointsToTriples(endpointName, endpointAddress,
-							_wsdlURI);
+					repowriter.writeEndpointsToTriples(endpointName,
+							endpointAddress, _wsdlURI);
 
 					// Bindings
 					Binding binding = endpoint.getBinding();
@@ -144,7 +158,8 @@ public class TransformationWSDL {
 					String bindingType = binding.getTypeOfBinding().value()
 							.toString();
 
-					repowriter.writeBindingsToTriples(bindingName, bindingType, _wsdlURI);
+					repowriter.writeBindingsToTriples(bindingName, bindingType,
+							_wsdlURI);
 
 					for (BindingOperation bindingOperation : binding
 							.getBindingOperations()) {
@@ -170,8 +185,10 @@ public class TransformationWSDL {
 						String pattern = interfaceOperation.getPattern()
 								.toString();
 
-						repowriter.writeInterfaceOperationsToTriples(interfaceName,
-								interfaceOperationName, _wsdlURI);
+						repowriter
+								.writeInterfaceOperationsToTriples(
+										interfaceName, interfaceOperationName,
+										_wsdlURI);
 
 						// Input
 						Input input = interfaceOperation.getInput();
@@ -180,17 +197,18 @@ public class TransformationWSDL {
 						if (inputMsgLabel != null)
 							inputMsgLabelName = inputMsgLabel.getLocalPart();
 
-						repowriter.writeInterfaceMessageReferenceToTriples(interfaceName,
-								interfaceOperationName, inputMsgLabelName,
-								pattern, _wsdlURI);
+						repowriter.writeInterfaceMessageReferenceToTriples(
+								interfaceName, interfaceOperationName,
+								inputMsgLabelName, pattern, _wsdlURI);
 
 						org.ow2.easywsdl.schema.api.Element inputElem = input
 								.getElement();
 						if (inputElem != null) {
 							repowriter.checkAnnotations(inputElem.getQName());
-							repowriter.writeElementDeclaration(inputElem.getQName(),
-									interfaceName, interfaceOperationName,
-									inputMsgLabelName, _wsdlURI);
+							repowriter.writeElementDeclaration(
+									inputElem.getQName(), interfaceName,
+									interfaceOperationName, inputMsgLabelName,
+									_wsdlURI);
 
 							Object intype = inputElem.getType();
 							if (intype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl) {
@@ -212,17 +230,18 @@ public class TransformationWSDL {
 						if (outputMsgLabel != null)
 							outputMsgLabelName = outputMsgLabel.getLocalPart();
 
-						repowriter.writeInterfaceMessageReferenceToTriples(interfaceName,
-								interfaceOperationName, outputMsgLabelName,
-								pattern, _wsdlURI);
+						repowriter.writeInterfaceMessageReferenceToTriples(
+								interfaceName, interfaceOperationName,
+								outputMsgLabelName, pattern, _wsdlURI);
 
 						org.ow2.easywsdl.schema.api.Element outputElem = output
 								.getElement();
 						if (outputElem != null) {
 							repowriter.checkAnnotations(outputElem.getQName());
-							repowriter.writeElementDeclaration(outputElem.getQName(),
-									interfaceName, interfaceOperationName,
-									outputMsgLabelName, _wsdlURI);
+							repowriter.writeElementDeclaration(
+									outputElem.getQName(), interfaceName,
+									interfaceOperationName, outputMsgLabelName,
+									_wsdlURI);
 
 							Object outtype = outputElem.getType();
 							if (outtype instanceof org.ow2.easywsdl.schema.impl.ComplexTypeImpl) {
@@ -242,8 +261,8 @@ public class TransformationWSDL {
 
 			// TODO: fix the RepositoryException thrown by reposHandler.commit()
 			// which is NOT catched
-				reposHandler.commit(); //TODO:
-				return repowriter.getServiceID();
+			reposHandler.commit(); // TODO:
+			return repowriter.getServiceID();
 
 		} catch (RepositoryException e) {
 			throw new RegistrationException(
@@ -270,7 +289,5 @@ public class TransformationWSDL {
 					e.getCause());
 		}
 	}
-
-
 
 }
