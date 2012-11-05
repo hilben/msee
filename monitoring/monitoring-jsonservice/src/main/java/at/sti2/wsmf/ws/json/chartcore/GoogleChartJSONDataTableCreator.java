@@ -42,8 +42,8 @@ public class GoogleChartJSONDataTableCreator {
 	
 	public String toJSON() {
 		String ret = "";
-		ret += " { \"cols\":  [";
-		
+//		ret += " { \"cols\":  [";
+		ret += " { cols:  [";
 		
 		Iterator<ChartColumnDataTableEntry> cit = this.columns.iterator();
 		while (cit.hasNext()) {
@@ -55,18 +55,21 @@ public class GoogleChartJSONDataTableCreator {
 		
 		ret += "],";
 		
-		ret += "\"rows\": [ ";
+//		ret += "\"rows\": [ ";		
+		ret += "rows: [ ";
 		
 		
 		Iterator<List<String>> rowsit = rows.iterator();
 		while (rowsit.hasNext()) {
 			
-			ret += "{ \"c\": [";
+			ret += "{ c: [";
+//			ret += "{ \"c\": [";
 			
 			Iterator<String> rowit = rowsit.next().iterator();
 			
 			while (rowit.hasNext()) {
-				ret += " {\"v\":"+rowit.next()+" }";
+				ret += " {v:"+rowit.next()+" }";
+//				ret += " {\"v\":"+rowit.next()+" }";
 				if (rowit.hasNext()) {
 					ret+=",";
 				}

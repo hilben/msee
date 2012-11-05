@@ -158,8 +158,8 @@ public class ManagementWebService implements IManagementWebService {
 	 * java.util.Date) TODO: implements
 	 */
 	@Override
-	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key,
-			Date from, Date to) throws Exception {
+	public Float[] getQoSParametersInTimeFrame(@WebParam(name="endpoint") URL endpoint,@WebParam(name="QoSParamKey") QoSParamKey key,
+			@WebParam(name="datefrom") Date from, @WebParam(name="dateto") Date to) throws Exception {
 		Float[] f = new Float[100];
 
 		for (int i = 0; i < f.length; i++) {
@@ -167,15 +167,6 @@ public class ManagementWebService implements IManagementWebService {
 		}
 
 		return f;
-	}
-
-	public static void main(String args[]) throws Exception {
-		Float[] f = new ManagementWebService().getQoSParametersInTimeFrame(
-				null, null, null, null);
-
-		for (Float x : f) {
-			System.out.println(x);
-		}
 	}
 
 	/*
@@ -203,6 +194,8 @@ public class ManagementWebService implements IManagementWebService {
 	 * 
 	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getEndpointsForCategory()
 	 */
+
+	
 	@Override
 	public List<String> getEndpointsForCategory(String category)
 			throws Exception {
@@ -223,6 +216,34 @@ public class ManagementWebService implements IManagementWebService {
 		}
 
 		return endpoints;
+	}
+
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getSubcategoriesAndServices(java.lang.String)
+	 */
+
+	@Override
+	public List<String> getSubcategoriesAndServices(String category)
+			throws Exception {
+		String[] allendpoints = this.listEndpoints();
+
+		List<String> endpoints = new ArrayList<String>();
+
+		for (int i = 0; i < allendpoints.length; i++) {
+			if (Math.random() > 0.5) {
+				endpoints.add(allendpoints[i]);
+				
+			}
+		}
+		
+
+		endpoints.add("ExampleSubcategory");
+		return endpoints;
+	}
+	
+	
+	public static void main(String args[]) throws Exception {
+		new ManagementWebService().getSubcategoriesAndServices("asdf");
 	}
 
 }

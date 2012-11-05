@@ -56,8 +56,10 @@ public class ChartColumnDataTableEntry {
 	}
 
 	public String toJSON() {
-		return "{ \"id\": \"" + id + "\" , \"label\": \"" + label + "\" , \"type\": \"" + type
-				+ "\" }";
+		return "{ id: \"" + id + "\" , label: \"" + label + "\" , type: \"" + type
+		+ "\" }";
+//		return "{ \"id\": \"" + id + "\" , \"label\": \"" + label + "\" , \"type\": \"" + type
+//				+ "\" }";
 	}
 
 }

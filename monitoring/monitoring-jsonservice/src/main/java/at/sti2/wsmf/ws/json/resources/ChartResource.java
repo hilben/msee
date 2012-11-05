@@ -68,10 +68,6 @@ public class ChartResource {
 	public String getSomeStuff(@QueryParam("endpoint") List<String> endpoints,
 			@QueryParam("qosParamKey") List<String> qosParamKeys) {
 
-		// msg = new JSONObject(pdata);
-		// String endpoint = msg.getString("endpoint");
-		// String qosParamKey = msg.getString("qosParamKey");
-
 		return "ajaxCallSucceed(" + asJson(endpoints, qosParamKeys).toString()
 				+ ")";
 	}
@@ -83,24 +79,20 @@ public class ChartResource {
 	private JSONObject asJson(List<String> endpoints, List<String> qosParamKeys) {
 		try {
 
-			// String teststring =
-			// "{ \"cols\": [ {\"id\":\"\",\"label\":\"Topping\",\"pattern\":\"\",\"type\":\"string\"},  {\"id\":\"\",\"label\":\"Slices\",\"pattern\":\"\",\"type\":\"number\"} ], \"rows\": [ {\"c\":[{\"v\":\"Mushrooms\",\"f\":null},{\"v\":3,\"f\":null}]},	          {\"c\":[{\"v\":\"Onions\",\"f\":null},{\"v\":1,\"f\":null}]},{\"c\":[{\"v\":\"Olives\",\"f\":null},{\"v\":1,\"f\":null}]},     {\"c\":[{\"v\":\"Zucchini\",\"f\":null},{\"v\":1,\"f\":null}]},{\"c\":[{\"v\":\"Pepperoni\",\"f\":null},{\"v\":2,\"f\":null}]} ] }";
-
 			PersistentHandler ph = null;
 			try {
 				ph = PersistentHandler.getInstance();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			GoogleChartJSONDataTableCreator j = new GoogleChartJSONDataTableCreator();
 
 			for (String endpoint : endpoints) {
-				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "date"));
+				System.out.println("Add endpoint to json: " + endpoint );
+				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "string"));
 			}
 			for (String qosParamKey : qosParamKeys) {
 				j.addColum(new ChartColumnDataTableEntry(qosParamKey, qosParamKey,
@@ -162,16 +154,6 @@ public class ChartResource {
 	}
 
 	public static void main(String args[]) throws Exception {
-		// GoogleChartJSONDataTableCreator j = new
-		// GoogleChartJSONDataTableCreator();
-		// j.addColum(new ChartColumnDataTableEntry("", "Topping", "string"));
-		// j.addColum(new ChartColumnDataTableEntry("", "Slices", "number"));
-		//
-		// j.addRow("\"Onions\"", "1");
-		// j.addRow("\"Olives\"", "12");
-		// j.addRow("\"Zucchini\"", "33");
-		//
-		// j.addRow("\"Pepperoni\"", "11");
 
 		ArrayList<String> endpoints = new ArrayList<String>();
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
@@ -179,8 +161,8 @@ public class ChartResource {
 		endpoints
 				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
 		qosParamKeys.add("ResponseTime");
-//		qosParamKeys.add("PayloadsizeResponse");
-//		qosParamKeys.add("AvailableTime");
+		qosParamKeys.add("PayloadsizeResponse");
+		qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
 		// System.out.println(j.toJSON());
 	}

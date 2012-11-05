@@ -38,7 +38,6 @@ public enum QoSParamKey {
 	PayloadSizeRequestAverage,
 	PayloadSizeRequestMaximum,
 
-
 	PayloadSizeResponse,
 	PayloadSizeResponseMinimum,
 	PayloadSizeResponseAverage,
@@ -47,6 +46,4 @@ public enum QoSParamKey {
 	MonitoredTime,
 	AvailableTime,
 	UnavailableTime,
-	
-	
 }

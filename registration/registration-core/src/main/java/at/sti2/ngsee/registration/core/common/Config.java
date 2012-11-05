@@ -31,10 +31,20 @@ public class Config {
 		this.properties.load(Config.class.getResourceAsStream("/default.properties")); 
 	}
 	
+	/**
+	 * Returns the Sesame Endpoint defined in the configuration file
+	 * @return
+	 */
 	public String getSesameEndpoint() {
 		return this.properties.getProperty("sesame.endpoint");
 	}
 	
+	
+	
+	/**
+	 * eturns the Sesame Repository defined in the configuration file
+	 * @return
+	 */
 	public String getSesameReposID() {
 		return this.properties.getProperty("sesame.reposid");
 	}

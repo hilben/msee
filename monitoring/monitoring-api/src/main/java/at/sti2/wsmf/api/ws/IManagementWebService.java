@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
+import javax.jws.WebParam;
+
 import at.sti2.wsmf.api.data.qos.IQoSParamValue;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
@@ -52,8 +54,8 @@ public interface IManagementWebService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Float[] getQoSParametersInTimeFrame(URL endpoint, QoSParamKey key,
-			Date from, Date to) throws Exception;
+	public Float[] getQoSParametersInTimeFrame(@WebParam(name="endpoint") URL endpoint,@WebParam(name="QoSParamKey") QoSParamKey key,
+			@WebParam(name="datefrom") Date from, @WebParam(name="dateto") Date to) throws Exception;
 
 	/*
 	 * Common Operations
@@ -121,4 +123,19 @@ public interface IManagementWebService {
 	 * @throws Exception
 	 */
 	public List<String> getEndpointsForCategory(String category) throws Exception;
+	
+	
+	/**
+	 * 
+	 * TODO: Dummy function
+	 * 
+	 * Returns a String list storing all subcategories and endpoints of a category.
+	 * Keep in mind that it will only return the endpoints of a category not the endpoints of the categorys subcategories.
+	 * 
+	 * 
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getSubcategoriesAndServices(String category) throws Exception;
 }

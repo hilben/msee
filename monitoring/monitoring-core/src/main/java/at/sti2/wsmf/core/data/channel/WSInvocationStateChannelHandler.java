@@ -35,23 +35,29 @@ import at.sti2.wsmf.core.InvocationHandler;
  * @author Alex Oberhauser
  */
 public class WSInvocationStateChannelHandler extends WSAbstractChannelHandler {
-	private static Logger log = Logger.getLogger(WSInvocationStateChannelHandler.class);
+	private static Logger log = Logger
+			.getLogger(WSInvocationStateChannelHandler.class);
 	private static WSInvocationStateChannelHandler instance = null;
-	
-	public static WSInvocationStateChannelHandler getInstance() throws IOException, RepositoryException {
-		if ( null == instance )
+
+	public static WSInvocationStateChannelHandler getInstance()
+			throws IOException, RepositoryException {
+		if (null == instance) {
 			instance = new WSInvocationStateChannelHandler();
+		}
 		return instance;
 	}
-	
-	private WSInvocationStateChannelHandler() throws IOException, RepositoryException {
-		super("wsstatechannel","WSInvocationStateChannelHandler"); 
+
+	private WSInvocationStateChannelHandler() throws IOException,
+			RepositoryException {
+		super("wsstatechannel", "WSInvocationStateChannelHandler");
 	}
-	
-	private String buildMessage(String _invocationInstance, String _namespace, String _operationName, WSInvocationState _state) {
+
+	private String buildMessage(String _invocationInstance, String _namespace,
+			String _operationName, WSInvocationState _state) {
 		StringBuffer msg = new StringBuffer();
 		QName operation = new QName(_namespace, _operationName);
-		msg.append("<ns1:" + operation.getLocalPart() + " xmlns:ns1='" + operation.getNamespaceURI() + "'>");
+		msg.append("<ns1:" + operation.getLocalPart() + " xmlns:ns1='"
+				+ operation.getNamespaceURI() + "'>");
 		msg.append("<event>");
 		msg.append("<instanceURI>" + _invocationInstance + "</instanceURI>");
 		msg.append("<state>" + _state + "</state>");
@@ -59,19 +65,27 @@ public class WSInvocationStateChannelHandler extends WSAbstractChannelHandler {
 		msg.append("</ns1:" + operation.getLocalPart() + ">");
 		return msg.toString();
 	}
-	
-	public void sendState(String _invocationInstance, WSInvocationState _state) throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+
+	public void sendState(String _invocationInstance, WSInvocationState _state)
+			throws QueryEvaluationException, RepositoryException,
+			MalformedQueryException {
 		Vector<ChannelSubscriber> subscriber = this.getSubscriber();
-		for ( ChannelSubscriber entry : subscriber ) {
+		for (ChannelSubscriber entry : subscriber) {
 			try {
-				String messageToSend = this.buildMessage(_invocationInstance, entry.getNamespace(), entry.getOperationName(), _state);
-				InvocationHandler.sendChannelMessage(entry.getEndpoint(), entry.getSoapAction(), messageToSend);
+				String messageToSend = this.buildMessage(_invocationInstance,
+						entry.getNamespace(), entry.getOperationName(), _state);
+				InvocationHandler.sendChannelMessage(entry.getEndpoint(),
+						entry.getSoapAction(), messageToSend);
 			} catch (AxisFault e) {
-				log.error("Failed to send channel message to '" + entry.getEndpoint() + "', through exception: " + e.getLocalizedMessage());
+				log.error("Failed to send channel message to '"
+						+ entry.getEndpoint() + "', through exception: "
+						+ e.getLocalizedMessage());
 			} catch (XMLStreamException e) {
-				log.error("Failed to send channel message to '" + entry.getEndpoint() + "', through exception: " + e.getLocalizedMessage());
+				log.error("Failed to send channel message to '"
+						+ entry.getEndpoint() + "', through exception: "
+						+ e.getLocalizedMessage());
 			}
 		}
 	}
-	
+
 }

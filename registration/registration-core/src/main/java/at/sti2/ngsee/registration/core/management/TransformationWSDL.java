@@ -40,7 +40,7 @@ import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
  * 
- * @author 
+ * @author
  * 
  * @author Benjamin Hiltpolt
  * 
@@ -64,11 +64,15 @@ public class TransformationWSDL {
 
 	/**
 	 * 
-	 * Transforms a WSDL file by adding its information into the triple store if valid
+	 * Transforms a WSDL file by adding its information into the triple store if
+	 * valid
 	 * 
-	 * @param _wsdlURI the url of the wsdl file
+	 * @param _wsdlURI
+	 *            the url of the wsdl file
 	 * @return
-	 * @throws RegistrationException if there occur any parsing, repository, etc. error this exception is thrown
+	 * @throws RegistrationException
+	 *             if there occur any parsing, repository, etc. error this
+	 *             exception is thrown
 	 */
 	public static String transformWSDL(String _wsdlURI)
 			throws RegistrationException {
@@ -92,6 +96,7 @@ public class TransformationWSDL {
 
 			desc.addImportedDocumentsInWsdl();
 
+			// Get all elements of the xml
 			elementsMap = new HashMap<QName, Element>();
 			Types types = descSAWSDL.getTypes();
 			List<Schema> schemas = types.getSchemas();
@@ -135,6 +140,9 @@ public class TransformationWSDL {
 						.getService(service.getQName());
 				final List<URI> categories = serviceSAWSDL.getModelReference();
 
+				/*
+				 * Check if there are categories else abort
+				 */
 				if (categories.size() == 0) {
 					throw new RegistrationException(
 							"The service MUST be at least annotated with one service category. "
@@ -194,8 +202,9 @@ public class TransformationWSDL {
 						Input input = interfaceOperation.getInput();
 						QName inputMsgLabel = input.getMessageName();
 						String inputMsgLabelName = null;
-						if (inputMsgLabel != null)
+						if (inputMsgLabel != null) {
 							inputMsgLabelName = inputMsgLabel.getLocalPart();
+						}
 
 						repowriter.writeInterfaceMessageReferenceToTriples(
 								interfaceName, interfaceOperationName,
@@ -204,6 +213,7 @@ public class TransformationWSDL {
 						org.ow2.easywsdl.schema.api.Element inputElem = input
 								.getElement();
 						if (inputElem != null) {
+							// Checks for lowering lifting schemas
 							repowriter.checkAnnotations(inputElem.getQName());
 							repowriter.writeElementDeclaration(
 									inputElem.getQName(), interfaceName,
@@ -227,8 +237,9 @@ public class TransformationWSDL {
 						Output output = interfaceOperation.getOutput();
 						QName outputMsgLabel = output.getMessageName();
 						String outputMsgLabelName = null;
-						if (outputMsgLabel != null)
+						if (outputMsgLabel != null) {
 							outputMsgLabelName = outputMsgLabel.getLocalPart();
+						}
 
 						repowriter.writeInterfaceMessageReferenceToTriples(
 								interfaceName, interfaceOperationName,
