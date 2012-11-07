@@ -66,21 +66,23 @@ public class PersistentHandler {
 	private String triplestoreEndpoint;
 	private String repositoryID;
 	private RepositoryHandler reposHandler;
+	
 
 	public static PersistentHandler getInstance() throws FileNotFoundException,
 			IOException {
-		if (null == instance)
-			instance = new PersistentHandler();
+		if (null == instance){
+			instance = new PersistentHandler();}
 		return instance;
 	}
-
+	
 	private PersistentHandler() throws FileNotFoundException, IOException {
 		Config cfg = Config.getConfig();
 		this.triplestoreEndpoint = cfg.getTripleStoreEndpoint();
 		this.repositoryID = cfg.getTripleStoreReposID();
 		this.reposHandler = new RepositoryHandler(this.triplestoreEndpoint,
-				this.repositoryID);
+				this.repositoryID, false);
 	}
+
 
 	public synchronized WSAvailabilityState getWSAvailabilityState(
 			String _subject) throws QueryEvaluationException,
@@ -433,8 +435,7 @@ public class PersistentHandler {
 	 * @throws QueryEvaluationException
 	 */
 	public List<QoSParamAtTime> getQoSTimeframe(String _endpoint,
-			String qostype, Date begin, Date end)
-			throws Exception{
+			String qostype, Date begin, Date end) throws Exception {
 		System.out.println(_endpoint + " is searched...");
 
 		// List of all activityinstances of the endpoint TODO: seperate function
@@ -450,6 +451,10 @@ public class PersistentHandler {
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
 				.getNamespacePrefix() + selectSPARQL.toString());
 
+		
+		System.out.println("SELECT: " + QueryHelper
+				.getNamespacePrefix() + selectSPARQL.toString());
+		
 		while (result.hasNext()) {
 			BindingSet cur = result.next();
 			String endpointWSString = cur.getBinding("w").getValue()
@@ -471,9 +476,6 @@ public class PersistentHandler {
 			}
 		}
 
-		
-
-		
 		ArrayList<QoSParamAtTime> returnList = new ArrayList<QoSParamAtTime>();
 		for (String ae : activityinstances) {
 			StringBuffer selectSPARQL2 = new StringBuffer();
@@ -482,13 +484,13 @@ public class PersistentHandler {
 			selectSPARQL2.append("  <" + ae + "> :hasInvocationState" + "?a"
 					+ " . ");
 
-			selectSPARQL2.append("<" + ae + "> :"+qostype+" ?qos .");
+			selectSPARQL2.append("<" + ae + "> :" + qostype + " ?qos .");
 			selectSPARQL2.append("?a :state :Completed .");
-			selectSPARQL2.append("?a :time ?time .");
+			selectSPARQL2.append("?a xsd:datetime ?time .");
 
 			selectSPARQL2.append("}");
 
-//			System.out.println(selectSPARQL2);
+			// System.out.println(selectSPARQL2);
 
 			TupleQueryResult result2 = this.reposHandler
 					.selectSPARQL("PREFIX :<http://www.sti2.at/wsmf/ns#>\n"
@@ -526,28 +528,17 @@ public class PersistentHandler {
 	 * @throws QueryEvaluationException
 	 */
 	public static void main(String args[]) throws Exception {
+
+		long time = System.currentTimeMillis();
 		PersistentHandler ph = new PersistentHandler();
 
-		// System.out.println(ph.getInstanceIDs());
+		System.out
+				.println(ph
+						.getQoSTimeframe(
+								"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
+								"ResponseTime", null, null));
 
-		List<QoSParamAtTime> a = new ArrayList<QoSParamAtTime>();
-		
-		for (String s : ph.getEndpoints()) {
-			a = ph.getQoSTimeframe(s, "ResponseTime", null, null);
-			break;
-		}
-		
-		System.out.println(a);
-		
-		String date = a.get(0).getTime();
-		System.out.println(date);
-		
-		
-		DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
-		Date datec = df.parse(date);
-
-		System.out.println(datec);
-
+		System.out.println(System.currentTimeMillis() - time + " ms");
 	}
 
 }

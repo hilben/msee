@@ -14,7 +14,7 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.ngsee.invoker.core.InvokerCore;
 import at.sti2.ngsee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
@@ -39,41 +39,42 @@ public class TestWebServicesInvokation {
 	@Deprecated
 	public static void main(String args[]) throws Exception {
 
-		for (int i = 0; i < 80; i++) {
+		for (int i = 0; i < 999; i++) {
 			try {
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "reversestring", "ReverseStringWebService",
-					TestWebServicesSOAPMessages
-							.getReverseStringWebServiceSOAP("HalloHallo"));
+
 			TestWebServicesInvokation
 					.invokeWebServiceViaMonitoring(ENDPOINT + "randomnumber",
 							"RandomNumberWebService",
 							TestWebServicesSOAPMessages
 									.getRandomNumberWebServiceSOAP((int) (Math
 											.random() * 1000)));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "randomstring", "RandomStringWebService",
-					TestWebServicesSOAPMessages
-							.getRandomStringWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "reversestring", "ReverseStringWebService",
-					TestWebServicesSOAPMessages
-							.getReverseStringWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation
-					.invokeWebServiceViaMonitoring(
-							ENDPOINT + "stringmulti",
-							"StringMultiplierWebService",
-							TestWebServicesSOAPMessages
-									.getStringMultiplierWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "stringuppercase", "StringUppercaseWebService",
-					TestWebServicesSOAPMessages
-							.getStringUppercaseWebServiceSOAP(getRandomWord()));
+//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+//					+ "randomstring", "RandomStringWebService",
+//					TestWebServicesSOAPMessages
+//							.getRandomStringWebServiceSOAP(getRandomWord()));
+//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+//					+ "reversestring", "ReverseStringWebService",
+//					TestWebServicesSOAPMessages
+//							.getReverseStringWebServiceSOAP(getRandomWord()));
+//			TestWebServicesInvokation
+//					.invokeWebServiceViaMonitoring(
+//							ENDPOINT + "stringmulti",
+//							"StringMultiplierWebService",
+//							TestWebServicesSOAPMessages
+//									.getStringMultiplierWebServiceSOAP(getRandomWord()));
+//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+//					+ "stringuppercase", "StringUppercaseWebService",
+//					TestWebServicesSOAPMessages
+//							.getStringUppercaseWebServiceSOAP(getRandomWord()));
 			} catch (Exception e){
+				e.printStackTrace();
 				logger.error(e);
+				System.exit(1);
 			}
 		}
 	}
+	
+
 
 	public static void invokeWebServiceViaMonitoring(String endpointUrl,
 			String webServiceName, String SOAPMsg) throws RepositoryException,
@@ -88,12 +89,12 @@ public class TestWebServicesInvokation {
 				.getConfig(endpointUrl);
 		cfg.setWebServiceName(webServiceName);
 
-		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
-				+ os.toString());
+//		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
+//				+ os.toString());
 
-		logger.info("RESULTS: "
-				+ InvocationHandler.invoke(message, null,
-						new ActivityInstantiatedEvent(endpointUrl), os.size()));
+//		logger.info("RESULTS: "
+//				+ MonitoringInvocationHandler.invoke(message, null,
+//						new ActivityInstantiatedEvent(endpointUrl), os.size()));
 	}
 
 	public static String getRandomWord() {

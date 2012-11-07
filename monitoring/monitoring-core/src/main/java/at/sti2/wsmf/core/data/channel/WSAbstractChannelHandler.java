@@ -85,14 +85,16 @@ public abstract class WSAbstractChannelHandler {
 				QueryHelper.getWSMFURI("operation"), _operationName,
 				subscribeContext);
 
-		if (_soapAction != null)
+		if (_soapAction != null){
 			this.persHandler.updateLiteralTriple(endpointURL,
 					QueryHelper.getWSMFURI("soapAction"), _soapAction,
-					subscribeContext);
+					subscribeContext);}
+		this.persHandler.commit();
 	}
 
 	public void unsubsribe(URL _endpoint) throws RepositoryException {
 		this.persHandler.deleteContext(this.getContextURL(_endpoint));
+		this.persHandler.commit();
 	}
 
 }

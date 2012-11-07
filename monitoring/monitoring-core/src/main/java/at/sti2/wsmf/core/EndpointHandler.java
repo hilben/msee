@@ -80,22 +80,5 @@ public class EndpointHandler {
 		return this.masterWS;
 	}
 
-	public synchronized Vector<URL> getFallbackWS()
-			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException {
-		return this.persHandler.getEndpointWS(this.instancePrefix
-				+ this.webserviceID);
-	}
 
-	/**
-	 * @param _endpoint
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws RepositoryException
-	 */
-	public synchronized void removeFallbackWS(URL _endpoint)
-			throws RepositoryException, FileNotFoundException, IOException {
-		this.persHandler.deleteEndpoint(_endpoint);
-		this.persHandler.commit();
-	}
 }

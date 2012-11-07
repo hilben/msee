@@ -103,7 +103,7 @@ public class TriplestoreHandler {
 	
 	public static InvokerMSM getInvokerMSM(String _serviceID, String _operationName) throws IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
 		Config cfg = new Config();
-		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
+		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID(),false);
 		String query = generateQuery(_serviceID, _operationName);
 		TupleQueryResult result = reposHandler.selectSPARQL(query);
 		

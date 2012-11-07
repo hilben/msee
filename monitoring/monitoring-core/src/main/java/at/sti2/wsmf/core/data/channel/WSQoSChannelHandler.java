@@ -24,7 +24,12 @@ import java.util.Vector;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -35,7 +40,7 @@ import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
@@ -120,7 +125,7 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 		for ( ChannelSubscriber entry : subscriber ) {
 			try {
 				String messageToSend = this.buildMessage(_invocationInstance, entry.getNamespace(), entry.getOperationName(), _value);
-				InvocationHandler.sendChannelMessage(entry.getEndpoint(), entry.getSoapAction(), messageToSend);
+				sendChannelMessage(entry.getEndpoint(), entry.getSoapAction(), messageToSend);
 			} catch (AxisFault e) {
 				log.error("Failed to send channel message to '" + entry.getEndpoint() + "', through exception: " + e.getLocalizedMessage());
 			} catch (XMLStreamException e) {
@@ -128,6 +133,35 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 			}
 		}
 	}
+	
+	/**
+	 * TODO: Change this part to JAX-WS!!!
+	 * 
+	 * @param _endpoint
+	 * @param _soapAction
+	 * @param _message
+	 * @throws XMLStreamException
+	 * @throws AxisFault
+	 */
+	public static void sendChannelMessage(String _endpoint, String _soapAction,
+			String _message) throws XMLStreamException, AxisFault {
+		ServiceClient serviceClient = new ServiceClient();
+		Options opts = new Options();
+		opts.setTo(new EndpointReference(_endpoint));
+		opts.setAction(_soapAction);
+		serviceClient.setOptions(opts);
+
+		log.info("[ChannelMessage] Sending the following message to '"
+				+ _endpoint + "': " + _message);
+		OMElement omInput = AXIOMUtil.stringToOM(_message);
+		serviceClient.fireAndForget(omInput);
+
+		serviceClient.cleanup();
+		serviceClient.cleanupTransport();
+		serviceClient.removeHeaders();
+	}
+
+	
 	
 	public static void main(String[] args) throws Exception {
 		WSAvailabilityChannelHandler availabilityHandler = WSAvailabilityChannelHandler.getInstance();

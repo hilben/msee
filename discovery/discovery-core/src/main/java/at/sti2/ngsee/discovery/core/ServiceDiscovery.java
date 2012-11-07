@@ -39,13 +39,16 @@ import at.sti2.util.triplestore.RepositoryHandler;
  * TODO: We support SPARQL 1.1: Optimize the SPARQL queries with the help of paths.
  * 
  * @author Alex Oberhauser
+ * 
+ * @author: Benjamin Hiltpolt
  */
 public class ServiceDiscovery {
 	
 	public static RepositoryHandler getReposHandler() throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
 		prop.load(ServiceDiscovery.class.getResourceAsStream("/default.properties"));
-		return new RepositoryHandler(prop.getProperty("sesame.endpoint"), prop.getProperty("sesame.reposid"));
+		//TODO: MAYBE DISABLE AUTOCOMMIT
+		return new RepositoryHandler(prop.getProperty("sesame.endpoint"), prop.getProperty("sesame.reposid"),true);
 	}
 	
 	/**

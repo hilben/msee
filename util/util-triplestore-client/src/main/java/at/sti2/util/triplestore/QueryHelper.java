@@ -19,6 +19,7 @@ package at.sti2.util.triplestore;
 /**
  * @author Alex Oberhauser
  * @author Corneliu-Valentin Stanciu
+ * @author Benjamin Hiltpolt
  */
 public class QueryHelper {
 
@@ -32,9 +33,14 @@ public class QueryHelper {
 	public static final String WL_NS = "http://www.wsmo.org/ns/wsmo-lite#";
 	public static final String MSMEXT_NS = "http://sesa.sti2.at/ns/minimal-service-model-ext#";
 	public static final String WSOAP_NS = "http://www.w3.org/ns/wsdl/soap#";
+	public static final String XMLXSD_NS = "http://www.w3.org/2001/XMLSchema#";
 	
 	public static String getMSMEXTURI(String _property) {
 		return MSMEXT_NS + _property;
+	}
+	
+	public static String getXMLXSDURI(String _property) {
+		return XMLXSD_NS + _property;
 	}
 	
 	public static String getWSMFURI(String _property) {

@@ -19,29 +19,21 @@ package at.sti2.wsmf.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.UUID;
 import java.util.Vector;
 
 import javax.management.InstanceNotFoundException;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.SOAPBinding;
-import javax.xml.ws.soap.SOAPFaultException;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -50,6 +42,7 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
+import at.sti2.wsmf.core.availability.WSAvailabilityChecker;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
@@ -60,121 +53,18 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
 /**
  * @author Alex Oberhauser
  * 
- * @author Benjamin Hiltpolt The {@link InvocationHandler} invokes web services
- *         and stores monitoring informations about the webservice also it
- *         starts an AvailabilityChecker for the invoked webservice
+ * @author Benjamin Hiltpolt The {@link MonitoringInvocationHandler} invokes web
+ *         services and stores monitoring informations about the webservice also
+ *         it starts an AvailabilityChecker for the invoked webservice
  * 
  */
-public class InvocationHandler {
-	private static Logger log = Logger.getLogger(InvocationHandler.class);
+public class MonitoringInvocationHandler {
+	private static Logger log = Logger
+			.getLogger(MonitoringInvocationHandler.class);
 	private static final int TIME_OUT_MS = 12000;
 
 	// TODO: change back to reasonable time
 	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 5;
-
-	/**
-	 * JAX-WS Invocation Implementation.
-	 * 
-	 * @param _endpointURL
-	 * @param _soapMessage
-	 * @param _soapAction
-	 * @return
-	 * @throws SOAPException
-	 * @throws IOException
-	 */
-	private static String _invoke(String _endpointURL,
-			SOAPMessage _soapMessage, String _soapAction,
-			WebServiceEndpointConfig config) throws SOAPException, IOException {
-
-		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-				.getConfig(_endpointURL);
-
-		QName serviceName = new QName(cfg.getWebServiceNamespace(),
-				cfg.getWebServiceName());
-		QName portName = serviceName;
-
-		Service service = Service.create(serviceName);
-		service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, _endpointURL);
-
-		Dispatch<SOAPMessage> dispatch = service.createDispatch(portName,
-				SOAPMessage.class, Service.Mode.MESSAGE);
-
-		if (_soapAction == null) {
-			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY,
-					false);
-		} else {
-			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY,
-					true);
-			dispatch.getRequestContext().put(Dispatch.SOAPACTION_URI_PROPERTY,
-					null);
-		}
-
-		SOAPMessage response = dispatch.invoke(_soapMessage);
-
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		response.writeTo(os);
-		os.close();
-
-		return os.toString();
-	}
-
-	/**
-	 * TODO: Change this part to JAX-WS!!!
-	 * 
-	 * @param _endpoint
-	 * @param _soapAction
-	 * @param _message
-	 * @throws XMLStreamException
-	 * @throws AxisFault
-	 */
-	public static void sendChannelMessage(String _endpoint, String _soapAction,
-			String _message) throws XMLStreamException, AxisFault {
-		ServiceClient serviceClient = new ServiceClient();
-		Options opts = new Options();
-		opts.setTo(new EndpointReference(_endpoint));
-		opts.setAction(_soapAction);
-		serviceClient.setOptions(opts);
-
-		log.info("[ChannelMessage] Sending the following message to '"
-				+ _endpoint + "': " + _message);
-		OMElement omInput = AXIOMUtil.stringToOM(_message);
-		serviceClient.fireAndForget(omInput);
-
-		serviceClient.cleanup();
-		serviceClient.cleanupTransport();
-		serviceClient.removeHeaders();
-	}
-
-	/**
-	 * 
-	 * Check whether an service is available by sending an invalid soap
-	 * envelope. By catching the exception its possible to evaluate the
-	 * availability of the service
-	 * 
-	 * @param _endpoint
-	 * @param _soapAction
-	 * @return
-	 */
-	public static boolean isWebServiceAvailable(String _endpoint,
-			String _soapAction) {
-		try {
-			MessageFactory msgFactory = MessageFactory.newInstance();
-			SOAPMessage soapMessage = msgFactory.createMessage();
-			SOAPBody soapBody = soapMessage.getSOAPBody();
-			soapBody.addChildElement(new QName("ftp://wrongnamespace", "a"
-					+ UUID.randomUUID().toString()));
-			soapMessage.saveChanges();
-			_invoke(_endpoint, soapMessage, _soapAction, null);
-			return true;
-		} catch (SOAPFaultException e) {
-			return true;
-		} catch (IOException e) {
-			return false;
-		} catch (Exception e) {
-			log.info(e);
-			return false;
-		}
-	}
 
 	private static void sendStateChange(
 			ActivityInstantiatedEvent _activeInstance) {
@@ -316,7 +206,8 @@ public class InvocationHandler {
 			/*
 			 * Invocation
 			 */
-			result = _invoke(endpoint, _soapMessage, _soapAction, null);
+			result = invokeWithoutMonitoring(endpoint, _soapMessage,
+					_soapAction, null);
 			/*
 			 * End of Invocation
 			 */
@@ -324,17 +215,16 @@ public class InvocationHandler {
 			/*
 			 * Calculate the size of the response soap message
 			 */
-			SOAPMessage message = InvocationHandler.generateSOAPMessage(result);
+			SOAPMessage message = MonitoringInvocationHandler
+					.generateSOAPMessage(result);
 
 			message.saveChanges();
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			message.writeTo(stream);
-			
+
 			_activeInstance.setPayloadSizeResponse(stream.size());
 			currentWS.changePayloadSizeResponse(stream.size());
-			
-         
-			
+
 			long afterInvocation = System.currentTimeMillis();
 			try {
 				long responseTime = (afterInvocation - beforeInvocation);
@@ -343,7 +233,7 @@ public class InvocationHandler {
 				for (QoSParamValue entry : changedValues) {
 					sendQoSValue(_activeInstance, entry);
 				}
-				
+
 				_activeInstance.setResponseTime(responseTime);
 
 			} catch (RepositoryException e1) {
@@ -460,6 +350,54 @@ public class InvocationHandler {
 		soapPart.setContent(msgSrc);
 		msg.saveChanges();
 		return msg;
+	}
+
+	/**
+	 * JAX-WS Invocation Implementation.
+	 * 
+	 * Invocation without monitoring
+	 * 
+	 * @param _endpointURL
+	 * @param _soapMessage
+	 * @param _soapAction
+	 * @return
+	 * @throws SOAPException
+	 * @throws IOException
+	 */
+	public static String invokeWithoutMonitoring(String _endpointURL,
+			SOAPMessage _soapMessage, String _soapAction,
+			WebServiceEndpointConfig config) throws SOAPException, IOException {
+
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+				.getConfig(_endpointURL);
+
+		QName serviceName = new QName(cfg.getWebServiceNamespace(),
+				cfg.getWebServiceName());
+		QName portName = serviceName;
+
+		Service service = Service.create(serviceName);
+		service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, _endpointURL);
+
+		Dispatch<SOAPMessage> dispatch = service.createDispatch(portName,
+				SOAPMessage.class, Service.Mode.MESSAGE);
+
+		if (_soapAction == null) {
+			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY,
+					false);
+		} else {
+			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY,
+					true);
+			dispatch.getRequestContext().put(Dispatch.SOAPACTION_URI_PROPERTY,
+					null);
+		}
+
+		SOAPMessage response = dispatch.invoke(_soapMessage);
+
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		response.writeTo(os);
+		os.close();
+
+		return os.toString();
 	}
 
 }

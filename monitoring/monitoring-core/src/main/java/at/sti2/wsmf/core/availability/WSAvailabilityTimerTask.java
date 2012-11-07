@@ -14,13 +14,19 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.wsmf.core;
+package at.sti2.wsmf.core.availability;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.TimerTask;
-import java.util.Vector;
+import java.util.UUID;
+
+import javax.xml.namespace.QName;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -29,6 +35,7 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFParseException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
+import at.sti2.wsmf.core.EndpointHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
@@ -41,17 +48,13 @@ import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
  * 
  */
 public class WSAvailabilityTimerTask extends TimerTask {
-	private Logger log = Logger.getLogger(WSAvailabilityTimerTask.class);
+	private static Logger log = Logger.getLogger(WSAvailabilityTimerTask.class);
 	private WebServiceEndpoint webserviceendpoint;
 
 	/*
 	 * Update time for logging / monitoring repository issues
 	 */
 	private long updateTimeMinutes = 0;
-
-	// public WSAvailabilityTimerTask(WebServiceEndpoint webserviceendpoint) {
-	// this(webserviceendpoint,0);
-	// }
 
 	public WSAvailabilityTimerTask(WebServiceEndpoint webserviceendpoint,
 			long updateTimeMinuts) {
@@ -63,25 +66,24 @@ public class WSAvailabilityTimerTask extends TimerTask {
 			WebServiceEndpoint _webservice, long updateTimeMinutes)
 			throws RepositoryException, RDFParseException,
 			FileNotFoundException, IOException {
-		
+
 		this.updateTimeMinutes = updateTimeMinutes;
-		
+
 		WSAvailabilityState oldstate = _webservice.getAvailabilityStatus();
 		WSAvailabilityState state = WSAvailabilityState.WSUnavailable;
-		
+
 		URL endpoint = _webservice.getEndpoint();
-		
-		if (InvocationHandler.isWebServiceAvailable(endpoint.toExternalForm(),
-				null)) {
+
+		if (WSAvailabilityChecker.isWebServiceAvailable(
+				endpoint.toExternalForm(), null)) {
 			state = WSAvailabilityState.WSAvailable;
 		} else {
 			state = WSAvailabilityState.WSUnavailable;
 		}
 		log.info("Availability of '" + endpoint + "' = " + state);
-		
+
 		_webservice.changeAvailabilityStatus(state, this.updateTimeMinutes);
-		
-		
+
 		if (oldstate != state) {
 			try {
 				WSAvailabilityChannelHandler.getInstance().sendState(
@@ -103,7 +105,6 @@ public class WSAvailabilityTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		log.info("Starting availability checker...");
-		// Vector<URL> checkedURL = new Vector<URL>();
 		EndpointHandler endpointHandler;
 		try {
 			endpointHandler = WebServiceEndpointConfig.getConfig(
@@ -115,43 +116,6 @@ public class WSAvailabilityTimerTask extends TimerTask {
 			this.updateAvailabilityState(currentActiveWS,
 					this.updateTimeMinutes);
 
-			// WSAvailabilityState currentActiveWSState = this
-			// .updateAvailabilityState(currentActiveWS);
-
-			// checkedURL.add(currentActiveWS.getEndpoint());
-
-			// boolean masterBackOnline = false;
-
-			// WebServiceEndpoint masterWS = endpointHandler.getMasterWS();
-			// URL masterWSURL = masterWS.getEndpoint();
-			// WSAvailabilityState masterStatus;
-			// if ( !checkedURL.contains(masterWSURL) ) {
-			// masterStatus = this.updateAvailabilityState(masterWS);
-			// if ( masterStatus == WSAvailabilityState.WSAvailable ) {
-			// endpointHandler.changeCurrentActiveWS(masterWS);
-			// masterBackOnline = true;
-			// }
-			// checkedURL.add(masterWSURL);
-			// }
-			//
-			// Vector<WebServiceEndpoint> availableFallbackWS = new
-			// Vector<WebServiceEndpoint>();
-			// Vector<URL> fallbackWS = endpointHandler.getFallbackWS();
-			// for ( URL urlEntry : fallbackWS ) {
-			// if ( !checkedURL.contains(urlEntry) ) {
-			// WebServiceEndpoint entry = new WebServiceEndpoint(urlEntry,
-			// false);
-			// WSAvailabilityState status = this.updateAvailabilityState(entry);
-			// if ( status == WSAvailabilityState.WSAvailable )
-			// availableFallbackWS.add(entry);
-			// }
-			// }
-			//
-			// if ( masterBackOnline && (currentActiveWSState ==
-			// WSAvailabilityState.WSUnavailable
-			// || currentActiveWSState == WSAvailabilityState.WSNotChecked) )
-			// if ( availableFallbackWS.size() > 0 )
-			// endpointHandler.changeCurrentActiveWS(availableFallbackWS.get(0));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (RepositoryException e) {
@@ -159,11 +123,6 @@ public class WSAvailabilityTimerTask extends TimerTask {
 		} catch (RDFParseException e) {
 			e.printStackTrace();
 		}
-		// } catch (QueryEvaluationException e) {
-		// e.printStackTrace();
-		// } catch (MalformedQueryException e) {
-		// e.printStackTrace();
-		// }
 	}
 
 }

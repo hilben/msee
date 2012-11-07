@@ -28,7 +28,7 @@ import javax.xml.soap.SOAPPart;
 import javax.xml.transform.stream.StreamSource;
 
 import at.sti2.wsmf.api.ws.IProxyWebService;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
@@ -59,7 +59,7 @@ public class ProxyWebService implements IProxyWebService {
 	@Override
 	public String invoke(@WebParam(name = "soapRequest") String _soapRequest,
 			@WebParam(name = "soapAction") String _soapAction,  @WebParam(name="endpointURL")String endpointURL) throws Exception {
-		return InvocationHandler.invoke(this.generateSOAPMessage(_soapRequest),
+		return MonitoringInvocationHandler.invoke(this.generateSOAPMessage(_soapRequest),
 				_soapAction, new ActivityInstantiatedEvent(endpointURL),
 				_soapRequest.length());
 	}

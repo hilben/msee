@@ -36,7 +36,8 @@ import junit.framework.TestCase;
 
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
+import at.sti2.wsmf.core.availability.WSAvailabilityChecker;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
@@ -106,7 +107,7 @@ public class TestInvocationHandler extends TestCase{
 		message.saveChanges();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);
-		String responseMessage = InvocationHandler.invoke(message, null, new ActivityInstantiatedEvent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"), os.size());
+		String responseMessage = MonitoringInvocationHandler.invoke(message, null, new ActivityInstantiatedEvent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"), os.size());
 		
 //		System.out.println(responseMessage);
 		
@@ -118,9 +119,9 @@ public class TestInvocationHandler extends TestCase{
 			e.printStackTrace();
 		}
 		
-		System.out.println(InvocationHandler.isWebServiceAvailable("http://example.org", null));
+		System.out.println(WSAvailabilityChecker.isWebServiceAvailable("http://example.org", null));
 //		System.out.println(WebServiceEndpointConfig.getDefaultConfig().getEndpointMaster());
-		System.out.println("Sesa Valencia Port Service: " + InvocationHandler.isWebServiceAvailable("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService", null));
-		System.out.println("Localhost Dummy Service: " + InvocationHandler.isWebServiceAvailable("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy", null));
+		System.out.println("Sesa Valencia Port Service: " + WSAvailabilityChecker.isWebServiceAvailable("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService", null));
+		System.out.println("Localhost Dummy Service: " + WSAvailabilityChecker.isWebServiceAvailable("http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy", null));
 	}
 }

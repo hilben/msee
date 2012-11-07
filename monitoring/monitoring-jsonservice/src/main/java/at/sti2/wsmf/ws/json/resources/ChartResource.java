@@ -92,7 +92,7 @@ public class ChartResource {
 
 			for (String endpoint : endpoints) {
 				System.out.println("Add endpoint to json: " + endpoint );
-				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "string"));
+				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "datetime"));
 			}
 			for (String qosParamKey : qosParamKeys) {
 				j.addColum(new ChartColumnDataTableEntry(qosParamKey, qosParamKey,
@@ -128,7 +128,7 @@ public class ChartResource {
 								+ "->" + p.getQosParamValue());
 
 						
-						row[0] = "\"" + p.getTime() + "\"";
+						row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
 						for (int i = 1; i < row.length; i++) {
 							row[i] = "null";
 						}
@@ -141,10 +141,9 @@ public class ChartResource {
 				}
 			}
 
-			System.out.println(j.toJSON());
 
 			JSONObject jsonobj = new JSONObject(j.toJSON());
-			// JSONObject jsonobj = new JSONObject(teststring);
+
 			return jsonobj;
 
 		} catch (JSONException je) {
@@ -159,10 +158,10 @@ public class ChartResource {
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
 
 		endpoints
-				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
+				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber");
 		qosParamKeys.add("ResponseTime");
-		qosParamKeys.add("PayloadsizeResponse");
-		qosParamKeys.add("AvailableTime");
+//		qosParamKeys.add("PayloadsizeResponse");
+//		qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
 		// System.out.println(j.toJSON());
 	}

@@ -49,7 +49,7 @@ import org.xml.sax.SAXException;
 
 import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
 import at.sti2.ngsee.invoker.grounding.GroundingFactory;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
@@ -160,7 +160,7 @@ public class InvokerCore {
 			cfg.setWebServiceName(_operationName);
 			
 			
-			returnMsg = generateSOAPMessage(InvocationHandler.invoke(generateSOAPMessage(strMsg),
+			returnMsg = generateSOAPMessage(MonitoringInvocationHandler.invoke(generateSOAPMessage(strMsg),
 					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(endpointURL),
 					strMsg.length()));
 			

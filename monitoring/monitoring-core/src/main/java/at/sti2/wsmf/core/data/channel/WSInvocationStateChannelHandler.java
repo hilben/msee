@@ -22,14 +22,19 @@ import java.util.Vector;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 
 /**
  * @author Alex Oberhauser
@@ -74,7 +79,7 @@ public class WSInvocationStateChannelHandler extends WSAbstractChannelHandler {
 			try {
 				String messageToSend = this.buildMessage(_invocationInstance,
 						entry.getNamespace(), entry.getOperationName(), _state);
-				InvocationHandler.sendChannelMessage(entry.getEndpoint(),
+				WSQoSChannelHandler.sendChannelMessage(entry.getEndpoint(),
 						entry.getSoapAction(), messageToSend);
 			} catch (AxisFault e) {
 				log.error("Failed to send channel message to '"
@@ -87,5 +92,7 @@ public class WSInvocationStateChannelHandler extends WSAbstractChannelHandler {
 			}
 		}
 	}
+	
+
 
 }

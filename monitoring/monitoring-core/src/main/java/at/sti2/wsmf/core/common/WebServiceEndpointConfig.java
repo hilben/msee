@@ -65,13 +65,12 @@ public class WebServiceEndpointConfig {
 	 */
 	public static WebServiceEndpointConfig getConfig(String endpointURL)
 			throws IOException {
-		System.out.println("Get config for " + endpointURL);
-		System.out.println(instances);
+
 		if (!instances.containsKey((endpointURL))) {
-			System.out.println("not contained");
+
 			WebServiceEndpointConfig newCfg = new WebServiceEndpointConfig(
 					endpointURL);
-			// instances.put(endpointURL, newCfg);
+
 			return newCfg;
 
 		} else {
@@ -87,11 +86,9 @@ public class WebServiceEndpointConfig {
 	private WebServiceEndpointConfig(String masterEndpointURL)
 			throws IOException {
 		this.prop = new Properties();
-		// InputStream configIS =
-		// PersistentHandler.class.getResourceAsStream("/default.properties");
-		// change back only for testing reasons TODO
-		InputStream configIS = new FileInputStream(
-				"C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
+		InputStream configIS = WebServiceEndpointConfig.class
+				.getResourceAsStream("/default.properties");
+
 		if (configIS != null) {
 			this.prop.load(configIS);
 
@@ -103,10 +100,12 @@ public class WebServiceEndpointConfig {
 
 			this.triplestoreReposid = this.prop
 					.getProperty("triplestore.reposid");
+			this.triplestoreEndpoint = this.prop
+					.getProperty("triplestore.endpoint");
 			this.instancePrefix = this.prop.getProperty("instance.prefixuri");
 			this.webServiceNamespace = this.prop
 					.getProperty("endpoint.namespace");
-			
+
 			configIS.close();
 		}
 
@@ -121,11 +120,11 @@ public class WebServiceEndpointConfig {
 		}
 	}
 
-	public String getTripleStoreEndpoint() {
+	public String getTripleStorendpoint() {
 		return this.triplestoreEndpoint;
 	}
 
-	public String getTripleStoreReposID() {
+	public String getTripleStorereposID() {
 		return this.triplestoreReposid;
 	}
 
@@ -149,47 +148,55 @@ public class WebServiceEndpointConfig {
 		return this.masterEndpointURL;
 	}
 
-	public String getEndpointMasterNamespace() {
-		return this.masterEndpointNamespace;
-	}
+	//
+	// public String getEndpointMasterNamespace() {
+	// return this.masterEndpointNamespace;
+	// }
+	//
+	// public String getMasterEndpointNamespace() {
+	// return masterEndpointNamespace;
+	// }
 
-	public String getMasterEndpointNamespace() {
-		return masterEndpointNamespace;
-	}
-
-	public void setMasterEndpointNamespace(String masterEndpointNamespace) {
-		this.masterEndpointNamespace = masterEndpointNamespace;
-	}
-
-	public String getTriplestoreEndpoint() {
-		return triplestoreEndpoint;
-	}
-
-	public String getTriplestoreReposid() {
-		return triplestoreReposid;
-	}
+	// public void setMasterEndpointNamespace(String masterEndpointNamespace) {
+	// this.masterEndpointNamespace = masterEndpointNamespace;
+	// }
 
 	public void setTriplestoreReposid(String triplestoreReposid) {
 		this.triplestoreReposid = triplestoreReposid;
 	}
 
-	public String getMasterEndpointURL() {
-		return masterEndpointURL;
-	}
+	// public String getMasterEndpointURL() {
+	// return masterEndpointURL;
+	// }
 
-	public void setWebServiceNamespace(String webServiceNamespace) {
-		this.webServiceNamespace = webServiceNamespace;
-	}
+	// public void setWebServiceNamespace(String webServiceNamespace) {
+	// this.webServiceNamespace = webServiceNamespace;
+	// }
 
-	public void setInstancePrefix(String instancePrefix) {
-		this.instancePrefix = instancePrefix;
-	}
-
+	// public void setInstancePrefix(String instancePrefix) {
+	// this.instancePrefix = instancePrefix;
+	// }
+	//
 	public EndpointHandler getEndPointHandler() {
 		return this.endpointhandler;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "WebServiceEndpointConfig [prop=" + prop
+				+ ", masterEndpointURL=" + masterEndpointURL
+				+ ", masterEndpointNamespace=" + masterEndpointNamespace
+				+ ", webServiceName=" + webServiceName
+				+ ", webServiceNamespace=" + webServiceNamespace
+				+ ", triplestoreEndpoint=" + triplestoreEndpoint
+				+ ", triplestoreReposid=" + triplestoreReposid
+				+ ", instancePrefix=" + instancePrefix + ", endpointhandler="
+				+ endpointhandler + "]";
+	}
+
 	public static void main(String args[]) throws IOException {
-		System.out.println(WebServiceEndpointConfig.getConfig("http://asd").getWebServiceNamespace());
+		System.out.println(WebServiceEndpointConfig.getConfig("http://asd")
+				.getWebServiceNamespace());
+		System.out.println(WebServiceEndpointConfig.getConfig("http://asd"));
 	}
 }

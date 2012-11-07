@@ -48,11 +48,10 @@ public class Config {
 
 	private Config() throws IOException {
 		this.prop = new Properties();
-		// InputStream configIS =
-		// PersistentHandler.class.getResourceAsStream("/default.properties");
-		// change back only for testing reasons TODO
-		InputStream configIS = new FileInputStream(
-				"C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
+		 InputStream configIS =
+		 Config.class.getResourceAsStream("/default.properties");
+//		InputStream configIS = new FileInputStream(
+//				"C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
 		if (configIS != null) {
 			this.prop.load(configIS);
 

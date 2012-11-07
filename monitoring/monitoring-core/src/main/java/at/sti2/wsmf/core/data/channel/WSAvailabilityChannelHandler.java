@@ -29,7 +29,7 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
-import at.sti2.wsmf.core.InvocationHandler;
+import at.sti2.wsmf.core.MonitoringInvocationHandler;
 
 /**
  * @author Alex Oberhauser
@@ -65,7 +65,7 @@ public class WSAvailabilityChannelHandler extends WSAbstractChannelHandler {
 		for ( ChannelSubscriber entry : subscriber ) {
 			try {
 				String messageToSend = this.buildMessage(_invocationInstance, entry.getNamespace(), entry.getOperationName(), _state);
-				InvocationHandler.sendChannelMessage(entry.getEndpoint(), entry.getSoapAction(), messageToSend);
+				WSQoSChannelHandler.sendChannelMessage(entry.getEndpoint(), entry.getSoapAction(), messageToSend);
 			} catch (AxisFault e) {
 				log.error("Failed to send channel message to '" + entry.getEndpoint() + "', through exception: " + e.getLocalizedMessage());
 			} catch (XMLStreamException e) {

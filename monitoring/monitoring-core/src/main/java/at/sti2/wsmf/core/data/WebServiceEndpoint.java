@@ -19,7 +19,6 @@ package at.sti2.wsmf.core.data;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -33,8 +32,8 @@ import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.common.DateHelper;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
 /**
@@ -90,8 +89,6 @@ public class WebServiceEndpoint {
 				QueryHelper.getWSMFURI("isRelatedToWebService"), webserviceURI,
 				subject);
 
-		this.persHandler.commit();// delete?
-
 		this.initAvailabilityState();
 	}
 
@@ -116,6 +113,8 @@ public class WebServiceEndpoint {
 			log.error(e.getCause());
 			this.availabilitySate = WSAvailabilityState.WSNotChecked;
 		}
+		
+		this.persHandler.commit();
 	}
 
 	private synchronized int getRequests(QoSParamKey _key)
@@ -155,7 +154,7 @@ public class WebServiceEndpoint {
 				QueryHelper.getRDFURI("type"),
 				QueryHelper.getWSMFURI("AvailabilityState"), subject);
 		this.persHandler.updateLiteralTriple(availabilityState,
-				QueryHelper.getWSMFURI("time"), (new Date()).toString(),
+				QueryHelper.getXMLXSDURI("datetime"), DateHelper.getXSDDateTime(),
 				subject);
 
 		/*
@@ -172,10 +171,7 @@ public class WebServiceEndpoint {
 				QueryHelper.getWSMFURI("hasAvailabilityState"),
 				availabilityState, subject);
 
-		// TODO: old one
-		// this.persHandler.updateResourceTriple(subject,
-		// QueryHelper.getWSMFURI("availabilityState"),
-		// QueryHelper.getWSMFURI(this.availabilitySate.name()) , subject);
+		this.persHandler.commit();
 	}
 
 	/**
@@ -433,6 +429,8 @@ public class WebServiceEndpoint {
 		this.persHandler.updateLiteralTriple(qosParamID,
 				QueryHelper.getDCURI("modified"), DateHelper.getXSDDateTime(),
 				endpointString);
+		
+		this.persHandler.commit();
 	}
 
 	public WSAvailabilityState getAvailabilityStatus() {
