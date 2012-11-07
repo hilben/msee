@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.MonitoringConfig;
 
 
 /**
@@ -21,7 +21,7 @@ import at.sti2.wsmf.core.common.Config;
 public class ConfigTest {
 
 	private Logger logger = Logger.getLogger(ConfigTest.class);
-	private Config config;
+	private MonitoringConfig config;
 
 	/**
 	 * @throws java.lang.Exception
@@ -30,7 +30,7 @@ public class ConfigTest {
 	public void setUp() {
 	
 		try {
-			config = Config.getConfig();
+			config = MonitoringConfig.getConfig();
 		} catch (IOException e) {
 			fail();
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.Config#Config()}.
+	 * Test method for {@link at.sti2.MonitoringConfig.registration.core.common.Config#Config()}.
 	 */
 	@Test
 	public void testConfig() {
@@ -56,16 +56,17 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.Config#getSesameEndpoint()}.
+	 * Test method for {@link at.sti2.MonitoringConfig.registration.core.common.Config#getSesameEndpoint()}.
 	 */
 	@Test
 	public void testGetConfigProperties() {
 		assertNotNull(this.config.getInstancePrefix());
-		assertNotNull(this.config.getTripleStoreEndpoint());
-		assertNotNull(this.config.getTripleStoreReposID());
+		assertNotNull(this.config.getTriplestoreEndpoint());
+		assertNotNull(this.config.getTriplestoreReposID());
 		logger.info("Config endpoint: " + this.config.getInstancePrefix());
-		logger.info("Config endpoint: " + this.config.getTripleStoreEndpoint());
-		logger.info("Config endpoint: " + this.config.getTripleStoreReposID());
+		logger.info("Config endpoint: " + this.config.getTriplestoreEndpoint());
+		logger.info("Config endpoint: " + this.config.getTriplestoreReposID());
+		logger.info(this.config.toString());
 	}
 
 

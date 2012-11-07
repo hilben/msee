@@ -4,9 +4,7 @@
 package at.sti2.ngsee.testwebservices.invokation;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
-import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
 import org.apache.log4j.Logger;
@@ -89,12 +87,12 @@ public class TestWebServicesInvokation {
 				.getConfig(endpointUrl);
 		cfg.setWebServiceName(webServiceName);
 
-//		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
-//				+ os.toString());
+		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
+				+ os.toString());
 
-//		logger.info("RESULTS: "
-//				+ MonitoringInvocationHandler.invoke(message, null,
-//						new ActivityInstantiatedEvent(endpointUrl), os.size()));
+		logger.info("RESULTS: "
+				+ MonitoringInvocationHandler.invoke(message, null,
+						new ActivityInstantiatedEvent(endpointUrl), os.size()));
 	}
 
 	public static String getRandomWord() {

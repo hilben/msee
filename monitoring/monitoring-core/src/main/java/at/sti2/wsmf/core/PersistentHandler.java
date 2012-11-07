@@ -43,7 +43,7 @@ import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.MonitoringConfig;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.HashValueHandler;
 import at.sti2.wsmf.core.data.channel.ChannelSubscriber;
@@ -66,23 +66,24 @@ public class PersistentHandler {
 	private String triplestoreEndpoint;
 	private String repositoryID;
 	private RepositoryHandler reposHandler;
-	
 
 	public static PersistentHandler getInstance() throws FileNotFoundException,
 			IOException {
-		if (null == instance){
-			instance = new PersistentHandler();}
+		if (null == instance) {
+			instance = new PersistentHandler();
+		}
 		return instance;
 	}
-	
+
 	private PersistentHandler() throws FileNotFoundException, IOException {
-		Config cfg = Config.getConfig();
-		this.triplestoreEndpoint = cfg.getTripleStoreEndpoint();
-		this.repositoryID = cfg.getTripleStoreReposID();
+		MonitoringConfig cfg = MonitoringConfig.getConfig();
+		this.triplestoreEndpoint = cfg.getTriplestoreEndpoint();
+		this.repositoryID = cfg.getTriplestoreReposID();
+		
+		System.out.println("WHYYYYY?: " + this.triplestoreEndpoint + "" + this.repositoryID + "" +cfg.getTriplestoreEndpoint()) ;
 		this.reposHandler = new RepositoryHandler(this.triplestoreEndpoint,
 				this.repositoryID, false);
 	}
-
 
 	public synchronized WSAvailabilityState getWSAvailabilityState(
 			String _subject) throws QueryEvaluationException,
@@ -110,7 +111,7 @@ public class PersistentHandler {
 	public static String getQoSParamID(String _endpoint, QoSParamKey _type) {
 		String qosParamID = "unknown";
 		try {
-			Config cfg = Config.getConfig();
+			MonitoringConfig cfg = MonitoringConfig.getConfig();
 			qosParamID = cfg.getInstancePrefix() + _type + "_"
 					+ HashValueHandler.computeSHA1(_endpoint);
 		} catch (Exception e) {
@@ -122,7 +123,7 @@ public class PersistentHandler {
 	public static String getQoSParamID(String _endpoint, QoSThresholdKey _key) {
 		String qosParamID = "unknown";
 		try {
-			Config cfg = Config.getConfig();
+			MonitoringConfig cfg = MonitoringConfig.getConfig();
 			qosParamID = cfg.getInstancePrefix() + _key + "_"
 					+ HashValueHandler.computeSHA1(_endpoint);
 		} catch (Exception e) {
@@ -451,10 +452,9 @@ public class PersistentHandler {
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
 				.getNamespacePrefix() + selectSPARQL.toString());
 
-		
-		System.out.println("SELECT: " + QueryHelper
-				.getNamespacePrefix() + selectSPARQL.toString());
-		
+		System.out.println("SELECT: " + QueryHelper.getNamespacePrefix()
+				+ selectSPARQL.toString());
+
 		while (result.hasNext()) {
 			BindingSet cur = result.next();
 			String endpointWSString = cur.getBinding("w").getValue()

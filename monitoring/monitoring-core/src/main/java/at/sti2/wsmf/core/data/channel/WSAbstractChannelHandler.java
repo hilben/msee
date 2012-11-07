@@ -26,7 +26,7 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.Config;
+import at.sti2.wsmf.core.common.MonitoringConfig;
 
 /**
  * @author Alex Oberhauser
@@ -34,7 +34,7 @@ import at.sti2.wsmf.core.common.Config;
  */
 public abstract class WSAbstractChannelHandler {
 	private PersistentHandler persHandler;
-	private Config cfg;
+	private MonitoringConfig cfg;
 	private String channelURL;
 	private final String channelPostfix;
 	private String strName;// TODO:?? what is this
@@ -43,7 +43,7 @@ public abstract class WSAbstractChannelHandler {
 			throws IOException {
 		this.channelPostfix = _channelPostfix;
 		this.persHandler = PersistentHandler.getInstance();
-		this.cfg = Config.getConfig();
+		this.cfg = MonitoringConfig.getConfig();
 		this.strName = strName;
 		this.channelURL = this.cfg.getInstancePrefix() + "_" + this.strName
 				+ "_" + _channelPostfix;

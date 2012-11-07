@@ -67,7 +67,7 @@ public class RepositoryHandler {
 		this.autocommit = autocommit;
 		
 		
-		System.err.println(serverEndpoint + " " + repositoryID + "");
+		System.err.println("ASDFASDFASDFAS" + _serverEndpoint + " " + _repositoryID + "");
 	}
 
 	public synchronized ValueFactory getValueFactory() {

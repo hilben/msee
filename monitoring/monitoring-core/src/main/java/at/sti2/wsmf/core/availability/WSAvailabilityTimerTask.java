@@ -20,13 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.TimerTask;
-import java.util.UUID;
-
-import javax.xml.namespace.QName;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPMessage;
-import javax.xml.ws.soap.SOAPFaultException;
 
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -35,7 +28,6 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFParseException;
 
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
-import at.sti2.wsmf.core.EndpointHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSAvailabilityChannelHandler;
@@ -105,13 +97,10 @@ public class WSAvailabilityTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		log.info("Starting availability checker...");
-		EndpointHandler endpointHandler;
 		try {
-			endpointHandler = WebServiceEndpointConfig.getConfig(
-					this.webserviceendpoint.getEndpoint()).getEndPointHandler();
 
-			WebServiceEndpoint currentActiveWS = endpointHandler
-					.getCurrentActiveWS();
+			WebServiceEndpoint currentActiveWS = WebServiceEndpointConfig.getConfig(
+					this.webserviceendpoint.getEndpoint()).getWebServiceEndpoint();
 
 			this.updateAvailabilityState(currentActiveWS,
 					this.updateTimeMinutes);

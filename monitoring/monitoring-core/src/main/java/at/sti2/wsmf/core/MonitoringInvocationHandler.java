@@ -132,9 +132,9 @@ public class MonitoringInvocationHandler {
 		WSAvailabilityChecker.startAvailabilityChecking(
 				_activeInstance.getEndpoint(), WS_AVAILABILITY_TIMEOUT_MINUTES);
 
-		EndpointHandler endpointHandler = WebServiceEndpointConfig.getConfig(
-				_activeInstance.getEndpoint()).getEndPointHandler();
-		WebServiceEndpoint currentWS = endpointHandler.getCurrentActiveWS();
+
+		WebServiceEndpoint currentWS = WebServiceEndpointConfig.getConfig(
+				_activeInstance.getEndpoint()).getWebServiceEndpoint();
 		String endpoint = currentWS.getEndpoint().toExternalForm();
 
 		log.info("WS Endpoint      : " + endpoint);
@@ -363,10 +363,11 @@ public class MonitoringInvocationHandler {
 	 * @return
 	 * @throws SOAPException
 	 * @throws IOException
+	 * @throws RepositoryException 
 	 */
 	public static String invokeWithoutMonitoring(String _endpointURL,
 			SOAPMessage _soapMessage, String _soapAction,
-			WebServiceEndpointConfig config) throws SOAPException, IOException {
+			WebServiceEndpointConfig config) throws SOAPException, IOException, RepositoryException {
 
 		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
 				.getConfig(_endpointURL);
