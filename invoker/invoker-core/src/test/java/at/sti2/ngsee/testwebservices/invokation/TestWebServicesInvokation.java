@@ -91,7 +91,7 @@ public class TestWebServicesInvokation {
 				+ os.toString());
 
 		logger.info("RESULTS: "
-				+ MonitoringInvocationHandler.invoke(message, null,
+				+ MonitoringInvocationHandler.invokeWithMonitoring(message, null,
 						new ActivityInstantiatedEvent(endpointUrl), os.size()));
 	}
 

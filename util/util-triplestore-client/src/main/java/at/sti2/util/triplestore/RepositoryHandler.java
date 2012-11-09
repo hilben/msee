@@ -48,6 +48,8 @@ import org.openrdf.rio.UnsupportedRDFormatException;
 
 /**
  * @author Alex Oberhauser
+ * 
+ * @author Benjamin Hiltpolt
  */
 public class RepositoryHandler {
 	private final String serverEndpoint;
@@ -62,12 +64,7 @@ public class RepositoryHandler {
 			boolean autocommit) throws FileNotFoundException, IOException {
 		this.serverEndpoint = _serverEndpoint;
 		this.repositoryID = _repositoryID;
-		
-		
 		this.autocommit = autocommit;
-		
-		
-		System.err.println("ASDFASDFASDFAS" + _serverEndpoint + " " + _repositoryID + "");
 	}
 
 	public synchronized ValueFactory getValueFactory() {

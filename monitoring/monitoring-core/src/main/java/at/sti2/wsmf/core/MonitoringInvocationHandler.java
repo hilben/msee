@@ -124,7 +124,7 @@ public class MonitoringInvocationHandler {
 	 * @throws Exception
 	 * @throws InstanceNotFoundException
 	 */
-	public static String invoke(SOAPMessage _soapMessage, String _soapAction,
+	public static String invokeWithMonitoring(SOAPMessage _soapMessage, String _soapAction,
 			ActivityInstantiatedEvent _activeInstance, int _soapMessageSize)
 			throws Exception {
 

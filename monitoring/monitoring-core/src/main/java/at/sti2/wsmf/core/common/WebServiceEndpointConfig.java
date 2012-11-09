@@ -32,6 +32,8 @@ import at.sti2.wsmf.core.data.WebServiceEndpoint;
  * @author Benjamin Hiltpolt
  * 
  *         Stores and manages a Config file for every Endpoint
+ *         TODO: absoulute file path of config is BAD! 
+ *         TODO: obsolete? find a way to remove...
  */
 public class WebServiceEndpointConfig {
 
@@ -79,6 +81,8 @@ public class WebServiceEndpointConfig {
 	private WebServiceEndpointConfig(String endpointURL) throws IOException,
 			RepositoryException {
 		this.prop = new Properties();
+		
+		//TODO: CHANGE!!!
 		URL config = new URL(
 				"file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
 		this.prop.load(new FileInputStream(config.getFile()));
@@ -94,7 +98,6 @@ public class WebServiceEndpointConfig {
 		this.instancePrefix = this.prop.getProperty("instance.prefixuri");
 		this.webServiceNamespace = this.prop.getProperty("endpoint.namespace");
 
-		System.out.println(this);
 
 		instances.put(endpointURL, this);
 
@@ -131,35 +134,11 @@ public class WebServiceEndpointConfig {
 		return this.endpointURL;
 	}
 
-	//
-	// public String getEndpointMasterNamespace() {
-	// return this.masterEndpointNamespace;
-	// }
-	//
-	// public String getMasterEndpointNamespace() {
-	// return masterEndpointNamespace;
-	// }
-
-	// public void setMasterEndpointNamespace(String masterEndpointNamespace) {
-	// this.masterEndpointNamespace = masterEndpointNamespace;
-	// }
 
 	public void setTriplestoreReposid(String triplestoreReposid) {
 		this.triplestoreReposid = triplestoreReposid;
 	}
 
-	// public String getMasterEndpointURL() {
-	// return masterEndpointURL;
-	// }
-
-	// public void setWebServiceNamespace(String webServiceNamespace) {
-	// this.webServiceNamespace = webServiceNamespace;
-	// }
-
-	// public void setInstancePrefix(String instancePrefix) {
-	// this.instancePrefix = instancePrefix;
-	// }
-	//
 	public WebServiceEndpoint getWebServiceEndpoint() {
 		return this.webserviceendpoint;
 	}

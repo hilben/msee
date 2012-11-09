@@ -43,6 +43,12 @@ public class QueryHelper {
 		return XMLXSD_NS + _property;
 	}
 	
+	/**
+	 * http://www.sti2.at/wsmf/ns#
+	 * 
+	 * @param _property
+	 * @return
+	 */
 	public static String getWSMFURI(String _property) {
 		return WSMF_NS + _property;
 	}

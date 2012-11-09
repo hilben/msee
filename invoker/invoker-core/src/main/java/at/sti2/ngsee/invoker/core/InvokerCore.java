@@ -160,7 +160,7 @@ public class InvokerCore {
 			cfg.setWebServiceName(_operationName);
 			
 			
-			returnMsg = generateSOAPMessage(MonitoringInvocationHandler.invoke(generateSOAPMessage(strMsg),
+			returnMsg = generateSOAPMessage(MonitoringInvocationHandler.invokeWithMonitoring(generateSOAPMessage(strMsg),
 					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(endpointURL),
 					strMsg.length()));
 			

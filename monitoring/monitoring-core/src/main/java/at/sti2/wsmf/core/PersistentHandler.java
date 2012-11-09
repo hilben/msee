@@ -80,7 +80,6 @@ public class PersistentHandler {
 		this.triplestoreEndpoint = cfg.getTriplestoreEndpoint();
 		this.repositoryID = cfg.getTriplestoreReposID();
 		
-		System.out.println("WHYYYYY?: " + this.triplestoreEndpoint + "" + this.repositoryID + "" +cfg.getTriplestoreEndpoint()) ;
 		this.reposHandler = new RepositoryHandler(this.triplestoreEndpoint,
 				this.repositoryID, false);
 	}
@@ -423,10 +422,9 @@ public class PersistentHandler {
 	}
 
 	/**
+	 * TODO: implement begin and end date
 	 * 
-	 * TODO: improve sparql query (hack), handle exceptions in meaningful way
-	 * 
-	 * @param _endpoint
+	 * @param endpoint
 	 * @param qostype
 	 * @param begin
 	 * @param end
@@ -435,76 +433,42 @@ public class PersistentHandler {
 	 * @throws MalformedQueryException
 	 * @throws QueryEvaluationException
 	 */
-	public List<QoSParamAtTime> getQoSTimeframe(String _endpoint,
+	public List<QoSParamAtTime> getQoSTimeframe(String endpoint,
 			String qostype, Date begin, Date end) throws Exception {
-		System.out.println(_endpoint + " is searched...");
+		System.out.println(endpoint + " is searched...");
 
-		// List of all activityinstances of the endpoint TODO: seperate function
-		ArrayList<String> activityinstances = new ArrayList<String>();
+		List<QoSParamAtTime> returnList = new ArrayList<QoSParamAtTime>();
 
 		StringBuffer selectSPARQL = new StringBuffer();
+		
+		selectSPARQL.append("SELECT ?qosparam ?time");
+		selectSPARQL.append(" WHERE {   ?activityevent wsmf:relatedTo <"+endpoint+"> .");
+				
+		selectSPARQL.append(" ?activityevent :hasInvocationState ?istate .");
+		selectSPARQL.append(" ?istate :state :Completed .");
+		selectSPARQL.append(" ?activityevent :"+qostype+" ?qosparam . ");
+		selectSPARQL.append(" ?istate xsd:datetime ?time . } ORDER BY ?time");
+		
 
-		selectSPARQL.append("SELECT ?activityevent ?w WHERE { ");
-		selectSPARQL.append("  ?activityevent wsmf:relatedTo " + "?w" + " . ");
-
-		selectSPARQL.append("}");
-		Vector<URL> resultVector = new Vector<URL>();
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-				.getNamespacePrefix() + selectSPARQL.toString());
+				.getNamespacePrefix()+"PREFIX :<http://www.sti2.at/wsmf/ns#>" + selectSPARQL.toString());
 
-		System.out.println("SELECT: " + QueryHelper.getNamespacePrefix()
-				+ selectSPARQL.toString());
-
-		while (result.hasNext()) {
-			BindingSet cur = result.next();
-			String endpointWSString = cur.getBinding("w").getValue()
-					.stringValue();
-			endpointWSString = endpointWSString.substring(endpointWSString
-					.indexOf('#') + 1);
-
-			if (endpointWSString.compareTo(_endpoint) == 0) {
-				String activityevent = cur.getBinding("activityevent")
-						.getValue().stringValue();
-				activityinstances.add(activityevent);
-			}
-
-			try {
-				resultVector.add(new URL(endpointWSString));
-			} catch (MalformedURLException e) {
-				log.error("'" + endpointWSString
-						+ "' is not a well formed fallback web service URL!");
-			}
-		}
-
-		ArrayList<QoSParamAtTime> returnList = new ArrayList<QoSParamAtTime>();
-		for (String ae : activityinstances) {
-			StringBuffer selectSPARQL2 = new StringBuffer();
-
-			selectSPARQL2.append("SELECT ?qos ?time WHERE {");
-			selectSPARQL2.append("  <" + ae + "> :hasInvocationState" + "?a"
-					+ " . ");
-
-			selectSPARQL2.append("<" + ae + "> :" + qostype + " ?qos .");
-			selectSPARQL2.append("?a :state :Completed .");
-			selectSPARQL2.append("?a xsd:datetime ?time .");
-
-			selectSPARQL2.append("}");
-
-			// System.out.println(selectSPARQL2);
-
-			TupleQueryResult result2 = this.reposHandler
-					.selectSPARQL("PREFIX :<http://www.sti2.at/wsmf/ns#>\n"
-							+ QueryHelper.getNamespacePrefix()
-							+ selectSPARQL2.toString());
-
-			while (result2.hasNext()) {
-				BindingSet cur = result2.next();
-				String time = cur.getBinding("time").getValue().stringValue();
-				String qos = cur.getBinding("qos").getValue().stringValue();
-				System.out.println("time" + time + "qos:" + qos);
+		// System.out.println(QueryHelper
+		// .getNamespacePrefix()+"PREFIX :<http://www.sti2.at/wsmf/ns#>"
+		// +selectSPARQL);
+		
+			while (result.hasNext()) {
+				
+				BindingSet next = result.next();
+				String qos = next.getBinding("qosparam").getValue().toString();
+				String time = next.getBinding("time").getValue().toString();
+				
+				//cut off "
+				qos = qos.substring(1,qos.length()-1);
+				time = time.substring(1,time.length()-1);
+				
 				returnList.add(new QoSParamAtTime(qos, time));
 			}
-		}
 
 		return returnList;
 	}
@@ -536,7 +500,7 @@ public class PersistentHandler {
 				.println(ph
 						.getQoSTimeframe(
 								"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-								"ResponseTime", null, null));
+								"ResponseTime", null, null).toString());
 
 		System.out.println(System.currentTimeMillis() - time + " ms");
 	}

@@ -107,7 +107,7 @@ public class TestInvocationHandler extends TestCase{
 		message.saveChanges();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);
-		String responseMessage = MonitoringInvocationHandler.invoke(message, null, new ActivityInstantiatedEvent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"), os.size());
+		String responseMessage = MonitoringInvocationHandler.invokeWithMonitoring(message, null, new ActivityInstantiatedEvent("http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"), os.size());
 		
 //		System.out.println(responseMessage);
 		

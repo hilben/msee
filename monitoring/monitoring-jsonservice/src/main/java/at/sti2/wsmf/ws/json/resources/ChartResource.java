@@ -60,6 +60,13 @@ import at.sti2.wsmf.ws.json.chartcore.ChartColumnDataTableEntry;
 import at.sti2.wsmf.ws.json.chartcore.GoogleChartJSONDataTableCreator;
 
 // The Java class will be hosted at the URI path "/monitoringjson"
+
+/**
+ * @author Benjamin Hiltpolt
+ * 
+ * 
+ *         TODO: clean up, refactoring...
+ */
 @Path("/monitoringjson")
 public class ChartResource {
 
@@ -77,7 +84,6 @@ public class ChartResource {
 	 * 
 	 */
 	private JSONObject asJson(List<String> endpoints, List<String> qosParamKeys) {
-		try {
 
 			PersistentHandler ph = null;
 			try {
@@ -91,12 +97,13 @@ public class ChartResource {
 			GoogleChartJSONDataTableCreator j = new GoogleChartJSONDataTableCreator();
 
 			for (String endpoint : endpoints) {
-				System.out.println("Add endpoint to json: " + endpoint );
-				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint, "datetime"));
+				System.out.println("Add endpoint to json: " + endpoint);
+				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint,
+						"datetime"));
 			}
 			for (String qosParamKey : qosParamKeys) {
-				j.addColum(new ChartColumnDataTableEntry(qosParamKey, qosParamKey,
-						"number"));
+				j.addColum(new ChartColumnDataTableEntry(qosParamKey,
+						qosParamKey, "number"));
 			}
 
 			// Iterate over all endpoints
@@ -114,19 +121,12 @@ public class ChartResource {
 						data = ph.getQoSTimeframe(endpoint, qosParamKey, null,
 								null);
 					} catch (Exception e) {
-						e.printStackTrace();
+						e.printStackTrace();// TODO: exception handling
 					}
 
-					// Sort it based on Date
-					Collections.sort(data);
-
-
 					for (QoSParamAtTime p : data) {
-						
-						String row[] = new String[qosParamKeys.size() + 1];
-						System.out.println(p.getTime() + "," + qosParamKey
-								+ "->" + p.getQosParamValue());
 
+						String row[] = new String[qosParamKeys.size() + 1];
 						
 						row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
 						for (int i = 1; i < row.length; i++) {
@@ -136,33 +136,37 @@ public class ChartResource {
 						j.addRow(row);
 					}
 
-
 					countQoSParams++;
 				}
 			}
-
-
-			JSONObject jsonobj = new JSONObject(j.toJSON());
+			
+			System.out.println(j.toJSON());
+			
+			JSONObject jsonobj=null;
+			try {
+				jsonobj = new JSONObject(j.toJSON());
+			} catch (JSONException e) {
+				//Fatal Error
+				e.printStackTrace();
+			}
 
 			return jsonobj;
 
-		} catch (JSONException je) {
-			System.err.println(je);
-			return null;
-		}
 	}
 
 	public static void main(String args[]) throws Exception {
 
+		long time = System.currentTimeMillis();
+		
 		ArrayList<String> endpoints = new ArrayList<String>();
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
 
 		endpoints
 				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber");
 		qosParamKeys.add("ResponseTime");
-//		qosParamKeys.add("PayloadsizeResponse");
-//		qosParamKeys.add("AvailableTime");
+		// qosParamKeys.add("PayloadsizeResponse");
+		// qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
-		// System.out.println(j.toJSON());
+		System.out.println("Done in " + (System.currentTimeMillis()-time));
 	}
 }

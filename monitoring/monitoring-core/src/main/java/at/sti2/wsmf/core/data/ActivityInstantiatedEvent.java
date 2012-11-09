@@ -35,7 +35,13 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
  * @author Alex Oberhauser
  * 
  * @author Benjamin Hiltpolt
+ * 
+ * Handles an ActivityInstantiatedEvent to store everything that 
+ * happens during an invocation to the monitoring triplestore
+ * 
+ * see also {@link WebServiceEndpointConfig}. {@link WSInvocationState}
  */
+
 public class ActivityInstantiatedEvent {
 	Logger log = Logger.getLogger(ActivityInstantiatedEvent.class);
 
@@ -48,6 +54,7 @@ public class ActivityInstantiatedEvent {
 	private String subject;
 
 	private PersistentHandler persHandler;
+
 
 	public ActivityInstantiatedEvent(String endpoint) throws IOException,
 			RepositoryException {
@@ -83,8 +90,10 @@ public class ActivityInstantiatedEvent {
 		WSInvocationState oldState = this.state;
 		this.state = _state;
 		try {
-			String invocationState = QueryHelper.getWSMFURI("invocationState_"
-					+ UUID.randomUUID().toString());
+			WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(endpoint);
+			
+			String invocationState = cfg.getInstancePrefix()+"invocationState_"
+					+ UUID.randomUUID().toString();
 			this.persHandler.updateResourceTriple(invocationState,
 					QueryHelper.getWSMFURI("state"),
 					QueryHelper.getWSMFURI(this.state.name()), this.subject);
@@ -102,8 +111,7 @@ public class ActivityInstantiatedEvent {
 
 
 			this.persHandler.updateResourceTriple(this.subject,
-					QueryHelper.getWSMFURI("relatedTo"), QueryHelper.WSMF_NS
-							+ "<"+this.endpoint+">", this.subject);
+					QueryHelper.getWSMFURI("relatedTo"), this.endpoint, this.subject);
 			
 			this.persHandler.commit();
 
@@ -112,6 +120,9 @@ public class ActivityInstantiatedEvent {
 		} catch (RepositoryException e) {
 			log.error("Not able to store invocation instance state in triplestore.");
 			log.error(e.getCause());
+		} catch (IOException e) {
+			log.error("Error with the config file");
+			e.printStackTrace();
 		}
 	}
 

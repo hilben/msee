@@ -3,10 +3,6 @@
  */
 package at.sti2.wsmf.core.data.qos;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author Benjamin Hiltpolt
@@ -15,7 +11,7 @@ import java.util.Date;
  *         
  *         TODO: conceptional work
  */
-public class QoSParamAtTime implements Comparable<QoSParamAtTime> {
+public class QoSParamAtTime {
 
 	protected String qosParamValue;
 	protected String time;
@@ -73,36 +69,18 @@ public class QoSParamAtTime implements Comparable<QoSParamAtTime> {
 		this.time = time;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
-	public int compareTo(QoSParamAtTime other) {
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ssZ");
-
-		Date metime;
-		Date othertime;
-
-		try {
-			metime = df.parse(this.time);
-			othertime = df.parse(other.getTime());
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return 0;
-		}
-
-		return metime.compareTo(othertime);
-	}
-
 	public static void main(String args[]) {
 		
 		QoSParamAtTime q = new QoSParamAtTime("SomeTestParam", "2012-11-05T17:17:41+0100");
-		q.compareTo(q);
+		QoSParamAtTime q2 = new QoSParamAtTime("SomeTestParam","2012-11-09T12:58:33+0100");
 		
 		System.out.println(q.getTimeForGoogleCharts());
+	}
+
+	@Override
+	public String toString() {
+		return "QoSParamAtTime [qosParamValue=" + qosParamValue + ", time="
+				+ time + "]";
 	}
 
 }

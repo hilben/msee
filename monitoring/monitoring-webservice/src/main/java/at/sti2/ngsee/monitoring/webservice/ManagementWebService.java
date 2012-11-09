@@ -231,6 +231,10 @@ public class ManagementWebService implements IManagementWebService {
 
 		for (int i = 0; i < allendpoints.length; i++) {
 			if (Math.random() > 0.5) {
+				
+				if (allendpoints[i].charAt(0)=='<') {
+					allendpoints[i]=allendpoints[i].substring(1, allendpoints[i].length()-1);
+				}
 				endpoints.add(allendpoints[i]);
 				
 			}
@@ -243,7 +247,7 @@ public class ManagementWebService implements IManagementWebService {
 	
 	
 	public static void main(String args[]) throws Exception {
-		new ManagementWebService().getSubcategoriesAndServices("asdf");
+		System.out.println(new ManagementWebService().getSubcategoriesAndServices("asdf"));
 	}
 
 }

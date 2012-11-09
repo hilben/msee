@@ -26,7 +26,7 @@ import at.sti2.wsmf.api.data.qos.QoSUnit;
  * @author Alex Oberhauser
  * 
  * @author Benjamin Hiltpolt
- *      TODO: bug... ?
+ *      TODO: bug... problems to send as via soap
  */
 public class QoSParamValue implements IQoSParamValue, Serializable {
 	private static final long serialVersionUID = -8793209957841733499L;

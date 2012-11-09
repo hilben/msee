@@ -113,7 +113,7 @@ public class WebServiceEndpoint {
 			log.error(e.getCause());
 			this.availabilitySate = WSAvailabilityState.WSNotChecked;
 		}
-		
+
 		this.persHandler.commit();
 	}
 
@@ -144,50 +144,94 @@ public class WebServiceEndpoint {
 		this.availabilitySate = _state;
 		String subject = this.endpoint.toExternalForm();
 
-		// TODO: new one --> Test!
-		String availabilityState = QueryHelper.getWSMFURI("availabilityState_"
-				+ UUID.randomUUID().toString());
-		this.persHandler.updateResourceTriple(availabilityState,
-				QueryHelper.getWSMFURI("state"),
-				QueryHelper.getWSMFURI(this.availabilitySate.name()), subject);
-		this.persHandler.updateResourceTriple(availabilityState,
-				QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("AvailabilityState"), subject);
-		this.persHandler.updateLiteralTriple(availabilityState,
-				QueryHelper.getXMLXSDURI("datetime"), DateHelper.getXSDDateTime(),
-				subject);
+		try {
+			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+					.getConfig(endpoint);
 
-		/*
-		 * updateTime should be at least 1; (TODO: throw exception?)
-		 */
-		if (updateTimeMinutes>0) {
+			String availabilityState = cfg.getInstancePrefix()
+					+ "availabilityState_" + UUID.randomUUID().toString();
+			this.persHandler.updateResourceTriple(availabilityState,
+					QueryHelper.getWSMFURI("state"),
+					QueryHelper.getWSMFURI(this.availabilitySate.name()),
+					subject);
+			this.persHandler.updateResourceTriple(availabilityState,
+					QueryHelper.getRDFURI("type"),
+					QueryHelper.getWSMFURI("AvailabilityState"), subject);
 			this.persHandler.updateLiteralTriple(availabilityState,
-					QueryHelper.getWSMFURI("updateIntervallMinutes"),
-					String.valueOf(updateTimeMinutes), subject);
-			
-		this.updateAvailabilityTime(updateTimeMinutes, _state);
-		}
-		this.persHandler.addResourceTriple(subject,
-				QueryHelper.getWSMFURI("hasAvailabilityState"),
-				availabilityState, subject);
+					QueryHelper.getXMLXSDURI("datetime"),
+					DateHelper.getXSDDateTime(), subject);
 
-		this.persHandler.commit();
+			/*
+			 * updateTime should be at least 1; (TODO: throw exception?)
+			 */
+			if (updateTimeMinutes > 0) {
+				this.persHandler.updateLiteralTriple(availabilityState,
+						QueryHelper.getWSMFURI("updateIntervallMinutes"),
+						String.valueOf(updateTimeMinutes), subject);
+
+				this.updateAvailabilityTime(updateTimeMinutes, _state);
+			}
+			this.persHandler.addResourceTriple(subject,
+					QueryHelper.getWSMFURI("hasAvailabilityState"),
+					availabilityState, subject);
+
+			this.persHandler.commit();
+		} catch (IOException e) {
+			log.error("Error loading the configuration file");
+		}
 	}
 
 	/**
-	 * @throws RepositoryException 
+	 * @throws RepositoryException
 	 * 
 	 */
-	private void updateAvailabilityTime(long updateTimeMinutes, WSAvailabilityState _state) throws RepositoryException {
+	private void updateAvailabilityTime(long updateTimeMinutes,
+			WSAvailabilityState _state) throws RepositoryException {
 
-			long monitoredTime = updateTimeMinutes;
-			long availableTime = updateTimeMinutes;
-			long unavailableTime = updateTimeMinutes;
+		long monitoredTime = updateTimeMinutes;
+		long availableTime = updateTimeMinutes;
+		long unavailableTime = updateTimeMinutes;
 
+		try {
+			monitoredTime += this.getLongValue(QoSParamKey.MonitoredTime);
+			this.changeQoSValue(new QoSParamValue(QoSParamKey.MonitoredTime,
+					monitoredTime + "", QoSUnit.Minutes));
+
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		}
+
+		if (_state == WSAvailabilityState.WSAvailable) {
 			try {
-				monitoredTime += this.getLongValue(QoSParamKey.MonitoredTime);
+				availableTime += this.getLongValue(QoSParamKey.AvailableTime);
+
 				this.changeQoSValue(new QoSParamValue(
-						QoSParamKey.MonitoredTime, monitoredTime + "",
+						QoSParamKey.AvailableTime, availableTime + "",
+						QoSUnit.Minutes));
+			} catch (QueryEvaluationException e) {
+				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
+			} catch (MalformedQueryException e) {
+				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.error(e.getLocalizedMessage());
+			}
+
+		} else {
+			try {
+				unavailableTime += this
+						.getLongValue(QoSParamKey.UnavailableTime);
+				this.changeQoSValue(new QoSParamValue(
+						QoSParamKey.UnavailableTime, unavailableTime + "",
 						QoSUnit.Minutes));
 
 			} catch (QueryEvaluationException e) {
@@ -199,47 +243,9 @@ public class WebServiceEndpoint {
 			} catch (IOException e) {
 				e.printStackTrace();
 				log.error(e.getLocalizedMessage());
-			} 
-
-			if (_state == WSAvailabilityState.WSAvailable) {
-				try {
-					availableTime += this
-							.getLongValue(QoSParamKey.AvailableTime);
-
-					this.changeQoSValue(new QoSParamValue(
-							QoSParamKey.AvailableTime, availableTime + "",
-							QoSUnit.Minutes));
-				} catch (QueryEvaluationException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				} catch (MalformedQueryException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				} catch (IOException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				}
-
-			} else {
-				try {
-					unavailableTime += this
-							.getLongValue(QoSParamKey.UnavailableTime);
-					this.changeQoSValue(new QoSParamValue(
-							QoSParamKey.UnavailableTime, unavailableTime + "",
-							QoSUnit.Minutes));
-
-				} catch (QueryEvaluationException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				} catch (MalformedQueryException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				} catch (IOException e) {
-					e.printStackTrace();
-					log.error(e.getLocalizedMessage());
-				}
-
 			}
+
+		}
 	}
 
 	private synchronized int _incrementRequests(QoSParamKey _key)
@@ -276,22 +282,6 @@ public class WebServiceEndpoint {
 			throws RepositoryException, IOException, QueryEvaluationException,
 			MalformedQueryException {
 		Vector<QoSParamValue> changedValues = new Vector<QoSParamValue>();
-		/*
-		 * Update Average Value
-		 */
-		long oldAverageValue = this
-				.getLongValue(QoSParamKey.ResponseTimeAverage);
-		long newAverageValue;
-		if (oldAverageValue != 0)
-			newAverageValue = (oldAverageValue + _responseTimeMS) / 2;
-		else
-			newAverageValue = _responseTimeMS;
-		log.info("Average response time changed to " + newAverageValue);
-		QoSParamValue averageValue = new QoSParamValue(
-				QoSParamKey.ResponseTimeAverage, newAverageValue + "",
-				QoSUnit.Milliseconds);
-		this.changeQoSValue(averageValue);
-		changedValues.add(averageValue);
 
 		/*
 		 * Minimum and Maximum
@@ -323,18 +313,6 @@ public class WebServiceEndpoint {
 	public void changePayloadSizeResponse(int _payloadKB)
 			throws QueryEvaluationException, RepositoryException,
 			MalformedQueryException, IOException {
-		long oldAveragePayload = this
-				.getLongValue(QoSParamKey.PayloadSizeResponseAverage);
-		long newAverageValue;
-		if (oldAveragePayload != 0)
-			newAverageValue = (oldAveragePayload + _payloadKB) / 2;
-		else
-			newAverageValue = _payloadKB;
-		log.info("Average response payload size response changed to " + newAverageValue);
-		QoSParamValue averageValue = new QoSParamValue(
-				QoSParamKey.PayloadSizeResponseAverage, newAverageValue + "",
-				QoSUnit.Bytes);
-		this.changeQoSValue(averageValue);
 
 		/*
 		 * Minimum and Maximum
@@ -342,7 +320,8 @@ public class WebServiceEndpoint {
 		long oldMinimumValue = this
 				.getLongValue(QoSParamKey.PayloadSizeResponseMinimum);
 		if (_payloadKB < oldMinimumValue || oldMinimumValue == 0) {
-			log.info("Minimum response payload size response changed to " + _payloadKB);
+			log.info("Minimum response payload size response changed to "
+					+ _payloadKB);
 			QoSParamValue minimumAverage = new QoSParamValue(
 					QoSParamKey.PayloadSizeResponseMinimum, _payloadKB + "",
 					QoSUnit.Bytes);
@@ -352,7 +331,8 @@ public class WebServiceEndpoint {
 		long oldMaximumValue = this
 				.getLongValue(QoSParamKey.PayloadSizeResponseMaximum);
 		if (_payloadKB > oldMaximumValue || oldMaximumValue == 0) {
-			log.info("Maximum response payload size response changed to " + _payloadKB);
+			log.info("Maximum response payload size response changed to "
+					+ _payloadKB);
 			QoSParamValue maximumAverage = new QoSParamValue(
 					QoSParamKey.PayloadSizeResponseMaximum, _payloadKB + "",
 					QoSUnit.Bytes);
@@ -363,18 +343,6 @@ public class WebServiceEndpoint {
 	public void changePayloadSizeRequest(int _payloadKB)
 			throws QueryEvaluationException, RepositoryException,
 			MalformedQueryException, IOException {
-		long oldAveragePayload = this
-				.getLongValue(QoSParamKey.PayloadSizeRequestAverage);
-		long newAverageValue;
-		if (oldAveragePayload != 0)
-			newAverageValue = (oldAveragePayload + _payloadKB) / 2;
-		else
-			newAverageValue = _payloadKB;
-		log.info("Average request payload size changed to " + newAverageValue);
-		QoSParamValue averageValue = new QoSParamValue(
-				QoSParamKey.PayloadSizeRequestAverage, newAverageValue + "",
-				QoSUnit.Bytes);
-		this.changeQoSValue(averageValue);
 
 		/*
 		 * Minimum and Maximum
@@ -429,7 +397,7 @@ public class WebServiceEndpoint {
 		this.persHandler.updateLiteralTriple(qosParamID,
 				QueryHelper.getDCURI("modified"), DateHelper.getXSDDateTime(),
 				endpointString);
-		
+
 		this.persHandler.commit();
 	}
 
