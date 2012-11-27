@@ -107,10 +107,13 @@ public class WSAvailabilityChecker {
 			MonitoringInvocationHandler.invokeWithoutMonitoring(_endpoint, soapMessage, _soapAction, null);
 			return true;
 		} catch (SOAPFaultException e) {
+			logger.info(_endpoint + " is available");
 			return true;
 		} catch (IOException e) {
+			logger.info(_endpoint + " not available");
 			return false;
 		} catch (Exception e) {
+			logger.info(_endpoint + " not available");
 			logger.info(e);
 			return false;
 		}

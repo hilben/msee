@@ -17,19 +17,16 @@
 package at.sti2.wsmf.core.data;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.util.triplestore.QueryHelper;
-import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
-import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
 /**
  * @author Alex Oberhauser
@@ -103,7 +100,7 @@ public class ActivityInstantiatedEvent {
 					QueryHelper.getWSMFURI("InvocationState"), this.subject);
 			
 			this.persHandler.updateLiteralTriple(invocationState,
-					QueryHelper.getXMLXSDURI("datetime"), DateHelper.getXSDDateTime(),
+					QueryHelper.getDCURI("date"), DateHelper.getXSDDateTime(),
 					this.subject);
 			this.persHandler.addResourceTriple(this.subject,
 					QueryHelper.getWSMFURI("hasInvocationState"),
@@ -132,49 +129,6 @@ public class ActivityInstantiatedEvent {
 
 	public String getEndpoint() {
 		return this.endpoint;
-	}
-
-	/**
-	 * @param _soapMessageSize
-	 *            TODO: good solution? test!
-	 */
-	public void setPayloadSizeRequest(long _soapMessageSize) {
-		try {
-			this.persHandler.updateLiteralTriple(this.subject,
-					QueryHelper.getWSMFURI("PayloadsizeRequest"),
-					String.valueOf(_soapMessageSize), this.subject);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			log.error(e.getLocalizedMessage());
-		}
-	}
-
-	/**
-	 * @param milliseconds
-	 */
-	public void setResponseTime(long milliseconds) {
-		try {
-			this.persHandler.updateLiteralTriple(this.subject,
-					QueryHelper.getWSMFURI("ResponseTime"),
-					String.valueOf(milliseconds), this.subject);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			log.error(e.getLocalizedMessage());
-		}
-	}
-
-	/**
-	 * @param _soapMessageSize
-	 */
-	public void setPayloadSizeResponse(long _soapMessageSize) {
-		try {
-			this.persHandler.updateLiteralTriple(this.subject,
-					QueryHelper.getWSMFURI("PayloadSizeResponse"),
-					String.valueOf(_soapMessageSize), this.subject);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			log.error(e.getLocalizedMessage());
-		}
 	}
 
 }

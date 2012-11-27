@@ -73,14 +73,8 @@ public class ManagementWebService implements IManagementWebService {
 	 */
 	@WebMethod
 	@Override
-	public QoSParamValue getQoSParam(
+	public String getQoSParam(
 			@WebParam(name = "endpoint") URL _endpoint,
-			@WebParam(name = "key") QoSParamKey _key) throws Exception {
-		PersistentHandler persHandler = PersistentHandler.getInstance();
-		return persHandler.getQoSParam(_endpoint, _key);
-	}
-
-	public String getQoSParam2(@WebParam(name = "endpoint") URL _endpoint,
 			@WebParam(name = "key") QoSParamKey _key) throws Exception {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		return persHandler.getQoSParam(_endpoint, _key).toString();
@@ -90,28 +84,7 @@ public class ManagementWebService implements IManagementWebService {
 	 * @see at.sti2.wsmf.api.ws.IManagementWebService#changeQoSThresholdValue(java.net.URL,
 	 *      at.sti2.wsmf.api.data.qos.IQoSThresholdValue)
 	 */
-	@WebMethod
-	@Override
-	public void changeQoSThresholdValue(
-			@WebParam(name = "endpoint") URL _endpoint,
-			@WebParam(name = "value") QoSThresholdValue _value)
-			throws Exception {
-		PersistentHandler persHandler = PersistentHandler.getInstance();
-		persHandler.changeQoSThresholdValue(_endpoint, _value);
-	}
 
-	/**
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSThresholdValue(java.net.URL,
-	 *      at.sti2.wsmf.api.data.qos.QoSParamKey)
-	 */
-	@WebMethod
-	@Override
-	public QoSThresholdValue getQoSThresholdValue(
-			@WebParam(name = "endpoint") URL _endpoint,
-			@WebParam(name = "key") QoSThresholdKey _key) throws Exception {
-		PersistentHandler persHandler = PersistentHandler.getInstance();
-		return persHandler.getThresholdValue(_endpoint, _key);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -132,6 +105,7 @@ public class ManagementWebService implements IManagementWebService {
 
 		return ret;
 	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -149,74 +123,7 @@ public class ManagementWebService implements IManagementWebService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.wsmf.api.ws.IManagementWebService#getQoSParametersInTimeFrame
-	 * (java.net.URL, at.sti2.wsmf.api.data.qos.QoSParamKey, java.util.Date,
-	 * java.util.Date) TODO: implements
-	 */
-	@Override
-	public Float[] getQoSParametersInTimeFrame(@WebParam(name="endpoint") URL endpoint,@WebParam(name="QoSParamKey") QoSParamKey key,
-			@WebParam(name="datefrom") Date from, @WebParam(name="dateto") Date to) throws Exception {
-		Float[] f = new Float[100];
 
-		for (int i = 0; i < f.length; i++) {
-			f[i] = (float) (Math.random() * 100);
-		}
-
-		return f;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getCategories()
-	 */
-	@Override
-	public List<String> getCategories() throws Exception {
-		// TODO: dummy function
-		List<String> categories = new ArrayList<String>();
-		categories.add("Maritime");
-		categories.add("SendArrivalNotification");
-		categories.add("CustomsAuthorityPreDeparture");
-		categories.add("CustomsAuthorityPreArrival");
-		for (int i = 0; i <= 2; i++) {
-			categories.add("TestCategory" + i);
-		}
-
-		return categories;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getEndpointsForCategory()
-	 */
-
-	
-	@Override
-	public List<String> getEndpointsForCategory(String category)
-			throws Exception {
-
-		String[] allendpoints = this.listEndpoints();
-
-		List<String> endpoints = new ArrayList<String>();
-
-		for (int i = 0; i < allendpoints.length; i++) {
-			if (Math.random() > 0.5) {
-				endpoints.add(allendpoints[i]);
-			}
-		}
-		
-		int m = (int)(Math.random()*10);
-		for (int i = 0; i < m; i++) {
-			endpoints.add("http://example.org/"+category+"/service"+i);
-		}
-
-		return endpoints;
-	}
 
 	/* (non-Javadoc)
 	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getSubcategoriesAndServices(java.lang.String)
@@ -240,14 +147,29 @@ public class ManagementWebService implements IManagementWebService {
 			}
 		}
 		
-
 		endpoints.add("ExampleSubcategory");
 		return endpoints;
 	}
 	
 	
 	public static void main(String args[]) throws Exception {
-		System.out.println(new ManagementWebService().getSubcategoriesAndServices("asdf"));
+		System.out.println("cats: " + new ManagementWebService().getSubcategoriesAndServices("asdf"));
+		System.out.println("instances: " + new ManagementWebService().listInstanceIDs());
 	}
+
+	/* (non-Javadoc)
+	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSParamKeys()
+	 */
+	@Override
+	public List<String> getQoSParamKeys() throws Exception {
+		List<String> keys = new ArrayList<String>();
+		for (QoSParamKey k : QoSParamKey.values()) {
+			keys.add(k.toString());
+		}
+		
+		return keys;
+	}
+
+
 
 }

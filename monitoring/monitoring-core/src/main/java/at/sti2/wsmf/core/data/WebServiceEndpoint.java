@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.UUID;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -158,7 +157,7 @@ public class WebServiceEndpoint {
 					QueryHelper.getRDFURI("type"),
 					QueryHelper.getWSMFURI("AvailabilityState"), subject);
 			this.persHandler.updateLiteralTriple(availabilityState,
-					QueryHelper.getXMLXSDURI("datetime"),
+					QueryHelper.getDCURI("datetime"),
 					DateHelper.getXSDDateTime(), subject);
 
 			/*
@@ -166,7 +165,7 @@ public class WebServiceEndpoint {
 			 */
 			if (updateTimeMinutes > 0) {
 				this.persHandler.updateLiteralTriple(availabilityState,
-						QueryHelper.getWSMFURI("updateIntervallMinutes"),
+						QueryHelper.getWSMFURI("nextAvailabilityCheckMinutes"),
 						String.valueOf(updateTimeMinutes), subject);
 
 				this.updateAvailabilityTime(updateTimeMinutes, _state);
@@ -183,7 +182,7 @@ public class WebServiceEndpoint {
 
 	/**
 	 * @throws RepositoryException
-	 * 
+	 * TODO: modify (should not work now since there are multiple instances of the monitoredTime QoSParam...)
 	 */
 	private void updateAvailabilityTime(long updateTimeMinutes,
 			WSAvailabilityState _state) throws RepositoryException {
@@ -194,7 +193,7 @@ public class WebServiceEndpoint {
 
 		try {
 			monitoredTime += this.getLongValue(QoSParamKey.MonitoredTime);
-			this.changeQoSValue(new QoSParamValue(QoSParamKey.MonitoredTime,
+			this.addQoSValue(new QoSParamValue(QoSParamKey.MonitoredTime,
 					monitoredTime + "", QoSUnit.Minutes));
 
 		} catch (QueryEvaluationException e) {
@@ -203,16 +202,13 @@ public class WebServiceEndpoint {
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 			log.error(e.getLocalizedMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-			log.error(e.getLocalizedMessage());
 		}
 
 		if (_state == WSAvailabilityState.WSAvailable) {
 			try {
 				availableTime += this.getLongValue(QoSParamKey.AvailableTime);
 
-				this.changeQoSValue(new QoSParamValue(
+				this.addQoSValue(new QoSParamValue(
 						QoSParamKey.AvailableTime, availableTime + "",
 						QoSUnit.Minutes));
 			} catch (QueryEvaluationException e) {
@@ -221,16 +217,13 @@ public class WebServiceEndpoint {
 			} catch (MalformedQueryException e) {
 				e.printStackTrace();
 				log.error(e.getLocalizedMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.error(e.getLocalizedMessage());
 			}
 
 		} else {
 			try {
 				unavailableTime += this
 						.getLongValue(QoSParamKey.UnavailableTime);
-				this.changeQoSValue(new QoSParamValue(
+				this.addQoSValue(new QoSParamValue(
 						QoSParamKey.UnavailableTime, unavailableTime + "",
 						QoSUnit.Minutes));
 
@@ -240,9 +233,6 @@ public class WebServiceEndpoint {
 			} catch (MalformedQueryException e) {
 				e.printStackTrace();
 				log.error(e.getLocalizedMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-				log.error(e.getLocalizedMessage());
 			}
 
 		}
@@ -250,13 +240,13 @@ public class WebServiceEndpoint {
 
 	private synchronized int _incrementRequests(QoSParamKey _key)
 			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException, IOException {
+			MalformedQueryException {
 		int oldValue = this.getRequests(_key);
 		int newValue = oldValue + 1;
 		log.info("Increment '" + _key.name() + "' to " + newValue);
 		QoSParamValue value = new QoSParamValue(_key, newValue + "",
 				QoSUnit.Requests);
-		this.changeQoSValue(value);
+		this.addQoSValue(value);
 		return newValue;
 	}
 
@@ -278,133 +268,66 @@ public class WebServiceEndpoint {
 		return this._incrementRequests(QoSParamKey.RequestSuccessful);
 	}
 
-	public Vector<QoSParamValue> changeResponseTime(long _responseTimeMS)
-			throws RepositoryException, IOException, QueryEvaluationException,
-			MalformedQueryException {
-		Vector<QoSParamValue> changedValues = new Vector<QoSParamValue>();
-
-		/*
-		 * Minimum and Maximum
-		 */
-		long oldMinimumValue = this
-				.getLongValue(QoSParamKey.ResponseTimeMinimum);
-		if (_responseTimeMS < oldMinimumValue || oldMinimumValue == 0) {
-			log.info("Minimum response time changed to " + _responseTimeMS);
-			QoSParamValue minimumAverage = new QoSParamValue(
-					QoSParamKey.ResponseTimeMinimum, _responseTimeMS + "",
-					QoSUnit.Milliseconds);
-			this.changeQoSValue(minimumAverage);
-			changedValues.add(minimumAverage);
-		}
-
-		long oldMaximumValue = this
-				.getLongValue(QoSParamKey.ResponseTimeMaximum);
-		if (_responseTimeMS > oldMaximumValue || oldMaximumValue == 0) {
-			log.info("Maximum response time changed to " + _responseTimeMS);
-			QoSParamValue maximumAverage = new QoSParamValue(
-					QoSParamKey.ResponseTimeMaximum, _responseTimeMS + "",
-					QoSUnit.Milliseconds);
-			this.changeQoSValue(maximumAverage);
-			changedValues.add(maximumAverage);
-		}
-		return changedValues;
-	}
-
-	public void changePayloadSizeResponse(int _payloadKB)
-			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException, IOException {
-
-		/*
-		 * Minimum and Maximum
-		 */
-		long oldMinimumValue = this
-				.getLongValue(QoSParamKey.PayloadSizeResponseMinimum);
-		if (_payloadKB < oldMinimumValue || oldMinimumValue == 0) {
-			log.info("Minimum response payload size response changed to "
-					+ _payloadKB);
-			QoSParamValue minimumAverage = new QoSParamValue(
-					QoSParamKey.PayloadSizeResponseMinimum, _payloadKB + "",
-					QoSUnit.Bytes);
-			this.changeQoSValue(minimumAverage);
-		}
-
-		long oldMaximumValue = this
-				.getLongValue(QoSParamKey.PayloadSizeResponseMaximum);
-		if (_payloadKB > oldMaximumValue || oldMaximumValue == 0) {
-			log.info("Maximum response payload size response changed to "
-					+ _payloadKB);
-			QoSParamValue maximumAverage = new QoSParamValue(
-					QoSParamKey.PayloadSizeResponseMaximum, _payloadKB + "",
-					QoSUnit.Bytes);
-			this.changeQoSValue(maximumAverage);
-		}
-	}
-
-	public void changePayloadSizeRequest(int _payloadKB)
-			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException, IOException {
-
-		/*
-		 * Minimum and Maximum
-		 */
-		long oldMinimumValue = this
-				.getLongValue(QoSParamKey.PayloadSizeRequestMinimum);
-		if (_payloadKB < oldMinimumValue || oldMinimumValue == 0) {
-			log.info("Minimum request payload size changed to " + _payloadKB);
-			QoSParamValue minimumAverage = new QoSParamValue(
-					QoSParamKey.PayloadSizeRequestMinimum, _payloadKB + "",
-					QoSUnit.Bytes);
-			this.changeQoSValue(minimumAverage);
-		}
-
-		long oldMaximumValue = this
-				.getLongValue(QoSParamKey.PayloadSizeRequestMaximum);
-		if (_payloadKB > oldMaximumValue || oldMaximumValue == 0) {
-			log.info("Maximum request payload size changed to " + _payloadKB);
-			QoSParamValue maximumAverage = new QoSParamValue(
-					QoSParamKey.PayloadSizeRequestMaximum, _payloadKB + "",
-					QoSUnit.Bytes);
-			this.changeQoSValue(maximumAverage);
-		}
-	}
-
-	public void changeQoSValue(QoSParamValue _value) throws IOException,
-			RepositoryException {
+	/**
+	 * 
+	 * Changes a QoSParameterValue
+	 * 
+	 *TODO:modify so that old QoSValues are not overwritten... --> DEBUG
+	 * 
+	 * @param _value
+	 */
+	public void addQoSValue(QoSParamValue _value) {
 		String endpointString = this.endpoint.toExternalForm();
-		String qosParamID = PersistentHandler.getQoSParamID(endpointString,
+		String qosParamID = PersistentHandler.getQoSParamID(endpointString+DateHelper.getXSDDateTime(),
 				_value.getType());
 
-		this.persHandler.addResourceTriple(endpointString,
-				QueryHelper.getWSMFURI("hasQoSParam"), qosParamID,
-				endpointString);
+		try {
+			this.persHandler.addResourceTriple(endpointString,
+					QueryHelper.getWSMFURI("hasQoSParam"), qosParamID,
+					endpointString);
 
-		this.persHandler.updateResourceTriple(qosParamID,
-				QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("QoSParam"), endpointString);
+			this.persHandler.updateResourceTriple(qosParamID,
+					QueryHelper.getRDFURI("type"),
+					QueryHelper.getWSMFURI("QoSParam"), endpointString);
 
-		this.persHandler.updateResourceTriple(qosParamID,
-				QueryHelper.getWSMFURI("type"), QueryHelper.WSMF_NS
-						+ _value.getType().name(), endpointString);
+			this.persHandler.updateResourceTriple(qosParamID,
+					QueryHelper.getWSMFURI("type"), QueryHelper.WSMF_NS
+							+ _value.getType().name(), endpointString);
 
-		this.persHandler.updateResourceTriple(qosParamID,
-				QueryHelper.getWSMFURI("unit"), QueryHelper.WSMF_NS
-						+ _value.getUnit().name(), endpointString);
+			this.persHandler.updateResourceTriple(qosParamID,
+					QueryHelper.getWSMFURI("unit"), QueryHelper.WSMF_NS
+							+ _value.getUnit().name(), endpointString);
 
-		this.persHandler.updateLiteralTriple(qosParamID,
-				QueryHelper.getWSMFURI("value"), _value.getValue(),
-				endpointString);
+			this.persHandler.updateLiteralTriple(qosParamID,
+					QueryHelper.getWSMFURI("value"), _value.getValue(),
+					endpointString);
 
-		this.persHandler.updateLiteralTriple(qosParamID,
-				QueryHelper.getDCURI("modified"), DateHelper.getXSDDateTime(),
-				endpointString);
+			this.persHandler.updateLiteralTriple(qosParamID,
+					QueryHelper.getDCURI("date"),
+					DateHelper.getXSDDateTime(), endpointString);
 
-		this.persHandler.commit();
+			this.persHandler.commit();
+
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		}
 	}
 
+	/**
+	 * Returns the AvailabilityStatus of the WebServiceEndpoint
+	 * 
+	 * @return
+	 */
 	public WSAvailabilityState getAvailabilityStatus() {
 		return this.availabilitySate;
 	}
 
+	/**
+	 * Returns the URL of the Endpoint of the WebService
+	 * 
+	 * @return
+	 */
 	public URL getEndpoint() {
 		return this.endpoint;
 	}

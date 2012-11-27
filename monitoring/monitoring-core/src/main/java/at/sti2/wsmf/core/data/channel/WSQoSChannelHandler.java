@@ -40,7 +40,6 @@ import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 

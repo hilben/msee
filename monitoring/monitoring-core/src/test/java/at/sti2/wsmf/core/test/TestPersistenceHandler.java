@@ -54,30 +54,13 @@ public class TestPersistenceHandler extends TestCase {
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.RequestTotal));
 
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeRequestAverage));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeRequestMaximum));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeRequestMinimum));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeResponseAverage));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeResponseMaximum));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.PayloadSizeResponseMinimum));
+
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.RequestFailed));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.RequestSuccessful));
 				System.out.println(phandler.getQoSParam(new URL(URL[i]),
 						QoSParamKey.RequestTotal));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.ResponseTimeAverage));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.ResponseTimeMaximum));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.ResponseTimeMinimum));
 
 				
 				System.out.println(phandler.getInvocationState("http://sti2.at/wsmf/instances#6a3e6e34-f2f9-49cc-8d53-388b07027126"));

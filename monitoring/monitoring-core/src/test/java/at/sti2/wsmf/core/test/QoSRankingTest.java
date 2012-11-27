@@ -75,13 +75,6 @@ public class QoSRankingTest extends TestCase {
 //		}
 		
 //		// Set up preferences for the QoSParams
-		qosRankingTemplate.addPropertyAndImportance(
-				QoSParamKey.ResponseTimeAverage, -2.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.RequestTotal,
-				2.0f);
-		qosRankingTemplate.addPropertyAndImportance(
-				QoSParamKey.PayloadSizeRequestAverage, 5.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.PayloadSizeResponseAverage, 2.0f);
 		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime, 1.0f);
 		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime, 2.0f);
 		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime, -5.0f);

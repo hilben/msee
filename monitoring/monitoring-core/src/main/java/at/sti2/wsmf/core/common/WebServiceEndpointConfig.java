@@ -18,7 +18,6 @@ package at.sti2.wsmf.core.common;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;

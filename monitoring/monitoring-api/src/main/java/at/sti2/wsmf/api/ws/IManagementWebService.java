@@ -54,8 +54,8 @@ public interface IManagementWebService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Float[] getQoSParametersInTimeFrame(@WebParam(name="endpoint") URL endpoint,@WebParam(name="QoSParamKey") QoSParamKey key,
-			@WebParam(name="datefrom") Date from, @WebParam(name="dateto") Date to) throws Exception;
+//	public Float[] getQoSParametersInTimeFrame(@WebParam(name="endpoint") URL endpoint,@WebParam(name="QoSParamKey") QoSParamKey key,
+//			@WebParam(name="datefrom") Date from, @WebParam(name="dateto") Date to) throws Exception;
 
 	/*
 	 * Common Operations
@@ -72,18 +72,22 @@ public interface IManagementWebService {
 	 * QoS API
 	 */
 	/**
+	 * 
+	 * TODO: change back from string to QosParamValue
 	 * @param key
 	 *            {@link QoSParamKey}
 	 * @return {@link IQoSParamValue}
 	 */
-	public IQoSParamValue getQoSParam(URL endpoint, QoSParamKey key)
+	public String getQoSParam(URL endpoint, QoSParamKey key)
 			throws Exception;
 
-	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value)
-			throws Exception;
-
-	public QoSThresholdValue getQoSThresholdValue(URL endpoint,
-			QoSThresholdKey key) throws Exception;
+	
+	//TODO: add them back... (bug fixing, testing etc)
+//	public void changeQoSThresholdValue(URL endpoint, QoSThresholdValue value)
+//			throws Exception;
+//
+//	public QoSThresholdValue getQoSThresholdValue(URL endpoint,
+//			QoSThresholdKey key) throws Exception;
 
 	/**
 	 * 
@@ -103,31 +107,13 @@ public interface IManagementWebService {
 	public List<String> getQoSRankedEndpoints(QoSParamKey[] key,
 			Float[] preferenceValue, String[] endpoints) throws Exception;
 
-	/**
-	 * 
-	 * TODO: Dummy function / conceptional work missing
-	 * 
-	 * Returns all categories
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public List<String> getCategories() throws Exception;
 
-	/**
-	 * TODO: Dummy function / conceptional work missing
-	 * 
-	 * Returns all endpoints part of a certain category
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public List<String> getEndpointsForCategory(String category) throws Exception;
+	public List<String> getQoSParamKeys() throws Exception;
 	
 	
 	/**
 	 * 
-	 * TODO: Dummy function
+	 * TODO: Move to other class?
 	 * 
 	 * Returns a String list storing all subcategories and endpoints of a category.
 	 * Keep in mind that it will only return the endpoints of a category not the endpoints of the categorys subcategories.

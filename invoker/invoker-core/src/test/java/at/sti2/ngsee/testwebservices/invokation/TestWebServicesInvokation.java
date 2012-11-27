@@ -46,24 +46,24 @@ public class TestWebServicesInvokation {
 							TestWebServicesSOAPMessages
 									.getRandomNumberWebServiceSOAP((int) (Math
 											.random() * 1000)));
-//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-//					+ "randomstring", "RandomStringWebService",
-//					TestWebServicesSOAPMessages
-//							.getRandomStringWebServiceSOAP(getRandomWord()));
-//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-//					+ "reversestring", "ReverseStringWebService",
-//					TestWebServicesSOAPMessages
-//							.getReverseStringWebServiceSOAP(getRandomWord()));
-//			TestWebServicesInvokation
-//					.invokeWebServiceViaMonitoring(
-//							ENDPOINT + "stringmulti",
-//							"StringMultiplierWebService",
-//							TestWebServicesSOAPMessages
-//									.getStringMultiplierWebServiceSOAP(getRandomWord()));
-//			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-//					+ "stringuppercase", "StringUppercaseWebService",
-//					TestWebServicesSOAPMessages
-//							.getStringUppercaseWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "randomstring", "RandomStringWebService",
+					TestWebServicesSOAPMessages
+							.getRandomStringWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "reversestring", "ReverseStringWebService",
+					TestWebServicesSOAPMessages
+							.getReverseStringWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation
+					.invokeWebServiceViaMonitoring(
+							ENDPOINT + "stringmulti",
+							"StringMultiplierWebService",
+							TestWebServicesSOAPMessages
+									.getStringMultiplierWebServiceSOAP(getRandomWord()));
+			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
+					+ "stringuppercase", "StringUppercaseWebService",
+					TestWebServicesSOAPMessages
+							.getStringUppercaseWebServiceSOAP(getRandomWord()));
 			} catch (Exception e){
 				e.printStackTrace();
 				logger.error(e);

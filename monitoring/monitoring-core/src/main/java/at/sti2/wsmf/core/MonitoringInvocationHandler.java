@@ -19,7 +19,6 @@ package at.sti2.wsmf.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Vector;
 
 import javax.management.InstanceNotFoundException;
 import javax.xml.namespace.QName;
@@ -56,49 +55,27 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
  * @author Benjamin Hiltpolt The {@link MonitoringInvocationHandler} invokes web
  *         services and stores monitoring informations about the webservice also
  *         it starts an AvailabilityChecker for the invoked webservice
+ *         {TODO: removed use of {@link WSQoSChannelHandler} maybe reuse later?}
  * 
  */
 public class MonitoringInvocationHandler {
 	private static Logger log = Logger
 			.getLogger(MonitoringInvocationHandler.class);
+	
 	private static final int TIME_OUT_MS = 12000;
 
 	// TODO: change back to reasonable time
 	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 5;
 
-	private static void sendStateChange(
-			ActivityInstantiatedEvent _activeInstance) {
-		try {
-			WSInvocationStateChannelHandler stateChannel = WSInvocationStateChannelHandler
-					.getInstance();
-			stateChannel.sendState(
-					WebServiceEndpointConfig.getConfig(
-							_activeInstance.getEndpoint()).getInstancePrefix()
-							+ _activeInstance.getIdentifier(),
-					_activeInstance.getState());
-		} catch (QueryEvaluationException e) {
-			log.error("Not able to send state changed message, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (MalformedQueryException e) {
-			log.error("Not able to send state changed message, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (RepositoryException e) {
-			log.error("Not able to send state changed message, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (IOException e) {
-			log.error("Not able to send state changed message, through exception: "
-					+ e.getLocalizedMessage());
-		}
-	}
 
-	private static void sendQoSValue(ActivityInstantiatedEvent _activeInstance,
-			QoSParamValue _value) {
+	private static void sendQoSValue(ActivityInstantiatedEvent activeInstance,
+			QoSParamValue value) {
 		try {
 			WSQoSChannelHandler qosChannel = WSQoSChannelHandler.getInstance();
 			qosChannel.sendState(
 					WebServiceEndpointConfig.getConfig(
-							_activeInstance.getEndpoint()).getInstancePrefix()
-							+ _activeInstance.getIdentifier(), _value);
+							activeInstance.getEndpoint()).getInstancePrefix()
+							+ activeInstance.getIdentifier(), value);
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to send qos value message, through exception: "
 					+ e.getLocalizedMessage());
@@ -118,30 +95,28 @@ public class MonitoringInvocationHandler {
 	 * 
 	 * @param _soapRequest
 	 *            The request message encoded in SOAP
-	 * @param _soapAction
+	 * @param soapAction
 	 *            HTTP header field 'SOAPAction'
 	 * @return
 	 * @throws Exception
 	 * @throws InstanceNotFoundException
 	 */
-	public static String invokeWithMonitoring(SOAPMessage _soapMessage, String _soapAction,
-			ActivityInstantiatedEvent _activeInstance, int _soapMessageSize)
-			throws Exception {
+	public static String invokeWithMonitoring(SOAPMessage soapMessage,
+			String soapAction, ActivityInstantiatedEvent activeInstance,
+			int soapMessageSize) throws Exception {
 
-		// TODO: check and test
 		WSAvailabilityChecker.startAvailabilityChecking(
-				_activeInstance.getEndpoint(), WS_AVAILABILITY_TIMEOUT_MINUTES);
-
+				activeInstance.getEndpoint(), WS_AVAILABILITY_TIMEOUT_MINUTES);
 
 		WebServiceEndpoint currentWS = WebServiceEndpointConfig.getConfig(
-				_activeInstance.getEndpoint()).getWebServiceEndpoint();
+				activeInstance.getEndpoint()).getWebServiceEndpoint();
 		String endpoint = currentWS.getEndpoint().toExternalForm();
 
 		log.info("WS Endpoint      : " + endpoint);
-		log.info("SOAP Action      : " + _soapAction);
+		log.info("SOAP Action      : " + soapAction);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			_soapMessage.writeTo(os);
+			soapMessage.writeTo(os);
 			log.info("SOAP Message     : " + os);
 		} catch (SOAPException e) {
 			log.error("Could not print out the SOAP Message!");
@@ -150,20 +125,21 @@ public class MonitoringInvocationHandler {
 
 		Options opts = new Options();
 		opts.setTo(new EndpointReference(endpoint));
-		opts.setAction(_soapAction);
+		opts.setAction(soapAction);
 		opts.setTimeOutInMilliSeconds(TIME_OUT_MS);
 
 		/* ***************************
 		 * Monitoring Block Start
 		 */
-		_activeInstance.setEndpoint(endpoint);
-		_activeInstance.changeInvocationStatus(WSInvocationState.Instantiated);
-		sendStateChange(_activeInstance);
+		activeInstance.setEndpoint(endpoint);
+		activeInstance.changeInvocationStatus(WSInvocationState.Instantiated);
+		sendStateChange(activeInstance);
 		try {
 			int totalRequests = currentWS.incrementeTotalRequests();
-			sendQoSValue(_activeInstance, new QoSParamValue(
+			sendQoSValue(activeInstance, new QoSParamValue(
 					QoSParamKey.RequestTotal, totalRequests + "",
 					QoSUnit.Requests));
+			
 		} catch (QueryEvaluationException e) {
 			log.error("Not able to increment total requests value, through exception: "
 					+ e.getLocalizedMessage());
@@ -174,16 +150,9 @@ public class MonitoringInvocationHandler {
 			log.error("Not able to increment total requests value, through exception: "
 					+ e.getLocalizedMessage());
 		}
-		try {
-			currentWS.changePayloadSizeRequest(_soapMessageSize);
-			_activeInstance.setPayloadSizeRequest(_soapMessageSize);
-		} catch (QueryEvaluationException e) {
-			log.error("Not able to change payload size, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (MalformedQueryException e) {
-			log.error("Not able to change payload size, through exception: "
-					+ e.getLocalizedMessage());
-		}
+
+//		activeInstance.setPayloadSizeRequest(soapMessageSize);
+		currentWS.addQoSValue(new QoSParamValue(QoSParamKey.PayloadSizeRequest,Integer.toString(soapMessageSize),QoSUnit.Bytes));
 
 		/*
 		 * Monitoring Block End***************************
@@ -195,8 +164,8 @@ public class MonitoringInvocationHandler {
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			_activeInstance.changeInvocationStatus(WSInvocationState.Started);
-			sendStateChange(_activeInstance);
+			activeInstance.changeInvocationStatus(WSInvocationState.Started);
+			sendStateChange(activeInstance);
 			/*
 			 * Monitoring Block End***************************
 			 */
@@ -206,8 +175,8 @@ public class MonitoringInvocationHandler {
 			/*
 			 * Invocation
 			 */
-			result = invokeWithoutMonitoring(endpoint, _soapMessage,
-					_soapAction, null);
+			result = invokeWithoutMonitoring(endpoint, soapMessage,
+					soapAction, null);
 			/*
 			 * End of Invocation
 			 */
@@ -222,40 +191,29 @@ public class MonitoringInvocationHandler {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			message.writeTo(stream);
 
-			_activeInstance.setPayloadSizeResponse(stream.size());
-			currentWS.changePayloadSizeResponse(stream.size());
+			String responseSize = Integer.toString(stream.size());
+			QoSParamValue responseSizeQosParam = new QoSParamValue(QoSParamKey.PayloadSizeResponse,responseSize,QoSUnit.Bytes);
+			currentWS.addQoSValue(responseSizeQosParam);
+
 
 			long afterInvocation = System.currentTimeMillis();
-			try {
-				long responseTime = (afterInvocation - beforeInvocation);
-				Vector<QoSParamValue> changedValues = currentWS
-						.changeResponseTime(responseTime);
-				for (QoSParamValue entry : changedValues) {
-					sendQoSValue(_activeInstance, entry);
-				}
+			long responseTime = (afterInvocation - beforeInvocation);
 
-				_activeInstance.setResponseTime(responseTime);
+//			activeInstance.setResponseTime(responseTime);
+			QoSParamValue responseTimeQosParam = new QoSParamValue(QoSParamKey.ResponseTime,Long.toString(responseTime),QoSUnit.Milliseconds);
+			currentWS.addQoSValue(responseTimeQosParam);
 
-			} catch (RepositoryException e1) {
-				log.error("Not able to change the response time, through exception: "
-						+ e1.getLocalizedMessage());
-			} catch (QueryEvaluationException e1) {
-				log.error("Not able to change the response time, through exception: "
-						+ e1.getLocalizedMessage());
-			} catch (MalformedQueryException e1) {
-				log.error("Not able to change the response time, through exception: "
-						+ e1.getLocalizedMessage());
-			}
+
 
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			_activeInstance.changeInvocationStatus(WSInvocationState.Completed);
-			sendStateChange(_activeInstance);
+			activeInstance.changeInvocationStatus(WSInvocationState.Completed);
+			sendStateChange(activeInstance);
 			try {
 				int successfulRequests = currentWS
 						.incrementeSuccessfulRequests();
-				sendQoSValue(_activeInstance, new QoSParamValue(
+				sendQoSValue(activeInstance, new QoSParamValue(
 						QoSParamKey.RequestSuccessful, successfulRequests + "",
 						QoSUnit.Requests));
 			} catch (QueryEvaluationException e) {
@@ -277,12 +235,12 @@ public class MonitoringInvocationHandler {
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			_activeInstance
+			activeInstance
 					.changeInvocationStatus(WSInvocationState.Terminated);
-			sendStateChange(_activeInstance);
+			sendStateChange(activeInstance);
 			try {
 				int failedRequests = currentWS.incrementeFailedRequests();
-				sendQoSValue(_activeInstance, new QoSParamValue(
+				sendQoSValue(activeInstance, new QoSParamValue(
 						QoSParamKey.RequestFailed, failedRequests + "",
 						QoSUnit.Requests));
 			} catch (QueryEvaluationException e1) {
@@ -303,12 +261,12 @@ public class MonitoringInvocationHandler {
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			_activeInstance
+			activeInstance
 					.changeInvocationStatus(WSInvocationState.Terminated);
-			sendStateChange(_activeInstance);
+			sendStateChange(activeInstance);
 			try {
 				int failedRequests = currentWS.incrementeFailedRequests();
-				sendQoSValue(_activeInstance, new QoSParamValue(
+				sendQoSValue(activeInstance, new QoSParamValue(
 						QoSParamKey.RequestFailed, failedRequests + "",
 						QoSUnit.Requests));
 			} catch (QueryEvaluationException e1) {
@@ -363,11 +321,12 @@ public class MonitoringInvocationHandler {
 	 * @return
 	 * @throws SOAPException
 	 * @throws IOException
-	 * @throws RepositoryException 
+	 * @throws RepositoryException
 	 */
 	public static String invokeWithoutMonitoring(String _endpointURL,
 			SOAPMessage _soapMessage, String _soapAction,
-			WebServiceEndpointConfig config) throws SOAPException, IOException, RepositoryException {
+			WebServiceEndpointConfig config) throws SOAPException, IOException,
+			RepositoryException {
 
 		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
 				.getConfig(_endpointURL);
@@ -401,4 +360,30 @@ public class MonitoringInvocationHandler {
 		return os.toString();
 	}
 
+	private static void sendStateChange(
+			ActivityInstantiatedEvent _activeInstance) {
+		try {
+			WSInvocationStateChannelHandler stateChannel = WSInvocationStateChannelHandler
+					.getInstance();
+			stateChannel.sendState(
+					WebServiceEndpointConfig.getConfig(
+							_activeInstance.getEndpoint()).getInstancePrefix()
+							+ _activeInstance.getIdentifier(),
+					_activeInstance.getState());
+		} catch (QueryEvaluationException e) {
+			log.error("Not able to send state changed message, through exception: "
+					+ e.getLocalizedMessage());
+		} catch (MalformedQueryException e) {
+			log.error("Not able to send state changed message, through exception: "
+					+ e.getLocalizedMessage());
+		} catch (RepositoryException e) {
+			log.error("Not able to send state changed message, through exception: "
+					+ e.getLocalizedMessage());
+		} catch (IOException e) {
+			log.error("Not able to send state changed message, through exception: "
+					+ e.getLocalizedMessage());
+		}
+	}
+
+	
 }

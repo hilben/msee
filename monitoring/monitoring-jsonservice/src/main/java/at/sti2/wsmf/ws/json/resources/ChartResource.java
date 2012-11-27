@@ -85,88 +85,88 @@ public class ChartResource {
 	 */
 	private JSONObject asJson(List<String> endpoints, List<String> qosParamKeys) {
 
-			PersistentHandler ph = null;
-			try {
-				ph = PersistentHandler.getInstance();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		PersistentHandler ph = null;
+		try {
+			ph = PersistentHandler.getInstance();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-			GoogleChartJSONDataTableCreator j = new GoogleChartJSONDataTableCreator();
+		GoogleChartJSONDataTableCreator j = new GoogleChartJSONDataTableCreator();
 
-			for (String endpoint : endpoints) {
-				System.out.println("Add endpoint to json: " + endpoint);
-				j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint,
-						"datetime"));
-			}
+		for (String endpoint : endpoints) {
+			System.out.println("Add endpoint to json: " + endpoint);
+			j.addColum(new ChartColumnDataTableEntry("endpoint", endpoint,
+					"datetime"));
+		}
+		for (String qosParamKey : qosParamKeys) {
+			j.addColum(new ChartColumnDataTableEntry(qosParamKey, qosParamKey,
+					"number"));
+		}
+
+		// Iterate over all endpoints
+		for (String endpoint : endpoints) {
+
+			int countQoSParams = 1;
+
+			// For all qosParamKeys receive them
 			for (String qosParamKey : qosParamKeys) {
-				j.addColum(new ChartColumnDataTableEntry(qosParamKey,
-						qosParamKey, "number"));
-			}
 
-			// Iterate over all endpoints
-			for (String endpoint : endpoints) {
+				List<QoSParamAtTime> data = new ArrayList<QoSParamAtTime>();
 
-				int countQoSParams = 1;
-
-				// For all qosParamKeys receive them
-				for (String qosParamKey : qosParamKeys) {
-
-					List<QoSParamAtTime> data = new ArrayList<QoSParamAtTime>();
-
-					// Receive data of this QoSParam
-					try {
-						data = ph.getQoSTimeframe(endpoint, qosParamKey, null,
-								null);
-					} catch (Exception e) {
-						e.printStackTrace();// TODO: exception handling
-					}
-
-					for (QoSParamAtTime p : data) {
-
-						String row[] = new String[qosParamKeys.size() + 1];
-						
-						row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
-						for (int i = 1; i < row.length; i++) {
-							row[i] = "null";
-						}
-						row[countQoSParams] = p.getQosParamValue();
-						j.addRow(row);
-					}
-
-					countQoSParams++;
+				// Receive data of this QoSParam
+				try {
+					data = ph
+							.getQoSTimeframe(endpoint, qosParamKey, null, null);
+				} catch (Exception e) {
+					e.printStackTrace();// TODO: exception handling
 				}
-			}
-			
-			System.out.println(j.toJSON());
-			
-			JSONObject jsonobj=null;
-			try {
-				jsonobj = new JSONObject(j.toJSON());
-			} catch (JSONException e) {
-				//Fatal Error
-				e.printStackTrace();
-			}
 
-			return jsonobj;
+				for (QoSParamAtTime p : data) {
+
+					String row[] = new String[qosParamKeys.size() + 1];
+
+					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
+					for (int i = 1; i < row.length; i++) {
+						row[i] = "null";
+					}
+					row[countQoSParams] = p.getQosParamValue();
+					j.addRow(row);
+				}
+
+				countQoSParams++;
+			}
+		}
+
+		System.out.println(j.toJSON());
+
+		JSONObject jsonobj = null;
+		try {
+			jsonobj = new JSONObject(j.toJSON());
+		} catch (JSONException e) {
+			// Fatal Error
+			e.printStackTrace();
+		}
+
+		return jsonobj;
 
 	}
 
 	public static void main(String args[]) throws Exception {
 
 		long time = System.currentTimeMillis();
-		
+
 		ArrayList<String> endpoints = new ArrayList<String>();
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
-
 		endpoints
-				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber");
+				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
 		qosParamKeys.add("ResponseTime");
-		// qosParamKeys.add("PayloadsizeResponse");
+		qosParamKeys.add("PayloadsizeResponse");
+		qosParamKeys.add("PayloadsizeRequest");
 		// qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
-		System.out.println("Done in " + (System.currentTimeMillis()-time));
+		System.out.println("Done in " + (System.currentTimeMillis() - time));
 	}
 }

@@ -20,8 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,9 +41,9 @@ import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
-import at.sti2.wsmf.core.common.MonitoringConfig;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.HashValueHandler;
+import at.sti2.wsmf.core.common.MonitoringConfig;
 import at.sti2.wsmf.core.data.channel.ChannelSubscriber;
 import at.sti2.wsmf.core.data.qos.QoSParamAtTime;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
@@ -107,14 +105,14 @@ public class PersistentHandler {
 		return state;
 	}
 
-	public static String getQoSParamID(String _endpoint, QoSParamKey _type) {
+	public static String getQoSParamID(String endpoint, QoSParamKey type) {
 		String qosParamID = "unknown";
 		try {
 			MonitoringConfig cfg = MonitoringConfig.getConfig();
-			qosParamID = cfg.getInstancePrefix() + _type + "_"
-					+ HashValueHandler.computeSHA1(_endpoint);
+			qosParamID = cfg.getInstancePrefix() + type + "_"
+					+ HashValueHandler.computeSHA1(endpoint);
 		} catch (Exception e) {
-			log.error("Hash computation failed for '" + _endpoint + "'");
+			log.error("Hash computation failed for '" + endpoint + "'");
 		}
 		return qosParamID;
 	}
@@ -302,8 +300,7 @@ public class PersistentHandler {
 	}
 
 	/**
-	 * Returns a Vector of all Endpoint monitored by the Repository TODO:
-	 * implement
+	 * Returns a Vector of all Endpoint monitored by the Repository TODO: implement
 	 * 
 	 * @throws MalformedQueryException
 	 * @throws RepositoryException
@@ -500,7 +497,7 @@ public class PersistentHandler {
 				.println(ph
 						.getQoSTimeframe(
 								"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-								"ResponseTime", null, null).toString());
+								"PayloadsizeRequest", null, null).toString());
 
 		System.out.println(System.currentTimeMillis() - time + " ms");
 	}

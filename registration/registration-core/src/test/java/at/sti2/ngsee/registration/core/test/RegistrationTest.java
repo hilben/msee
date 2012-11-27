@@ -35,6 +35,8 @@ import at.sti2.ngsee.registration.core.management.TransformationWSDL;
 
 /**
  * @author Corneliu Stanciu
+ * 
+ * @author Benjamin Hiltpolt
  */
 public class RegistrationTest {
 
@@ -66,6 +68,8 @@ public class RegistrationTest {
 
 			Assert.assertTrue(checkServiceID(serviceID));
 		}
+		
+		
 	}
 
 	private boolean checkServiceID(String serviceID) {
