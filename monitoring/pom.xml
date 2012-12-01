@@ -25,6 +25,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<cxf.version>2.3.3</cxf.version>
+		<saxon.version>8.7</saxon.version>
+		<axis.version>1.5.4</axis.version>
 	</properties>
 
 	<organization>

@@ -77,7 +77,7 @@ public class PersistentHandler {
 		MonitoringConfig cfg = MonitoringConfig.getConfig();
 		this.triplestoreEndpoint = cfg.getTriplestoreEndpoint();
 		this.repositoryID = cfg.getTriplestoreReposID();
-		
+
 		this.reposHandler = new RepositoryHandler(this.triplestoreEndpoint,
 				this.repositoryID, false);
 	}
@@ -105,29 +105,17 @@ public class PersistentHandler {
 		return state;
 	}
 
-	public static String getQoSParamID(String endpoint, QoSParamKey type) {
-		String qosParamID = "unknown";
-		try {
-			MonitoringConfig cfg = MonitoringConfig.getConfig();
-			qosParamID = cfg.getInstancePrefix() + type + "_"
-					+ HashValueHandler.computeSHA1(endpoint);
-		} catch (Exception e) {
-			log.error("Hash computation failed for '" + endpoint + "'");
-		}
-		return qosParamID;
-	}
-
-	public static String getQoSParamID(String _endpoint, QoSThresholdKey _key) {
-		String qosParamID = "unknown";
-		try {
-			MonitoringConfig cfg = MonitoringConfig.getConfig();
-			qosParamID = cfg.getInstancePrefix() + _key + "_"
-					+ HashValueHandler.computeSHA1(_endpoint);
-		} catch (Exception e) {
-			log.error("Hash computation failed for '" + _endpoint + "'");
-		}
-		return qosParamID;
-	}
+//	public static String getQoSParamID(String _endpoint, QoSThresholdKey _key) {
+//		String qosParamID = "unknown";
+//		try {
+//			MonitoringConfig cfg = MonitoringConfig.getConfig();
+//			qosParamID = cfg.getInstancePrefix() + _key + "_"
+//					+ HashValueHandler.computeSHA1(_endpoint);
+//		} catch (Exception e) {
+//			log.error("Hash computation failed for '" + _endpoint + "'");
+//		}
+//		return qosParamID;
+//	}
 
 	public synchronized void updateResourceTriple(String _subject,
 			String _predicate, String _object, String _context)
@@ -170,42 +158,6 @@ public class PersistentHandler {
 			return "0";
 	}
 
-	/**
-	 * @param externalForm
-	 * @param _key
-	 * @return
-	 * @throws MalformedQueryException
-	 * @throws RepositoryException
-	 * @throws QueryEvaluationException
-	 */
-	public QoSParamValue getQoSParam(URL _endpoint, QoSParamKey _key)
-			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException {
-		String type = QueryHelper.WSMF_NS + _key.name();
-		StringBuffer selectSPARQL = new StringBuffer();
-		selectSPARQL.append("SELECT ?qosValue ?qosUnit WHERE { ");
-		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-				+ "> rdf:type wsmf:Endpoint . ");
-		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-				+ "> wsmf:hasQoSParam ?qos . ");
-		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
-		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
-		selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");
-		selectSPARQL.append("}");
-		System.out.println(selectSPARQL);
-		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-				.getNamespacePrefix() + selectSPARQL.toString());
-		if (result.hasNext()) {
-			BindingSet entry = result.next();
-			String value = entry.getBinding("qosValue").getValue()
-					.stringValue();
-			QoSUnit unit = QoSUnit.valueOf(entry.getBinding("qosUnit")
-					.getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
-			return new QoSParamValue(_key, value, unit);
-		} else
-			return null;
-	}
-
 	public Vector<ChannelSubscriber> getSubscriber(String _subject)
 			throws QueryEvaluationException, RepositoryException,
 			MalformedQueryException {
@@ -238,6 +190,16 @@ public class PersistentHandler {
 		return resultVector;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//TODO: put back on threshold values
 	/**
 	 * @param payloadsizemaximum
 	 * @return
@@ -245,62 +207,64 @@ public class PersistentHandler {
 	 * @throws MalformedQueryException
 	 * @throws RepositoryException
 	 */
-	public QoSThresholdValue getThresholdValue(URL _endpoint,
-			QoSThresholdKey _key) throws QueryEvaluationException,
-			RepositoryException, MalformedQueryException {
-		String type = QueryHelper.WSMF_NS + _key.name();
-		StringBuffer selectSPARQL = new StringBuffer();
-		selectSPARQL.append("SELECT ?qosValue ?qosUnit WHERE { ");
-		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-				+ "> rdf:type wsmf:Endpoint . ");
-		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-				+ "> wsmf:hasQoSThresholdParam ?qos . ");
-		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
-		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
-		selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");
-		selectSPARQL.append("}");
-		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-				.getNamespacePrefix() + selectSPARQL.toString());
-		if (result.hasNext()) {
-			BindingSet entry = result.next();
-			String value = entry.getBinding("qosValue").getValue()
-					.stringValue();
-			QoSUnit unit = QoSUnit.valueOf(entry.getBinding("qosUnit")
-					.getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
-			return new QoSThresholdValue(_key, value, unit);
-		} else
-			return new QoSThresholdValue(_key, "-1", QoSUnit.Unknown);
-	}
+//	public QoSThresholdValue getThresholdValue(URL _endpoint,
+//			QoSThresholdKey _key) throws QueryEvaluationException,
+//			RepositoryException, MalformedQueryException {
+//		String type = QueryHelper.WSMF_NS + _key.name();
+//		StringBuffer selectSPARQL = new StringBuffer();
+//		selectSPARQL.append("SELECT ?qosValue ?qosUnit WHERE { ");
+//		selectSPARQL.append("  <" + _endpoint.toExternalForm()
+//				+ "> rdf:type wsmf:Endpoint . ");
+//		selectSPARQL.append("  <" + _endpoint.toExternalForm()
+//				+ "> wsmf:hasQoSThresholdParam ?qos . ");
+//		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
+//		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
+//		selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");
+//		selectSPARQL.append("}");
+//		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
+//				.getNamespacePrefix() + selectSPARQL.toString());
+//		if (result.hasNext()) {
+//			BindingSet entry = result.next();
+//			String value = entry.getBinding("qosValue").getValue()
+//					.stringValue();
+//			QoSUnit unit = QoSUnit.valueOf(entry.getBinding("qosUnit")
+//					.getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
+//			return new QoSThresholdValue(_key, value, unit);
+//		} else
+//			return new QoSThresholdValue(_key, "-1", QoSUnit.Unknown);
+//	}
 
-	public void changeQoSThresholdValue(URL _endpoint, QoSThresholdValue _value)
-			throws IOException, RepositoryException {
-		String endpoint = _endpoint.toExternalForm();
-		String qosParamID = PersistentHandler.getQoSParamID(endpoint,
-				_value.getType())
-				+ "_threshold";
 
-		this.addResourceTriple(endpoint,
-				QueryHelper.getWSMFURI("hasQoSThresholdParam"), qosParamID,
-				endpoint);
-
-		this.updateResourceTriple(qosParamID, QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("QoSParam"), endpoint);
-
-		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("type"),
-				QueryHelper.WSMF_NS + _value.getType().name(), endpoint);
-
-		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("unit"),
-				QueryHelper.WSMF_NS + _value.getUnit().name(), endpoint);
-
-		this.updateLiteralTriple(qosParamID, QueryHelper.getWSMFURI("value"),
-				_value.getValue(), endpoint);
-
-		this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("modified"),
-				DateHelper.getXSDDateTime(), endpoint);
-	}
+//	public void changeQoSThresholdValue(URL _endpoint, QoSThresholdValue _value)
+//			throws IOException, RepositoryException {
+//		String endpoint = _endpoint.toExternalForm();
+//		String qosParamID = PersistentHandler.getQoSParamID(endpoint,
+//				_value.getType())
+//				+ "_threshold";
+//
+//		this.addResourceTriple(endpoint,
+//				QueryHelper.getWSMFURI("hasQoSThresholdParam"), qosParamID,
+//				endpoint);
+//
+//		this.updateResourceTriple(qosParamID, QueryHelper.getRDFURI("type"),
+//				QueryHelper.getWSMFURI("QoSParam"), endpoint);
+//
+//		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("type"),
+//				QueryHelper.WSMF_NS + _value.getType().name(), endpoint);
+//
+//		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("unit"),
+//				QueryHelper.WSMF_NS + _value.getUnit().name(), endpoint);
+//
+//		this.updateLiteralTriple(qosParamID, QueryHelper.getWSMFURI("value"),
+//				_value.getValue(), endpoint);
+//
+//		this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("modified"),
+//				DateHelper.getXSDDateTime(), endpoint);
+//	}
 
 	/**
-	 * Returns a Vector of all Endpoint monitored by the Repository TODO: implement
+	 * Returns a Vector of all Endpoint monitored by the Repository TODO:
+	 * implement
 	 * 
 	 * @throws MalformedQueryException
 	 * @throws RepositoryException
@@ -437,38 +401,43 @@ public class PersistentHandler {
 		List<QoSParamAtTime> returnList = new ArrayList<QoSParamAtTime>();
 
 		StringBuffer selectSPARQL = new StringBuffer();
-		
-		selectSPARQL.append("SELECT ?qosparam ?time");
-		selectSPARQL.append(" WHERE {   ?activityevent wsmf:relatedTo <"+endpoint+"> .");
-				
-		selectSPARQL.append(" ?activityevent :hasInvocationState ?istate .");
-		selectSPARQL.append(" ?istate :state :Completed .");
-		selectSPARQL.append(" ?activityevent :"+qostype+" ?qosparam . ");
-		selectSPARQL.append(" ?istate xsd:datetime ?time . } ORDER BY ?time");
-		
+
+		selectSPARQL.append("SELECT ?qosparamval ?time ");
+		selectSPARQL.append("WHERE {");
+		selectSPARQL.append("<" + endpoint
+				+ "> <http://www.sti2.at/wsmf/ns#hasQoSParam> ?qosparam . ");
+		selectSPARQL
+				.append("?qosparam <http://www.sti2.at/wsmf/ns#type> <http://www.sti2.at/wsmf/ns#"
+						+ qostype + "> . ");
+		selectSPARQL
+				.append("?qosparam <http://purl.org/dc/elements/1.1/date> ?time . ");
+		selectSPARQL
+				.append("?qosparam <http://www.sti2.at/wsmf/ns#value> ?qosparamval . ");
+		selectSPARQL.append("} ");
+
+		System.out.println(selectSPARQL.toString());
 
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-				.getNamespacePrefix()+"PREFIX :<http://www.sti2.at/wsmf/ns#>" + selectSPARQL.toString());
+				.getNamespacePrefix()
+				+ "PREFIX :<http://www.sti2.at/wsmf/ns#>"
+				+ selectSPARQL.toString());
 
-		// System.out.println(QueryHelper
-		// .getNamespacePrefix()+"PREFIX :<http://www.sti2.at/wsmf/ns#>"
-		// +selectSPARQL);
-		
-			while (result.hasNext()) {
-				
-				BindingSet next = result.next();
-				String qos = next.getBinding("qosparam").getValue().toString();
-				String time = next.getBinding("time").getValue().toString();
-				
-				//cut off "
-				qos = qos.substring(1,qos.length()-1);
-				time = time.substring(1,time.length()-1);
-				
-				returnList.add(new QoSParamAtTime(qos, time));
-			}
+		while (result.hasNext()) {
+
+			BindingSet next = result.next();
+			String qos = next.getBinding("qosparamval").getValue().toString();
+			String time = next.getBinding("time").getValue().toString();
+
+			// cut off "
+			qos = qos.substring(1, qos.length() - 1);
+			time = time.substring(1, time.length() - 1);
+
+			returnList.add(new QoSParamAtTime(qos, time));
+		}
 
 		return returnList;
 	}
+
 
 	public synchronized void commit() {
 		try {
@@ -497,9 +466,24 @@ public class PersistentHandler {
 				.println(ph
 						.getQoSTimeframe(
 								"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-								"PayloadsizeRequest", null, null).toString());
+								"PayloadSizeRequest", null, null).toString());
 
 		System.out.println(System.currentTimeMillis() - time + " ms");
+	}
+
+	/**
+	 * @param _endpoint
+	 * @param _key
+	 * @return
+	 * @throws Exception
+	 */
+	public String getQoSParam(URL _endpoint, QoSParamKey _key) throws Exception {
+		List<QoSParamAtTime> t;
+
+		t = this.getQoSTimeframe(_endpoint.toString(), _key.toString(), null,
+				null);
+
+		return t.get(0).getQosParamValue();
 	}
 
 }

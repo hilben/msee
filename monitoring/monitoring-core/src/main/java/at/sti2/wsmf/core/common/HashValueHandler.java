@@ -17,6 +17,7 @@
 package at.sti2.wsmf.core.common;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * A class that provides methods for the computation of hash value.<p/>
@@ -55,7 +56,7 @@ public class HashValueHandler {
 	 * @return The sha-256 value of the input data.
 	 * @throws Exception
 	 */
-	public static String computeSHA256(String _data) throws Exception {
+	public static String computeSHA256(String _data) throws Exception  {
 	    MessageDigest md = MessageDigest.getInstance("SHA-256");
 	    byte[] sha256hash = new byte[64];
 	    md.update(_data.getBytes("UTF-8"), 0, _data.length());

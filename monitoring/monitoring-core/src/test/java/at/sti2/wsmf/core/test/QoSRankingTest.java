@@ -46,9 +46,6 @@ public class QoSRankingTest extends TestCase {
 	
 	//some hardcoded endpoints
 	 public static String URL[] = {
-	 "http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
-	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
 	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringuppercase",
 	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomstring",
 	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringmulti"

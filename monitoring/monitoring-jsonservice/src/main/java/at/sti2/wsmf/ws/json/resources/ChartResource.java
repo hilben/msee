@@ -128,7 +128,8 @@ public class ChartResource {
 
 					String row[] = new String[qosParamKeys.size() + 1];
 
-					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
+//					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
+					row[0] = "\"" + p.getTime() + "\"";
 					for (int i = 1; i < row.length; i++) {
 						row[i] = "null";
 					}
@@ -163,8 +164,8 @@ public class ChartResource {
 		endpoints
 				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
 		qosParamKeys.add("ResponseTime");
-		qosParamKeys.add("PayloadsizeResponse");
-		qosParamKeys.add("PayloadsizeRequest");
+//		qosParamKeys.add("PayloadsizeResponse");
+//		qosParamKeys.add("PayloadsizeRequest");
 		// qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
 		System.out.println("Done in " + (System.currentTimeMillis() - time));

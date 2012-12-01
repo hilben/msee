@@ -675,4 +675,317 @@ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
          </falForm>
       </dum:submitFALForm>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/dummy/ValenciaPortWebService/submitFALForm"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://sesa.sti2.at/services/dummy/ValenciaPortWebService/submitFALForm"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ManagementWebServiceServiceSoapBinding" type="wsdl" bindingName="{http://webservice.monitoring.ngsee.sti2.at/}ManagementWebServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://sesa.sti2.at:8080/monitoring-webservice/services/management?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://sesa.sti2.at:8080/monitoring-webservice/services/management?wsdl"><con:part><con:url>http://sesa.sti2.at:8080/monitoring-webservice/services/management?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ManagementWebServiceService" targetNamespace="http://webservice.monitoring.ngsee.sti2.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.monitoring.ngsee.sti2.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.monitoring.ngsee.sti2.at/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="getInvocationState" type="tns:getInvocationState"/>
+      <xs:element name="getInvocationStateResponse" type="tns:getInvocationStateResponse"/>
+      <xs:element name="getQoSParam" type="tns:getQoSParam"/>
+      <xs:element name="getQoSParamKeys" type="tns:getQoSParamKeys"/>
+      <xs:element name="getQoSParamKeysResponse" type="tns:getQoSParamKeysResponse"/>
+      <xs:element name="getQoSParamResponse" type="tns:getQoSParamResponse"/>
+      <xs:element name="getQoSRankedEndpoints" type="tns:getQoSRankedEndpoints"/>
+      <xs:element name="getQoSRankedEndpointsResponse" type="tns:getQoSRankedEndpointsResponse"/>
+      <xs:element name="getSubcategoriesAndServices" type="tns:getSubcategoriesAndServices"/>
+      <xs:element name="getSubcategoriesAndServicesResponse" type="tns:getSubcategoriesAndServicesResponse"/>
+      <xs:element name="listEndpoints" type="tns:listEndpoints"/>
+      <xs:element name="listEndpointsResponse" type="tns:listEndpointsResponse"/>
+      <xs:element name="listInstanceIDs" type="tns:listInstanceIDs"/>
+      <xs:element name="listInstanceIDsResponse" type="tns:listInstanceIDsResponse"/>
+      <xs:complexType name="getQoSParamKeys">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getQoSParamKeysResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="listInstanceIDs">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="listInstanceIDsResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQoSRankedEndpoints">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="arg0" type="tns:qoSParamKey"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="arg1" type="xs:float"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="arg2" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQoSRankedEndpointsResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInvocationState">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="activityStartedEvent" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInvocationStateResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:wsInvocationState"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="listEndpoints">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="listEndpointsResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQoSParam">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="endpoint" type="xs:anyURI"/>
+          <xs:element minOccurs="0" name="key" type="tns:qoSParamKey"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQoSParamResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSubcategoriesAndServices">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSubcategoriesAndServicesResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="qoSParamKey">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="RequestTotal"/>
+          <xs:enumeration value="RequestSuccessful"/>
+          <xs:enumeration value="RequestFailed"/>
+          <xs:enumeration value="ResponseTime"/>
+          <xs:enumeration value="PayloadSizeRequest"/>
+          <xs:enumeration value="PayloadSizeResponse"/>
+          <xs:enumeration value="MonitoredTime"/>
+          <xs:enumeration value="AvailableTime"/>
+          <xs:enumeration value="UnavailableTime"/>
+          <xs:enumeration value="PayloadSizeResponseMinimum"/>
+          <xs:enumeration value="PayloadSizeResponseAverage"/>
+          <xs:enumeration value="PayloadSizeResponseMaximum"/>
+          <xs:enumeration value="PayloadSizeRequestMinimum"/>
+          <xs:enumeration value="PayloadSizeRequestAverage"/>
+          <xs:enumeration value="PayloadSizeRequestMaximum"/>
+          <xs:enumeration value="ResponseTimeMinimum"/>
+          <xs:enumeration value="ResponseTimeMaximum"/>
+          <xs:enumeration value="ResponseTimeAverage"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="wsInvocationState">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None"/>
+          <xs:enumeration value="Instantiated"/>
+          <xs:enumeration value="Started"/>
+          <xs:enumeration value="Terminated"/>
+          <xs:enumeration value="Completed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="listEndpoints">
+    <wsdl:part element="tns:listEndpoints" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSRankedEndpoints">
+    <wsdl:part element="tns:getQoSRankedEndpoints" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listEndpointsResponse">
+    <wsdl:part element="tns:listEndpointsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubcategoriesAndServices">
+    <wsdl:part element="tns:getSubcategoriesAndServices" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSParamKeys">
+    <wsdl:part element="tns:getQoSParamKeys" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInvocationStateResponse">
+    <wsdl:part element="tns:getInvocationStateResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInstanceIDs">
+    <wsdl:part element="tns:listInstanceIDs" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listInstanceIDsResponse">
+    <wsdl:part element="tns:listInstanceIDsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSParamResponse">
+    <wsdl:part element="tns:getQoSParamResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSParam">
+    <wsdl:part element="tns:getQoSParam" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSubcategoriesAndServicesResponse">
+    <wsdl:part element="tns:getSubcategoriesAndServicesResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSRankedEndpointsResponse">
+    <wsdl:part element="tns:getQoSRankedEndpointsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInvocationState">
+    <wsdl:part element="tns:getInvocationState" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getQoSParamKeysResponse">
+    <wsdl:part element="tns:getQoSParamKeysResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ManagementWebService">
+    <wsdl:operation name="getQoSParamKeys">
+      <wsdl:input message="tns:getQoSParamKeys" name="getQoSParamKeys"></wsdl:input>
+      <wsdl:output message="tns:getQoSParamKeysResponse" name="getQoSParamKeysResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInstanceIDs">
+      <wsdl:input message="tns:listInstanceIDs" name="listInstanceIDs"></wsdl:input>
+      <wsdl:output message="tns:listInstanceIDsResponse" name="listInstanceIDsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQoSRankedEndpoints">
+      <wsdl:input message="tns:getQoSRankedEndpoints" name="getQoSRankedEndpoints"></wsdl:input>
+      <wsdl:output message="tns:getQoSRankedEndpointsResponse" name="getQoSRankedEndpointsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvocationState">
+      <wsdl:input message="tns:getInvocationState" name="getInvocationState"></wsdl:input>
+      <wsdl:output message="tns:getInvocationStateResponse" name="getInvocationStateResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listEndpoints">
+      <wsdl:input message="tns:listEndpoints" name="listEndpoints"></wsdl:input>
+      <wsdl:output message="tns:listEndpointsResponse" name="listEndpointsResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQoSParam">
+      <wsdl:input message="tns:getQoSParam" name="getQoSParam"></wsdl:input>
+      <wsdl:output message="tns:getQoSParamResponse" name="getQoSParamResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubcategoriesAndServices">
+      <wsdl:input message="tns:getSubcategoriesAndServices" name="getSubcategoriesAndServices"></wsdl:input>
+      <wsdl:output message="tns:getSubcategoriesAndServicesResponse" name="getSubcategoriesAndServicesResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ManagementWebServiceServiceSoapBinding" type="tns:ManagementWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getQoSParamKeys">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getQoSParamKeys">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getQoSParamKeysResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQoSRankedEndpoints">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getQoSRankedEndpoints">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getQoSRankedEndpointsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listInstanceIDs">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="listInstanceIDs">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listInstanceIDsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvocationState">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInvocationState">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInvocationStateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listEndpoints">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="listEndpoints">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listEndpointsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getQoSParam">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getQoSParam">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getQoSParamResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSubcategoriesAndServices">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getSubcategoriesAndServices">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSubcategoriesAndServicesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ManagementWebServiceService">
+    <wsdl:port binding="tns:ManagementWebServiceServiceSoapBinding" name="ManagementWebServicePort">
+      <soap:address location="http://sesa.sti2.at:8080/monitoring-webservice/services/management"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="getInvocationState" bindingOperationName="getInvocationState" type="Request-Response" outputName="getInvocationStateResponse" inputName="getInvocationState" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getInvocationState>
+         <!--Optional:-->
+         <activityStartedEvent>?</activityStartedEvent>
+      </web:getInvocationState>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/getInvocationState"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getQoSParam" bindingOperationName="getQoSParam" type="Request-Response" outputName="getQoSParamResponse" inputName="getQoSParam" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getQoSParam>
+         <!--Optional:-->
+         <endpoint>?</endpoint>
+         <!--Optional:-->
+         <key>?</key>
+      </web:getQoSParam>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/getQoSParam"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getQoSParamKeys" bindingOperationName="getQoSParamKeys" type="Request-Response" outputName="getQoSParamKeysResponse" inputName="getQoSParamKeys" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getQoSParamKeys/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/getQoSParamKeys"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getQoSRankedEndpoints" bindingOperationName="getQoSRankedEndpoints" type="Request-Response" outputName="getQoSRankedEndpointsResponse" inputName="getQoSRankedEndpoints" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getQoSRankedEndpoints>
+         <!--Zero or more repetitions:-->
+         <arg0>?</arg0>
+         <!--Zero or more repetitions:-->
+         <arg1>?</arg1>
+         <!--Zero or more repetitions:-->
+         <arg2>?</arg2>
+      </web:getQoSRankedEndpoints>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/getQoSRankedEndpoints"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getSubcategoriesAndServices" bindingOperationName="getSubcategoriesAndServices" type="Request-Response" outputName="getSubcategoriesAndServicesResponse" inputName="getSubcategoriesAndServices" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:getSubcategoriesAndServices>
+         <!--Optional:-->
+         <arg0>asdf</arg0>
+      </web:getSubcategoriesAndServices>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/getSubcategoriesAndServices"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="listEndpoints" bindingOperationName="listEndpoints" type="Request-Response" outputName="listEndpointsResponse" inputName="listEndpoints" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:listEndpoints/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/listEndpoints"/></con:call></con:operation><con:operation isOneWay="false" action="" name="listInstanceIDs" bindingOperationName="listInstanceIDs" type="Request-Response" outputName="listInstanceIDsResponse" inputName="listInstanceIDs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://sesa.sti2.at:8080/monitoring-webservice/services/management</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:listInstanceIDs/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.monitoring.ngsee.sti2.at/ManagementWebService/listInstanceIDs"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

@@ -20,6 +20,7 @@ import at.sti2.wsmf.core.PersistentHandler;
 /**
  * @author Benjamin Hiltpolt
  * 
+ * TODO: implement
  */
 public class TestPersistenceHandler extends TestCase {
 
@@ -51,16 +52,6 @@ public class TestPersistenceHandler extends TestCase {
 				System.out.println("# PRINTING DATA FOR " + URL[i]);
 				System.out.println("#######################################");
 				
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.RequestTotal));
-
-
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.RequestFailed));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.RequestSuccessful));
-				System.out.println(phandler.getQoSParam(new URL(URL[i]),
-						QoSParamKey.RequestTotal));
 
 				
 				System.out.println(phandler.getInvocationState("http://sti2.at/wsmf/instances#6a3e6e34-f2f9-49cc-8d53-388b07027126"));
@@ -75,9 +66,6 @@ public class TestPersistenceHandler extends TestCase {
 		} catch (MalformedQueryException e) {
 			e.printStackTrace();
 			fail(e.toString());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			fail(e.toString());
-		}
+		} 
 	}
 }

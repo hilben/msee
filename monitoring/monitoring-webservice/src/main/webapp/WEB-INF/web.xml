@@ -21,6 +21,8 @@
                         classpath:META-INF/cxf/cxf-servlet.xml
                 </param-value>
 	</context-param>
+	
+	
 	<servlet>
 		<servlet-name>WebServicePort</servlet-name>
 		<!-- For Metro, use this servlet-class instead: com.sun.xml.ws.transport.http.servlet.WSServlet -->

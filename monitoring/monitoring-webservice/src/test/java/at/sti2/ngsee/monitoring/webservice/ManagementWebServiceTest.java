@@ -42,10 +42,11 @@ public class ManagementWebServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		managementWS = new ManagementWebService();
-		
 		instances = managementWS.listInstanceIDs();
 		endpoints = managementWS.listEndpoints();
 		keys = managementWS.getQoSParamKeys();
+		
+		//Generate some test data	TODO
 	}
 
 	/**

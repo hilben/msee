@@ -32,6 +32,7 @@ import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.common.DateHelper;
+import at.sti2.wsmf.core.common.HashValueHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
@@ -278,10 +279,11 @@ public class WebServiceEndpoint {
 	 */
 	public void addQoSValue(QoSParamValue _value) {
 		String endpointString = this.endpoint.toExternalForm();
-		String qosParamID = PersistentHandler.getQoSParamID(endpointString+DateHelper.getXSDDateTime(),
-				_value.getType());
-
+		String qosParamID;
 		try {
+			qosParamID = HashValueHandler.computeSHA256(endpointString+DateHelper.getXSDDateTime()+
+					_value.getType());
+
 			this.persHandler.addResourceTriple(endpointString,
 					QueryHelper.getWSMFURI("hasQoSParam"), qosParamID,
 					endpointString);
@@ -309,6 +311,9 @@ public class WebServiceEndpoint {
 			this.persHandler.commit();
 
 		} catch (RepositoryException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		}catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getLocalizedMessage());
 		}
