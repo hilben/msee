@@ -33,7 +33,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 	private static Logger logger = Logger.getLogger(QoSParamsEndpointRankingTable.class);
 	
 	private String endpointName;
-	private Map<QoSParamKey, Float> propIdentifiersOrderingValues = new HashMap<QoSParamKey, Float>();
+	private Map<String, Float> propIdentifiersOrderingValues = new HashMap<String, Float>();
 
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 			QoSRankingPreferencesTemplate template)  {
 		this.endpointName = endpointName;
 
-		for (QoSParamKey s : template.getQoSParams()) {
+		for (String s : template.getQoSParams()) {
 			this.propIdentifiersOrderingValues.put(s, new Float(Float.NaN));
 		}
 	}
@@ -56,7 +56,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 	 * @see at.sti2.wsmf.core.ranking.asdfd#getRankingValueForProperty(at.sti2.wsmf.api.data.qos.QoSParamKey)
 	 */
 	@Override
-	public Float getRankingValueForProperty(QoSParamKey property) {
+	public Float getRankingValueForProperty(String property) {
 		return this.propIdentifiersOrderingValues.get(property);
 	}
 
@@ -64,7 +64,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 	 * @see at.sti2.wsmf.core.ranking.asdfd#setRankingValueForProperty(at.sti2.wsmf.api.data.qos.QoSParamKey, java.lang.Float)
 	 */
 	@Override
-	public void setRankingValueForProperty(QoSParamKey property, Float value)
+	public void setRankingValueForProperty(String property, Float value)
 			throws Exception {
 		if (this.propIdentifiersOrderingValues.containsKey(property)) {
 			this.propIdentifiersOrderingValues.put(property, value);
@@ -90,7 +90,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 			logger.error(e2.getCause());
 		}
 		
-		for (QoSParamKey key : this.getQoSParams()) {
+		for (String key : this.getQoSParams()) {
 			try {
 				
 				//handle invalid values or QoS for which no values were determined
@@ -119,7 +119,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 	 * Returns all QoSParamKeys
 	 * @return
 	 */
-	private Set<QoSParamKey> getQoSParams() {
+	private Set<String> getQoSParams() {
 		return this.propIdentifiersOrderingValues.keySet();
 	}
 
@@ -130,7 +130,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 	@Override
 	public float getSummedUpValues() {
 		float retVal = 0;
-		for (QoSParamKey s : this.propIdentifiersOrderingValues.keySet()) {
+		for (String s : this.propIdentifiersOrderingValues.keySet()) {
 			retVal += this.propIdentifiersOrderingValues.get(s);
 		}
 
@@ -147,7 +147,7 @@ public class QoSParamsEndpointRankingTable implements IQoSParamsEndpointRankingT
 
 		ret += this.endpointName + "\n";
 
-		for (QoSParamKey s : this.propIdentifiersOrderingValues.keySet()) {
+		for (String s : this.propIdentifiersOrderingValues.keySet()) {
 			ret += s + ": " + this.getRankingValueForProperty(s) +System.getProperty("line.separator");
 		}
 		ret += "\n";

@@ -5,67 +5,104 @@ package at.sti2.wsmf.core.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.repository.RepositoryException;
+import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.core.PersistentHandler;
+import at.sti2.wsmf.core.data.WebServiceEndpoint;
 
 /**
  * @author Benjamin Hiltpolt
  * 
- * TODO: implement
+ *         TODO: implement
  */
 public class TestPersistenceHandler extends TestCase {
-
-	public static final String[] URL = {
-			"http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
-			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring",
-			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringuppercase",
-			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomstring",
-			"http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringmulti"};
-
-	public void testPersistenceHandler() {
-		PersistentHandler phandler = null;
+	private static PersistentHandler phandler;
+	private static Logger logger = Logger.getLogger(TestPersistenceHandler.class);
+	private static final String testendpointstr = "http://www.sometestingurl.com";
+    private static URL testendpoint = null;
+	
+	@Before
+	public void setUp() {
 		try {
 			phandler = PersistentHandler.getInstance();
+			testendpoint = new URL(testendpointstr);
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail(e.toString());
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail(e.toString());
 		}
-
-		try {
-
-			for (int i = 0; i < URL.length; i++) {
-
-				System.out.println("#######################################");
-				System.out.println("# PRINTING DATA FOR " + URL[i]);
-				System.out.println("#######################################");
-				
-
-				
-				System.out.println(phandler.getInvocationState("http://sti2.at/wsmf/instances#6a3e6e34-f2f9-49cc-8d53-388b07027126"));
-
+	}
+	
+	@Test
+	public void testInvocation() throws Exception {
+		
+	    //Create a new endpoint
+		WebServiceEndpoint ws = new WebServiceEndpoint(testendpoint);
+		
+		List<String> endpoints = phandler.getEndpoints();
+		logger.info("Got endpoints " + endpoints);
+		
+		boolean match = false;
+		for (String endpoint : endpoints) {
+			if (endpoint.compareTo(testendpointstr)==0) {
+				match = true;
 			}
-		} catch (QueryEvaluationException e) {
-			e.printStackTrace();
-			fail(e.toString());
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			fail(e.toString());
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-			fail(e.toString());
-		} 
+		}
+		
+		TestCase.assertTrue(match);
+		
+		for (int i = 0; i <= 5;i++) {
+			logger.info("Do a simulated invocation...");
+		ws.incrementeSuccessfulRequests();
+		ws.incrementeTotalRequests();
+		ws.incrementeFailedRequests();
+		
+		//Simulate Successful invocation
+		ws.addSuccessfullInvoke(i*20, i*20, i*20);
+		}
+		
+		double v1 = phandler.getQoSParamValue(testendpoint, QoSParamKey.PayloadSizeRequest);
+		double v2 = phandler.getQoSParamValue(testendpoint, QoSParamKey.PayloadSizeResponse);
+		double v3 = phandler.getQoSParamValue(testendpoint, QoSParamKey.ResponseTime);
+		
+		
+		logger.info("values are " + v1+ " " + v2+ " " + v3);
+		
+		TestCase.assertTrue(v1 == 100);
+		TestCase.assertTrue(v2 == 100);
+		TestCase.assertTrue(v3 == 100);
+		
+		for (QoSParamKey k : QoSParamKey.values()) {
+			logger.info(k.name()+ " : " + phandler.getQoSParamValue(testendpoint, k));
+		}
+		
+		
+		phandler.deleteEndpoint(testendpoint);
+		
+//		match = false;
+//		for (String endpoint : endpoints) {
+//			if (endpoint.compareTo(testendpointstr)==0) {
+//				match = true;
+//			}
+//		}
+//		
+//		TestCase.assertFalse(match);
+//		logger.info("Endpoint successful deleted");
+	}
+
+	public void testPersistenceHandler() throws FileNotFoundException,
+			IOException {
+
+
 	}
 }

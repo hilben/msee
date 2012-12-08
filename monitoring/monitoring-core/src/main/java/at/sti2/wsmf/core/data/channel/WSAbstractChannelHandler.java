@@ -62,34 +62,7 @@ public abstract class WSAbstractChannelHandler {
 	public void subscribe(URL _endpoint, String _namespace,
 			String _operationName, String _soapAction)
 			throws RepositoryException {
-		String subscribeContext = this.getContextURL(_endpoint);
-		String endpointURL = subscribeContext;
-
-		this.persHandler.addResourceTriple(this.channelURL,
-				QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("EventChannel"), subscribeContext);
-
-		this.persHandler.addResourceTriple(this.channelURL,
-				QueryHelper.getWSMFURI("hasSubscriber"), endpointURL,
-				subscribeContext);
-
-		this.persHandler.addResourceTriple(endpointURL,
-				QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("Subscriber"), subscribeContext);
-
-		this.persHandler.updateLiteralTriple(endpointURL,
-				QueryHelper.getWSMFURI("namespace"), _namespace,
-				subscribeContext);
-
-		this.persHandler.updateLiteralTriple(endpointURL,
-				QueryHelper.getWSMFURI("operation"), _operationName,
-				subscribeContext);
-
-		if (_soapAction != null){
-			this.persHandler.updateLiteralTriple(endpointURL,
-					QueryHelper.getWSMFURI("soapAction"), _soapAction,
-					subscribeContext);}
-		this.persHandler.commit();
+		this.persHandler.subscribeChannel(this.channelURL, this.getContextURL(_endpoint), _namespace, _operationName, _soapAction);
 	}
 
 	public void unsubsribe(URL _endpoint) throws RepositoryException {

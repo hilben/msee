@@ -129,12 +129,12 @@ public class ManagementWebServiceTest {
 	public void testGetQoSRankedEndpoints() {
 		
 		int size = 4;
-		QoSParamKey[] rkeys = new QoSParamKey[size];
+		String[] rkeys = new String[size];
 		Float[] preferenceValues = new Float[size];
 		String[] rendpoints = new String[size];
 		
 		for (int i = 0; i < rkeys.length; i++) {
-			rkeys[i] = QoSParamKey.values()[i];
+			rkeys[i] = QoSParamKey.values()[i].name();
 			preferenceValues[i] = new Float(Math.random());
 			rendpoints[i] = endpoints[i];
 		}

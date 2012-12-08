@@ -128,8 +128,8 @@ public class ChartResource {
 
 					String row[] = new String[qosParamKeys.size() + 1];
 
-//					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
-					row[0] = "\"" + p.getTime() + "\"";
+					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
+//					row[0] = "\"" + p.getTime() + "\"";
 					for (int i = 1; i < row.length; i++) {
 						row[i] = "null";
 					}

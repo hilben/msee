@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -37,13 +38,13 @@ import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.HashValueHandler;
 import at.sti2.wsmf.core.common.MonitoringConfig;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.channel.ChannelSubscriber;
 import at.sti2.wsmf.core.data.qos.QoSParamAtTime;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
@@ -105,47 +106,36 @@ public class PersistentHandler {
 		return state;
 	}
 
-//	public static String getQoSParamID(String _endpoint, QoSThresholdKey _key) {
-//		String qosParamID = "unknown";
-//		try {
-//			MonitoringConfig cfg = MonitoringConfig.getConfig();
-//			qosParamID = cfg.getInstancePrefix() + _key + "_"
-//					+ HashValueHandler.computeSHA1(_endpoint);
-//		} catch (Exception e) {
-//			log.error("Hash computation failed for '" + _endpoint + "'");
-//		}
-//		return qosParamID;
-//	}
-
-	public synchronized void updateResourceTriple(String _subject,
+	private synchronized void updateResourceTriple(String _subject,
 			String _predicate, String _object, String _context)
 			throws RepositoryException {
 		this.reposHandler.updateResourceTriple(_subject, _predicate, _object,
 				_context);
 	}
 
-	public synchronized void updateLiteralTriple(String _subject,
+	private synchronized void updateLiteralTriple(String _subject,
 			String _predicate, String _object, String _context)
 			throws RepositoryException {
 		this.reposHandler.updateLiteralTriple(_subject, _predicate, _object,
 				_context);
 	}
 
-	public synchronized void addResourceTriple(String _subject,
+	private synchronized void addResourceTriple(String _subject,
 			String _predicate, String _object, String _context)
 			throws RepositoryException {
 		this.reposHandler.addResourceTriple(_subject, _predicate, _object,
 				_context);
 	}
 
-	public synchronized String getQoSValue(String _subject, QoSParamKey _key)
+	public synchronized String getQoSValue(String endpoint, String _key)
 			throws QueryEvaluationException, RepositoryException,
 			MalformedQueryException {
-		String type = QueryHelper.WSMF_NS + _key.name();
+		String type = QueryHelper.WSMF_NS + _key;
 		StringBuffer selectSPARQL = new StringBuffer();
 		selectSPARQL.append("SELECT ?qosValue WHERE { ");
-		selectSPARQL.append("  <" + _subject + "> rdf:type wsmf:Endpoint . ");
-		selectSPARQL.append("  <" + _subject + "> wsmf:hasQoSParam ?qos . ");
+		selectSPARQL.append("  <" + endpoint + "> rdf:type wsmf:Endpoint . ");
+		selectSPARQL.append("  <" + endpoint
+				+ "> wsmf:hasCurrentQoSParam ?qos . ");
 		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
 		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
 		selectSPARQL.append("}");
@@ -190,16 +180,7 @@ public class PersistentHandler {
 		return resultVector;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//TODO: put back on threshold values
+	// TODO: put back on threshold values
 	/**
 	 * @param payloadsizemaximum
 	 * @return
@@ -207,60 +188,60 @@ public class PersistentHandler {
 	 * @throws MalformedQueryException
 	 * @throws RepositoryException
 	 */
-//	public QoSThresholdValue getThresholdValue(URL _endpoint,
-//			QoSThresholdKey _key) throws QueryEvaluationException,
-//			RepositoryException, MalformedQueryException {
-//		String type = QueryHelper.WSMF_NS + _key.name();
-//		StringBuffer selectSPARQL = new StringBuffer();
-//		selectSPARQL.append("SELECT ?qosValue ?qosUnit WHERE { ");
-//		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-//				+ "> rdf:type wsmf:Endpoint . ");
-//		selectSPARQL.append("  <" + _endpoint.toExternalForm()
-//				+ "> wsmf:hasQoSThresholdParam ?qos . ");
-//		selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
-//		selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
-//		selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");
-//		selectSPARQL.append("}");
-//		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-//				.getNamespacePrefix() + selectSPARQL.toString());
-//		if (result.hasNext()) {
-//			BindingSet entry = result.next();
-//			String value = entry.getBinding("qosValue").getValue()
-//					.stringValue();
-//			QoSUnit unit = QoSUnit.valueOf(entry.getBinding("qosUnit")
-//					.getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
-//			return new QoSThresholdValue(_key, value, unit);
-//		} else
-//			return new QoSThresholdValue(_key, "-1", QoSUnit.Unknown);
-//	}
+	// public QoSThresholdValue getThresholdValue(URL _endpoint,
+	// QoSThresholdKey _key) throws QueryEvaluationException,
+	// RepositoryException, MalformedQueryException {
+	// String type = QueryHelper.WSMF_NS + _key.name();
+	// StringBuffer selectSPARQL = new StringBuffer();
+	// selectSPARQL.append("SELECT ?qosValue ?qosUnit WHERE { ");
+	// selectSPARQL.append("  <" + _endpoint.toExternalForm()
+	// + "> rdf:type wsmf:Endpoint . ");
+	// selectSPARQL.append("  <" + _endpoint.toExternalForm()
+	// + "> wsmf:hasQoSThresholdParam ?qos . ");
+	// selectSPARQL.append("  ?qos wsmf:type <" + type + "> . ");
+	// selectSPARQL.append("  ?qos wsmf:value ?qosValue . ");
+	// selectSPARQL.append("  ?qos wsmf:unit ?qosUnit . ");
+	// selectSPARQL.append("}");
+	// TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
+	// .getNamespacePrefix() + selectSPARQL.toString());
+	// if (result.hasNext()) {
+	// BindingSet entry = result.next();
+	// String value = entry.getBinding("qosValue").getValue()
+	// .stringValue();
+	// QoSUnit unit = QoSUnit.valueOf(entry.getBinding("qosUnit")
+	// .getValue().stringValue().replace(QueryHelper.WSMF_NS, ""));
+	// return new QoSThresholdValue(_key, value, unit);
+	// } else
+	// return new QoSThresholdValue(_key, "-1", QoSUnit.Unknown);
+	// }
 
-
-//	public void changeQoSThresholdValue(URL _endpoint, QoSThresholdValue _value)
-//			throws IOException, RepositoryException {
-//		String endpoint = _endpoint.toExternalForm();
-//		String qosParamID = PersistentHandler.getQoSParamID(endpoint,
-//				_value.getType())
-//				+ "_threshold";
-//
-//		this.addResourceTriple(endpoint,
-//				QueryHelper.getWSMFURI("hasQoSThresholdParam"), qosParamID,
-//				endpoint);
-//
-//		this.updateResourceTriple(qosParamID, QueryHelper.getRDFURI("type"),
-//				QueryHelper.getWSMFURI("QoSParam"), endpoint);
-//
-//		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("type"),
-//				QueryHelper.WSMF_NS + _value.getType().name(), endpoint);
-//
-//		this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("unit"),
-//				QueryHelper.WSMF_NS + _value.getUnit().name(), endpoint);
-//
-//		this.updateLiteralTriple(qosParamID, QueryHelper.getWSMFURI("value"),
-//				_value.getValue(), endpoint);
-//
-//		this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("modified"),
-//				DateHelper.getXSDDateTime(), endpoint);
-//	}
+	// public void changeQoSThresholdValue(URL _endpoint, QoSThresholdValue
+	// _value)
+	// throws IOException, RepositoryException {
+	// String endpoint = _endpoint.toExternalForm();
+	// String qosParamID = PersistentHandler.getQoSParamID(endpoint,
+	// _value.getType())
+	// + "_threshold";
+	//
+	// this.addResourceTriple(endpoint,
+	// QueryHelper.getWSMFURI("hasQoSThresholdParam"), qosParamID,
+	// endpoint);
+	//
+	// this.updateResourceTriple(qosParamID, QueryHelper.getRDFURI("type"),
+	// QueryHelper.getWSMFURI("QoSParam"), endpoint);
+	//
+	// this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("type"),
+	// QueryHelper.WSMF_NS + _value.getType().name(), endpoint);
+	//
+	// this.updateResourceTriple(qosParamID, QueryHelper.getWSMFURI("unit"),
+	// QueryHelper.WSMF_NS + _value.getUnit().name(), endpoint);
+	//
+	// this.updateLiteralTriple(qosParamID, QueryHelper.getWSMFURI("value"),
+	// _value.getValue(), endpoint);
+	//
+	// this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("modified"),
+	// DateHelper.getXSDDateTime(), endpoint);
+	// }
 
 	/**
 	 * Returns a Vector of all Endpoint monitored by the Repository TODO:
@@ -274,7 +255,8 @@ public class PersistentHandler {
 			RepositoryException, MalformedQueryException {
 		StringBuffer selectSPARQL = new StringBuffer();
 		selectSPARQL.append("SELECT distinct ?endpoints WHERE { ");
-		selectSPARQL.append("  ?x wsmf:relatedTo ?endpoints . ");
+		selectSPARQL
+				.append("  ?endpoints a <http://www.sti2.at/wsmf/ns#Endpoint> . ");
 		selectSPARQL.append("}");
 		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
 				.getNamespacePrefix() + selectSPARQL.toString());
@@ -438,7 +420,6 @@ public class PersistentHandler {
 		return returnList;
 	}
 
-
 	public synchronized void commit() {
 		try {
 			this.reposHandler.commit();
@@ -448,42 +429,361 @@ public class PersistentHandler {
 	}
 
 	/**
+	 * TODO: testing
 	 * 
-	 * @deprecated
-	 * @param args
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws MalformedQueryException
-	 * @throws RepositoryException
-	 * @throws QueryEvaluationException
+	 * @param _endpoint
+	 * @param key
+	 * @return
+	 * @throws Exception
 	 */
-	public static void main(String args[]) throws Exception {
+	public double getQoSParamValue(URL endpoint, QoSParamKey key) {
 
-		long time = System.currentTimeMillis();
-		PersistentHandler ph = new PersistentHandler();
+		StringBuffer selectSPARQL = new StringBuffer();
 
-		System.out
-				.println(ph
-						.getQoSTimeframe(
-								"http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber",
-								"PayloadSizeRequest", null, null).toString());
+		selectSPARQL.append("SELECT ?v ");
+		selectSPARQL.append("WHERE {");
+		selectSPARQL
+				.append("<"
+						+ endpoint
+						+ "> <http://www.sti2.at/wsmf/ns#hasCurrentQoSParam> ?qosparam . ");
+		selectSPARQL
+				.append("?qosparam <http://www.sti2.at/wsmf/ns#value> ?v .");
+		selectSPARQL
+				.append("?qosparam <http://www.sti2.at/wsmf/ns#type> <http://www.sti2.at/wsmf/ns#"
+						+ key.name() + "> .");
+		selectSPARQL.append("} ");
 
-		System.out.println(System.currentTimeMillis() - time + " ms");
+//		System.out.println(selectSPARQL.toString());
+
+		TupleQueryResult result = null;
+		try {
+			result = this.reposHandler.selectSPARQL(QueryHelper
+					.getNamespacePrefix()
+					+ "PREFIX :<http://www.sti2.at/wsmf/ns#>"
+					+ selectSPARQL.toString());
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		} catch (MalformedQueryException e) {
+			e.printStackTrace();
+		}
+
+		double ret = 0;
+		try {
+			if (result != null) {
+
+				
+				if (result.hasNext()) { 
+				ret = Double.parseDouble(result.next().getBinding("v")
+						.getValue().stringValue());}
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (QueryEvaluationException e) {
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 
 	/**
 	 * @param _endpoint
-	 * @param _key
+	 * @param payloadsizerequestmaximum
 	 * @return
+	 */
+	public QoSParamValue getThresholdValue(URL _endpoint,
+			QoSThresholdKey payloadsizerequestmaximum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @return
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	public String createInvocationInstance(String endpoint)
+			throws RepositoryException, IOException {
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+				.getConfig(endpoint);
+
+		String identifier = UUID.randomUUID().toString();
+		String subject = cfg.getInstancePrefix() + identifier;
+
+		this.updateResourceTriple(subject, QueryHelper.getRDFURI("type"),
+				QueryHelper.getWSMFURI("InvocationInstance"), subject);
+		this.commit();
+
+		return subject;
+	}
+
+	public synchronized void updateInvocationStatus(String subject,
+			String endpoint, WSInvocationState state)
+			throws RepositoryException, IOException {
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+				.getConfig(endpoint);
+
+		String invocationState = cfg.getInstancePrefix() + "invocationState_"
+				+ UUID.randomUUID().toString();
+		this.updateResourceTriple(invocationState,
+				QueryHelper.getWSMFURI("state"),
+				QueryHelper.getWSMFURI(state.name()), subject);
+
+		this.updateResourceTriple(invocationState,
+				QueryHelper.getRDFURI("type"),
+				QueryHelper.getWSMFURI("InvocationState"), subject);
+
+		this.updateLiteralTriple(invocationState, QueryHelper.getDCURI("date"),
+				DateHelper.getXSDDateTime(), subject);
+		this.addResourceTriple(subject,
+				QueryHelper.getWSMFURI("hasInvocationState"), invocationState,
+				subject);
+
+		this.updateResourceTriple(subject, QueryHelper.getWSMFURI("relatedTo"),
+				endpoint, subject);
+
+		this.commit();
+	}
+
+	/**
+	 * @param endpoint
+	 * @throws RepositoryException
+	 * @throws IOException
+	 */
+	public synchronized void createEndpoint(URL endpoint)
+			throws RepositoryException, IOException {
+		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+				.getConfig(endpoint);
+
+		String webserviceURI = cfg.getInstancePrefix()
+				+ cfg.getWebServiceName();
+
+		String subject = endpoint.toExternalForm();
+
+		this.updateResourceTriple(subject, QueryHelper.getRDFURI("type"),
+				QueryHelper.getWSMFURI("Endpoint"), subject);
+		this.updateResourceTriple(subject,
+				QueryHelper.getWSMFURI("isRelatedToWebService"), webserviceURI,
+				subject);
+
+		this.commit();
+	}
+
+	public synchronized void addAvailabilityStatus(URL endpoint,
+			WSAvailabilityState state, long updateTimeMinutes) throws RepositoryException  {
+		try {
+			String subject = endpoint.toExternalForm();
+
+			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+					.getConfig(endpoint);
+
+			String availabilityState = cfg.getInstancePrefix()
+					+ "availabilityState_" + UUID.randomUUID().toString();
+			this.updateResourceTriple(availabilityState,
+					QueryHelper.getWSMFURI("state"),
+					QueryHelper.getWSMFURI(availabilityState), subject);
+			this.updateResourceTriple(availabilityState,
+					QueryHelper.getRDFURI("type"),
+					QueryHelper.getWSMFURI("AvailabilityState"), subject);
+			this.updateLiteralTriple(availabilityState,
+					QueryHelper.getDCURI("datetime"),
+					DateHelper.getXSDDateTime(), subject);
+
+			/*
+			 * updateTime should be at least 1; (TODO: throw exception?)
+			 */
+			if (updateTimeMinutes > 0) {
+				this.updateLiteralTriple(availabilityState,
+						QueryHelper.getWSMFURI("nextAvailabilityCheckMinutes"),
+						String.valueOf(updateTimeMinutes), subject);
+
+				this.updateAvailabilityTime(endpoint, updateTimeMinutes, state);
+			}
+			this.addResourceTriple(subject,
+					QueryHelper.getWSMFURI("hasAvailabilityState"),
+					availabilityState, subject);
+
+			this.commit();
+		} catch (IOException e) {
+			log.error("Error loading the configuration file");
+		}
+	}
+
+	/**
 	 * @throws Exception
 	 */
-	public String getQoSParam(URL _endpoint, QoSParamKey _key) throws Exception {
-		List<QoSParamAtTime> t;
+	private void updateAvailabilityTime(URL endpoint, long updateTimeMinutes,
+			WSAvailabilityState _state)  {
 
-		t = this.getQoSTimeframe(_endpoint.toString(), _key.toString(), null,
-				null);
+		long availableTime = updateTimeMinutes;
+		long unavailableTime = updateTimeMinutes;
 
-		return t.get(0).getQosParamValue();
+		if (_state == WSAvailabilityState.WSAvailable) {
+			QoSParamValue availTime = new QoSParamValue(
+					QoSParamKey.UnavailableTime, availableTime, QoSUnit.Minutes);
+
+			this.addQoSValue(endpoint, availTime, false);
+			this.addQoSValue(endpoint, availTime, true);
+			this.updateQoSValueTotal(endpoint, availTime);
+
+		} else {
+			QoSParamValue unavailTime = new QoSParamValue(
+					QoSParamKey.UnavailableTime, unavailableTime,
+					QoSUnit.Minutes);
+
+			this.addQoSValue(endpoint, unavailTime, false);
+			this.addQoSValue(endpoint, unavailTime, true);
+			this.updateQoSValueTotal(endpoint, unavailTime);
+		}
+	}
+
+	/**
+	 * TODO: test performUpdate Option
+	 * 
+	 * @param value
+	 */
+	public void addQoSValue(URL endpoint, QoSParamValue value,
+			boolean performUpdate) {
+		String endpointString = endpoint.toExternalForm();
+		String qosParamID;
+		try {
+
+			if (!performUpdate) {
+				qosParamID = endpointString + "_" + DateHelper.getXSDDateTime()
+						+ "_" + value.getType().name();
+
+				this.addResourceTriple(endpointString,
+						QueryHelper.getWSMFURI("hasQoSParam"), qosParamID,
+						endpointString);
+			} else {
+				qosParamID = endpointString + "_" + value.getType().name();
+
+				this.addResourceTriple(endpointString,
+						QueryHelper.getWSMFURI("hasCurrentQoSParam"),
+						qosParamID, endpointString);
+			}
+			this.updateResourceTriple(qosParamID,
+					QueryHelper.getRDFURI("type"),
+					QueryHelper.getWSMFURI("QoSParam"), endpointString);
+
+			this.updateResourceTriple(qosParamID,
+					QueryHelper.getWSMFURI("type"), QueryHelper.WSMF_NS
+							+ value.getType().name(), endpointString);
+
+			this.updateResourceTriple(qosParamID,
+					QueryHelper.getWSMFURI("unit"), QueryHelper.WSMF_NS
+							+ value.getUnit().name(), endpointString);
+
+			// TODO: add type double to triplestore ?
+			this.updateLiteralTriple(qosParamID,
+					QueryHelper.getWSMFURI("value"),
+					String.valueOf(value.getValue()), endpointString);
+
+			this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("date"),
+					DateHelper.getXSDDateTime(), endpointString);
+
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
+		}
+	}
+
+	// Assume total requests is already updated
+	public void updateQoSValueAverage(URL endpoint, QoSParamValue value) {
+		double totalRequests = this.getQoSParamValue(endpoint,
+				QoSParamKey.RequestTotal);
+	
+		double oldAverage = this.getQoSParamValue(endpoint, value.getType());
+		double newAverage;
+		if (totalRequests>1) {
+			
+		
+		newAverage = ((oldAverage * (totalRequests - 1) + value
+				.getValue()) / totalRequests);
+		} else {
+			newAverage = value.getValue();
+		}
+		this.addQoSValue(endpoint, new QoSParamValue(value.getType(),
+				newAverage, value.getUnit()), true);
+	}
+
+	public boolean updateQoSValueMaximum(URL endpoint, QoSParamValue value)
+		 {
+
+		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+
+		// no new minimum
+		if (oldValue > value.getValue()) {
+			return false;
+		}
+
+		this.addQoSValue(endpoint, value, true);
+
+		// There was a new maxima
+		return true;
+	}
+
+	public boolean updateQoSValueMinimum(URL endpoint, QoSParamValue value)
+		 {
+
+		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+
+		// no new minimum
+		if (oldValue < value.getValue()) {
+			return false;
+		}
+
+		this.addQoSValue(endpoint, value, true);
+
+		// There was a new maxima
+		return true;
+	}
+
+	// TODO implement
+	public void updateQoSValueTotal(URL endpoint, QoSParamValue value)
+			 {
+
+		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+		QoSParamValue newval = new QoSParamValue(value.getType(), oldValue
+				+ value.getValue(), value.getUnit());
+
+		this.addQoSValue(endpoint, newval, true);
+
+	}
+
+	public synchronized void subscribeChannel(String channelURL,
+			String subscribeContext, String _namespace, String _operationName,
+			String _soapAction) throws RepositoryException {
+		String endpointURL = subscribeContext;
+
+		this.addResourceTriple(channelURL, QueryHelper.getRDFURI("type"),
+				QueryHelper.getWSMFURI("EventChannel"), subscribeContext);
+
+		this.addResourceTriple(channelURL,
+				QueryHelper.getWSMFURI("hasSubscriber"), endpointURL,
+				subscribeContext);
+
+		this.addResourceTriple(endpointURL, QueryHelper.getRDFURI("type"),
+				QueryHelper.getWSMFURI("Subscriber"), subscribeContext);
+
+		this.updateLiteralTriple(endpointURL,
+				QueryHelper.getWSMFURI("namespace"), _namespace,
+				subscribeContext);
+
+		this.updateLiteralTriple(endpointURL,
+				QueryHelper.getWSMFURI("operation"), _operationName,
+				subscribeContext);
+
+		if (_soapAction != null) {
+			this.updateLiteralTriple(endpointURL,
+					QueryHelper.getWSMFURI("soapAction"), _soapAction,
+					subscribeContext);
+		}
+		this.commit();
 	}
 
 }

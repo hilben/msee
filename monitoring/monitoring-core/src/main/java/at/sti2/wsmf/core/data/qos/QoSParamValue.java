@@ -32,7 +32,7 @@ public class QoSParamValue implements IQoSParamValue, Serializable {
 	private static final long serialVersionUID = -8793209957841733499L;
 
 	private QoSParamKey type;
-	private String value;
+	private double value;
 	private QoSUnit unit;
 
 	/**
@@ -41,17 +41,16 @@ public class QoSParamValue implements IQoSParamValue, Serializable {
 	public QoSParamValue() {
 	}
 
-	public QoSParamValue(QoSParamKey _type, String _value, QoSUnit _unit) {
-		this.type = _type;
-		this.value = _value;
-		this.unit = _unit;
+	public QoSParamValue(QoSParamKey type, double value, QoSUnit unit) {
+		this.type = type;
+		this.value = value;
+		this.unit = unit;
 	}
 
 	/**
 	 * @see at.sti2.wsmf.api.data.qos.IQoSParamValue#getValue()
 	 */
-	@Override
-	public String getValue() {
+	public double getValue() {
 		return this.value;
 	}
 
@@ -74,5 +73,9 @@ public class QoSParamValue implements IQoSParamValue, Serializable {
 	@Override
 	public String toString() {
 		return this.type + " has value " + this.value + " " + this.unit.name();
+	}
+	
+	public void setType(QoSParamKey type) {
+		this.type = type;
 	}
 }

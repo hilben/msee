@@ -54,19 +54,18 @@ import at.sti2.wsmf.core.data.qos.QoSParamValue;
  * 
  * @author Benjamin Hiltpolt The {@link MonitoringInvocationHandler} invokes web
  *         services and stores monitoring informations about the webservice also
- *         it starts an AvailabilityChecker for the invoked webservice
- *         {TODO: removed use of {@link WSQoSChannelHandler} maybe reuse later?}
+ *         it starts an AvailabilityChecker for the invoked webservice {TODO:
+ *         removed use of {@link WSQoSChannelHandler} maybe reuse later?}
  * 
  */
 public class MonitoringInvocationHandler {
 	private static Logger log = Logger
 			.getLogger(MonitoringInvocationHandler.class);
-	
+
 	private static final int TIME_OUT_MS = 12000;
 
 	// TODO: change back to reasonable time
 	private static final int WS_AVAILABILITY_TIMEOUT_MINUTES = 5;
-
 
 	private static void sendQoSValue(ActivityInstantiatedEvent activeInstance,
 			QoSParamValue value) {
@@ -105,6 +104,11 @@ public class MonitoringInvocationHandler {
 			String soapAction, ActivityInstantiatedEvent activeInstance,
 			int soapMessageSize) throws Exception {
 
+		// monitoring values
+		double payloadRequestSize = soapMessageSize;
+		double payloadResponseSize;
+		long responseTime;
+
 		WSAvailabilityChecker.startAvailabilityChecking(
 				activeInstance.getEndpoint(), WS_AVAILABILITY_TIMEOUT_MINUTES);
 
@@ -134,25 +138,9 @@ public class MonitoringInvocationHandler {
 		activeInstance.setEndpoint(endpoint);
 		activeInstance.changeInvocationStatus(WSInvocationState.Instantiated);
 		sendStateChange(activeInstance);
-		try {
-			int totalRequests = currentWS.incrementeTotalRequests();
-			sendQoSValue(activeInstance, new QoSParamValue(
-					QoSParamKey.RequestTotal, totalRequests + "",
-					QoSUnit.Requests));
-			
-		} catch (QueryEvaluationException e) {
-			log.error("Not able to increment total requests value, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (RepositoryException e) {
-			log.error("Not able to increment total requests value, through exception: "
-					+ e.getLocalizedMessage());
-		} catch (MalformedQueryException e) {
-			log.error("Not able to increment total requests value, through exception: "
-					+ e.getLocalizedMessage());
-		}
-
-//		activeInstance.setPayloadSizeRequest(soapMessageSize);
-		currentWS.addQoSValue(new QoSParamValue(QoSParamKey.PayloadSizeRequest,Integer.toString(soapMessageSize),QoSUnit.Bytes));
+		double totalRequests = currentWS.incrementeTotalRequests();
+		sendQoSValue(activeInstance, new QoSParamValue(
+				QoSParamKey.RequestTotal, totalRequests, QoSUnit.Requests));
 
 		/*
 		 * Monitoring Block End***************************
@@ -175,8 +163,8 @@ public class MonitoringInvocationHandler {
 			/*
 			 * Invocation
 			 */
-			result = invokeWithoutMonitoring(endpoint, soapMessage,
-					soapAction, null);
+			result = invokeWithoutMonitoring(endpoint, soapMessage, soapAction,
+					null);
 			/*
 			 * End of Invocation
 			 */
@@ -191,68 +179,39 @@ public class MonitoringInvocationHandler {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			message.writeTo(stream);
 
-			String responseSize = Integer.toString(stream.size());
-			QoSParamValue responseSizeQosParam = new QoSParamValue(QoSParamKey.PayloadSizeResponse,responseSize,QoSUnit.Bytes);
-			currentWS.addQoSValue(responseSizeQosParam);
+			// Get Payload size response
+			payloadResponseSize = stream.size();
 
-
+			// Get Response time
 			long afterInvocation = System.currentTimeMillis();
-			long responseTime = (afterInvocation - beforeInvocation);
-
-//			activeInstance.setResponseTime(responseTime);
-			QoSParamValue responseTimeQosParam = new QoSParamValue(QoSParamKey.ResponseTime,Long.toString(responseTime),QoSUnit.Milliseconds);
-			currentWS.addQoSValue(responseTimeQosParam);
-
-
+			responseTime = (afterInvocation - beforeInvocation);
 
 			/* ***************************
 			 * Monitoring Block Start
 			 */
 			activeInstance.changeInvocationStatus(WSInvocationState.Completed);
 			sendStateChange(activeInstance);
-			try {
-				int successfulRequests = currentWS
-						.incrementeSuccessfulRequests();
-				sendQoSValue(activeInstance, new QoSParamValue(
-						QoSParamKey.RequestSuccessful, successfulRequests + "",
-						QoSUnit.Requests));
-			} catch (QueryEvaluationException e) {
-				log.error("Not able to increment successful requests value, through exception: "
-						+ e.getLocalizedMessage());
-			} catch (RepositoryException e) {
-				log.error("Not able to increment successful requests value, through exception: "
-						+ e.getLocalizedMessage());
-			} catch (MalformedQueryException e) {
-				log.error("Not able to increment successful requests value, through exception: "
-						+ e.getLocalizedMessage());
-			}
-			/*
-			 * Monitoring Block End***************************
-			 */
+			double successfulRequests = currentWS.incrementeSuccessfulRequests();
+			currentWS.addSuccessfullInvoke(payloadRequestSize,
+					payloadResponseSize, responseTime);
+
+			sendQoSValue(activeInstance, new QoSParamValue(
+					QoSParamKey.RequestSuccessful, successfulRequests,
+					QoSUnit.Requests));
 
 			return result;
 		} catch (SOAPException e) {
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			activeInstance
-					.changeInvocationStatus(WSInvocationState.Terminated);
+			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
-			try {
-				int failedRequests = currentWS.incrementeFailedRequests();
-				sendQoSValue(activeInstance, new QoSParamValue(
-						QoSParamKey.RequestFailed, failedRequests + "",
-						QoSUnit.Requests));
-			} catch (QueryEvaluationException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			} catch (RepositoryException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			} catch (MalformedQueryException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			}
+			double failedRequests = currentWS.incrementeFailedRequests();
+			currentWS.addUnsuccessfullInvoke(payloadRequestSize);
+
+			sendQoSValue(activeInstance, new QoSParamValue(
+					QoSParamKey.RequestFailed, failedRequests,
+					QoSUnit.Requests));
 			/*
 			 * Monitoring Block End***************************
 			 */
@@ -261,24 +220,12 @@ public class MonitoringInvocationHandler {
 			/* ***************************
 			 * Monitoring Block Start
 			 */
-			activeInstance
-					.changeInvocationStatus(WSInvocationState.Terminated);
+			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
-			try {
-				int failedRequests = currentWS.incrementeFailedRequests();
-				sendQoSValue(activeInstance, new QoSParamValue(
-						QoSParamKey.RequestFailed, failedRequests + "",
-						QoSUnit.Requests));
-			} catch (QueryEvaluationException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			} catch (RepositoryException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			} catch (MalformedQueryException e1) {
-				log.error("Not able to broadcast the new QoS value RequestFailed: "
-						+ e.getLocalizedMessage());
-			}
+			double failedRequests = currentWS.incrementeFailedRequests();
+			sendQoSValue(activeInstance, new QoSParamValue(
+					QoSParamKey.RequestFailed, failedRequests,
+					QoSUnit.Requests));
 			/*
 			 * Monitoring Block End***************************
 			 */
@@ -385,5 +332,4 @@ public class MonitoringInvocationHandler {
 		}
 	}
 
-	
 }

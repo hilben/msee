@@ -104,7 +104,7 @@ public interface IManagementWebService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getQoSRankedEndpoints(QoSParamKey[] key,
+	public List<String> getQoSRankedEndpoints(String[] key,
 			Float[] preferenceValue, String[] endpoints) throws Exception;
 
 

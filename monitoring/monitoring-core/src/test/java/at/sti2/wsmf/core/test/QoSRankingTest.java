@@ -72,9 +72,9 @@ public class QoSRankingTest extends TestCase {
 //		}
 		
 //		// Set up preferences for the QoSParams
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime, 1.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime, 2.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime, -5.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime.name(), 1.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime.name(), 2.0f);
+		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime.name(), -5.0f);
 
 		// Create a list with QosOrderingValueTables for all the endpoints
 		ArrayList<QoSParamsEndpointRankingTable> endpointQoSParamsRankingTable = new ArrayList<QoSParamsEndpointRankingTable>();

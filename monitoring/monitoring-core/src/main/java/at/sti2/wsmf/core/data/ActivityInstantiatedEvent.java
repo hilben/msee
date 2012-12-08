@@ -22,10 +22,8 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.DateHelper;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 /**
@@ -33,10 +31,10 @@ import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
  * 
  * @author Benjamin Hiltpolt
  * 
- * Handles an ActivityInstantiatedEvent to store everything that 
- * happens during an invocation to the monitoring triplestore
+ *         Handles an ActivityInstantiatedEvent to store everything that happens
+ *         during an invocation to the monitoring triplestore
  * 
- * see also {@link WebServiceEndpointConfig}. {@link WSInvocationState}
+ *         see also {@link WebServiceEndpointConfig}. {@link WSInvocationState}
  */
 
 public class ActivityInstantiatedEvent {
@@ -52,21 +50,15 @@ public class ActivityInstantiatedEvent {
 
 	private PersistentHandler persHandler;
 
-
 	public ActivityInstantiatedEvent(String endpoint) throws IOException,
 			RepositoryException {
 		this.identifier = UUID.randomUUID().toString();
 		this.state = WSInvocationState.None;
-		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-				.getConfig(endpoint);
-		this.setEndpoint(endpoint);
-		this.subject = cfg.getInstancePrefix() + this.identifier;
-		this.persHandler = PersistentHandler.getInstance();
 
-		this.persHandler.updateResourceTriple(this.subject,
-				QueryHelper.getRDFURI("type"),
-				QueryHelper.getWSMFURI("InvocationInstance"), this.subject);
-		this.persHandler.commit();
+		this.setEndpoint(endpoint);
+
+		this.persHandler = PersistentHandler.getInstance();
+		this.subject = this.persHandler.createInvocationInstance(endpoint);
 	}
 
 	public void setEndpoint(String _endpoint) {
@@ -77,43 +69,21 @@ public class ActivityInstantiatedEvent {
 		return this.identifier;
 	}
 
-	
 	/**
-	 * @param _state
+	 * @param state
 	 * 
-	 * Everytime the InvocationStatus is changed add this to the triple store
+	 *            Everytime the InvocationStatus is changed add this to the
+	 *            triple store
 	 */
-	public void changeInvocationStatus(WSInvocationState _state) {
+	public void changeInvocationStatus(WSInvocationState state) {
 		WSInvocationState oldState = this.state;
-		this.state = _state;
+		this.state = state;
 		try {
-			WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(endpoint);
-			
-			String invocationState = cfg.getInstancePrefix()+"invocationState_"
-					+ UUID.randomUUID().toString();
-			this.persHandler.updateResourceTriple(invocationState,
-					QueryHelper.getWSMFURI("state"),
-					QueryHelper.getWSMFURI(this.state.name()), this.subject);
 
-			this.persHandler.updateResourceTriple(invocationState,
-					QueryHelper.getRDFURI("type"),
-					QueryHelper.getWSMFURI("InvocationState"), this.subject);
-			
-			this.persHandler.updateLiteralTriple(invocationState,
-					QueryHelper.getDCURI("date"), DateHelper.getXSDDateTime(),
-					this.subject);
-			this.persHandler.addResourceTriple(this.subject,
-					QueryHelper.getWSMFURI("hasInvocationState"),
-					invocationState, this.subject);
-
-
-			this.persHandler.updateResourceTriple(this.subject,
-					QueryHelper.getWSMFURI("relatedTo"), this.endpoint, this.subject);
-			
-			this.persHandler.commit();
-
+			this.persHandler.updateInvocationStatus(this.subject, endpoint,
+					state);
 			log.info("[" + this.identifier + "] Change Status from '"
-					+ oldState + "' to '" + _state + "'");
+					+ oldState + "' to '" + state + "'");
 		} catch (RepositoryException e) {
 			log.error("Not able to store invocation instance state in triplestore.");
 			log.error(e.getCause());

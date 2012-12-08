@@ -37,7 +37,7 @@ public class QoSRankingEngine {
 			List<QoSParamsEndpointRankingTable> qosTables,
 			QoSRankingPreferencesTemplate qosRankingTemplate) {
 		// Do the ordering using a scoring matrix
-		for (QoSParamKey s : qosRankingTemplate.getQoSParams()) {
+		for (String s : qosRankingTemplate.getQoSParams()) {
 			// Find max
 			float max = Float.NEGATIVE_INFINITY;
 			for (QoSParamsEndpointRankingTable table : qosTables) {
@@ -72,7 +72,7 @@ public class QoSRankingEngine {
 	 * @return
 	 */
 	public static List<String> getQoSRankedEndpoints(
-			QoSParamKey[] keys, Float[] preferenceValue, String[] endpoints) {
+			String[] keys, Float[] preferenceValue, String[] endpoints) {
 
 		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
 

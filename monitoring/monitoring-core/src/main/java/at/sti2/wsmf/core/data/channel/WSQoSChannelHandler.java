@@ -74,52 +74,52 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 		return msg.toString();
 	}
 	
-	protected boolean shouldValueBeSend(URL _endpoint, QoSParamValue _value) throws FileNotFoundException, IOException, NumberFormatException, QueryEvaluationException, RepositoryException, MalformedQueryException {
-		PersistentHandler persHandler = PersistentHandler.getInstance();
-		QoSParamKey paramType = _value.getType();
-		switch ( paramType ) {
-			case PayloadSizeRequestAverage:
-			case PayloadSizeRequestMaximum:
-			case PayloadSizeRequestMinimum:
-				long maxPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMaximum).getValue());
-				long minPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMinimum).getValue());
-				long payloadValue = new Long(_value.getValue());
-				log.info("[QoSThreshold] Payload Size " + minPayload + " <= " + payloadValue + " <= " + maxPayload);
-				if ( minPayload == -1 || maxPayload == -1 )
-					return true;
-				else if ( minPayload <= payloadValue && maxPayload >= payloadValue )
-					return true;
-				break;
-			case RequestTotal:
-			case RequestFailed:
-			case RequestSuccessful:
-				long maxRequests = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.RequestsMaximum).getValue());
-				long minRequests = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.RequestsMinimum).getValue());
-				long requestsValue = new Long(_value.getValue());
-				log.info("[QoSThreshold] Requests " + minRequests + " <= " + requestsValue + " <= " + maxRequests);
-				if ( minRequests == -1 || maxRequests == -1 )
-					return true;
-				else if ( minRequests <= requestsValue && maxRequests >= requestsValue )
-					return true;
-				break;
-			case ResponseTimeAverage:
-			case ResponseTimeMaximum:
-			case ResponseTimeMinimum:
-				long maxResponseTime = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.ResponseTimeMaximum).getValue());
-				long minResponseTime = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.ResponseTimeMinimum).getValue());
-				long responseTimeValue = new Long(_value.getValue());
-				log.info("[QoSThreshold] Response time " + minResponseTime + " <= " + responseTimeValue + " <= " + maxResponseTime);
-				if ( minResponseTime == -1 || maxResponseTime == -1 )
-					return true;
-				else if ( minResponseTime <= responseTimeValue && maxResponseTime >= responseTimeValue )
-					return true;
-				break;
-		}
-		return false;
-	}
+//	protected boolean shouldValueBeSend(URL _endpoint, QoSParamValue _value) throws FileNotFoundException, IOException, NumberFormatException, QueryEvaluationException, RepositoryException, MalformedQueryException {
+//		PersistentHandler persHandler = PersistentHandler.getInstance();
+//		QoSParamKey paramType = _value.getType();
+//		switch ( paramType ) {
+//			case PayloadSizeRequestAverage:
+//			case PayloadSizeRequestMaximum:
+//			case PayloadSizeRequestMinimum:
+//				long maxPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMaximum).getValue());
+//				long minPayload = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.PayloadSizeRequestMinimum).getValue());
+//				long payloadValue = new Long(_value.getValue());
+//				log.info("[QoSThreshold] Payload Size " + minPayload + " <= " + payloadValue + " <= " + maxPayload);
+//				if ( minPayload == -1 || maxPayload == -1 )
+//					return true;
+//				else if ( minPayload <= payloadValue && maxPayload >= payloadValue )
+//					return true;
+//				break;
+//			case RequestTotal:
+//			case RequestFailed:
+//			case RequestSuccessful:
+//				long maxRequests = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.RequestsMaximum).getValue());
+//				long minRequests = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.RequestsMinimum).getValue());
+//				long requestsValue = new Long(_value.getValue());
+//				log.info("[QoSThreshold] Requests " + minRequests + " <= " + requestsValue + " <= " + maxRequests);
+//				if ( minRequests == -1 || maxRequests == -1 )
+//					return true;
+//				else if ( minRequests <= requestsValue && maxRequests >= requestsValue )
+//					return true;
+//				break;
+//			case ResponseTimeAverage:
+//			case ResponseTimeMaximum:
+//			case ResponseTimeMinimum:
+//				long maxResponseTime = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.ResponseTimeMaximum).getValue());
+//				long minResponseTime = new Long(persHandler.getThresholdValue(_endpoint, QoSThresholdKey.ResponseTimeMinimum).getValue());
+//				long responseTimeValue = new Long(_value.getValue());
+//				log.info("[QoSThreshold] Response time " + minResponseTime + " <= " + responseTimeValue + " <= " + maxResponseTime);
+//				if ( minResponseTime == -1 || maxResponseTime == -1 )
+//					return true;
+//				else if ( minResponseTime <= responseTimeValue && maxResponseTime >= responseTimeValue )
+//					return true;
+//				break;
+//		}
+//		return false;
+//	}
 	
 	public void sendState(String _invocationInstance, QoSParamValue _value) throws QueryEvaluationException, RepositoryException, MalformedQueryException, FileNotFoundException, IOException {
-		if ( !this.shouldValueBeSend(new URL(_invocationInstance), _value) ) return;
+//		if ( !this.shouldValueBeSend(new URL(_invocationInstance), _value) ) return;
 		Vector<ChannelSubscriber> subscriber = this.getSubscriber();
 		for ( ChannelSubscriber entry : subscriber ) {
 			try {
@@ -162,22 +162,5 @@ public class WSQoSChannelHandler extends WSAbstractChannelHandler {
 
 	
 	
-	public static void main(String[] args) throws Exception {
-		WSAvailabilityChannelHandler availabilityHandler = WSAvailabilityChannelHandler.getInstance();
-		availabilityHandler.subscribe(new URL("http://localhost:9999/wsmf-channellistener-example/services/events"),
-				"http://webservice.wsmf.sti2.at/", "getAvailabilityChangedEvent", null);
-		
-		WSQoSChannelHandler qosHandler = WSQoSChannelHandler.getInstance();
-		qosHandler.subscribe(new URL("http://localhost:9999/wsmf-channellistener-example/services/events"),
-				"http://webservice.wsmf.sti2.at/", "getQoSChangedEvent", null);
-		
-		WSInvocationStateChannelHandler stateHandler = WSInvocationStateChannelHandler.getInstance();
-		stateHandler.subscribe(new URL("http://localhost:9999/wsmf-channellistener-example/services/events"),
-				"http://webservice.wsmf.sti2.at/", "getStateChangedEvent", null);
-		
-		availabilityHandler.sendState("http://example.org/endpointInstanceExample", WSAvailabilityState.WSAvailable);
-		stateHandler.sendState("http://example.org/invocationInstanceExample", WSInvocationState.Completed);
-		qosHandler.sendState("http://example.org/endpointInstanceExample", new QoSParamValue(QoSParamKey.PayloadSizeRequestAverage, "28", QoSUnit.Bytes));
-	}
 	
 }

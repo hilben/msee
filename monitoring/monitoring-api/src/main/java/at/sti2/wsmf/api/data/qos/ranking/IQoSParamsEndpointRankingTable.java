@@ -16,7 +16,7 @@ public interface IQoSParamsEndpointRankingTable extends Comparable<IQoSParamsEnd
 	 * @param property
 	 * @return
 	 */
-	public abstract Float getRankingValueForProperty(QoSParamKey property);
+	public abstract Float getRankingValueForProperty(String property);
 
 	/**
 	 * Sets the ranking value of a QosParam
@@ -25,7 +25,7 @@ public interface IQoSParamsEndpointRankingTable extends Comparable<IQoSParamsEnd
 	 * @param value
 	 * @throws Exception
 	 */
-	public abstract void setRankingValueForProperty(QoSParamKey property,
+	public abstract void setRankingValueForProperty(String property,
 			Float value) throws Exception;
 
 	/**

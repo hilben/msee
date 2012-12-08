@@ -116,7 +116,7 @@ public class ManagementWebService implements IManagementWebService {
 	// TODO: put in other class
 	// TODO: logging
 	// TODO: testing
-	public List<String> getQoSRankedEndpoints(QoSParamKey[] keys,
+	public List<String> getQoSRankedEndpoints(String[] keys,
 			Float[] preferenceValues, String[] endpoints) throws Exception {
 		return QoSRankingEngine.getQoSRankedEndpoints(keys, preferenceValues,
 				endpoints);
