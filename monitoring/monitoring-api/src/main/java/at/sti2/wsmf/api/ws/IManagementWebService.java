@@ -78,7 +78,7 @@ public interface IManagementWebService {
 	 *            {@link QoSParamKey}
 	 * @return {@link IQoSParamValue}
 	 */
-	public String getQoSParam(URL endpoint, QoSParamKey key)
+	public double getQoSParamValue(URL endpoint, QoSParamKey key)
 			throws Exception;
 
 	

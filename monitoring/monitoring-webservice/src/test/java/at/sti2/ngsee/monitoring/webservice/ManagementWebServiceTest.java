@@ -102,7 +102,7 @@ public class ManagementWebServiceTest {
 					break;
 				}
 			try {
-				logger.info("Get QoSParam " + k + " -> " + managementWS.getQoSParam(new URL(endpoints[endpoints_c]), k));
+				logger.info("Get QoSParam " + k + " -> " + managementWS.getQoSParamValue(new URL(endpoints[endpoints_c]), k));
 			} catch (MalformedURLException e) {
 				logger.error(e);
 			} catch (Exception e) {

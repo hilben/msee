@@ -18,7 +18,6 @@ package at.sti2.ngsee.monitoring.webservice;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -27,14 +26,9 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
-import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.api.ws.IManagementWebService;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.data.qos.QoSParamValue;
-import at.sti2.wsmf.core.ranking.QoSParamsEndpointRankingTable;
 import at.sti2.wsmf.core.ranking.QoSRankingEngine;
 
 /**
@@ -73,11 +67,11 @@ public class ManagementWebService implements IManagementWebService {
 	 */
 	@WebMethod
 	@Override
-	public String getQoSParam(
+	public double getQoSParamValue(
 			@WebParam(name = "endpoint") URL _endpoint,
 			@WebParam(name = "key") QoSParamKey _key) throws Exception {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
-		return persHandler.getQoSParam(_endpoint, _key).toString();
+		return persHandler.getQoSParamValue(_endpoint, _key);
 	}
 
 	/**
@@ -155,6 +149,8 @@ public class ManagementWebService implements IManagementWebService {
 	public static void main(String args[]) throws Exception {
 		System.out.println("cats: " + new ManagementWebService().getSubcategoriesAndServices("asdf"));
 		System.out.println("instances: " + new ManagementWebService().listInstanceIDs());
+		
+		System.out.println("QoSParam: " + new ManagementWebService().getQoSParamValue(new URL("http://www.test.org"), QoSParamKey.MonitoredTime));
 	}
 
 	/* (non-Javadoc)
