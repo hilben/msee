@@ -12,6 +12,7 @@
 		<module>registration</module>
 		<module>discovery</module>
 		<module>monitoring</module>
+		<module>management</module>
 		<module>util</module>
 		<module>grounding</module>
 		<module>soa4all.ranking.nfps.wsmo.lite</module>
