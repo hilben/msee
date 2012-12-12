@@ -14,7 +14,7 @@
 		<module>monitoring</module>
 		<module>util</module>
 		<module>grounding</module>
-	    <module>soa4all.ranking.nfps.wsmo.lite</module>
+		<module>soa4all.ranking.nfps.wsmo.lite</module>
 	</modules>
 
 	<name>sesa-project</name>
@@ -86,12 +86,9 @@
 			<name>STI snapshots</name>
 			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
 		</repository>
-		<!-- SOA4ALL Offline!
-		<repository>
-			<id>soa4all-repo</id>
-			<name>SOA4all</name>
-			<url>http://87.213.46.9:8080/nexus-webapp-1.3.1/content/repositories/public/</url>
-		</repository>-->
+		<!-- SOA4ALL Offline! <repository> <id>soa4all-repo</id> <name>SOA4all</name> 
+			<url>http://87.213.46.9:8080/nexus-webapp-1.3.1/content/repositories/public/</url> 
+			</repository> -->
 		<repository>
 			<id>sesame repo</id>
 			<name>sesame</name>
@@ -125,6 +122,7 @@
 			<url>http://repo.phloc.com/maven2/</url>
 		</repository>
 
+	<!-- 
 		<repository>
 			<id>semweb4j-repo</id>
 			<name>Semweb4j.org maven repo</name>
@@ -133,7 +131,7 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<repository>
+	<repository>
 			<id>semweb4j-snapshots</id>
 			<name>Semweb4j.org maven snapshot repo</name>
 			<url>http://semweb4j.org/snapshots/</url>
@@ -145,7 +143,7 @@
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>fail</checksumPolicy>
 			</snapshots>
-		</repository>
+		</repository> -->
 	</repositories>
 
 	<!-- BUILD PROCESS -->
@@ -186,12 +184,12 @@
 						</rules>
 					</configuration>
 					<executions>
-						<execution>
+					<!-- 	<execution>
 							<id>enforce-java</id>
 							<goals>
 								<goal>enforce</goal>
 							</goals>
-						</execution>
+						</execution> -->
 					</executions>
 					<dependencies>
 						<dependency>
@@ -269,8 +267,42 @@
 					<artifactId>maven-scm-plugin</artifactId>
 					<version>1.5</version>
 				</plugin>
+
+
+
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-enforcer-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>enforce</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+
 			</plugins>
+
+
+
+
 		</pluginManagement>
+
+
 	</build>
 
 </project>
