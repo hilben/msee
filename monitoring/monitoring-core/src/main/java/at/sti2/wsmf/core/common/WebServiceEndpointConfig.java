@@ -81,10 +81,21 @@ public class WebServiceEndpointConfig {
 			RepositoryException {
 		this.prop = new Properties();
 		
+		URL l = ClassLoader.getSystemResource("default.properties");
 		//TODO: CHANGE!!!
-		URL config = new URL(
-				"file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
-		this.prop.load(new FileInputStream(config.getFile()));
+//		URL config = new URL(
+//				"file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
+//		URL config = l;
+
+//		this.prop.load(WebServiceEndpointConfig.class.getResourceAsStream("/default.properties")); 
+	System.out.println("WebServiceEndpointConfig loading: "+l);
+
+
+	this.prop.load(new FileInputStream(l.getFile()));
+	
+	System.out.println("this.prop.size(): "+this.prop.size());
+	
+
 
 		this.masterEndpointNamespace = this.prop
 				.getProperty("endpoint.master.url");

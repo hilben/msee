@@ -83,12 +83,12 @@ public class TestWebServicesInvokation {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);
 
-		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-				.getConfig(endpointUrl);
-		cfg.setWebServiceName(webServiceName);
-
-		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
-				+ os.toString());
+//		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+//				.getConfig(endpointUrl);
+//		cfg.setWebServiceName(webServiceName);
+//
+//		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
+//				+ os.toString());
 
 		logger.info("RESULTS: "
 				+ MonitoringInvocationHandler.invokeWithMonitoring(message, null,

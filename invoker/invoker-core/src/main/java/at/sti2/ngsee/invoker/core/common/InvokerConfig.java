@@ -23,12 +23,12 @@ import java.util.Properties;
  * @author Alex Oberhauser
  *
  */
-public class Config {
+public class InvokerConfig {
 	private final Properties properties;
 	
-	public Config() throws IOException {
+	public InvokerConfig() throws IOException {
 		this.properties = new Properties();
-		this.properties.load(Config.class.getResourceAsStream("/default.properties")); 
+		this.properties.load(InvokerConfig.class.getResourceAsStream("/default.properties")); 
 	}
 	
 	public String getSesameEndpoint() {

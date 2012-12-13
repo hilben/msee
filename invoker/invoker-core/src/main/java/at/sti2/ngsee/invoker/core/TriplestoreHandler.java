@@ -28,7 +28,7 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.invoker.core.common.Config;
+import at.sti2.ngsee.invoker.core.common.InvokerConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
@@ -102,7 +102,7 @@ public class TriplestoreHandler {
 	}
 	
 	public static InvokerMSM getInvokerMSM(String _serviceID, String _operationName) throws IOException, QueryEvaluationException, RepositoryException, MalformedQueryException {
-		Config cfg = new Config();
+		InvokerConfig cfg = new InvokerConfig();
 		RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID(),false);
 		String query = generateQuery(_serviceID, _operationName);
 		TupleQueryResult result = reposHandler.selectSPARQL(query);

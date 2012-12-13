@@ -48,26 +48,30 @@ public class MonitoringConfig {
 
 	private MonitoringConfig() throws IOException {
 		this.prop = new Properties();
-//		URL config = this.getClass().getResource("/default.properties");
-		URL config = new URL("file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
-		this.prop.load(new FileInputStream(config.getFile()));
-
-		System.out.println("Loading "+ config);
+		URL config = this.getClass().getResource("default.properties");
+		// URL config = new
+		// URL("file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
+		URL l = ClassLoader.getSystemResource("default.properties");
+		 System.out.println("MonitoringConfig: Loading "+ l);
 		
+		this.prop.load(new FileInputStream(l.getFile()));
+
+		
+
 		this.triplestoreEndpoint = this.prop
 				.getProperty("triplestore.endpoint");
 		this.triplestoreReposid = this.prop.getProperty("triplestore.reposid");
 
 		this.instanceprefix = this.prop.getProperty("instance.prefixuri");
-		
 
 		System.out.println(this);
-		if (this.triplestoreReposid==null) {
+		if (this.triplestoreReposid == null) {
 			throw new IOException("repository not available in config file");
 		}
-		
-		if (this.triplestoreEndpoint==null) {
-			throw new IOException("triplestoreEndpoint not available in config file");
+
+		if (this.triplestoreEndpoint == null) {
+			throw new IOException(
+					"triplestoreEndpoint not available in config file");
 		}
 
 	}
@@ -84,14 +88,20 @@ public class MonitoringConfig {
 		return this.triplestoreReposid;
 	}
 
-	
-	
 	@Override
 	public String toString() {
 		return "Config [prop=" + prop + ", triplestoreEndpoint="
 				+ triplestoreEndpoint + ", triplestoreReposid="
 				+ triplestoreReposid + ", instanceprefix=" + instanceprefix
 				+ "]";
+	}
+
+	/**
+	 * @throws IOException 
+	 * @deprecated
+	 */
+	public static void main(String args[]) throws IOException {
+		MonitoringConfig.getConfig();
 	}
 
 }
