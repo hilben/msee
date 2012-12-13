@@ -83,7 +83,7 @@ public abstract class OntologyManagement {
 	private static void initRepo() throws ManagementException {
 		try {
 			Config cfg = new Config();
-			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID());
+			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 		} catch (IOException e) {
 			throw new ManagementException("The repository endpoint ID or the WSDL file could NOT be found.", e.getCause());
 		}
