@@ -122,34 +122,7 @@ public class ManagementWebServiceTest {
 		logger.info(endpoints);
 	}
 
-	/**
-	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#getQoSRankedEndpoints(at.sti2.wsmf.api.data.qos.QoSParamKey[], java.lang.Float[], java.lang.String[])}.
-	 */
-	@Test
-	public void testGetQoSRankedEndpoints() {
-		
-		int size = 4;
-		String[] rkeys = new String[size];
-		Float[] preferenceValues = new Float[size];
-		String[] rendpoints = new String[size];
-		
-		for (int i = 0; i < rkeys.length; i++) {
-			rkeys[i] = QoSParamKey.values()[i].name();
-			preferenceValues[i] = new Float(Math.random());
-			rendpoints[i] = endpoints[i];
-		}
-		
-		List<String> result = null;
-		try {
-			result =managementWS.getQoSRankedEndpoints(rkeys, preferenceValues, rendpoints);
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		
-		assertNotNull(result);
-		
-		logger.info(result);
-	}
+
 
 	/**
 	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#getSubcategoriesAndServices(java.lang.String)}.

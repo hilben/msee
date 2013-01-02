@@ -14,7 +14,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package at.sti2.wsmf.core.test;
+package at.sti2.ranking.core.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,11 +29,11 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
+import at.sti2.ranking.core.ranking.QoSParamsEndpointRankingTable;
+import at.sti2.ranking.core.ranking.QoSRankingEngine;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
+import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.ranking.QoSParamsEndpointRankingTable;
-import at.sti2.wsmf.core.ranking.QoSRankingEngine;
 
 /**
  * @author Benjamin Hiltpolt
@@ -43,15 +43,16 @@ public class QoSRankingTest extends TestCase {
 
 	protected static Logger logger = Logger.getLogger(QoSRankingTest.class);
 
-	
-	//some hardcoded endpoints
-	 public static String URL[] = {
-	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/big/getBigAnswer ",
-	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/constant/getConstantAnswer ",
-	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/slow/getSlowAnswer"
-	 };
+	// some hardcoded endpoints
+	public static String URL[] = {
+			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/big/getBigAnswer ",
+			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/constant/getConstantAnswer ",
+			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/slow/getSlowAnswer" };
 
 	public static void testQoSRanking() {
+		
+		logger.info("Testing the QoS Ranking ");
+		
 		// initialize the persistent handler
 		PersistentHandler persitentHandler = null;
 		try {
@@ -65,16 +66,19 @@ public class QoSRankingTest extends TestCase {
 		// Set up the ranked QoSParams and fill the corresponding tables
 		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
 
-		
-		//Create random preferences for testing purposes
+		// Create random preferences for testing purposes
 		for (QoSParamKey q : QoSParamKey.values()) {
-			qosRankingTemplate.addPropertyAndImportance(q.name(),	(float)(Math.random()+0.1));
+			qosRankingTemplate.addPropertyAndImportance(q.name(),
+					(float) (Math.random() + 0.1));
 		}
-		
-//		// Set up preferences for the QoSParams
-//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime.name(), 1.0f);
-//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime.name(), 2.0f);
-//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime.name(), -5.0f);
+
+		// // Set up preferences for the QoSParams
+		// qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime.name(),
+		// 1.0f);
+		// qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime.name(),
+		// 2.0f);
+		// qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime.name(),
+		// -5.0f);
 
 		// Create a list with QosOrderingValueTables for all the endpoints
 		ArrayList<QoSParamsEndpointRankingTable> endpointQoSParamsRankingTable = new ArrayList<QoSParamsEndpointRankingTable>();
@@ -83,6 +87,7 @@ public class QoSRankingTest extends TestCase {
 		List<String> endpoints = new Vector<String>();
 		try {
 			endpoints = persitentHandler.getEndpoints();
+			logger.info("Ranking the following endpoints: " + endpoints);
 		} catch (QueryEvaluationException e2) {
 			logger.error(e2.getCause());
 		} catch (RepositoryException e2) {
@@ -101,10 +106,7 @@ public class QoSRankingTest extends TestCase {
 			table.retrieveQoSParamValues();
 
 			endpointQoSParamsRankingTable.add(table);
-			
-			
-			//to fasten it up
-//			break;
+
 		}
 
 		// Use the ranking engine to get a ordered list
@@ -118,10 +120,11 @@ public class QoSRankingTest extends TestCase {
 		for (QoSParamsEndpointRankingTable t : endpointQoSParamsRankingTable) {
 			logger.info("RANK: " + rank + "\n" + t);
 			rank++;
+
 		}
 
 	}
-	
+
 	public static void main(String args[]) {
 		System.out.println("asdfasdfasdfasdfasdfa");
 	}

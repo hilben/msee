@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.wsmf.core.ranking;
+package at.sti2.ranking.core.ranking;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,9 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
-
+import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 /**
  * @author Benjamin Hiltpolt
  *
@@ -41,6 +39,7 @@ public class QoSRankingEngine {
 			// Find max
 			float max = Float.NEGATIVE_INFINITY;
 			for (QoSParamsEndpointRankingTable table : qosTables) {
+//				logger.info("s: "+s + " m: " + max);
 				if (table.getRankingValueForProperty(s) > max) {
 					max = table.getRankingValueForProperty(s);
 				}
@@ -56,7 +55,17 @@ public class QoSRankingEngine {
 			
 			for (QoSParamsEndpointRankingTable table : qosTables) {
 				float normalized = table.getRankingValueForProperty(s) / max;
+
+				
+				if (normalized > 1.0f) {
+					logger.error(table);
+					logger.error("MAX: " + max);
+					logger.error("Invalid value " + normalized);
+					System.exit(1);
+				}
+				
 				normalized *= qosRankingTemplate.getPropertyImportance(s);
+				
 				try {
 					table.setRankingValueForProperty(s, normalized);
 				} catch (Exception e1) {

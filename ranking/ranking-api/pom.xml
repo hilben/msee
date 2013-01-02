@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<artifactId>ranking-api</artifactId>
+	<packaging>jar</packaging>
+	<name>Ranking Engine - API</name>
+
+	<parent>
+		<groupId>at.sti2.ngsee.ranking</groupId>
+		<artifactId>ranking-project</artifactId>
+		<version>1.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	
+<dependencies>
+			<dependency>
+				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<artifactId>monitoring-api</artifactId>
+				</dependency>
+			<dependency>
+				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<artifactId>monitoring-core</artifactId>
+				</dependency>
+			<dependency>
+				<groupId>at.sti2.ngsee.util</groupId>
+				<artifactId>util-triplestore-client</artifactId>
+				</dependency>
+</dependencies>
+</project>

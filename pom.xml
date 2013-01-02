@@ -15,7 +15,8 @@
 		<module>management</module>
 		<module>util</module>
 		<module>grounding</module>
-		<module>soa4all.ranking.nfps.wsmo.lite</module>
+		<module>ranking</module>
+		<!--  <module>soa4all.ranking.nfps.wsmo.lite</module> -->
 	</modules>
 
 	<name>sesa-project</name>

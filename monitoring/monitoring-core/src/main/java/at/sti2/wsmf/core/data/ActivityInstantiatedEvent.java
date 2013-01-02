@@ -50,15 +50,19 @@ public class ActivityInstantiatedEvent {
 
 	private PersistentHandler persHandler;
 
-	public ActivityInstantiatedEvent(String endpoint) throws IOException,
-			RepositoryException {
+	public ActivityInstantiatedEvent(String endpoint) throws IOException
+			 {
 		this.identifier = UUID.randomUUID().toString();
 		this.state = WSInvocationState.None;
 
 		this.setEndpoint(endpoint);
 
 		this.persHandler = PersistentHandler.getInstance();
-		this.subject = this.persHandler.createInvocationInstance(endpoint);
+		try {
+			this.subject = this.persHandler.createInvocationInstance(endpoint);
+		} catch (RepositoryException e) {
+			log.error(e.getCause());
+		}
 	}
 
 	public void setEndpoint(String _endpoint) {

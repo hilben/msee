@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.wsmf.core.ranking;
+package at.sti2.ranking.core.ranking;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,9 +15,8 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.ranking.IQoSParamsEndpointRankingTable;
-import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
+import at.sti2.ranking.api.data.qos.ranking.IQoSParamsEndpointRankingTable;
+import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.core.PersistentHandler;
 
 /**

@@ -1,9 +1,8 @@
 /**
  * 
  */
-package at.sti2.wsmf.api.data.qos.ranking;
+package at.sti2.ranking.api.data.qos.ranking;
 
-import at.sti2.wsmf.api.data.qos.QoSParamKey;
 
 /**
  * @author Benjamin Hiltpolt

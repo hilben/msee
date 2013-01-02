@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.wsmf.core.ranking;
+package at.sti2.ranking.core.ranking;
 
 /**
  * @author Benjamin Hiltpolt

@@ -17,16 +17,10 @@
 package at.sti2.wsmf.api.ws;
 
 import java.net.URL;
-import java.util.Date;
 import java.util.List;
-
-import javax.jws.WebParam;
 
 import at.sti2.wsmf.api.data.qos.IQoSParamValue;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdKey;
-import at.sti2.wsmf.api.data.qos.QoSThresholdValue;
-import at.sti2.wsmf.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 
 /**
@@ -98,14 +92,7 @@ public interface IManagementWebService {
 	 */
 	public String[] listEndpoints() throws Exception;
 
-	/**
-	 * @param qosRankingTemplate
-	 * @param endpoints
-	 * @return
-	 * @throws Exception
-	 */
-	public List<String> getQoSRankedEndpoints(String[] key,
-			Float[] preferenceValue, String[] endpoints) throws Exception;
+
 
 
 	public List<String> getQoSParamKeys() throws Exception;

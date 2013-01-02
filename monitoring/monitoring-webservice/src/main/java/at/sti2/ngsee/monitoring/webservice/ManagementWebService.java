@@ -29,7 +29,6 @@ import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.state.WSInvocationState;
 import at.sti2.wsmf.api.ws.IManagementWebService;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.ranking.QoSRankingEngine;
 
 /**
  * @author Alex Oberhauser
@@ -101,21 +100,6 @@ public class ManagementWebService implements IManagementWebService {
 	}
 	
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSRankedEndpoint(
-	 * QoSRankingPreferencesTemplate, String[])
-	 */
-	// TODO: put in other class
-	// TODO: logging
-	// TODO: testing
-	public List<String> getQoSRankedEndpoints(String[] keys,
-			Float[] preferenceValues, String[] endpoints) throws Exception {
-		return QoSRankingEngine.getQoSRankedEndpoints(keys, preferenceValues,
-				endpoints);
-
-	}
 
 
 

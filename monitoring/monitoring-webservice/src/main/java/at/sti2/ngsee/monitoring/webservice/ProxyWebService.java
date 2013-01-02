@@ -27,6 +27,8 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import javax.xml.transform.stream.StreamSource;
 
+import org.openrdf.repository.RepositoryException;
+
 import at.sti2.wsmf.api.ws.IProxyWebService;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
@@ -62,6 +64,10 @@ public class ProxyWebService implements IProxyWebService {
 		return MonitoringInvocationHandler.invokeWithMonitoring(this.generateSOAPMessage(_soapRequest),
 				_soapAction, new ActivityInstantiatedEvent(endpointURL),
 				_soapRequest.length());
+	}
+	
+	public static void main(String args[]) {
+		System.out.println("asdf");
 	}
 
 }
