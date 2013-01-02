@@ -13,7 +13,6 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.ngsee.invoker.core.InvokerCore;
 import at.sti2.ngsee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
@@ -25,7 +24,9 @@ public class TestWebServicesInvokation {
 	protected static Logger logger = Logger
 			.getLogger(TestWebServicesInvokation.class);
 
-	public static final String ENDPOINT = "http://localhost:9292/at.sti2.ngsee.testwebservices/services/";
+	// public static final String ENDPOINT =
+	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/";
+	public static final String ENDPOINT = "http://sesa.sti2.at:8080/monitoring-testwebservices/services/";
 
 	public static final String[] TESTSTRING = { "ABCDEF", "Apple", "Orange",
 			"Pineapple", "Maximum", "Minimum", "STI-Innsbruck",
@@ -40,39 +41,26 @@ public class TestWebServicesInvokation {
 		for (int i = 0; i < 999; i++) {
 			try {
 
-			TestWebServicesInvokation
-					.invokeWebServiceViaMonitoring(ENDPOINT + "randomnumber",
-							"RandomNumberWebService",
-							TestWebServicesSOAPMessages
-									.getRandomNumberWebServiceSOAP((int) (Math
-											.random() * 1000)));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "randomstring", "RandomStringWebService",
-					TestWebServicesSOAPMessages
-							.getRandomStringWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "reversestring", "ReverseStringWebService",
-					TestWebServicesSOAPMessages
-							.getReverseStringWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation
-					.invokeWebServiceViaMonitoring(
-							ENDPOINT + "stringmulti",
-							"StringMultiplierWebService",
-							TestWebServicesSOAPMessages
-									.getStringMultiplierWebServiceSOAP(getRandomWord()));
-			TestWebServicesInvokation.invokeWebServiceViaMonitoring(ENDPOINT
-					+ "stringuppercase", "StringUppercaseWebService",
-					TestWebServicesSOAPMessages
-							.getStringUppercaseWebServiceSOAP(getRandomWord()));
-			} catch (Exception e){
+				TestWebServicesInvokation.invokeWebServiceViaMonitoring(
+						ENDPOINT + "slow/getSlowAnswer",
+						"", TestWebServicesSOAPMessages.getSoap("getSlowAnswer",getRandomWord(10)));
+				TestWebServicesInvokation.invokeWebServiceViaMonitoring(
+						ENDPOINT + "big/getBigAnswer",
+						"", TestWebServicesSOAPMessages.getSoap("getBigAnswer",getRandomWord(100)));
+				TestWebServicesInvokation.invokeWebServiceViaMonitoring(
+						ENDPOINT + "constant/getConstantAnswer",
+						"", TestWebServicesSOAPMessages.getSoap("getConstantAnswer",getRandomWord(10)));
+				TestWebServicesInvokation.invokeWebServiceViaMonitoring(
+						ENDPOINT + "random/getRandomAnswer",
+						"", TestWebServicesSOAPMessages.getSoap("getRandomAnswer",getRandomWord(10)));
+		          
+			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(e);
 				System.exit(1);
 			}
 		}
 	}
-	
-
 
 	public static void invokeWebServiceViaMonitoring(String endpointUrl,
 			String webServiceName, String SOAPMsg) throws RepositoryException,
@@ -83,19 +71,21 @@ public class TestWebServicesInvokation {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		message.writeTo(os);
 
-//		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-//				.getConfig(endpointUrl);
-//		cfg.setWebServiceName(webServiceName);
-//
-//		logger.info(cfg.getWebServiceNamespace() + " " + endpointUrl + "  ->  "
-//				+ os.toString());
 
 		logger.info("RESULTS: "
-				+ MonitoringInvocationHandler.invokeWithMonitoring(message, null,
-						new ActivityInstantiatedEvent(endpointUrl), os.size()));
+				+ MonitoringInvocationHandler.invokeWithMonitoring(message,
+						null, new ActivityInstantiatedEvent(endpointUrl),
+						os.size()));
 	}
 
-	public static String getRandomWord() {
-		return TESTSTRING[(int) (Math.random() * TESTSTRING.length)];
+	public static String getRandomWord(int val) {
+		
+		String returns = "";
+		for (int i = 0;  i < Math.random()*val;i++) {
+			returns = TESTSTRING[(int) (Math.random() * TESTSTRING.length)];
+		}
+		
+		
+		return returns;
 	}
 }

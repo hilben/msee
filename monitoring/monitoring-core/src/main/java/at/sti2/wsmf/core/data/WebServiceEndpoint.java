@@ -19,21 +19,16 @@ package at.sti2.wsmf.core.data;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.api.data.qos.QoSUnit;
 import at.sti2.wsmf.api.data.state.WSAvailabilityState;
 import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.common.DateHelper;
-import at.sti2.wsmf.core.common.HashValueHandler;
-import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
 
 /**
@@ -112,10 +107,11 @@ public class WebServiceEndpoint {
 	 * Creates a new availability status with timestamp
 	 * 
 	 * @param _state
-	 * @throws RepositoryException 
+	 * @throws RepositoryException
 	 */
 	public synchronized void changeAvailabilityStatus(
-			WSAvailabilityState state, long updateTimeMinutes) throws RepositoryException {
+			WSAvailabilityState state, long updateTimeMinutes)
+			throws RepositoryException {
 		this.availabilitySate = state;
 
 		this.persHandler.addAvailabilityStatus(this.endpoint, state,
@@ -143,6 +139,20 @@ public class WebServiceEndpoint {
 	public synchronized void addSuccessfullInvoke(double PayloadsizeRequest,
 			double PayloadsizeResponse, double responseTime) {
 
+		//Create a failed request with value zero to initialize this value
+		QoSParamValue requestsFailed = new QoSParamValue(QoSParamKey.RequestFailed,
+				0, QoSUnit.Requests);
+		this.persHandler.updateQoSValueTotal(this.endpoint, requestsFailed);
+		
+		QoSParamValue requestsSuccessful = new QoSParamValue(QoSParamKey.RequestSuccessful,
+				1, QoSUnit.Requests);
+		this.persHandler.updateQoSValueTotal(this.endpoint, requestsSuccessful);
+		QoSParamValue requestsTotal = new QoSParamValue(QoSParamKey.RequestTotal,
+				1, QoSUnit.Requests);
+		this.persHandler.updateQoSValueTotal(this.endpoint, requestsTotal);
+		
+		this.persHandler.commit();
+
 		QoSParamValue qosRequestSize = new QoSParamValue(
 				QoSParamKey.PayloadSizeRequest, PayloadsizeRequest,
 				QoSUnit.Bytes);
@@ -153,21 +163,16 @@ public class WebServiceEndpoint {
 				QoSParamKey.ResponseTime, responseTime, QoSUnit.Milliseconds);
 
 		// Add new QoSParamsValues
-		this.persHandler.addQoSValue(endpoint, qosRequestSize, false);
-		this.persHandler.addQoSValue(endpoint, qosResponseSize, false);
-		this.persHandler.addQoSValue(endpoint, qosResponseTime, false);
+		this.persHandler.addQoSValue(endpoint, qosRequestSize);
+		this.persHandler.addQoSValue(endpoint, qosResponseSize);
+		this.persHandler.addQoSValue(endpoint, qosResponseTime);
 
-		// Update old last ones
-		this.persHandler.addQoSValue(endpoint, qosRequestSize, true);
-		this.persHandler.addQoSValue(endpoint, qosResponseSize, true);
-		this.persHandler.addQoSValue(endpoint, qosResponseTime, true);
 
 		// Update Averages
 		qosRequestSize.setType(QoSParamKey.PayloadSizeRequestAverage);
 		qosResponseSize.setType(QoSParamKey.PayloadSizeResponseAverage);
 		qosResponseTime.setType(QoSParamKey.ResponseTimeAverage);
 
-		
 		this.persHandler.updateQoSValueAverage(endpoint, qosRequestSize);
 		this.persHandler.updateQoSValueAverage(endpoint, qosResponseSize);
 		this.persHandler.updateQoSValueAverage(endpoint, qosResponseTime);
@@ -198,52 +203,44 @@ public class WebServiceEndpoint {
 		this.persHandler.updateQoSValueTotal(endpoint, qosRequestSize);
 		this.persHandler.updateQoSValueTotal(endpoint, qosResponseSize);
 		this.persHandler.updateQoSValueTotal(endpoint, qosResponseTime);
-		
+
 		this.persHandler.commit();
 	}
 
 	public synchronized void addUnsuccessfullInvoke(double PayloadsizeRequest) {
-//TODO:
-		
+		// TODO:
+		QoSParamValue value = new QoSParamValue(QoSParamKey.RequestFailed, 1,
+				QoSUnit.Requests);
+		this.persHandler.updateQoSValueTotal(this.endpoint, value);
+
 		this.persHandler.commit();
 	}
 
 	/**
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public double incrementeTotalRequests() throws Exception {
-		QoSParamValue value = new QoSParamValue(QoSParamKey.RequestTotal, 1,
-				QoSUnit.Requests);
-		this.persHandler.updateQoSValueTotal(this.endpoint, value);
-
-		// TODO: make return
-		return this.persHandler.getQoSParamValue(endpoint, QoSParamKey.RequestTotal);
+	public double getTotalRequests() throws Exception {
+		return this.persHandler.getQoSParamValue(endpoint,
+				QoSParamKey.RequestTotal);
 	}
 
 	/**
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public double incrementeSuccessfulRequests() throws Exception {
-		QoSParamValue value = new QoSParamValue(QoSParamKey.RequestSuccessful,
-				1, QoSUnit.Requests);
-		this.persHandler.updateQoSValueTotal(this.endpoint, value);
-
-		// TODO: make return
-		return this.persHandler.getQoSParamValue(endpoint, QoSParamKey.RequestSuccessful);
+	public double getSuccessfulRequests() throws Exception {
+		return this.persHandler.getQoSParamValue(endpoint,
+				QoSParamKey.RequestSuccessful);
 	}
 
 	/**
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public double incrementeFailedRequests() throws Exception {
-		QoSParamValue value = new QoSParamValue(QoSParamKey.RequestFailed, 1,
-				QoSUnit.Requests);
-		this.persHandler.updateQoSValueTotal(this.endpoint, value);
-
-		return this.persHandler.getQoSParamValue(endpoint, QoSParamKey.RequestFailed);
+	public double getFailedRequests() throws Exception {
+		return this.persHandler.getQoSParamValue(endpoint,
+				QoSParamKey.RequestFailed);
 	}
 
 }

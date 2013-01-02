@@ -138,7 +138,7 @@ public class MonitoringInvocationHandler {
 		activeInstance.setEndpoint(endpoint);
 		activeInstance.changeInvocationStatus(WSInvocationState.Instantiated);
 		sendStateChange(activeInstance);
-		double totalRequests = currentWS.incrementeTotalRequests();
+		double totalRequests = currentWS.getTotalRequests();
 		sendQoSValue(activeInstance, new QoSParamValue(
 				QoSParamKey.RequestTotal, totalRequests, QoSUnit.Requests));
 
@@ -191,7 +191,7 @@ public class MonitoringInvocationHandler {
 			 */
 			activeInstance.changeInvocationStatus(WSInvocationState.Completed);
 			sendStateChange(activeInstance);
-			double successfulRequests = currentWS.incrementeSuccessfulRequests();
+			double successfulRequests = currentWS.getSuccessfulRequests();
 			currentWS.addSuccessfullInvoke(payloadRequestSize,
 					payloadResponseSize, responseTime);
 
@@ -206,7 +206,7 @@ public class MonitoringInvocationHandler {
 			 */
 			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
-			double failedRequests = currentWS.incrementeFailedRequests();
+			double failedRequests = currentWS.getFailedRequests();
 			currentWS.addUnsuccessfullInvoke(payloadRequestSize);
 
 			sendQoSValue(activeInstance, new QoSParamValue(
@@ -222,7 +222,7 @@ public class MonitoringInvocationHandler {
 			 */
 			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
-			double failedRequests = currentWS.incrementeFailedRequests();
+			double failedRequests = currentWS.getFailedRequests();
 			sendQoSValue(activeInstance, new QoSParamValue(
 					QoSParamKey.RequestFailed, failedRequests,
 					QoSUnit.Requests));

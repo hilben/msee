@@ -326,41 +326,17 @@ public class PersistentHandler {
 		return state;
 	}
 
-	public synchronized Vector<URL> getEndpointWS(String _webserviceURI)
-			throws QueryEvaluationException, RepositoryException,
-			MalformedQueryException {
-		StringBuffer selectSPARQL = new StringBuffer();
-		selectSPARQL.append("SELECT ?endpointURL WHERE { ");
-		selectSPARQL.append("  ?endpointURL wsmf:isRelatedToWebService <"
-				+ _webserviceURI + "> . ");
-		selectSPARQL.append("  ?endpointURL rdf:type wsmf:Endpoint . ");
-		selectSPARQL.append("}");
-		Vector<URL> resultVector = new Vector<URL>();
-		TupleQueryResult result = this.reposHandler.selectSPARQL(QueryHelper
-				.getNamespacePrefix() + selectSPARQL.toString());
-
-		while (result.hasNext()) {
-			String endpointWSString = result.next().getBinding("endpointURL")
-					.getValue().stringValue();
-			try {
-				resultVector.add(new URL(endpointWSString));
-			} catch (MalformedURLException e) {
-				log.error("'" + endpointWSString
-						+ "' is not a well formed fallback web service URL!");
-			}
-		}
-		return resultVector;
-	}
-
 	public synchronized void deleteEndpoint(URL _webserviceURL)
 			throws RepositoryException {
 		this.reposHandler.deleteContext(_webserviceURL.toExternalForm());
+		this.reposHandler.commit();
 		this.reposHandler.shutdown();
 	}
 
 	public synchronized void deleteContext(String _contextURI)
 			throws RepositoryException {
 		this.reposHandler.deleteContext(_contextURI);
+		this.reposHandler.commit();
 		this.reposHandler.shutdown();
 	}
 
@@ -376,8 +352,8 @@ public class PersistentHandler {
 	 * @throws MalformedQueryException
 	 * @throws QueryEvaluationException
 	 */
-	public List<QoSParamAtTime> getQoSTimeframe(String endpoint,
-			String qostype, Date begin, Date end) throws Exception {
+	public List<QoSParamAtTime> getQoSTimeframe(URL endpoint,
+			QoSParamKey qostype, Date begin, Date end) throws Exception {
 		System.out.println(endpoint + " is searched...");
 
 		List<QoSParamAtTime> returnList = new ArrayList<QoSParamAtTime>();
@@ -453,7 +429,7 @@ public class PersistentHandler {
 						+ key.name() + "> .");
 		selectSPARQL.append("} ");
 
-//		System.out.println(selectSPARQL.toString());
+		// System.out.println(selectSPARQL.toString());
 
 		TupleQueryResult result = null;
 		try {
@@ -469,14 +445,14 @@ public class PersistentHandler {
 			e.printStackTrace();
 		}
 
-		double ret = 0;
+		double ret = Double.NaN;
 		try {
 			if (result != null) {
 
-				
-				if (result.hasNext()) { 
-				ret = Double.parseDouble(result.next().getBinding("v")
-						.getValue().stringValue());}
+				if (result.hasNext()) {
+					ret = Double.parseDouble(result.next().getBinding("v")
+							.getValue().stringValue());
+				}
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -571,7 +547,8 @@ public class PersistentHandler {
 	}
 
 	public synchronized void addAvailabilityStatus(URL endpoint,
-			WSAvailabilityState state, long updateTimeMinutes) throws RepositoryException  {
+			WSAvailabilityState state, long updateTimeMinutes)
+			throws RepositoryException {
 		try {
 			String subject = endpoint.toExternalForm();
 
@@ -611,31 +588,50 @@ public class PersistentHandler {
 	}
 
 	/**
-	 * @throws Exception
+	 * 
+	 * Updates the available time of a end points
+	 * 
+	 * @param endpoint
+	 *            the endpoint
+	 * @param updateTimeMinutes
+	 *            the update time in minutes
+	 * @param _state
+	 *            the state of the endpoint ({@link WSAvailabilityState})
 	 */
 	private void updateAvailabilityTime(URL endpoint, long updateTimeMinutes,
-			WSAvailabilityState _state)  {
+			WSAvailabilityState _state) {
 
 		long availableTime = updateTimeMinutes;
 		long unavailableTime = updateTimeMinutes;
 
+		// Update the monitored Time
+		QoSParamValue monitoredTime = new QoSParamValue(
+				QoSParamKey.MonitoredTime, updateTimeMinutes, QoSUnit.Minutes);
+
+		this.addQoSValue(endpoint, monitoredTime);
+		this.updateQoSValueTotal(endpoint, monitoredTime);
+
+		// If web service is availabe then update it's available time
 		if (_state == WSAvailabilityState.WSAvailable) {
 			QoSParamValue availTime = new QoSParamValue(
-					QoSParamKey.UnavailableTime, availableTime, QoSUnit.Minutes);
+					QoSParamKey.AvailableTime, availableTime, QoSUnit.Minutes);
 
-			this.addQoSValue(endpoint, availTime, false);
-			this.addQoSValue(endpoint, availTime, true);
+			this.addQoSValue(endpoint, availTime);
 			this.updateQoSValueTotal(endpoint, availTime);
 
 		} else {
+			// If web service is no available then update it's unavailable time
 			QoSParamValue unavailTime = new QoSParamValue(
 					QoSParamKey.UnavailableTime, unavailableTime,
 					QoSUnit.Minutes);
 
-			this.addQoSValue(endpoint, unavailTime, false);
-			this.addQoSValue(endpoint, unavailTime, true);
+			this.addQoSValue(endpoint, unavailTime);
 			this.updateQoSValueTotal(endpoint, unavailTime);
 		}
+	}
+
+	public void addQoSValue(URL endpoint, QoSParamValue value) {
+		this.addQoSValueAndUpdate(endpoint, value, true);
 	}
 
 	/**
@@ -643,7 +639,7 @@ public class PersistentHandler {
 	 * 
 	 * @param value
 	 */
-	public void addQoSValue(URL endpoint, QoSParamValue value,
+	private void addQoSValueAndUpdate(URL endpoint, QoSParamValue value,
 			boolean performUpdate) {
 		String endpointString = endpoint.toExternalForm();
 		String qosParamID;
@@ -683,6 +679,10 @@ public class PersistentHandler {
 			this.updateLiteralTriple(qosParamID, QueryHelper.getDCURI("date"),
 					DateHelper.getXSDDateTime(), endpointString);
 
+			if (performUpdate) {
+				addQoSValueAndUpdate(endpoint, value, false);
+			}
+
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			log.error(e.getLocalizedMessage());
@@ -696,62 +696,70 @@ public class PersistentHandler {
 	public void updateQoSValueAverage(URL endpoint, QoSParamValue value) {
 		double totalRequests = this.getQoSParamValue(endpoint,
 				QoSParamKey.RequestTotal);
-	
+
 		double oldAverage = this.getQoSParamValue(endpoint, value.getType());
 		double newAverage;
-		if (totalRequests>1) {
-			
-		
-		newAverage = ((oldAverage * (totalRequests - 1) + value
-				.getValue()) / totalRequests);
+
+		if (totalRequests > 1) {
+			newAverage = ((oldAverage * (totalRequests - 1) + value.getValue()) / totalRequests);
 		} else {
 			newAverage = value.getValue();
 		}
+
 		this.addQoSValue(endpoint, new QoSParamValue(value.getType(),
-				newAverage, value.getUnit()), true);
+				newAverage, value.getUnit()));
 	}
 
-	public boolean updateQoSValueMaximum(URL endpoint, QoSParamValue value)
-		 {
+	public boolean updateQoSValueMaximum(URL endpoint, QoSParamValue value) {
 
 		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+
+		if (new Double(oldValue).isNaN()) {
+			oldValue = Double.NEGATIVE_INFINITY;
+		}
 
 		// no new minimum
 		if (oldValue > value.getValue()) {
 			return false;
 		}
 
-		this.addQoSValue(endpoint, value, true);
+		this.addQoSValue(endpoint, value);
 
 		// There was a new maxima
 		return true;
 	}
 
-	public boolean updateQoSValueMinimum(URL endpoint, QoSParamValue value)
-		 {
+	public boolean updateQoSValueMinimum(URL endpoint, QoSParamValue value) {
 
 		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+
+		if (new Double(oldValue).isNaN()) {
+			oldValue = Double.POSITIVE_INFINITY;
+		}
 
 		// no new minimum
 		if (oldValue < value.getValue()) {
 			return false;
 		}
 
-		this.addQoSValue(endpoint, value, true);
+		this.addQoSValue(endpoint, value);
 
 		// There was a new maxima
 		return true;
 	}
 
-	// TODO implement
-	public void updateQoSValueTotal(URL endpoint, QoSParamValue value)
-			 {
+	public void updateQoSValueTotal(URL endpoint, QoSParamValue value) {
 
 		double oldValue = this.getQoSParamValue(endpoint, value.getType());
+
+		if (new Double(oldValue).isNaN()) {
+			oldValue = 0;
+		}
+
 		QoSParamValue newval = new QoSParamValue(value.getType(), oldValue
 				+ value.getValue(), value.getUnit());
 
-		this.addQoSValue(endpoint, newval, true);
+		this.addQoSValue(endpoint, newval);
 
 	}
 

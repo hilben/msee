@@ -48,6 +48,12 @@ public class QoSRankingEngine {
 
 			// Normalize all the value by dividing through the max value
 			// and multiple by preference
+			
+			//Check that max is not zero
+			if (max == 0) {
+				max = 1;
+			}
+			
 			for (QoSParamsEndpointRankingTable table : qosTables) {
 				float normalized = table.getRankingValueForProperty(s) / max;
 				normalized *= qosRankingTemplate.getPropertyImportance(s);

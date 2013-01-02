@@ -46,9 +46,9 @@ public class QoSRankingTest extends TestCase {
 	
 	//some hardcoded endpoints
 	 public static String URL[] = {
-	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringuppercase",
-	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomstring",
-	 "http://localhost:9292/at.sti2.ngsee.testwebservices/services/stringmulti"
+	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/big/getBigAnswer ",
+	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/constant/getConstantAnswer ",
+	 "http://sesa.sti2.at:8080/monitoring-testwebservices/services/slow/getSlowAnswer"
 	 };
 
 	public static void testQoSRanking() {
@@ -67,14 +67,14 @@ public class QoSRankingTest extends TestCase {
 
 		
 		//Create random preferences for testing purposes
-//		for (QoSParamKey q : QoSParamKey.values()) {
-//			qosRankingTemplate.addPropertyAndImportance(q,	(float)(Math.random()+0.1));
-//		}
+		for (QoSParamKey q : QoSParamKey.values()) {
+			qosRankingTemplate.addPropertyAndImportance(q.name(),	(float)(Math.random()+0.1));
+		}
 		
 //		// Set up preferences for the QoSParams
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime.name(), 1.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime.name(), 2.0f);
-		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime.name(), -5.0f);
+//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.MonitoredTime.name(), 1.0f);
+//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.AvailableTime.name(), 2.0f);
+//		qosRankingTemplate.addPropertyAndImportance(QoSParamKey.UnavailableTime.name(), -5.0f);
 
 		// Create a list with QosOrderingValueTables for all the endpoints
 		ArrayList<QoSParamsEndpointRankingTable> endpointQoSParamsRankingTable = new ArrayList<QoSParamsEndpointRankingTable>();

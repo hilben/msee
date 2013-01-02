@@ -42,6 +42,7 @@ package at.sti2.wsmf.ws.json.resources;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +55,7 @@ import javax.ws.rs.QueryParam;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.core.PersistentHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamAtTime;
 import at.sti2.wsmf.ws.json.chartcore.ChartColumnDataTableEntry;
@@ -73,10 +75,11 @@ public class ChartResource {
 	@GET
 	@Produces({ "application/javascript" })
 	public String getSomeStuff(@QueryParam("endpoint") List<String> endpoints,
-			@QueryParam("qosParamKey") List<String> qosParamKeys) {
+			@QueryParam("qosParamKey") List<String> qosParamKeys)
+			throws FileNotFoundException, IOException, Exception {
 
-		return "ajaxCallSucceed(" + asJson(endpoints, qosParamKeys).toString()
-				+ ")";
+		return "ajaxCallSucceed("
+				+ new ChartResource().asJson(endpoints, qosParamKeys) + ")";
 	}
 
 	/**
@@ -118,8 +121,10 @@ public class ChartResource {
 
 				// Receive data of this QoSParam
 				try {
+					QoSParamKey k =QoSParamKey.valueOf(qosParamKey);
+					
 					data = ph
-							.getQoSTimeframe(endpoint, qosParamKey, null, null);
+							.getQoSTimeframe(new URL(endpoint), k, null, null);
 				} catch (Exception e) {
 					e.printStackTrace();// TODO: exception handling
 				}
@@ -129,7 +134,7 @@ public class ChartResource {
 					String row[] = new String[qosParamKeys.size() + 1];
 
 					row[0] = "\"" + p.getTimeForGoogleCharts() + "\"";
-//					row[0] = "\"" + p.getTime() + "\"";
+					// row[0] = "\"" + p.getTime() + "\"";
 					for (int i = 1; i < row.length; i++) {
 						row[i] = "null";
 					}
@@ -164,8 +169,8 @@ public class ChartResource {
 		endpoints
 				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
 		qosParamKeys.add("ResponseTime");
-//		qosParamKeys.add("PayloadsizeResponse");
-//		qosParamKeys.add("PayloadsizeRequest");
+		// qosParamKeys.add("PayloadsizeResponse");
+		// qosParamKeys.add("PayloadsizeRequest");
 		// qosParamKeys.add("AvailableTime");
 		System.out.println(new ChartResource().asJson(endpoints, qosParamKeys));
 		System.out.println("Done in " + (System.currentTimeMillis() - time));

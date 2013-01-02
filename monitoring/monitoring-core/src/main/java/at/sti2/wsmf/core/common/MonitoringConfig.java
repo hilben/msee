@@ -16,9 +16,7 @@
  */
 package at.sti2.wsmf.core.common;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -48,16 +46,9 @@ public class MonitoringConfig {
 
 	private MonitoringConfig() throws IOException {
 		this.prop = new Properties();
-		URL config = this.getClass().getResource("default.properties");
-		// URL config = new
-		// URL("file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
-		URL l = ClassLoader.getSystemResource("default.properties");
-		 System.out.println("MonitoringConfig: Loading "+ l);
+     	this.prop.load(MonitoringConfig.class.getResourceAsStream("/default.properties"));
+     	
 		
-		this.prop.load(new FileInputStream(l.getFile()));
-
-		
-
 		this.triplestoreEndpoint = this.prop
 				.getProperty("triplestore.endpoint");
 		this.triplestoreReposid = this.prop.getProperty("triplestore.reposid");
