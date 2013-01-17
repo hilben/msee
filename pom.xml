@@ -16,7 +16,7 @@
 		<module>util</module>
 		<module>grounding</module>
 		<module>ranking</module>
-		<!--  <module>soa4all.ranking.nfps.wsmo.lite</module> -->
+		<!-- <module>soa4all.ranking.nfps.wsmo.lite</module> -->
 	</modules>
 
 	<name>sesa-project</name>
@@ -124,28 +124,13 @@
 			<url>http://repo.phloc.com/maven2/</url>
 		</repository>
 
-	<!-- 
-		<repository>
-			<id>semweb4j-repo</id>
-			<name>Semweb4j.org maven repo</name>
-			<url>http://semweb4j.org/repo/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	<repository>
-			<id>semweb4j-snapshots</id>
-			<name>Semweb4j.org maven snapshot repo</name>
-			<url>http://semweb4j.org/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</snapshots>
-		</repository> -->
+		<!-- <repository> <id>semweb4j-repo</id> <name>Semweb4j.org maven repo</name> 
+			<url>http://semweb4j.org/repo/</url> <releases> <enabled>true</enabled> </releases> 
+			</repository> <repository> <id>semweb4j-snapshots</id> <name>Semweb4j.org 
+			maven snapshot repo</name> <url>http://semweb4j.org/snapshots/</url> <releases> 
+			<enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> 
+			<updatePolicy>always</updatePolicy> <checksumPolicy>fail</checksumPolicy> 
+			</snapshots> </repository> -->
 	</repositories>
 
 	<!-- BUILD PROCESS -->
@@ -186,12 +171,8 @@
 						</rules>
 					</configuration>
 					<executions>
-					<!-- 	<execution>
-							<id>enforce-java</id>
-							<goals>
-								<goal>enforce</goal>
-							</goals>
-						</execution> -->
+						<!-- <execution> <id>enforce-java</id> <goals> <goal>enforce</goal> 
+							</goals> </execution> -->
 					</executions>
 					<dependencies>
 						<dependency>

@@ -38,7 +38,7 @@ public class TestWebServicesInvokation {
 	@Deprecated
 	public static void main(String args[]) throws Exception {
 
-		for (int i = 0; i < 999; i++) {
+//		for (int i = 0; i < 999; i++) {
 			try {
 
 				TestWebServicesInvokation.invokeWebServiceViaMonitoring(
@@ -59,7 +59,7 @@ public class TestWebServicesInvokation {
 				logger.error(e);
 				System.exit(1);
 			}
-		}
+//		}
 	}
 
 	public static void invokeWebServiceViaMonitoring(String endpointUrl,

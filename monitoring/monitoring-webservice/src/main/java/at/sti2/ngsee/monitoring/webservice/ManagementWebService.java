@@ -66,8 +66,7 @@ public class ManagementWebService implements IManagementWebService {
 	 */
 	@WebMethod
 	@Override
-	public double getQoSParamValue(
-			@WebParam(name = "endpoint") URL _endpoint,
+	public double getQoSParamValue(@WebParam(name = "endpoint") URL _endpoint,
 			@WebParam(name = "key") QoSParamKey _key) throws Exception {
 		PersistentHandler persHandler = PersistentHandler.getInstance();
 		return persHandler.getQoSParamValue(_endpoint, _key);
@@ -77,7 +76,6 @@ public class ManagementWebService implements IManagementWebService {
 	 * @see at.sti2.wsmf.api.ws.IManagementWebService#changeQoSThresholdValue(java.net.URL,
 	 *      at.sti2.wsmf.api.data.qos.IQoSThresholdValue)
 	 */
-
 
 	/*
 	 * (non-Javadoc)
@@ -98,46 +96,90 @@ public class ManagementWebService implements IManagementWebService {
 
 		return ret;
 	}
-	
 
-
-
-
-	/* (non-Javadoc)
-	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getSubcategoriesAndServices(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.sti2.wsmf.api.ws.IManagementWebService#getSubcategoriesAndServices
+	 * (java.lang.String)
 	 */
 
 	@Override
-	public List<String> getSubcategoriesAndServices(String category)
-			throws Exception {
+	public List<String> getSubcategoriesAndServices(String category) throws Exception {
 		String[] allendpoints = this.listEndpoints();
 
 		List<String> endpoints = new ArrayList<String>();
 
-		for (int i = 0; i < allendpoints.length; i++) {
-			if (Math.random() > 0.5) {
-				
-				if (allendpoints[i].charAt(0)=='<') {
-					allendpoints[i]=allendpoints[i].substring(1, allendpoints[i].length()-1);
-				}
-				endpoints.add(allendpoints[i]);
-				
-			}
+		if (category.compareTo("root") == 0) {
+			endpoints.add("DeliveryService");
+			endpoints.add("TShirtCreationService");
+			return endpoints;
 		}
 		
-		endpoints.add("ExampleSubcategory");
+		if (category.compareTo("DeliveryService") == 0)
+		{
+			endpoints.add("FastDeliveryService");
+			for (int i = 0; i < allendpoints.length; i++) {
+
+				if (i % 3 == 0)
+				{
+					if (allendpoints[i].charAt(0) == '<') {
+						allendpoints[i] = allendpoints[i].substring(1,allendpoints[i].length() - 1);
+					}
+					endpoints.add(allendpoints[i]);
+				}
+			}
+			return endpoints;
+		}
+		
+		if (category.compareTo("FastDeliveryService") == 0)
+		{
+			for (int i = 0; i < allendpoints.length; i++) {
+
+				if (i % 3 == 1)
+				{
+					if (allendpoints[i].charAt(0) == '<') {
+						allendpoints[i] = allendpoints[i].substring(1,allendpoints[i].length() - 1);
+					}
+					endpoints.add(allendpoints[i]);
+				}
+			}
+			return endpoints;
+		}
+
+		if (category.compareTo("TShirtCreationService") == 0)
+		{
+			for (int i = 0; i < allendpoints.length; i++) {
+
+				if (i % 3 == 2)
+				{
+					if (allendpoints[i].charAt(0) == '<') {
+						allendpoints[i] = allendpoints[i].substring(1,allendpoints[i].length() - 1);
+					}
+					endpoints.add(allendpoints[i]);
+				}
+			}
+			return endpoints;
+		}
 		return endpoints;
 	}
-	
-	
+
 	public static void main(String args[]) throws Exception {
-		System.out.println("cats: " + new ManagementWebService().getSubcategoriesAndServices("asdf"));
-		System.out.println("instances: " + new ManagementWebService().listInstanceIDs());
-		
-		System.out.println("QoSParam: " + new ManagementWebService().getQoSParamValue(new URL("http://www.test.org"), QoSParamKey.MonitoredTime));
+		System.out.println("cats: "
+				+ new ManagementWebService()
+						.getSubcategoriesAndServices("asdf"));
+		System.out.println("instances: "
+				+ new ManagementWebService().listInstanceIDs());
+
+		System.out.println("QoSParam: "
+				+ new ManagementWebService().getQoSParamValue(new URL(
+						"http://www.test.org"), QoSParamKey.MonitoredTime));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see at.sti2.wsmf.api.ws.IManagementWebService#getQoSParamKeys()
 	 */
 	@Override
@@ -146,10 +188,8 @@ public class ManagementWebService implements IManagementWebService {
 		for (QoSParamKey k : QoSParamKey.values()) {
 			keys.add(k.toString());
 		}
-		
+
 		return keys;
 	}
-
-
 
 }
