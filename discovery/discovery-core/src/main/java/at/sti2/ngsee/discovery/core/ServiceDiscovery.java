@@ -40,7 +40,7 @@ import at.sti2.util.triplestore.RepositoryHandler;
  * 
  * @author Alex Oberhauser
  * 
- * @author: Benjamin Hiltpolt
+ * @author Benjamin Hiltpolt
  */
 public class ServiceDiscovery {
 	

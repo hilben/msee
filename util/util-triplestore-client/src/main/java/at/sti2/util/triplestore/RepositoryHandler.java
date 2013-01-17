@@ -324,4 +324,8 @@ public class RepositoryHandler {
 			}
 		}
 	}
+	
+	public static void main(String args[]) {
+		System.out.println("Running main in RepoHandler... do nothing");
+	}
 }

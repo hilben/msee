@@ -25,15 +25,13 @@ package at.sti2.wsmf.api.data.qos;
  */
 public enum QoSParamKey {
 	
-	
-	
 	RequestTotal,
-	RequestSuccessful,   //addSuccessful Request (PayloadSize Request, PayloadSize Response, ResponseTime)
-	RequestFailed,       //addUnsuccesful Request (PayloadSize Request)
+	RequestSuccessful,   
+	RequestFailed,       
 	
 	MonitoredTime,
-	AvailableTime,   //unavailable (Time)
-	UnavailableTime,     //available (Time)
+	AvailableTime,  
+	UnavailableTime,    
 
 	PayloadSizeResponse,    
 	PayloadSizeResponseMinimum,
