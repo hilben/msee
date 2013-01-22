@@ -39,9 +39,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "checkAvailability")
-public class CheckAvailability {
-
-
-}
+//@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlType(name = "checkAvailability")
+//public class CheckAvailability {
+//
+//
+//}

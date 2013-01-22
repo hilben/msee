@@ -3,7 +3,6 @@
 
 	<groupId>at.sti2.ngsee.discovery</groupId>
 	<artifactId>discovery-project</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>

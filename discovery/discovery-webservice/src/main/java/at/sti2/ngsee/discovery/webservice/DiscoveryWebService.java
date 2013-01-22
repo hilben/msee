@@ -34,39 +34,44 @@ import at.sti2.ngsee.discovery.core.ServiceDiscovery;
 /**
  * @author Alex Oberhauser
  */
-@WebService(targetNamespace="http://sesa.sti2.at/services/")
-@WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Discovery Component")
-	)
+@WebService(targetNamespace = "http://sesa.sti2.at/services/")
+@WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
 public class DiscoveryWebService implements IDiscoveryWebService {
-	
+
 	/**
 	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
 	 */
 	@WebMethod
 	@Override
-	public String discover(@WebParam(name="categoryList")List<URI> _categoryList) throws Exception {
+	public String discover(
+			@WebParam(name = "categoryList") List<URI> _categoryList)
+			throws Exception {
 		return ServiceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
 	}
-	
+
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List, java.util.List, java.util.List)
+	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List,
+	 *      java.util.List, java.util.List)
 	 */
-	@WebMethod(operationName="discoverAdvanced")
+	@WebMethod(operationName = "discoverAdvanced")
 	@Override
 	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
 			List<URI> _outputParamList) throws Exception {
-		return ServiceDiscovery.discover(_categoryList, _inputParamList, _outputParamList, RDFFormat.RDFXML);
+		return ServiceDiscovery.discover(_categoryList, _inputParamList,
+				_outputParamList, RDFFormat.RDFXML);
 	}
-	
+
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI, java.lang.String)
+	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI,
+	 *      java.lang.String)
 	 */
 	@WebMethod
 	@Override
-	public String lookup(@WebParam(name="namespace")URI _namespace,
-			@WebParam(name="operationName")String _operationName) throws Exception {
-		return ServiceDiscovery.lookup(_namespace, _operationName, RDFFormat.RDFXML);
+	public String lookup(@WebParam(name = "namespace") URI _namespace,
+			@WebParam(name = "operationName") String _operationName)
+			throws Exception {
+		return ServiceDiscovery.lookup(_namespace, _operationName,
+				RDFFormat.RDFXML);
 	}
 
 	/**
@@ -74,7 +79,8 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	 */
 	@WebMethod
 	@Override
-	public String getIServeModel(@WebParam(name="serviceID")String _serviceID) throws Exception {
+	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
+			throws Exception {
 		return ServiceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
 	}
 

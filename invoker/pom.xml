@@ -15,7 +15,7 @@
 
 	<modules>
 		<module>invoker-api</module>
-		<module>invoker-client</module>
+		<!--  <module>invoker-client</module> -->
 		<module>invoker-core</module>
 		<module>invoker-webservice</module>
 		<module>invoker-grounding</module>
