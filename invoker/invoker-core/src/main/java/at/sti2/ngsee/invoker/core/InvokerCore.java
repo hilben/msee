@@ -55,8 +55,8 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
  * @author Benjamin Hiltpolt
- *
- * TODO: Documentation
+ * 
+ *         TODO: Documentation
  */
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
@@ -112,7 +112,6 @@ public class InvokerCore {
 		 */
 		InvokerMSM msmObject = TriplestoreHandler.getInvokerMSM(_serviceID,
 				_operationName);
-		
 
 		IGroundingEngine groundingEngine = GroundingFactory
 				.createGroundingEngine(msmObject.getLoweringSchema(),
@@ -123,11 +122,10 @@ public class InvokerCore {
 		 */
 		String loweredInputData = groundingEngine.lower(_inputData);
 
-		
 		/*
 		 * Starting the invocation process
 		 */
-		
+
 		logger.info("Invoking Web Service '" + msmObject.getWSDL()
 				+ "' with input data '" + loweredInputData + "'");
 
@@ -139,7 +137,7 @@ public class InvokerCore {
 		SOAPMessage loweredSOAPMessage = createSOAPMessage(loweredInputData);
 
 		SOAPMessage returnMsg = null;
-		
+
 		try {
 			logger.info("service id: " + _serviceID);
 			logger.info("soap content: " + loweredSOAPMessage);
@@ -147,25 +145,26 @@ public class InvokerCore {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			loweredSOAPMessage.writeTo(out);
 			String strMsg = new String(out.toByteArray());
-			
+
 			/*
 			 * Monitoring!
 			 */
 			String endpointURL = msmObject.getEndpointURL().toExternalForm();
-			
-			WebServiceEndpointConfig cfg = WebServiceEndpointConfig.getConfig(endpointURL);
+
+			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
+					.getConfig(endpointURL);
 			cfg.setWebServiceName(_operationName);
-			
-			
-			returnMsg = generateSOAPMessage(MonitoringInvocationHandler.invokeWithMonitoring(generateSOAPMessage(strMsg),
-					msmObject.getSOAPAction(), new ActivityInstantiatedEvent(endpointURL),
-					strMsg.length()));
-			
+
+			returnMsg = generateSOAPMessage(MonitoringInvocationHandler
+					.invokeWithMonitoring(generateSOAPMessage(strMsg),
+							msmObject.getSOAPAction(),
+							new ActivityInstantiatedEvent(endpointURL),
+							strMsg.length()));
+
 			out = new ByteArrayOutputStream();
 			returnMsg.writeTo(out);
 			String strMsg2 = new String(out.toByteArray());
-			
-			
+
 			logger.info("return msg_new" + strMsg2);
 
 		} catch (Exception e) {
@@ -179,8 +178,6 @@ public class InvokerCore {
 		 */
 		return groundingEngine.lift(getBodyContent(returnMsg));
 	}
-
-
 
 	/**
 	 * 
@@ -203,6 +200,5 @@ public class InvokerCore {
 		msg.saveChanges();
 		return msg;
 	}
-	
 
 }
