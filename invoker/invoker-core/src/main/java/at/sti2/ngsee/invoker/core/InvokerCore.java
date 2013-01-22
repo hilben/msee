@@ -53,6 +53,11 @@ import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
+/**
+ * @author Benjamin Hiltpolt
+ *
+ * TODO: Documentation
+ */
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
 
@@ -88,14 +93,6 @@ public class InvokerCore {
 		transformer.transform(source, result);
 
 		return stringWriter.getBuffer().toString();
-	}
-
-	@SuppressWarnings("unused")
-	private static String getSOAPMessageAsString(SOAPMessage _message)
-			throws SOAPException, IOException {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		_message.writeTo(os);
-		return os.toString();
 	}
 
 	/**
