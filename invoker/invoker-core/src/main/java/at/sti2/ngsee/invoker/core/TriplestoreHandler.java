@@ -141,24 +141,5 @@ public class TriplestoreHandler {
 		return msmInstance;
 	}
 
-	public static void main(String[] args) throws Exception {
-		InvokerMSM invokerMSM = TriplestoreHandler.getInvokerMSM(
-				"http://www.webserviceX.NET#GlobalWeather", "GetWeather");
-		System.out.println(invokerMSM.getOperationQName());
-		System.out.println(invokerMSM);
-
-		invokerMSM = TriplestoreHandler.getInvokerMSM(
-				"http://www.nanonull.com/TimeService/TimeService.asmx",
-				"getUTCTime");
-		System.out.println(invokerMSM.getOperationQName());
-		System.out.println(invokerMSM);
-
-		invokerMSM = TriplestoreHandler
-				.getInvokerMSM(
-						"http://sesa.sti2.at/services/dummy/#ValenciaPortWebServiceService",
-						"submitFALForm");
-		System.out.println(invokerMSM.getOperationQName());
-		System.out.println(invokerMSM);
-	}
 
 }
