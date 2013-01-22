@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>invoker-api</module>
-		<!--  <module>invoker-client</module> -->
 		<module>invoker-core</module>
 		<module>invoker-webservice</module>
 		<module>invoker-grounding</module>
@@ -85,7 +84,7 @@
 				<artifactId>invoker-grounding</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			 <dependency>
+			<dependency>
 				<groupId>at.sti2.ngsee.monitoring</groupId>
 				<artifactId>monitoring-api</artifactId>
 				<version>1.2-SNAPSHOT</version>
@@ -94,7 +93,7 @@
 				<groupId>at.sti2.ngsee.monitoring</groupId>
 				<artifactId>monitoring-core</artifactId>
 				<version>1.2-SNAPSHOT</version>
-			</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>at.sti2.ngsee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
@@ -118,22 +117,6 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-			<!-- axis -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.apache.axis2</groupId> -->
-			<!-- <artifactId>axis2-kernel</artifactId> -->
-			<!-- <version>${axis.version}</version> -->
-			<!-- </dependency> -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.apache.axis2</groupId> -->
-			<!-- <artifactId>axis2-transport-local</artifactId> -->
-			<!-- <version>${axis.version}</version> -->
-			<!-- </dependency> -->
-			<!-- <dependency> -->
-			<!-- <groupId>org.apache.axis2</groupId> -->
-			<!-- <artifactId>axis2-transport-http</artifactId> -->
-			<!-- <version>${axis.version}</version> -->
-			<!-- </dependency> -->
 			<dependency>
 				<groupId>dom4j</groupId>
 				<artifactId>dom4j</artifactId>
