@@ -33,6 +33,11 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>stringtemplate</artifactId>
+			<version>3.2</version>
+		</dependency>
 
 	</dependencies>
 </project>

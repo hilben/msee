@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Properties;
 
+import org.antlr.stringtemplate.StringTemplate;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -81,6 +82,7 @@ public class ServiceDiscovery {
 		RepositoryHandler reposHandler = getReposHandler();
 
 		StringBuffer discoveryQuery = new StringBuffer();
+		StringTemplate template = new StringTemplate();
 
 		discoveryQuery
 				.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
@@ -455,44 +457,34 @@ public class ServiceDiscovery {
 			UnsupportedRDFormatException {
 		RepositoryHandler reposHandler = getReposHandler();
 
-		StringBuffer lookupQuery = new StringBuffer();
+		StringTemplate lookupQuery = new StringTemplate(
+		"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
+		"PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"+
+		"PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"+
+		"PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"+
 
-		lookupQuery
-				.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
-		lookupQuery
-				.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
-		lookupQuery.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
-		lookupQuery
-				.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
-		lookupQuery.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+		"CONSTRUCT { \n"+
+		"?messageReference ?p ?o . \n"+
+		"?faultMessageReference ?p1 ?o1 . \n"+
+		"} WHERE { \n"+
 
-		lookupQuery.append("CONSTRUCT { \n");
-		lookupQuery.append("?messageReference ?p ?o . \n");
-		lookupQuery.append("?faultMessageReference ?p1 ?o1 . \n");
-		lookupQuery.append("} WHERE { \n");
+		"?serviceID rdf:type msm_ext:Service . \n"+
+		"?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"+
+		"?descriptionBlock wsdl:namespace <$_namespace$> . \n"+
+		"?descriptionBlock wsdl:interface ?interfaceBlock . \n"+
+		"?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"+
+		"?interfaceOperation wsdl:interfaceMessageReference ?messageReference . \n"+
+		"?interfaceOperation rdfs:label \"$_operationName$\" . \n"+
+		"?messageReference ?p ?o . \n"+
+		"OPTIONAL { ?interfaceOperation wsdl:interfaceFaultReference ?faultMessageReference . \n"+
+		"?faultMessageReference ?p1 ?o1 . } \n"+
+		"}");
+		
+		lookupQuery.setAttribute("_namespace", _namespace);
+		lookupQuery.setAttribute("_operationName", _operationName);
 
-		lookupQuery.append("?serviceID rdf:type msm_ext:Service . \n");
-		lookupQuery
-				.append("?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n");
-		lookupQuery.append("?descriptionBlock wsdl:namespace <" + _namespace
-				+ "> . \n");
-		lookupQuery
-				.append("?descriptionBlock wsdl:interface ?interfaceBlock . \n");
-		lookupQuery
-				.append("?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n");
-		lookupQuery
-				.append("?interfaceOperation wsdl:interfaceMessageReference ?messageReference . \n");
-		lookupQuery.append("?interfaceOperation rdfs:label \"" + _operationName
-				+ "\" . \n");
-		lookupQuery.append("?messageReference ?p ?o . \n");
-		lookupQuery
-				.append("OPTIONAL { ?interfaceOperation wsdl:interfaceFaultReference ?faultMessageReference . \n");
-		lookupQuery.append("?faultMessageReference ?p1 ?o1 . } \n");
-
-		lookupQuery.append("}");
-
-		GraphQueryResult queryResult = reposHandler.constructSPARQL(lookupQuery
-				.toString());
+		GraphQueryResult queryResult = reposHandler.constructSPARQL(lookupQuery.toString());
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		QueryResultIO.write(queryResult, _outputFormat, out);
