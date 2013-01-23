@@ -93,6 +93,47 @@ public class TestRepositoryHandler {
 	}
 
 	@Test
+	public void testUpdateResourceTriple() {
+		// TODO testUpdateResourceTriple
+	}
+
+	@Test
+	public void testUpdateLiteralTriple() {
+		// TODO testUpdateLiteralTriple
+	}
+
+	@Test
+	public void testSelectSPARQL() {
+		// TODO testSelectSPARQL
+	}
+
+	@Test
+	public void testConstructSPARQL() {
+		// TODO testConstructSPARQL
+	}
+
+	@Test
+	public void testStoreEntity() {
+		 // TODO testStoreEntity
+	}
+
+
+	@Test
+	public void testDelete() {
+		// TODO testDelete
+	}
+
+	@Test
+	public void testDeleteContext() {
+		// TODO testDeleteContext
+	}
+
+	@Test
+	public void testCommit() {
+    // TODO testCommit
+	}
+
+	@Test
 	public void testAddResourceTriple() {
 		// Add some random triples for testing
 		try {

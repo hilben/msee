@@ -11,10 +11,6 @@ import at.sti2.util.triplestore.RepositoryHandler;
 public abstract class ServiceManagement {
 	private static RepositoryHandler reposHandler;
 
-	public static void main(String[] args) throws RegistrationException {
-		delete("file:///tmp/crs");
-	}
-
 	public static String delete(String _serviceURI)
 			throws RegistrationException {
 		// Initialising the repository
