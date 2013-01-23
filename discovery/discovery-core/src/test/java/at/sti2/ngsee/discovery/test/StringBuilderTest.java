@@ -18,7 +18,7 @@ public class StringBuilderTest {
 		List<URI> uris = new ArrayList<URI>();
 		uris.add(new URI("http://1.com"));
 		uris.add(new URI("http://2.com"));
-		uris.add(new URI("http://3.com"));
+		uris.add(new URI("hzttp://3.com"));
 		
 		
 		StringTemplate lookupQuery = new StringTemplate(

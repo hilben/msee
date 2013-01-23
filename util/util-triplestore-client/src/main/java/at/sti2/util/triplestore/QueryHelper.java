@@ -20,6 +20,10 @@ package at.sti2.util.triplestore;
  * @author Alex Oberhauser
  * @author Corneliu-Valentin Stanciu
  * @author Benjamin Hiltpolt
+ * 
+ * 
+ * Helper class to build Strings for SPARQL Querys. Mostly stores namespaces.
+ * {@link RepositoryHandler}
  */
 public class QueryHelper {
 
