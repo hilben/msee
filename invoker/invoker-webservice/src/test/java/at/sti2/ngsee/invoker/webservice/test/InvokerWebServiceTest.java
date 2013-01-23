@@ -6,6 +6,8 @@ import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
+ * 
+ * TODO: Write real test for invoker
  */
 public class InvokerWebServiceTest 
     extends TestCase

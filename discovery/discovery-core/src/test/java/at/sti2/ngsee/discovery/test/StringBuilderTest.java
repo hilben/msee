@@ -28,8 +28,8 @@ public class StringBuilderTest {
 		List<URI> uris = new ArrayList<URI>();
 		uris.add(new URI("http://1.com"));
 		uris.add(new URI("http://2.com"));
-		uris.add(new URI("http://3.com"));
-
+		uris.add(new URI("hzttp://3.com"));
+		
 		StringTemplate lookupQuery = new StringTemplate(
 				"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
