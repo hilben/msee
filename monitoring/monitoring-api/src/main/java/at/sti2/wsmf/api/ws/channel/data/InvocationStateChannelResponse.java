@@ -24,8 +24,6 @@ import at.sti2.wsmf.api.data.state.WSInvocationState;
  * @author Alex Oberhauser
  */
 public class InvocationStateChannelResponse {
-	private static final long serialVersionUID = -7056578155174781128L;
-	
 	public URI instanceURI;
 	public WSInvocationState state;
 	

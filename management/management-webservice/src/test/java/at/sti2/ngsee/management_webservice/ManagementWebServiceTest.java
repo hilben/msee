@@ -18,6 +18,8 @@ package at.sti2.ngsee.management_webservice;
 
 import org.junit.Assert;
 
+import at.sti2.ngsee.management.api.exception.ManagementException;
+import at.sti2.ngsee.management.ontology.OntologyManagement;
 import at.sti2.ngsee.management.webservice.ManagementWebService;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -26,14 +28,14 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class AppTest extends TestCase {
+public class ManagementWebServiceTest extends TestCase {
 	/**
 	 * Create the test case
 	 * 
 	 * @param testName
 	 *            name of the test case
 	 */
-	public AppTest(String testName) {
+	public ManagementWebServiceTest(String testName) {
 		super(testName);
 	}
 
@@ -41,7 +43,7 @@ public class AppTest extends TestCase {
 	 * @return the suite of tests being tested
 	 */
 	public static Test suite() {
-		return new TestSuite(AppTest.class);
+		return new TestSuite(ManagementWebServiceTest.class);
 	}
 
 	/**
@@ -54,5 +56,31 @@ public class AppTest extends TestCase {
 	public void testManagementTesting() throws Exception {
 		ManagementWebService ws = new ManagementWebService();
 		Assert.assertNotNull(ws.managementTesting());
+	}
+	
+	public void testAddOntology() throws ManagementException {
+		String ontology = "http://xmlns.com/foaf/spec/index.rdf";
+		String addedOntology = OntologyManagement.add(ontology);
+		Assert.assertSame(ontology, addedOntology);
+	}
+	
+	public void testUpdateOntology() throws ManagementException {
+		String ontology = "http://xmlns.com/foaf/spec/index.rdf";
+		String addedOntology = OntologyManagement.add(ontology);
+		Assert.assertSame(ontology, addedOntology);
+		
+		// update
+		String updatedOntology = OntologyManagement.update(addedOntology, ontology);
+		Assert.assertSame(ontology, updatedOntology);
+	}
+	
+	public void testDeleteOntology() throws ManagementException {
+		String ontology = "http://xmlns.com/foaf/spec/index.rdf";
+		String addedOntology = OntologyManagement.add(ontology);
+		Assert.assertSame(ontology, addedOntology);
+		
+		// delete
+		String deletedOntology = OntologyManagement.delete(addedOntology);
+		Assert.assertSame(ontology, deletedOntology);
 	}
 }

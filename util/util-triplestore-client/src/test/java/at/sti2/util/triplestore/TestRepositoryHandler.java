@@ -9,8 +9,10 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openrdf.query.BindingSet;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
@@ -23,6 +25,11 @@ public class TestRepositoryHandler {
 	// TODO: don't hardcorde url
 	private static final String REPO_URL = "http://sesa.sti2.at:8080/openrdf-sesame";
 	private static final String REPO_NAME = "test";
+	
+	private static final String subject = "http://localhost/TestSubject";
+	private static final String predicate = "http://localhost/TestPredicate";
+	private static final String object = "http://localhost/TestObject";
+	private static final String context = "http://localhost/TestContext";
 
 	// The repohandler which is tested
 	private RepositoryHandler repohandler;
@@ -56,13 +63,23 @@ public class TestRepositoryHandler {
 	}
 
 	@Test
+	public void testSelectSPARQL() throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+		TupleQueryResult res = repohandler
+				.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+		Assert.assertTrue(res!=null && res.hasNext());
+	}
+
+	@Test
 	public void testSelectSPARQLStringTupleQueryResultHandler() {
 		try {
 			TupleQueryResult res = repohandler
 					.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+			int i =0;
 			while (res.hasNext()) {
-				System.out.println(res.next());
+				//System.out.println(res.next());
+				res.next(); i++;
 			}
+			System.out.println("No of triples: "+i);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.toString());
@@ -77,19 +94,28 @@ public class TestRepositoryHandler {
 	}
 
 	@Test
-	public void testAddLiteralTriple() {
-		// Add some random triples for testing
+	public void testAddLiteralTriple() throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+		// Add some random triples for testing		
 		try {
-			repohandler.addLiteralTriple("http://localhost/TestSubject",
-					"http://localhost/TestPredicate",
-					"http://localhost/TestObject",
-					"http://localhost/TestContext");
+			repohandler.addLiteralTriple(subject, predicate, object, context);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			logger.error("Do there exists a repository named " + REPO_NAME
 					+ " at " + REPO_URL);
 			fail(e.toString());
 		}
+		TupleQueryResult res = repohandler
+				.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+		int i =0;
+		while (res.hasNext()) {
+			BindingSet bindingSet = res.next();
+			if(bindingSet.getValue("s").stringValue().equals(subject) && 
+					bindingSet.getValue("p").stringValue().equals(predicate) &&
+					bindingSet.getValue("o").stringValue().equals(object)){
+				i++;
+			}
+		}
+		Assert.assertTrue(i>0);
 	}
 
 	@Test
@@ -100,11 +126,6 @@ public class TestRepositoryHandler {
 	@Test
 	public void testUpdateLiteralTriple() {
 		// TODO testUpdateLiteralTriple
-	}
-
-	@Test
-	public void testSelectSPARQL() {
-		// TODO testSelectSPARQL
 	}
 
 	@Test
@@ -119,13 +140,58 @@ public class TestRepositoryHandler {
 
 
 	@Test
-	public void testDelete() {
-		// TODO testDelete
+	public void testDelete() throws RepositoryException, QueryEvaluationException, MalformedQueryException {
+		// check size
+		TupleQueryResult res = repohandler
+				.selectSPARQL("SELECT * WHERE { <"+subject+"> <"+predicate+"> ?o}");
+		int size = 0;
+		while (res.hasNext()){
+			size++;
+			res.next();
+		}
+		Assert.assertTrue(size>0);
+		
+		// delete something
+		String subject = "http://localhost/TestSubject";
+		String predicate = "http://localhost/TestPredicate";
+		repohandler.delete(subject, predicate);
+		
+		// check size again
+		res = repohandler.selectSPARQL("SELECT * WHERE { <"+subject+"> <"+predicate+"> ?o}");
+		int sizeAfter = 0;
+		while (res.hasNext()){
+			sizeAfter++;
+			res.next();
+		}
+		Assert.assertTrue(size>sizeAfter);
 	}
 
 	@Test
-	public void testDeleteContext() {
-		// TODO testDeleteContext
+	public void testDeleteContext() throws RepositoryException, QueryEvaluationException, MalformedQueryException {
+		// add something
+		repohandler.addLiteralTriple(subject, predicate, object, context);
+		
+		// check size
+		TupleQueryResult res = repohandler
+				.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+		int size = 0;
+		while (res.hasNext()){
+			size++;
+			res.next();
+		}
+		Assert.assertTrue(size>0);
+		
+		// delete according to context
+		repohandler.deleteContext(context);
+		
+		// check size again
+		res = repohandler.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+		int sizeAfter = 0;
+		while (res.hasNext()){
+			sizeAfter++;
+			res.next();
+		}
+		Assert.assertTrue(size>sizeAfter);
 	}
 
 	@Test
@@ -134,18 +200,32 @@ public class TestRepositoryHandler {
 	}
 
 	@Test
-	public void testAddResourceTriple() {
-		// Add some random triples for testing
+	public void testAddResourceTriple() throws QueryEvaluationException, RepositoryException, MalformedQueryException {
+		String subject = "http://localhost/TestResourceSubject";
+		String predicate = "http://localhost/TestResourcePredicate";
+		String object = "http://localhost/TestResourceObject";
+		String context = "http://localhost/TestResourceContext";
+		
 		try {
-			repohandler.addLiteralTriple("http://localhost/TestSubject",
-					"http://localhost/TestPredicatLiteral", "TestLiteral",
-					"http://localhost/TestContext");
+			repohandler.addLiteralTriple(subject, predicate, object, context);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			logger.error("Do there exists a repository named " + REPO_NAME
 					+ " at " + REPO_URL);
 			fail(e.toString());
 		}
+		TupleQueryResult res = repohandler
+				.selectSPARQL("SELECT * WHERE { ?s ?p ?o}");
+		int i =0;
+		while (res.hasNext()) {
+			BindingSet bindingSet = res.next();
+			if(bindingSet.getValue("s").stringValue().equals(subject) && 
+					bindingSet.getValue("p").stringValue().equals(predicate) &&
+					bindingSet.getValue("o").stringValue().equals(object)){
+				i++;
+			}
+		}
+		Assert.assertTrue(i>0);
 	}
 
 }

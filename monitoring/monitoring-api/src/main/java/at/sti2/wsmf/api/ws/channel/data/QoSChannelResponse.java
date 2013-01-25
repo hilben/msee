@@ -25,8 +25,6 @@ import at.sti2.wsmf.api.data.qos.QoSUnit;
  * @author Alex Oberhauser
  */
 public class QoSChannelResponse {
-	private static final long serialVersionUID = -7056578155174781128L;
-	
 	public URL endpointURL;
 	public QoSParamKey type;
 	public QoSUnit unit;
