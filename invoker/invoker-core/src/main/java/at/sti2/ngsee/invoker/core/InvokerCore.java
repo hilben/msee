@@ -61,6 +61,17 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 public class InvokerCore {
 	protected static Logger logger = Logger.getLogger(InvokerCore.class);
 
+	/**
+	 * Creates a SOAP message with the input data as message body.
+	 * 
+	 * @param _loweredInputData
+	 * @return
+	 * @throws SOAPException
+	 * @throws DocumentException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
 	private static SOAPMessage createSOAPMessage(String _loweredInputData)
 			throws SOAPException, DocumentException, SAXException, IOException,
 			ParserConfigurationException {
@@ -81,6 +92,12 @@ public class InvokerCore {
 		return message;
 	}
 
+	/**
+	 * @param _message
+	 * @return
+	 * @throws TransformerException
+	 * @throws SOAPException
+	 */
 	private static String getBodyContent(SOAPMessage _message)
 			throws TransformerException, SOAPException {
 		Document doc = _message.getSOAPBody().extractContentAsDocument();
