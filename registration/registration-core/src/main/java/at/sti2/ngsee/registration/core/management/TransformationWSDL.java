@@ -52,17 +52,6 @@ public class TransformationWSDL {
 	private static Map<QName, Element> elementsMap;
 
 	/**
-	 * @deprecated
-	 * @param args
-	 * @throws RegistrationException
-	 * @throws RepositoryException
-	 */
-	public static void main(String[] args) throws RegistrationException,
-			RepositoryException {
-		transformWSDL("file:////C:/Users/benhil.STI/Desktop/00-all.wsdl");
-	}
-
-	/**
 	 * 
 	 * Transforms a WSDL file by adding its information into the triple store if
 	 * valid
@@ -144,6 +133,7 @@ public class TransformationWSDL {
 				 * Check if there are categories else abort
 				 */
 				if (categories.size() == 0) {
+					logger.error("The service MUST be at least annotated with one service category.");
 					throw new RegistrationException(
 							"The service MUST be at least annotated with one service category. "
 									+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
@@ -270,9 +260,7 @@ public class TransformationWSDL {
 				}
 			}
 
-			// TODO: fix the RepositoryException thrown by reposHandler.commit()
-			// which is NOT catched
-			reposHandler.commit(); // TODO:
+			reposHandler.commit();
 			return repowriter.getServiceID();
 
 		} catch (RepositoryException e) {

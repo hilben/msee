@@ -14,10 +14,6 @@ import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
  * @author Benjamin Hiltpolt
  *
  */
-/**
- * @author Benjamin Hiltpolt
- * 
- */
 public class QoSRankingEngine {
 
 	protected static Logger logger = Logger.getLogger(QoSRankingEngine.class);
@@ -81,9 +77,13 @@ public class QoSRankingEngine {
 
 	
 	/**
-	 * @param keys
-	 * @param preferenceValue
-	 * @param endpoints
+	 * 
+	 * Returns a list ordered by the calculations of the ranking engine.
+	 * Those calculations are based on the specified keys and preferences.
+	 * 
+	 * @param keys the qos keys
+	 * @param preferenceValue the preference values of each key 
+	 * @param endpoints the endpoints which should get ranked
 	 * @return
 	 */
 	public static List<String> getQoSRankedEndpoints(
