@@ -13,7 +13,7 @@
 
 
 	<parent>
-		<groupId>at.sti2.ngsee</groupId>
+		<groupId>at.sti2.msee</groupId>
 		<artifactId>sesa-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -82,17 +82,17 @@
 
 <!--  Monitoring component -->
 		<dependency>
-			<groupId>at.sti2.ngsee.monitoring</groupId>
+			<groupId>at.sti2.msee.monitoring</groupId>
 			<artifactId>monitoring-api</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.monitoring</groupId>
+			<groupId>at.sti2.msee.monitoring</groupId>
 			<artifactId>monitoring-core</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.util</groupId>
+			<groupId>at.sti2.msee.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>

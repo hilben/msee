@@ -7,3 +7,4 @@ bin
 *.class
 *.swp
 performance.xgraph
+/global-groovy.log

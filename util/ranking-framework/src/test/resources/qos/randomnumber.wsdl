@@ -46,7 +46,7 @@
   </wsdl:binding>
   <wsdl:service name="RandomNumberWebServiceService">
     <wsdl:port binding="tns:RandomNumberWebServiceServiceSoapBinding" name="RandomNumberWebServicePort">
-      <soap:address location="http://localhost:9292/at.sti2.ngsee.testwebservices/services/randomnumber"/>
+      <soap:address location="http://localhost:9292/at.sti2.msee.testwebservices/services/randomnumber"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

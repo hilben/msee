@@ -12,7 +12,7 @@
 	<name>util-triplestore-client</name>
 
 	<parent>
-		<groupId>at.sti2.ngsee.util</groupId>
+		<groupId>at.sti2.msee.util</groupId>
 		<artifactId>util-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
