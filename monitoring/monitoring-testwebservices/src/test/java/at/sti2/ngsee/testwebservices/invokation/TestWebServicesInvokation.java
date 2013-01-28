@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.testwebservices.invokation;
+package at.sti2.msee.testwebservices.invokation;
 
 import java.io.ByteArrayOutputStream;
 
@@ -10,8 +10,8 @@ import javax.xml.soap.SOAPMessage;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.invoker.core.InvokerCore;
-import at.sti2.ngsee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
+import at.sti2.msee.invoker.core.InvokerCore;
+import at.sti2.msee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
@@ -25,7 +25,7 @@ public class TestWebServicesInvokation {
 			.getLogger(TestWebServicesInvokation.class);
 
 	// public static final String ENDPOINT =
-	// "http://localhost:9292/at.sti2.ngsee.testwebservices/services/";
+	// "http://localhost:9292/at.sti2.msee.testwebservices/services/";
 	public static final String ENDPOINT = "http://sesa.sti2.at:8080/monitoring-testwebservices/services/";
 
 	public static final String[] TESTSTRING = { "ABCDEF", "Apple", "Orange",

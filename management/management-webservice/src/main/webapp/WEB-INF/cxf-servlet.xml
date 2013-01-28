@@ -8,7 +8,7 @@
          http://cxf.apache.org/jaxws
          http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<jaxws:endpoint id="managementWebService" implementor="at.sti2.ngsee.management.webservice.ManagementWebService"
+	<jaxws:endpoint id="managementWebService" implementor="at.sti2.msee.management.webservice.ManagementWebService"
 		address="/manamentTesting">
 	</jaxws:endpoint>
 </beans>

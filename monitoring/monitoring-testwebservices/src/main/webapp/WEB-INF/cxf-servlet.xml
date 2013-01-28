@@ -9,18 +9,18 @@
          http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="slow"
-		implementor="at.sti2.ngsee.monitoring.testws.TestWebServiceSlow" address="/slow">
+		implementor="at.sti2.msee.monitoring.testws.TestWebServiceSlow" address="/slow">
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="big"
-		implementor="at.sti2.ngsee.monitoring.testws.TestWebServiceBigPayload" address="/big">
+		implementor="at.sti2.msee.monitoring.testws.TestWebServiceBigPayload" address="/big">
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="random"
-		implementor="at.sti2.ngsee.monitoring.testws.TestWebServiceRandom" address="/random">
+		implementor="at.sti2.msee.monitoring.testws.TestWebServiceRandom" address="/random">
 	</jaxws:endpoint>
 
 	<jaxws:endpoint id="constant"
-		implementor="at.sti2.ngsee.monitoring.testws.TestWebServiceConstant" address="/constant">
+		implementor="at.sti2.msee.monitoring.testws.TestWebServiceConstant" address="/constant">
 	</jaxws:endpoint>
 </beans>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.webservice;
+package at.sti2.msee.invoker.webservice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +31,9 @@ import org.apache.cxf.interceptor.InFaultInterceptors;
 import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.log4j.Logger;
 
-import at.sti2.ngsee.invoker.core.InvokerCore;
-import at.sti2.ngsee.invoker.api.webservice.IAvailabilityCheck;
-import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
+import at.sti2.msee.invoker.core.InvokerCore;
+import at.sti2.msee.invoker.api.webservice.IAvailabilityCheck;
+import at.sti2.msee.invoker.api.webservice.IInvokerEndpoint;
 
 /**
  * 
@@ -58,8 +58,8 @@ import at.sti2.ngsee.invoker.api.webservice.IInvokerEndpoint;
 @WSDLDocumentationCollection(
 		@WSDLDocumentation("SESA Invoker Component")
 	)
-@InInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
-@InFaultInterceptors(interceptors = {"at.sti2.ngsee.invoker.webservice.SOAPInterceptor"})
+@InInterceptors(interceptors = {"at.sti2.msee.invoker.webservice.SOAPInterceptor"})
+@InFaultInterceptors(interceptors = {"at.sti2.msee.invoker.webservice.SOAPInterceptor"})
 public class InvokerWebService implements IInvokerEndpoint, IAvailabilityCheck {
 	protected static Logger logger = Logger.getLogger(InvokerWebService.class);
 	
@@ -73,7 +73,7 @@ public class InvokerWebService implements IInvokerEndpoint, IAvailabilityCheck {
 	}
 	
 	/**
-	 * @see at.sti2.ngsee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
+	 * @see at.sti2.msee.invoker_api.Invoker#invoke(java.lang.String, java.lang.String)
 	 */
 	@Override
 	@WebMethod
@@ -87,7 +87,7 @@ public class InvokerWebService implements IInvokerEndpoint, IAvailabilityCheck {
 	}
 
 	/**
-	 * @see at.sti2.ngsee.invoker.api.webservice.IAvailabilityCheck#checkAvailability()
+	 * @see at.sti2.msee.invoker.api.webservice.IAvailabilityCheck#checkAvailability()
 	 */
 	@WebMethod
 	@Override

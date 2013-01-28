@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.management.webservice;
+package at.sti2.msee.management.webservice;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -23,8 +23,8 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 
-import at.sti2.ngsee.management.api.IManagementEndpoint;
-import at.sti2.ngsee.management.ontology.OntologyManagement;
+import at.sti2.msee.management.api.IManagementEndpoint;
+import at.sti2.msee.management.ontology.OntologyManagement;
 
 /**
  * 
@@ -53,7 +53,7 @@ public class ManagementWebService implements IManagementEndpoint
 {	
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#addOntology
+	 * @see at.sti2.msee.management.api.IManagementEndpoint#addOntology
 	 */
 	@Override
 	@WebMethod
@@ -63,7 +63,7 @@ public class ManagementWebService implements IManagementEndpoint
 
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#deleteOntology
+	 * @see at.sti2.msee.management.api.IManagementEndpoint#deleteOntology
 	 */
 	@Override
 	@WebMethod
@@ -73,7 +73,7 @@ public class ManagementWebService implements IManagementEndpoint
 
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#updateOntology
+	 * @see at.sti2.msee.management.api.IManagementEndpoint#updateOntology
 	 */
 	@Override
 	@WebMethod
@@ -85,7 +85,7 @@ public class ManagementWebService implements IManagementEndpoint
 	
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.management.api.IManagementEndpoint#managementTesting
+	 * @see at.sti2.msee.management.api.IManagementEndpoint#managementTesting
 	 */
 	@Override
 	@WebMethod

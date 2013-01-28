@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.monitoring.webservice;
+package at.sti2.msee.monitoring.webservice;
 
 import static org.junit.Assert.*;
 
@@ -50,7 +50,7 @@ public class ManagementWebServiceTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#listInstanceIDs()}.
+	 * Test method for {@link at.sti2.msee.monitoring.webservice.ManagementWebService#listInstanceIDs()}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -75,7 +75,7 @@ public class ManagementWebServiceTest {
 
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#getQoSParam(java.net.URL, at.sti2.wsmf.api.data.qos.QoSParamKey)}.
+	 * Test method for {@link at.sti2.msee.monitoring.webservice.ManagementWebService#getQoSParam(java.net.URL, at.sti2.wsmf.api.data.qos.QoSParamKey)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -114,7 +114,7 @@ public class ManagementWebServiceTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#listEndpoints()}.
+	 * Test method for {@link at.sti2.msee.monitoring.webservice.ManagementWebService#listEndpoints()}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -125,7 +125,7 @@ public class ManagementWebServiceTest {
 
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.monitoring.webservice.ManagementWebService#getSubcategoriesAndServices(java.lang.String)}.
+	 * Test method for {@link at.sti2.msee.monitoring.webservice.ManagementWebService#getSubcategoriesAndServices(java.lang.String)}.
 	 * @throws Exception 
 	 */
 	@Test

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.registration.webservice;
+package at.sti2.msee.registration.webservice;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -23,9 +23,9 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 
-import at.sti2.ngsee.registration.api.IRegistrationEndpoint;
-import at.sti2.ngsee.registration.core.management.ServiceManagement;
-import at.sti2.ngsee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.api.IRegistrationEndpoint;
+import at.sti2.msee.registration.core.management.ServiceManagement;
+import at.sti2.msee.registration.core.management.TransformationWSDL;
 
 /**
  * 
@@ -54,7 +54,7 @@ public class RegistrationWebService implements IRegistrationEndpoint
 {		
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#register(java.lang.String)
+	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#register(java.lang.String)
 	 */
 	@Override
 	@WebMethod
@@ -64,7 +64,7 @@ public class RegistrationWebService implements IRegistrationEndpoint
 
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#delete(java.lang.String)
+	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#delete(java.lang.String)
 	 */
 	@Override
 	@WebMethod
@@ -74,7 +74,7 @@ public class RegistrationWebService implements IRegistrationEndpoint
 
 	/**
 	 * @throws Exception 
-	 * @see at.sti2.ngsee.registration.api.IRegistrationEndpoint#update(java.lang.String,java.lang.String)
+	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#update(java.lang.String,java.lang.String)
 	 */
 	@Override
 	@WebMethod

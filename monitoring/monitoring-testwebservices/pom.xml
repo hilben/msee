@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>monitoring-project</artifactId>
-		<groupId>at.sti2.ngsee.monitoring</groupId>
+		<groupId>at.sti2.msee.monitoring</groupId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
@@ -32,7 +32,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.invoker</groupId>
+			<groupId>at.sti2.msee.invoker</groupId>
 			<artifactId>invoker-core</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>

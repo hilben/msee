@@ -11,7 +11,7 @@
 	<name>Ranking Engine - Core</name>
 
 	<parent>
-		<groupId>at.sti2.ngsee.ranking</groupId>
+		<groupId>at.sti2.msee.ranking</groupId>
 		<artifactId>ranking-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -20,21 +20,21 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>at.sti2.ngsee.ranking</groupId>
+			<groupId>at.sti2.msee.ranking</groupId>
 			<artifactId>ranking-api</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
-			<groupId>at.sti2.ngsee.monitoring</groupId>
+			<groupId>at.sti2.msee.monitoring</groupId>
 			<artifactId>monitoring-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.monitoring</groupId>
+			<groupId>at.sti2.msee.monitoring</groupId>
 			<artifactId>monitoring-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.util</groupId>
+			<groupId>at.sti2.msee.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
 		</dependency>
 	

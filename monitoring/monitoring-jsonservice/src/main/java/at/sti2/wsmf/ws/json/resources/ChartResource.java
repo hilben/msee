@@ -167,7 +167,7 @@ public class ChartResource {
 		ArrayList<String> endpoints = new ArrayList<String>();
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
 		endpoints
-				.add("http://localhost:9292/at.sti2.ngsee.testwebservices/services/reversestring");
+				.add("http://localhost:9292/at.sti2.msee.testwebservices/services/reversestring");
 		qosParamKeys.add("ResponseTime");
 		// qosParamKeys.add("PayloadsizeResponse");
 		// qosParamKeys.add("PayloadsizeRequest");

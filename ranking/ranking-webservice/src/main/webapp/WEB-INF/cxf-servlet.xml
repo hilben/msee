@@ -9,7 +9,7 @@
          http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="RankingWebservice"
-		implementor="at.sti2.ngsee.ranking.webservice.RankingWebservice"
+		implementor="at.sti2.msee.ranking.webservice.RankingWebservice"
 		address="/ranking">
 	</jaxws:endpoint>
 

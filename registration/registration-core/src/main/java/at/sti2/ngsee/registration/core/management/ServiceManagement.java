@@ -1,11 +1,11 @@
-package at.sti2.ngsee.registration.core.management;
+package at.sti2.msee.registration.core.management;
 
 import java.io.IOException;
 
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.registration.api.exception.RegistrationException;
-import at.sti2.ngsee.registration.core.common.RegistrationConfig;
+import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 public abstract class ServiceManagement {

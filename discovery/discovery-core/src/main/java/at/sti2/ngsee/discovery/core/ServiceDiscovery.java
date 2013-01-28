@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.discovery.core;
+package at.sti2.msee.discovery.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -36,7 +36,7 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
-import at.sti2.ngsee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**

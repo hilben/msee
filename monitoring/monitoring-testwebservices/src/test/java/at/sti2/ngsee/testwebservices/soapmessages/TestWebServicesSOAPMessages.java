@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.testwebservices.soapmessages;
+package at.sti2.msee.testwebservices.soapmessages;
 
 /**
  * @author Benjamin Hiltpolt

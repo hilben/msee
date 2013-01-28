@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.registration.core.test;
+package at.sti2.msee.registration.core.test;
 
 import static org.junit.Assert.*;
 
@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.sti2.ngsee.registration.api.exception.RegistrationException;
-import at.sti2.ngsee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.core.management.TransformationWSDL;
 
 /**
  * @author Benjamin Hiltpolt
@@ -40,7 +40,7 @@ public class TransformationWSDLTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
+	 * Test method for {@link at.sti2.msee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
 	 */
 	@Test
 	public void testTransformWSDLPass() {
@@ -58,7 +58,7 @@ public class TransformationWSDLTest {
 	}
 	
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
+	 * Test method for {@link at.sti2.msee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
 	 */
 	@Test
 	public void testTransformWSDLFail() {

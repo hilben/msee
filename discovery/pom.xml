@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.ngsee.discovery</groupId>
+	<groupId>at.sti2.msee.discovery</groupId>
 	<artifactId>discovery-project</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>at.sti2.ngsee</groupId>
+		<groupId>at.sti2.msee</groupId>
 		<artifactId>sesa-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -78,7 +78,7 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.ngsee.util</groupId>
+				<groupId>at.sti2.msee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
 				<version>1.2-SNAPSHOT</version>
 			</dependency>

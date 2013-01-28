@@ -1,4 +1,4 @@
-package at.sti2.ngsee.monitoring.testws;
+package at.sti2.msee.monitoring.testws;
 
 public abstract class AbstractTestWebService {
 	

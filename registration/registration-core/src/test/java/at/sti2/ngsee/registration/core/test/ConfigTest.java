@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.registration.core.test;
+package at.sti2.msee.registration.core.test;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.ngsee.registration.core.common.RegistrationConfig;
+import at.sti2.msee.registration.core.common.RegistrationConfig;
 
 /**
  * @author Benjamin Hiltpolt
@@ -37,7 +37,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#Config()}.
+	 * Test method for {@link at.sti2.msee.registration.core.common.RegistrationConfig#Config()}.
 	 */
 	@Test
 	public void testConfig() {
@@ -45,7 +45,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#getSesameEndpoint()}.
+	 * Test method for {@link at.sti2.msee.registration.core.common.RegistrationConfig#getSesameEndpoint()}.
 	 */
 	@Test
 	public void testGetSesameEndpoint() {
@@ -54,7 +54,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#getSesameReposID()}.
+	 * Test method for {@link at.sti2.msee.registration.core.common.RegistrationConfig#getSesameReposID()}.
 	 */
 	@Test
 	public void testGetSesameReposID() {

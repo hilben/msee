@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.registration.core.management;
+package at.sti2.msee.registration.core.management;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,7 +15,7 @@ import org.openrdf.repository.RepositoryException;
 import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLException;
 import org.ow2.easywsdl.extensions.sawsdl.api.schema.Element;
 
-import at.sti2.ngsee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.RegistrationException;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
 

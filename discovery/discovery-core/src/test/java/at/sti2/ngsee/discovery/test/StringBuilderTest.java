@@ -1,4 +1,4 @@
-package at.sti2.ngsee.discovery.test;
+package at.sti2.msee.discovery.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
-import at.sti2.ngsee.discovery.core.ServiceDiscovery;
+import at.sti2.msee.discovery.core.ServiceDiscovery;
 
 public class StringBuilderTest {
 	@Test

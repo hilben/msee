@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.api.grounding.exception;
+package at.sti2.msee.invoker.api.grounding.exception;
 
 /**
  * <b>Purpose:</b> This exception indicates an error during execution of the grounding engine.<br>

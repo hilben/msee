@@ -1,4 +1,4 @@
-package at.sti2.ngsee.invoker.core;
+package at.sti2.msee.invoker.core;
 
 import java.io.IOException;
 

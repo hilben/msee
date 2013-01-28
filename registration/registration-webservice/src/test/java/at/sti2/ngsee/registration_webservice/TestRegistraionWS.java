@@ -1,4 +1,4 @@
-package at.sti2.ngsee.registration_webservice;
+package at.sti2.msee.registration_webservice;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.ngsee.registration.webservice.RegistrationWebService;
+import at.sti2.msee.registration.webservice.RegistrationWebService;
 
 public class TestRegistraionWS {
 	

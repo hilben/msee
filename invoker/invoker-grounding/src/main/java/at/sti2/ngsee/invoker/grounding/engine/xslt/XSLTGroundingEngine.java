@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.grounding.engine.xslt;
+package at.sti2.msee.invoker.grounding.engine.xslt;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -30,8 +30,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 
-import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
-import at.sti2.ngsee.invoker.api.grounding.exception.GroundingException;
+import at.sti2.msee.invoker.api.grounding.IGroundingEngine;
+import at.sti2.msee.invoker.api.grounding.exception.GroundingException;
 
 /**
  * <b>Purpose:</b> Grounding engine based on XSLT transformations<br>
@@ -62,7 +62,7 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 
 	/*
 	 * (non-Javadoc)
-	 * @see at.sti2.ngsee.invoker_api.grounding.IGroundingEngine#lower(java.lang.String)
+	 * @see at.sti2.msee.invoker_api.grounding.IGroundingEngine#lower(java.lang.String)
 	 */
 	@Override
 	public String lower(String rdfInputData) throws GroundingException {
@@ -81,7 +81,7 @@ public class XSLTGroundingEngine implements IGroundingEngine {
 
 	/*
 	 * (non-Javadoc)
-	 * @see at.sti2.ngsee.invoker_api.grounding.IGroundingEngine#lift(java.lang.String)
+	 * @see at.sti2.msee.invoker_api.grounding.IGroundingEngine#lift(java.lang.String)
 	 */
 	@Override
 	public String lift(String xmlInputData) throws GroundingException {

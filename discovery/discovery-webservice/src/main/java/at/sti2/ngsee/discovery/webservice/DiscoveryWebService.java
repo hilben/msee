@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.discovery.webservice;
+package at.sti2.msee.discovery.webservice;
 
 import java.net.URI;
 import java.util.List;
@@ -26,8 +26,8 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.openrdf.rio.RDFFormat;
 
-import at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService;
-import at.sti2.ngsee.discovery.core.ServiceDiscovery;
+import at.sti2.msee.discovery.api.webservice.IDiscoveryWebService;
+import at.sti2.msee.discovery.core.ServiceDiscovery;
 
 /**
  * @author Alex Oberhauser
@@ -37,7 +37,7 @@ import at.sti2.ngsee.discovery.core.ServiceDiscovery;
 public class DiscoveryWebService implements IDiscoveryWebService {
 
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
+	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
 	 */
 	@WebMethod
 	@Override
@@ -48,7 +48,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List,
+	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List,
 	 *      java.util.List, java.util.List)
 	 */
 	@WebMethod(operationName = "discoverAdvanced")
@@ -60,7 +60,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI,
+	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI,
 	 *      java.lang.String)
 	 */
 	@WebMethod
@@ -73,7 +73,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.ngsee.discovery.api.webservice.IDiscoveryWebService#getIServeModel(java.lang.String)
+	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#getIServeModel(java.lang.String)
 	 */
 	@WebMethod
 	@Override

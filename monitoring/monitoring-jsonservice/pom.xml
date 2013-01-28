@@ -7,7 +7,7 @@
 		<netbeans.hint.deploy.server>gfv3</netbeans.hint.deploy.server>
 	</properties>
 	<parent>
-		<groupId>at.sti2.ngsee.monitoring</groupId>
+		<groupId>at.sti2.msee.monitoring</groupId>
 		<artifactId>monitoring-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>

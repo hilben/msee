@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.registration.core.test;
+package at.sti2.msee.registration.core.test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,8 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.registration.api.exception.RegistrationException;
-import at.sti2.ngsee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.core.management.TransformationWSDL;
 
 /**
  * @author Corneliu Stanciu

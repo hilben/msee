@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.core;
+package at.sti2.msee.invoker.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,8 +47,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
-import at.sti2.ngsee.invoker.grounding.GroundingFactory;
+import at.sti2.msee.invoker.api.grounding.IGroundingEngine;
+import at.sti2.msee.invoker.grounding.GroundingFactory;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;

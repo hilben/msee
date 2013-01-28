@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.core;
+package at.sti2.msee.invoker.core;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +28,7 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.ngsee.invoker.core.common.InvokerConfig;
+import at.sti2.msee.invoker.core.common.InvokerConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**

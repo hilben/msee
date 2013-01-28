@@ -1,10 +1,10 @@
-package at.sti2.ngsee.discovery.test;
+package at.sti2.msee.discovery.test;
 
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import at.sti2.ngsee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import junit.framework.TestCase;
 
 /**

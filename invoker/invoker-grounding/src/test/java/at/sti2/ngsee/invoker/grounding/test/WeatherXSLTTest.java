@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.grounding.test;
+package at.sti2.msee.invoker.grounding.test;
 
 /**
  * <b>Purpose:</b> Test XSLT grounding engine<br> 
@@ -43,9 +43,9 @@ import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.ngsee.invoker.api.grounding.IGroundingEngine;
-import at.sti2.ngsee.invoker.api.grounding.exception.GroundingException;
-import at.sti2.ngsee.invoker.grounding.GroundingFactory;
+import at.sti2.msee.invoker.api.grounding.IGroundingEngine;
+import at.sti2.msee.invoker.api.grounding.exception.GroundingException;
+import at.sti2.msee.invoker.grounding.GroundingFactory;
 
 public class WeatherXSLTTest {
 

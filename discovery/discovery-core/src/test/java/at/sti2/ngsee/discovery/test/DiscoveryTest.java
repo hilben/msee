@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.discovery.test;
+package at.sti2.msee.discovery.test;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openrdf.rio.RDFFormat;
 
-import at.sti2.ngsee.discovery.core.ServiceDiscovery;
+import at.sti2.msee.discovery.core.ServiceDiscovery;
 
 
 /**

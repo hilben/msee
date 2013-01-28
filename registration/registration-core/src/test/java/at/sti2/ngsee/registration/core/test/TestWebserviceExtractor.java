@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.sti2.ngsee.registration.core.test;
+package at.sti2.msee.registration.core.test;
 
 import java.io.File;
 import java.net.MalformedURLException;

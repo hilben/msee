@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.invoker.core;
+package at.sti2.msee.invoker.core;
 
 import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import at.sti2.ngsee.invoker.api.core.IInvokerMSM;
+import at.sti2.msee.invoker.api.core.IInvokerMSM;
 
 /**
  * @author Alex Oberhauser
@@ -58,31 +58,31 @@ public class InvokerMSM implements IInvokerMSM {
 	}
 	
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getLoweringSchema()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getLoweringSchema()
 	 */
 	@Override
 	public URL getLoweringSchema() { return this.loweringSchema; }
 
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getLifingSchema()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getLifingSchema()
 	 */
 	@Override
 	public URL getLifingSchema() { return this.liftingSchema; }
 
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getWSDL()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getWSDL()
 	 */
 	@Override
 	public URL getWSDL() { return this.wsdl; }
 	
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getSOAPAction()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getSOAPAction()
 	 */
 	@Override
 	public String getSOAPAction() { return this.soapAction; }
 	
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getOperationQName()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getOperationQName()
 	 */
 	@Override
 	public QName getOperationQName() { return this.operationQName; }
@@ -103,7 +103,7 @@ public class InvokerMSM implements IInvokerMSM {
 	}
 	
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getPortQName()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getPortQName()
 	 */
 	@Override
 	public QName getPortQName() { return this.portQName; }
@@ -113,7 +113,7 @@ public class InvokerMSM implements IInvokerMSM {
 	}
 	
 	/**
-	 * @see at.sti2.ngsee.invoker.api.core.IInvokerMSM#getEndpointURL()
+	 * @see at.sti2.msee.invoker.api.core.IInvokerMSM#getEndpointURL()
 	 */
 	@Override
 	public URL getEndpointURL() { return this.endpointURL; }

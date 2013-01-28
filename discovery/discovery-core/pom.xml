@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>at.sti2.ngsee.discovery</groupId>
+		<groupId>at.sti2.msee.discovery</groupId>
 		<artifactId>discovery-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -32,7 +32,7 @@
 			<artifactId>discovery-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.util</groupId>
+			<groupId>at.sti2.msee.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
 		</dependency>
 

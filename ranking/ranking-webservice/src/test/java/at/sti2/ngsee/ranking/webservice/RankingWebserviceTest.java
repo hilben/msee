@@ -1,4 +1,4 @@
-package at.sti2.ngsee.ranking.webservice;
+package at.sti2.msee.ranking.webservice;
 
 import java.util.List;
 

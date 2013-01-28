@@ -1,4 +1,4 @@
-package at.sti2.ngsee.management.ontology;
+package at.sti2.msee.management.ontology;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +10,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 
-import at.sti2.ngsee.management.api.exception.ManagementException;
-import at.sti2.ngsee.management.common.ManagementConfig;
+import at.sti2.msee.management.api.exception.ManagementException;
+import at.sti2.msee.management.common.ManagementConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 public abstract class OntologyManagement {	

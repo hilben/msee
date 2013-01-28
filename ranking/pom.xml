@@ -2,14 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.ngsee.ranking</groupId>
+	<groupId>at.sti2.msee.ranking</groupId>
 	<artifactId>ranking-project</artifactId>
 	<packaging>pom</packaging>
 	<name>Ranking Engine</name>
 	<url>http://www.sti-innsbruck.at</url>
 
 	<parent>
-		<groupId>at.sti2.ngsee</groupId>
+		<groupId>at.sti2.msee</groupId>
 		<artifactId>sesa-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -79,17 +79,17 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<groupId>at.sti2.msee.monitoring</groupId>
 				<artifactId>monitoring-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.ngsee.monitoring</groupId>
+				<groupId>at.sti2.msee.monitoring</groupId>
 				<artifactId>monitoring-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.ngsee.util</groupId>
+				<groupId>at.sti2.msee.util</groupId>
 				<artifactId>util-triplestore-client</artifactId>
 				<version>${project.version}</version>
 			</dependency>

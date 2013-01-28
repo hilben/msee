@@ -10,7 +10,7 @@
 	</properties>
 
 	<parent>
-		<groupId>at.sti2.ngsee.monitoring</groupId>
+		<groupId>at.sti2.msee.monitoring</groupId>
 		<artifactId>monitoring-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -95,7 +95,7 @@
 							<id>process-classes</id>
 							<phase>process-classes</phase>
 							<configuration>
-								<className>at.sti2.ngsee.monitoring.webservice.EventStreamListenerWebService</className>
+								<className>at.sti2.msee.monitoring.webservice.EventStreamListenerWebService</className>
 								<!-- <genServer>true</genServer> -->
 								<genWsdl>true</genWsdl>
 								<verbose>true</verbose>

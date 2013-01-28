@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.ngsee.management_webservice;
+package at.sti2.msee.management_webservice;
 
 import org.junit.Assert;
 
-import at.sti2.ngsee.management.api.exception.ManagementException;
-import at.sti2.ngsee.management.ontology.OntologyManagement;
-import at.sti2.ngsee.management.webservice.ManagementWebService;
+import at.sti2.msee.management.api.exception.ManagementException;
+import at.sti2.msee.management.ontology.OntologyManagement;
+import at.sti2.msee.management.webservice.ManagementWebService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

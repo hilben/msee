@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 
 	<parent>
-		<groupId>at.sti2.ngsee.ranking</groupId>
+		<groupId>at.sti2.msee.ranking</groupId>
 		<artifactId>ranking-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
@@ -21,12 +21,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>at.sti2.ngsee.ranking</groupId>
+			<groupId>at.sti2.msee.ranking</groupId>
 			<artifactId>ranking-api</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.ngsee.ranking</groupId>
+			<groupId>at.sti2.msee.ranking</groupId>
 			<artifactId>ranking-core</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>

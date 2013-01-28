@@ -121,7 +121,7 @@ public class TestInvocationHandler extends TestCase {
 				.println("Localhost Dummy Service: "
 						+ WSAvailabilityChecker
 								.isWebServiceAvailable(
-										"http://localhost:9292/at.sti2.ngsee.testwebservices/services/dummy",
+										"http://localhost:9292/at.sti2.msee.testwebservices/services/dummy",
 										null));
 	}
 }

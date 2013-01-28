@@ -1,4 +1,4 @@
-package at.sti2.ngsee.invoker.webservice.test;
+package at.sti2.msee.invoker.webservice.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.apache.cxf.headers.Header;
 
-import at.sti2.ngsee.invoker.webservice.InvokerWebService;
-import at.sti2.ngsee.invoker.webservice.SOAPHeaderThreadLocal;
+import at.sti2.msee.invoker.webservice.InvokerWebService;
+import at.sti2.msee.invoker.webservice.SOAPHeaderThreadLocal;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;

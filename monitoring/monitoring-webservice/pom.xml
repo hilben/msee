@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 	
 	<parent>
-		<groupId>at.sti2.ngsee.monitoring</groupId>
+		<groupId>at.sti2.msee.monitoring</groupId>
 		<artifactId>monitoring-project</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>

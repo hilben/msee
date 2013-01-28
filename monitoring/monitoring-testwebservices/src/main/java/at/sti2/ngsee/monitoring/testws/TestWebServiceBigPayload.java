@@ -1,4 +1,4 @@
-package at.sti2.ngsee.monitoring.testws;
+package at.sti2.msee.monitoring.testws;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
