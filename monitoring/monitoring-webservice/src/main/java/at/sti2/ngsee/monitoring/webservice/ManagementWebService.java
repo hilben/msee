@@ -165,18 +165,6 @@ public class ManagementWebService implements IManagementWebService {
 		return endpoints;
 	}
 
-	public static void main(String args[]) throws Exception {
-		System.out.println("cats: "
-				+ new ManagementWebService()
-						.getSubcategoriesAndServices("asdf"));
-		System.out.println("instances: "
-				+ new ManagementWebService().listInstanceIDs());
-
-		System.out.println("QoSParam: "
-				+ new ManagementWebService().getQoSParamValue(new URL(
-						"http://www.test.org"), QoSParamKey.MonitoredTime));
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

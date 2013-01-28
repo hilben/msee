@@ -43,12 +43,13 @@ public class QoSRankingTest extends TestCase {
 
 	protected static Logger logger = Logger.getLogger(QoSRankingTest.class);
 
-	// some hardcoded endpoints
+	//TODO: hardcoded endpoints
 	public static String URL[] = {
 			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/big/getBigAnswer ",
 			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/constant/getConstantAnswer ",
 			"http://sesa.sti2.at:8080/monitoring-testwebservices/services/slow/getSlowAnswer" };
 
+	//TODO: Rewrite this 
 	public static void testQoSRanking() {
 		
 		logger.info("Testing the QoS Ranking ");
@@ -123,10 +124,6 @@ public class QoSRankingTest extends TestCase {
 
 		}
 
-	}
-
-	public static void main(String args[]) {
-		System.out.println("asdfasdfasdfasdfasdfa");
 	}
 
 }
