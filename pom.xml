@@ -28,10 +28,13 @@
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
 
+        <!-- Tomcat settings -->
+        <!-- at the bottom of this page! -->
+
 		<!-- Discovery properties -->
 		<discovery.repo>msee</discovery.repo>
 		<discovery.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</discovery.endpoint>
-		
+
 		<discovery.ws.port>9123</discovery.ws.port>
 
 		<!-- Monitoring properties -->
@@ -41,25 +44,25 @@
 		<monitoring.triplestore.reposid>wsmf</monitoring.triplestore.reposid>
 		<monitoring.instance.prefixuri>http://sti2.at/wsmf/instances#</monitoring.instance.prefixuri>
 
-        <monitoring.ws.port>9124</monitoring.ws.port>
+		<monitoring.ws.port>9124</monitoring.ws.port>
 		<!-- Registration properties -->
 		<registration.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</registration.sesame.endpoint>
 		<registration.sesame.reposid>msee</registration.sesame.reposid>
-		
+
 		<registration.ws.port>9125</registration.ws.port>
 		<!-- Invoker properties -->
 		<invoker.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</invoker.sesame.endpoint>
 		<invoker.sesame.reposid>sesaRepo</invoker.sesame.reposid>
-		
+
 		<invoker.ws.port>9126</invoker.ws.port>
 		<!-- Management properties -->
 		<management.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</management.sesame.endpoint>
 		<management.sesame.reposid>sesaRepo</management.sesame.reposid>
 
-         <management.ws.port>9127</management.ws.port>
-        <!--  Ranking properties -->
-        
-        <ranking.ws.port>9128</ranking.ws.port>
+		<management.ws.port>9127</management.ws.port>
+		<!-- Ranking properties -->
+
+		<ranking.ws.port>9128</ranking.ws.port>
 	</properties>
 
 
@@ -312,11 +315,17 @@
 					</configuration>
 				</plugin>
 
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<configuration>
+						<url>http://sesa.sti2.at:8080/manager/html</url>
+						<username>see</username>
+						<password>see-sti2</password>
+					</configuration>
+				</plugin>
+
 			</plugins>
-
-
-
-
 		</pluginManagement>
 
 
@@ -345,5 +354,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 
 </project>
