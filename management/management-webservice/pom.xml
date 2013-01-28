@@ -1,9 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.ngsee.management</groupId>
 	<artifactId>management-webservice</artifactId>
-	<version>1.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<parent>
@@ -82,7 +80,7 @@
 						<scanIntervalSeconds>10</scanIntervalSeconds>
 						<connectors>
 							<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-								<port>9090</port>
+								<port>${management.ws.port}</port>
 								<maxIdleTime>60000</maxIdleTime>
 							</connector>
 						</connectors>

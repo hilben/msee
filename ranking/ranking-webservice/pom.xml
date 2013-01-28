@@ -103,7 +103,7 @@
 						<scanIntervalSeconds>10</scanIntervalSeconds>
 						<connectors>
 							<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-								<port>9196</port>
+								<port>${ranking.ws.port}</port>
 								<maxIdleTime>60000</maxIdleTime>
 							</connector>
 						</connectors>
