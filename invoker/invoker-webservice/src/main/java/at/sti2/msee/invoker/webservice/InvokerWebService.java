@@ -31,9 +31,9 @@ import org.apache.cxf.interceptor.InFaultInterceptors;
 import org.apache.cxf.interceptor.InInterceptors;
 import org.apache.log4j.Logger;
 
-import at.sti2.msee.invoker.core.InvokerCore;
 import at.sti2.msee.invoker.api.webservice.IAvailabilityCheck;
 import at.sti2.msee.invoker.api.webservice.IInvokerEndpoint;
+import at.sti2.msee.invoker.core.InvokerCore;
 
 /**
  * 
