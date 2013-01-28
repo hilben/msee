@@ -95,7 +95,7 @@ public class TestInvocationHandler extends TestCase {
 							message,
 							null,
 							new ActivityInstantiatedEvent(
-									"http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService"),
+									"http://sesa.sti2.at:8080/invocation-dummy-webservice/services/valenciatPortWebService"),
 							os.size());
 
 			System.out.println(responseMessage);
@@ -115,7 +115,7 @@ public class TestInvocationHandler extends TestCase {
 				.println("Sesa Valencia Port Service: "
 						+ WSAvailabilityChecker
 								.isWebServiceAvailable(
-										"http://sesa.sti2.at:8080/invoker-dummy-webservice/services/valenciatPortWebService",
+										"http://sesa.sti2.at:8080/invocation-dummy-webservice/services/valenciatPortWebService",
 										null));
 		System.out
 				.println("Localhost Dummy Service: "

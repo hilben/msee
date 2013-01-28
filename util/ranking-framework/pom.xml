@@ -13,10 +13,10 @@
 
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
+		<groupId>at.sti2.msee.util</groupId>
+		<artifactId>util-project</artifactId>
 		<relativePath>../pom.xml</relativePath>
+		<version>1.2-SNAPSHOT</version>
 	</parent>
 
 	<!-- Repos -->

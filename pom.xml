@@ -8,14 +8,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>invoker</module>
+		<module>invocation</module>
 		<module>registration</module>
 		<module>discovery</module>
 		<module>monitoring</module>
-		<module>management</module>
-		<module>util</module>
 		<module>ranking</module>
-		<!-- <module>soa4all.ranking.nfps.wsmo.lite</module> -->
+		<module>util</module>
 	</modules>
 
 	<name>sesa-project</name>
@@ -28,8 +26,8 @@
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
 
-        <!-- Tomcat settings -->
-        <!-- at the bottom of this page! -->
+		<!-- Tomcat settings -->
+		<!-- at the bottom of this page! -->
 
 		<!-- Discovery properties -->
 		<discovery.repo>msee</discovery.repo>
@@ -50,11 +48,11 @@
 		<registration.sesame.reposid>msee</registration.sesame.reposid>
 
 		<registration.ws.port>9125</registration.ws.port>
-		<!-- Invoker properties -->
-		<invoker.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</invoker.sesame.endpoint>
-		<invoker.sesame.reposid>sesaRepo</invoker.sesame.reposid>
+		<!-- invocation properties -->
+		<invocation.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</invocation.sesame.endpoint>
+		<invocation.sesame.reposid>sesaRepo</invocation.sesame.reposid>
 
-		<invoker.ws.port>9126</invoker.ws.port>
+		<invocation.ws.port>9126</invocation.ws.port>
 		<!-- Management properties -->
 		<management.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</management.sesame.endpoint>
 		<management.sesame.reposid>sesaRepo</management.sesame.reposid>

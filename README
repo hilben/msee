@@ -4,7 +4,7 @@ SESA (MSEE) Framework README
 COMPONENTS
 ==========
 
-* Invoker
+* invocation
 * Registration
 * Discovery
 * Monitoring
@@ -24,7 +24,7 @@ DEVELOPMENT
         - Eclipse
         - m2eclipse
 
-1)	Execute "git clone ssh://<username>@sesa.sti2.at/var/scm/see/see-invoker.git" 
+1)	Execute "git clone ssh://<username>@sesa.sti2.at/var/scm/see/see-invocation.git" 
 	in your workspace folder, replace <username> with your account name on sesa.sti2.at
 
 2)	Eclipse as IDE:

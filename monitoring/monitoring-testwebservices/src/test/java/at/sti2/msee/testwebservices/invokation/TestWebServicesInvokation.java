@@ -10,7 +10,7 @@ import javax.xml.soap.SOAPMessage;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.invoker.core.InvokerCore;
+import at.sti2.msee.invocation.core.invocationCore;
 import at.sti2.msee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
@@ -65,7 +65,7 @@ public class TestWebServicesInvokation {
 	public static void invokeWebServiceViaMonitoring(String endpointUrl,
 			String webServiceName, String SOAPMsg) throws RepositoryException,
 			Exception {
-		SOAPMessage message = InvokerCore.generateSOAPMessage(SOAPMsg);
+		SOAPMessage message = invocationCore.generateSOAPMessage(SOAPMsg);
 
 		message.saveChanges();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();

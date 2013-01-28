@@ -32,8 +32,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.msee.invoker</groupId>
-			<artifactId>invoker-core</artifactId>
+			<groupId>at.sti2.msee.invocation</groupId>
+			<artifactId>invocation-core</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
