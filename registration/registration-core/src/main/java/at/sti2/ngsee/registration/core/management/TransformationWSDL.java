@@ -35,7 +35,7 @@ import org.ow2.easywsdl.wsdl.api.Output;
 import org.ow2.easywsdl.wsdl.api.Service;
 
 import at.sti2.ngsee.registration.api.exception.RegistrationException;
-import at.sti2.ngsee.registration.core.common.Config;
+import at.sti2.ngsee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
@@ -66,7 +66,7 @@ public class TransformationWSDL {
 	public static String transformWSDL(String _wsdlURI)
 			throws RegistrationException {
 		try {
-			Config cfg = new Config();
+			RegistrationConfig cfg = new RegistrationConfig();
 			RepositoryHandler reposHandler = new RepositoryHandler(
 					cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 

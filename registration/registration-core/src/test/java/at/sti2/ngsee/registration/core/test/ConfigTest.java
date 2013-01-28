@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.ngsee.registration.core.common.Config;
+import at.sti2.ngsee.registration.core.common.RegistrationConfig;
 
 /**
  * @author Benjamin Hiltpolt
@@ -19,14 +19,14 @@ import at.sti2.ngsee.registration.core.common.Config;
 public class ConfigTest {
 
 	private Logger logger = Logger.getLogger(ConfigTest.class);
-	private Config config;
+	private RegistrationConfig config;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		config = new Config();
+		config = new RegistrationConfig();
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.Config#Config()}.
+	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#Config()}.
 	 */
 	@Test
 	public void testConfig() {
@@ -45,7 +45,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.Config#getSesameEndpoint()}.
+	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#getSesameEndpoint()}.
 	 */
 	@Test
 	public void testGetSesameEndpoint() {
@@ -54,7 +54,7 @@ public class ConfigTest {
 	}
 
 	/**
-	 * Test method for {@link at.sti2.ngsee.registration.core.common.Config#getSesameReposID()}.
+	 * Test method for {@link at.sti2.ngsee.registration.core.common.RegistrationConfig#getSesameReposID()}.
 	 */
 	@Test
 	public void testGetSesameReposID() {

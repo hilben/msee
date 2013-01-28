@@ -8,14 +8,11 @@ COMPONENTS
 * Registration
 * Discovery
 * Monitoring
+* Ranking
+* Management
 * Utilities
 
-RUN
-===
 
-Starts the invoker web service:
-
-1)	sh run.sh
 
 
 DEVELOPMENT

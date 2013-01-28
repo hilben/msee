@@ -20,15 +20,15 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @author Alex Oberhauser
+ * @author Alex Oberhauser, Benjamin Hiltpolt
  *
  */
-public class Config {
+public class RegistrationConfig {
 	private final Properties properties;
 	
-	public Config() throws IOException {
+	public RegistrationConfig() throws IOException {
 		this.properties = new Properties();
-		this.properties.load(Config.class.getResourceAsStream("/default.properties")); 
+		this.properties.load(RegistrationConfig.class.getResourceAsStream("/default.properties")); 
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class Config {
 	 * @return
 	 */
 	public String getSesameEndpoint() {
-		return this.properties.getProperty("sesame.endpoint");
+		return this.properties.getProperty("registration.sesame.endpoint");
 	}
 	
 	
@@ -46,7 +46,7 @@ public class Config {
 	 * @return
 	 */
 	public String getSesameReposID() {
-		return this.properties.getProperty("sesame.reposid");
+		return this.properties.getProperty("registration.sesame.reposid");
 	}
 	
 }

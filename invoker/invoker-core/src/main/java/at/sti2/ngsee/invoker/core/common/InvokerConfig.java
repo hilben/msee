@@ -32,11 +32,11 @@ public class InvokerConfig {
 	}
 	
 	public String getSesameEndpoint() {
-		return this.properties.getProperty("sesame.endpoint");
+		return this.properties.getProperty("invoker.sesame.endpoint");
 	}
 	
 	public String getSesameReposID() {
-		return this.properties.getProperty("sesame.reposid");
+		return this.properties.getProperty("invoker.sesame.reposid");
 	}
 	
 }

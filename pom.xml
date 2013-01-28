@@ -28,7 +28,28 @@
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
 
-        
+		<!-- Discovery properties -->
+		<discovery.repo>msee</discovery.repo>
+		<discovery.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</discovery.endpoint>
+
+		<!-- Monitoring properties -->
+		<monitoring.endpoint.servicename>ServiceName</monitoring.endpoint.servicename>
+		<monitoring.endpoint.namespace>http://webservice.monitoring.ngsee.sti2.at/</monitoring.endpoint.namespace>
+		<monitoring.triplestore.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</monitoring.triplestore.endpoint>
+		<monitoring.triplestore.reposid>wsmf</monitoring.triplestore.reposid>
+		<monitoring.instance.prefixuri>http://sti2.at/wsmf/instances#</monitoring.instance.prefixuri>
+
+		<!-- Registration properties -->
+		<registration.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</registration.sesame.endpoint>
+		<registration.sesame.reposid>msee</registration.sesame.reposid>
+		
+		<!-- Invoker properties -->
+		<invoker.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</invoker.sesame.endpoint>
+		<invoker.sesame.reposid>sesaRepo</invoker.sesame.reposid>
+		
+		<!-- Management properties -->
+		<management.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</management.sesame.endpoint>
+		<management.sesame.reposid>sesaRepo</management.sesame.reposid>
 
 	</properties>
 
@@ -36,10 +57,10 @@
 	<profiles>
 		<profile>
 			<id>localrun</id>
-			<properties> <!--  TODO: -->
-					<jdbc.url>jdbc:oracle:thin:@proddb01:1521:PROD</jdbc.url>
-					<jdbc.username>prod_user</jdbc.username>
-					<jdbc.password>s00p3rs3cr3t</jdbc.password>
+			<properties> <!-- TODO: -->
+				<jdbc.url>jdbc:oracle:thin:@proddb01:1521:PROD</jdbc.url>
+				<jdbc.username>prod_user</jdbc.username>
+				<jdbc.password>s00p3rs3cr3t</jdbc.password>
 			</properties>
 		</profile>
 	</profiles>

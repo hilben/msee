@@ -50,10 +50,10 @@ public class MonitoringConfig {
      	
 		
 		this.triplestoreEndpoint = this.prop
-				.getProperty("triplestore.endpoint");
-		this.triplestoreReposid = this.prop.getProperty("triplestore.reposid");
+				.getProperty("monitoring.triplestore.endpoint");
+		this.triplestoreReposid = this.prop.getProperty("monitoring.triplestore.reposid");
 
-		this.instanceprefix = this.prop.getProperty("instance.prefixuri");
+		this.instanceprefix = this.prop.getProperty("monitoring.instance.prefixuri");
 
 		System.out.println(this);
 		if (this.triplestoreReposid == null) {

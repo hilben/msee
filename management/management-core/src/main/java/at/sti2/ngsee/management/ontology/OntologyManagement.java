@@ -11,7 +11,7 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
 
 import at.sti2.ngsee.management.api.exception.ManagementException;
-import at.sti2.ngsee.management.common.Config;
+import at.sti2.ngsee.management.common.ManagementConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 public abstract class OntologyManagement {	
@@ -82,7 +82,7 @@ public abstract class OntologyManagement {
 	 */
 	private static void initRepo() throws ManagementException {
 		try {
-			Config cfg = new Config();
+			ManagementConfig cfg = new ManagementConfig();
 			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 		} catch (IOException e) {
 			throw new ManagementException("The repository endpoint ID or the WSDL file could NOT be found.", e.getCause());

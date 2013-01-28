@@ -15,12 +15,16 @@
 	<name>invoker-core</name>
 	<url>http://see.sti2.at</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 
 	<dependencies>
-
 		<!-- projects -->
 		<dependency>
 			<groupId>at.sti2.ngsee.monitoring</groupId>
@@ -83,8 +87,8 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
 	</dependencies>
-	
-	
-	
-	
+
+
+
+
 </project>

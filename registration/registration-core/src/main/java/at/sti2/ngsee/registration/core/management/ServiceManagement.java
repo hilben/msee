@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.ngsee.registration.api.exception.RegistrationException;
-import at.sti2.ngsee.registration.core.common.Config;
+import at.sti2.ngsee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 public abstract class ServiceManagement {
@@ -49,7 +49,7 @@ public abstract class ServiceManagement {
 	 */
 	private static void initRepo() throws RegistrationException {
 		try {
-			Config cfg = new Config();
+			RegistrationConfig cfg = new RegistrationConfig();
 			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(),
 					cfg.getSesameReposID(), false);
 		} catch (IOException e) {

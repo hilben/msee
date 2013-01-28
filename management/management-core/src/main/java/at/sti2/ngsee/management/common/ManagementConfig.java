@@ -20,23 +20,29 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @author Alex Oberhauser
+ * @author Alex Oberhauser, Benjamin Hiltpolt
  *
  */
-public class Config {
+public class ManagementConfig {
 	private final Properties properties;
 	
-	public Config() throws IOException {
+	public ManagementConfig() throws IOException {
 		this.properties = new Properties();
-		this.properties.load(Config.class.getResourceAsStream("/default.properties")); 
+		this.properties.load(ManagementConfig.class.getResourceAsStream("/default.properties")); 
 	}
 	
 	public String getSesameEndpoint() {
-		return this.properties.getProperty("sesame.endpoint");
+		return this.properties.getProperty("management.sesame.endpoint");
 	}
 	
 	public String getSesameReposID() {
-		return this.properties.getProperty("sesame.reposid");
+		return this.properties.getProperty("management.sesame.reposid");
 	}
+	
+	public static void main(String args[]) throws IOException {
+		System.out.println(new ManagementConfig().getSesameEndpoint());
+		System.out.println(new ManagementConfig().getSesameReposID());
+	}
+	
 	
 }

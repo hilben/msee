@@ -3,17 +3,16 @@
  */
 package at.sti2.wsmf.core.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.wsmf.core.common.MonitoringConfig;
 import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 
 
@@ -33,8 +32,9 @@ public class WebServiceEndpointConfigTest {
 	@Before
 	public void setUp() throws RepositoryException {
 	
+		logger.info("Set up!");
 		try {
-			config = WebServiceEndpointConfig.getConfig("http://www.noconfig.com");
+			this.config = WebServiceEndpointConfig.getConfig("http://www.noconfig.com");
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -43,13 +43,6 @@ public class WebServiceEndpointConfigTest {
 		
 		assertNotNull(config);
 	
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

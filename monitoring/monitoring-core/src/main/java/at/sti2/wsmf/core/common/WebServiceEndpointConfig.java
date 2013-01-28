@@ -16,7 +16,6 @@
  */
 package at.sti2.wsmf.core.common;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -30,9 +29,8 @@ import at.sti2.wsmf.core.data.WebServiceEndpoint;
  * @author Alex Oberhauser
  * @author Benjamin Hiltpolt
  * 
- *         Stores and manages a Config file for every Endpoint
- *         TODO: absoulute file path of config is BAD! 
- *         TODO: obsolete? find a way to remove...
+ *         Stores and manages a Config file for every Endpoint TODO: absoulute
+ *         file path of config is BAD! TODO: obsolete? find a way to remove...
  */
 public class WebServiceEndpointConfig {
 
@@ -80,34 +78,26 @@ public class WebServiceEndpointConfig {
 	private WebServiceEndpointConfig(String endpointURL) throws IOException,
 			RepositoryException {
 		this.prop = new Properties();
-		
-//		URL l = ClassLoader.getSystemResource("default.properties");
-		//TODO: CHANGE!!!
-//		URL config = new URL(
-//				"file://C:/Users/benhil.STI/workspace/sesa-core/monitoring/monitoring-core/src/main/resources/default.properties");
-//		URL config = l;
 
-//		this.prop.load(WebServiceEndpointConfig.class.getResourceAsStream("/default.properties")); 
-//	System.out.println("WebServiceEndpointConfig loading: "+l);
+		this.prop.load(WebServiceEndpointConfig.class
+				.getResourceAsStream("/default.properties"));
 
-
-	this.prop.load(WebServiceEndpointConfig.class.getResourceAsStream("/default.properties"));
-	
-	System.out.println("this.prop.size(): "+this.prop.size());
-	
-
+		System.out.println("this.prop.size(): " + this.prop.size());
 
 		this.masterEndpointNamespace = this.prop
 				.getProperty("endpoint.master.url");
 		this.endpointURL = endpointURL;
-		this.webServiceName = this.prop.getProperty("endpoint.servicename");
+		this.webServiceName = this.prop
+				.getProperty("monitoring.endpoint.servicename");
 
-		this.triplestoreReposid = this.prop.getProperty("triplestore.reposid");
+		this.triplestoreReposid = this.prop
+				.getProperty("monitoring.triplestore.reposid");
 		this.triplestoreEndpoint = this.prop
-				.getProperty("triplestore.endpoint");
-		this.instancePrefix = this.prop.getProperty("instance.prefixuri");
-		this.webServiceNamespace = this.prop.getProperty("endpoint.namespace");
-
+				.getProperty("monitoring.triplestore.endpoint");
+		this.instancePrefix = this.prop
+				.getProperty("monitoring.instance.prefixuri");
+		this.webServiceNamespace = this.prop
+				.getProperty("monitoring.endpoint.namespace");
 
 		instances.put(endpointURL, this);
 
@@ -144,7 +134,6 @@ public class WebServiceEndpointConfig {
 		return this.endpointURL;
 	}
 
-
 	public void setTriplestoreReposid(String triplestoreReposid) {
 		this.triplestoreReposid = triplestoreReposid;
 	}
@@ -164,12 +153,5 @@ public class WebServiceEndpointConfig {
 				+ ", triplestoreReposid=" + triplestoreReposid
 				+ ", instancePrefix=" + instancePrefix
 				+ ", webserviceendpoint=" + this.webserviceendpoint + "]";
-	}
-
-	public static void main(String args[]) throws IOException,
-			RepositoryException {
-		System.out.println(WebServiceEndpointConfig.getConfig("http://asd")
-				.getWebServiceNamespace());
-		System.out.println(WebServiceEndpointConfig.getConfig("http://asd"));
 	}
 }

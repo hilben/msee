@@ -1,6 +1,0 @@
-2013-01-25 10:25:35,118 INFO  [DefaultSoapUICore] initialized soapui-settings from [/home/chrmay/Downloads/soapui-4.5.1/soapui-settings.xml]
-2013-01-25 10:25:36,622 INFO  [WorkspaceImpl] Loading workspace from [/home/chrmay/git/sesa-core/../../TestPBE-workspace.xml]
-2013-01-25 10:25:36,906 INFO  [SoapUI] Used java version: 1.7.0_09
-2013-01-25 10:25:39,021 INFO  [b] XULRunner is already extracted to /home/chrmay/.JxBrowser/xulrunner-linux-version-1.9.2.1/xulrunner-linux-64
-2013-01-25 10:25:43,788 INFO  [DefaultSoapUICore] Settings saved to [/home/chrmay/Downloads/soapui-4.5.1/soapui-settings.xml]
-2013-01-25 10:25:43,790 INFO  [WorkspaceImpl] Saved workspace to [/home/chrmay/git/sesa-core/../../TestPBE-workspace.xml]
