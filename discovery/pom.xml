@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.sti2.ngsee.discovery</groupId>
@@ -17,6 +18,9 @@
 		<module>discovery-core</module>
 		<module>discovery-webservice</module>
 	</modules>
+
+
+
 
 	<name>discovery-project</name>
 	<url>http://sesa.sti2.at</url>
@@ -48,6 +52,9 @@
 		<developer>
 			<name>Corneliu Stanciu</name>
 		</developer>
+		<developer>
+			<name>Benjamin Hiltpolt</name>
+		</developer>
 	</developers>
 
 	<!-- DEPENDENCY MANAGEMENT -->
@@ -67,17 +74,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>discovery-client</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>discovery-webservice</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>discovery-grounding</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

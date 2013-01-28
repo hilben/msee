@@ -27,7 +27,22 @@
 		<cxf.version>2.4.1</cxf.version>
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
+
+        
+
 	</properties>
+
+
+	<profiles>
+		<profile>
+			<id>localrun</id>
+			<properties> <!--  TODO: -->
+					<jdbc.url>jdbc:oracle:thin:@proddb01:1521:PROD</jdbc.url>
+					<jdbc.username>prod_user</jdbc.username>
+					<jdbc.password>s00p3rs3cr3t</jdbc.password>
+			</properties>
+		</profile>
+	</profiles>
 
 	<issueManagement>
 		<system>Redmine</system>
@@ -87,9 +102,6 @@
 			<name>STI snapshots</name>
 			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
 		</repository>
-		<!-- SOA4ALL Offline! <repository> <id>soa4all-repo</id> <name>SOA4all</name> 
-			<url>http://87.213.46.9:8080/nexus-webapp-1.3.1/content/repositories/public/</url> 
-			</repository> -->
 		<repository>
 			<id>sesame repo</id>
 			<name>sesame</name>
@@ -123,13 +135,6 @@
 			<url>http://repo.phloc.com/maven2/</url>
 		</repository>
 
-		<!-- <repository> <id>semweb4j-repo</id> <name>Semweb4j.org maven repo</name> 
-			<url>http://semweb4j.org/repo/</url> <releases> <enabled>true</enabled> </releases> 
-			</repository> <repository> <id>semweb4j-snapshots</id> <name>Semweb4j.org 
-			maven snapshot repo</name> <url>http://semweb4j.org/snapshots/</url> <releases> 
-			<enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> 
-			<updatePolicy>always</updatePolicy> <checksumPolicy>fail</checksumPolicy> 
-			</snapshots> </repository> -->
 	</repositories>
 
 	<!-- BUILD PROCESS -->
@@ -286,5 +291,29 @@
 
 
 	</build>
+	<dependencyManagement>
+		<dependencies>
+			<!-- TOOLS -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+				<!-- Because the JDK1.6 already include the Java Activation API, otherwise 
+					this could generate ClassLoading en Linkage errors -->
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.5</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

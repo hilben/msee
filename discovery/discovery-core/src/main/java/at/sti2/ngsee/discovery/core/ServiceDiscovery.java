@@ -36,6 +36,7 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
+import at.sti2.ngsee.discovery.core.common.DiscoveryConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
@@ -48,15 +49,16 @@ import at.sti2.util.triplestore.RepositoryHandler;
  * 
  */
 public class ServiceDiscovery {
+	
+	
 
 	public static RepositoryHandler getReposHandler()
 			throws FileNotFoundException, IOException {
-		Properties prop = new Properties();
-		prop.load(ServiceDiscovery.class
-				.getResourceAsStream("/default.properties"));
-		// TODO: MAYBE DISABLE AUTOCOMMIT
-		return new RepositoryHandler(prop.getProperty("sesame.endpoint"),
-				prop.getProperty("sesame.reposid"), true);
+		DiscoveryConfig config = new DiscoveryConfig();
+		
+		
+		return new RepositoryHandler(config.getSesameEndpoint(),
+				config.getSesameReposID(), true);
 	}
 
 	/**
