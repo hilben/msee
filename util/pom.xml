@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>util-triplestore-client</module>
+		<module>ranking-framework</module>
 	</modules>
 
 	<name>util-project</name>
