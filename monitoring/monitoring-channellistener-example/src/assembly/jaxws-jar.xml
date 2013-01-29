@@ -6,7 +6,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-                        <source>target/classes/at/sti2/ngsee/monitoring/webservice/EventStreamListenerWebService.class</source>
+                        <source>target/classes/at/sti2/msee/monitoring/webservice/EventStreamListenerWebService.class</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 	</files>

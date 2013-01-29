@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-import org.apache.cxf.headers.Header;
 
-import at.sti2.msee.invocation.webservice.invocationWebService;
-import at.sti2.msee.invocation.webservice.SOAPHeaderThreadLocal;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.apache.cxf.headers.Header;
+
+import at.sti2.msee.invocation.webservice.InvocationWebService;
+import at.sti2.msee.invocation.webservice.SOAPHeaderThreadLocal;
 
 /**
  * Unit test for simple App.

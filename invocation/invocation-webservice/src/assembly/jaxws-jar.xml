@@ -6,7 +6,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-			<source>target/classes/at/sti2/ngsee/invocation/webservice/invocationWebService.class</source>
+			<source>target/classes/at/sti2/msee/invocation/webservice/InvocationWebService.class</source>
 			<outputDirectory>/service</outputDirectory>
 		</file>
 	</files>
