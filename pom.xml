@@ -20,7 +20,9 @@
 	<url>http://sesa.sti2.at</url>
 
 	<properties>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 		<cxf.version>2.4.1</cxf.version>
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
@@ -31,7 +33,6 @@
 		<!-- Discovery properties -->
 		<discovery.repo>msee</discovery.repo>
 		<discovery.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</discovery.endpoint>
-
 		<discovery.ws.port>9123</discovery.ws.port>
 
 		<!-- Monitoring properties -->
@@ -40,26 +41,26 @@
 		<monitoring.triplestore.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</monitoring.triplestore.endpoint>
 		<monitoring.triplestore.reposid>wsmf</monitoring.triplestore.reposid>
 		<monitoring.instance.prefixuri>http://sti2.at/wsmf/instances#</monitoring.instance.prefixuri>
-
 		<monitoring.ws.port>9124</monitoring.ws.port>
+
 		<!-- Registration properties -->
 		<registration.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</registration.sesame.endpoint>
 		<registration.sesame.reposid>msee</registration.sesame.reposid>
-
 		<registration.ws.port>9125</registration.ws.port>
-		<!-- invocation properties -->
+
+		<!-- Invocation properties -->
 		<invocation.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</invocation.sesame.endpoint>
 		<invocation.sesame.reposid>sesaRepo</invocation.sesame.reposid>
-
 		<invocation.ws.port>9126</invocation.ws.port>
+
 		<!-- Management properties -->
 		<management.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</management.sesame.endpoint>
 		<management.sesame.reposid>sesaRepo</management.sesame.reposid>
-
 		<management.ws.port>9127</management.ws.port>
-		<!-- Ranking properties -->
 
+		<!-- Ranking properties -->
 		<ranking.ws.port>9128</ranking.ws.port>
+
 	</properties>
 
 	<profiles>
@@ -118,7 +119,6 @@
 		<!-- <developerConnection>scm:git:git@github.com:tobrien/git-demo.git</developerConnection> -->
 	</scm>
 
-	<!-- REPOSITORIES -->
 	<repositories>
 		<repository>
 			<id>maven</id>
@@ -135,7 +135,6 @@
 			<name>sesame</name>
 			<url>http://repo.aduna-software.org/maven2/releases/</url>
 		</repository>
-
 		<repository>
 			<id>sti-external</id>
 			<name>Maven STI external repository</name>
@@ -165,7 +164,6 @@
 
 	</repositories>
 
-	<!-- BUILD PROCESS -->
 	<build>
 		<!-- All childs inherit this plugins -->
 		<plugins>
@@ -183,7 +181,6 @@
 			</plugin>
 		</plugins>
 
-		<!-- PLUGIN MANAGEMENT -->
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -317,25 +314,42 @@
 						<password>see-sti2</password>
 					</configuration>
 				</plugin>
-
 				<plugin>
-					<groupId>org.mortbay.jetty</groupId>
+					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
 					<configuration>
-						<war>./discovery/discovery-webservice/target/discovery-webservice.war</war>
 						<scanIntervalSeconds>10</scanIntervalSeconds>
 						<connectors>
 							<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-								<port>${discovery.ws.port}</port>
 								<maxIdleTime>60000</maxIdleTime>
 							</connector>
 						</connectors>
+						<contextHandlers>
+							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+								<war>${basedir}/discovery/discovery-webservice/target/discovery-webservice.war</war>
+								<contextPath>/discovery</contextPath>
+							</contextHandler>
+							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+								<war>${basedir}/registration/registration-webservice/target/registration-webservice.war</war>
+								<contextPath>/registration</contextPath>
+							</contextHandler>
+							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+								<war>${basedir}/monitoring/monitoring-jsonservice/target/monitoring-json-webservice.war</war>
+								<contextPath>/monitoring-jsonservice</contextPath>
+							</contextHandler>
+							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+								<war>${basedir}/monitoring/monitoring-webservice/target/monitoring-webservice.war</war>
+								<contextPath>/monitoring</contextPath>
+							</contextHandler>
+							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+								<war>${basedir}/invocation/invocation-webservice/target/invocation-webservice.war</war>
+								<contextPath>/invocation</contextPath>
+							</contextHandler>
+						</contextHandlers>
 					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
-
 	</build>
 	<dependencyManagement>
 		<dependencies>
@@ -361,6 +375,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-
 </project>

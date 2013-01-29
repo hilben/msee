@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>discovery-webservice</artifactId>
@@ -34,8 +35,8 @@
 				<artifactId>cxf-java2ws-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 
@@ -74,33 +75,32 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.mortbay.jetty</groupId>
-					<artifactId>maven-jetty-plugin</artifactId>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
 					<configuration>
 						<scanIntervalSeconds>10</scanIntervalSeconds>
 						<connectors>
-							<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-								<port>${discovery.ws.port}</port>
-								<maxIdleTime>60000</maxIdleTime>
+							<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">							
+							 	<maxIdleTime>60000</maxIdleTime>
 							</connector>
 						</connectors>
 					</configuration>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 	</build>
-
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>discovery-api</artifactId>
+			<version>${project.parent.version}</version>			
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>discovery-core</artifactId>
+			<version>${project.parent.version}</version>			
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -112,5 +112,4 @@
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

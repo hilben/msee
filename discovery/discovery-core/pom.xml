@@ -24,16 +24,17 @@
 		</resources>
 	</build>
 
-
 	<dependencies>
 		<!-- projects -->
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>discovery-api</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>at.sti2.msee.util</groupId>
 			<artifactId>util-triplestore-client</artifactId>
+			<version>${project.parent.version}</version>			
 		</dependency>
 
 		<dependency>
@@ -45,6 +46,5 @@
 			<artifactId>stringtemplate</artifactId>
 			<version>3.2</version>
 		</dependency>
-
 	</dependencies>
 </project>

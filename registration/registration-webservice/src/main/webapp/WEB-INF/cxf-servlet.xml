@@ -9,6 +9,6 @@
          http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="invocationWebService" implementor="at.sti2.msee.registration.webservice.RegistrationWebService"
-		address="/register">
+		address="/service">
 	</jaxws:endpoint>
 </beans>

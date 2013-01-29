@@ -10,7 +10,7 @@
 
 	<jaxws:endpoint id="RankingWebservice"
 		implementor="at.sti2.msee.ranking.webservice.RankingWebservice"
-		address="/ranking">
+		address="/service">
 	</jaxws:endpoint>
 
 </beans>
