@@ -14,7 +14,7 @@
 	</parent>
 
 
-	<artifactId>monitorin-jsonservice</artifactId>
+	<artifactId>monitoring-jsonservice</artifactId>
 	<name>Monitoring JSON Webservice</name>
 	<packaging>war</packaging>
 	<profiles>
