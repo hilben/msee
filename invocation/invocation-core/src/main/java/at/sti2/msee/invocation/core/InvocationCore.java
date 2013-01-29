@@ -58,8 +58,8 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
  * 
  *         TODO: Documentation
  */
-public class invocationCore {
-	protected static Logger logger = Logger.getLogger(invocationCore.class);
+public class InvocationCore {
+	protected static Logger logger = Logger.getLogger(InvocationCore.class);
 
 	/**
 	 * Creates a SOAP message with the input data as message body.
@@ -127,7 +127,7 @@ public class invocationCore {
 		/*
 		 * Reading out all relevant information from the Triplestore
 		 */
-		invocationMSM msmObject = TriplestoreHandler.getinvocationMSM(_serviceID,
+		InvocationMSM msmObject = TriplestoreHandler.getInvocationMSM(_serviceID,
 				_operationName);
 
 		IGroundingEngine groundingEngine = GroundingFactory

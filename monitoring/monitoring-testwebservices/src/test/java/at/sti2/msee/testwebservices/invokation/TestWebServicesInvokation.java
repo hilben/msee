@@ -10,7 +10,6 @@ import javax.xml.soap.SOAPMessage;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.invocation.core.invocationCore;
 import at.sti2.msee.testwebservices.soapmessages.TestWebServicesSOAPMessages;
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;

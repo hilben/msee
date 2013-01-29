@@ -36,7 +36,7 @@ import javax.xml.soap.SOAPMessage;
  * Revision:     		$Revision$<br>
  * State:        		$State$<br>
  */
-public interface ISOAPinvocation {	
+public interface ISOAPInvocation {	
 
 	/**
 	 * 

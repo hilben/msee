@@ -14,29 +14,46 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.msee.invocation.core.common;
+package at.sti2.msee.invocation.api.core;
 
-import java.io.IOException;
-import java.util.Properties;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
 
 /**
  * @author Alex Oberhauser
- *
  */
-public class invocationConfig {
-	private final Properties properties;
+public interface IInvocationMSM {
 	
-	public invocationConfig() throws IOException {
-		this.properties = new Properties();
-		this.properties.load(invocationConfig.class.getResourceAsStream("/default.properties")); 
-	}
+	/**
+	 * @return A link to the lowering schema.
+	 */
+	public URL getLoweringSchema();
 	
-	public String getSesameEndpoint() {
-		return this.properties.getProperty("invocation.sesame.endpoint");
-	}
+	/**
+	 * @return A link to the lifting schema.
+	 */
+	public URL getLifingSchema();
 	
-	public String getSesameReposID() {
-		return this.properties.getProperty("invocation.sesame.reposid");
-	}
+	/**
+	 * @return Link to the Web Service Description Language File.
+	 */
+	public URL getWSDL();
 	
+	/**
+	 * @return SOAPAction specified in the HTTP header
+	 */
+	public String getSOAPAction();
+	
+	/**
+	 * @return Namespace + Operation as QName instance.
+	 */
+	public QName getOperationQName();
+	
+	public QName getServiceQName();
+	
+	public QName getPortQName();
+	
+	public URL getEndpointURL();
+
 }

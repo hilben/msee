@@ -20,12 +20,12 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import at.sti2.msee.invocation.api.core.IinvocationMSM;
+import at.sti2.msee.invocation.api.core.IInvocationMSM;
 
 /**
  * @author Alex Oberhauser
  */
-public class invocationMSM implements IinvocationMSM {
+public class InvocationMSM implements IInvocationMSM {
 	private URL loweringSchema;
 
 

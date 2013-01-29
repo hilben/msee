@@ -18,14 +18,14 @@ import junit.framework.TestSuite;
  * 
  * TODO: Write real test for invocation
  */
-public class invocationWebServiceTest extends TestCase {
+public class InvocationWebServiceTest extends TestCase {
 	/**
 	 * Create the test case
 	 * 
 	 * @param testName
 	 *            name of the test case
 	 */
-	public invocationWebServiceTest(String testName) {
+	public InvocationWebServiceTest(String testName) {
 		super(testName);
 	}
 
@@ -33,7 +33,7 @@ public class invocationWebServiceTest extends TestCase {
 	 * @return the suite of tests being tested
 	 */
 	public static Test suite() {
-		return new TestSuite(invocationWebServiceTest.class);
+		return new TestSuite(InvocationWebServiceTest.class);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class invocationWebServiceTest extends TestCase {
 	}
 	
 	public void testinvocationWebServic(){
-		invocationWebService ws = new invocationWebService();
+		InvocationWebService ws = new InvocationWebService();
 		Assert.assertTrue(ws.checkAvailability());
 		
 

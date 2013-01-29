@@ -32,7 +32,7 @@ package at.sti2.msee.invocation.api.webservice;
  * Revision:     $Revision$<br>
  * State:        $State$<br>
  */
-public interface IinvocationEndpoint {
+public interface IInvocationEndpoint {
 	
 	/**
 	 * Invokes a service and handles the lifting and lowering process and all 

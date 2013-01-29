@@ -21,19 +21,19 @@ public class TestTripleStoreHandler extends TestCase{
 	 */
 	@Test
 	public void testTripleStoreHandler() throws QueryEvaluationException, RepositoryException, MalformedQueryException, IOException {
-			invocationMSM invocationMSM = TriplestoreHandler.getinvocationMSM(
+			InvocationMSM invocationMSM = TriplestoreHandler.getInvocationMSM(
 					"http://www.webserviceX.NET#GlobalWeather", "GetWeather");
 			System.out.println(invocationMSM.getOperationQName());
 			System.out.println(invocationMSM);
 
-			invocationMSM = TriplestoreHandler.getinvocationMSM(
+			invocationMSM = TriplestoreHandler.getInvocationMSM(
 					"http://www.nanonull.com/TimeService/TimeService.asmx",
 					"getUTCTime");
 			System.out.println(invocationMSM.getOperationQName());
 			System.out.println(invocationMSM);
 
 			invocationMSM = TriplestoreHandler
-					.getinvocationMSM(
+					.getInvocationMSM(
 							"http://sesa.sti2.at/services/dummy/#ValenciaPortWebServiceService",
 							"submitFALForm");
 			System.out.println(invocationMSM.getOperationQName());

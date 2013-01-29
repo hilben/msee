@@ -28,7 +28,7 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.invocation.core.common.invocationConfig;
+import at.sti2.msee.invocation.core.common.InvocationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
@@ -102,17 +102,17 @@ public class TriplestoreHandler {
 		return query.toString();
 	}
 
-	public static invocationMSM getinvocationMSM(String _serviceID,
+	public static InvocationMSM getInvocationMSM(String _serviceID,
 			String _operationName) throws IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException {
-		invocationConfig cfg = new invocationConfig();
+		InvocationConfig cfg = new InvocationConfig();
 		RepositoryHandler reposHandler = new RepositoryHandler(
 				cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 		String query = generateQuery(_serviceID, _operationName);
 		TupleQueryResult result = reposHandler.selectSPARQL(query);
 
-		invocationMSM msmInstance = new invocationMSM();
+		InvocationMSM msmInstance = new InvocationMSM();
 		if (result.hasNext()) {
 			BindingSet entry = result.next();
 

@@ -8,12 +8,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>util</module>
 		<module>invocation</module>
 		<module>registration</module>
 		<module>discovery</module>
 		<module>monitoring</module>
 		<module>ranking</module>
-		<module>util</module>
 	</modules>
 
 	<name>sesa-project</name>
@@ -285,8 +285,6 @@
 					<artifactId>maven-scm-plugin</artifactId>
 					<version>1.5</version>
 				</plugin>
-
-
 
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
