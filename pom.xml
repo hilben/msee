@@ -6,7 +6,7 @@
 	<artifactId>sesa-project</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
+    
 	<modules>
 		<module>util</module>
 		<module>invocation</module>
@@ -28,7 +28,9 @@
 		<axis.version>1.5.4</axis.version>
 
 		<!-- Tomcat settings -->
-		<!-- at the bottom of this page! -->
+		<tomcatserver.url>http://sesa.sti2.at:8080/manager/html</tomcatserver.url>
+		<tomcatserver.username>see</tomcatserver.username>
+		<tomcatserver.password>see-sti2</tomcatserver.password>
 
 		<msee.sdp.port>8080</msee.sdp.port>
 		<msee.sdp.sesame.endpoint>http://localhost:8082/openrdf-sesame</msee.sdp.sesame.endpoint>
@@ -312,9 +314,9 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>tomcat-maven-plugin</artifactId>
 					<configuration>
-						<url>http://sesa.sti2.at:8080/manager/html</url>
-						<username>see</username>
-						<password>see-sti2</password>
+						<url>${tomcatserver.url}</url>
+						<username>${tomcatserver.username}</username>
+						<password>${tomcatserver.password}</password>
 					</configuration>
 				</plugin>
 				<plugin>
