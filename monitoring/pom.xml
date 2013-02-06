@@ -18,7 +18,7 @@
 		<module>monitoring-api</module>
 		<module>monitoring-core</module>
 		<module>monitoring-webservice</module>
-		<module>monitoring-channellistener-example</module>
+<!-- 		<module>monitoring-channellistener-example</module> -->
 		<!-- <module>monitoring-webservices-examples</module> !-->
 		<module>monitoring-jsonservice</module>
 		<module>monitoring-testwebservices</module>
