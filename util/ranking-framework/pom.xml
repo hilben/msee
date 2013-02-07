@@ -4,7 +4,6 @@
 	<groupId>soa4all.ranking.nfps.wsmo.lite</groupId>
 	<artifactId>soa4all.ranking.nfps.wsmo.lite</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ranking-framework</name>
 
 	<properties>
 		<cxf.version>2.2.3</cxf.version>
@@ -13,10 +12,9 @@
 
 
 	<parent>
-		<groupId>at.sti2.msee.util</groupId>
-		<artifactId>util-project</artifactId>
-		<relativePath>../pom.xml</relativePath>
-		<version>1.2-SNAPSHOT</version>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>util</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
 	<!-- Repos -->
