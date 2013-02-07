@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<artifactId>ranking.api</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>ranking</artifactId>
+		<version>m16.1-SNAPSHOT</version>
+	</parent>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<version>${project.parent.version}</version>
+
+			<artifactId>monitoring.api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.sti2.msee.delivery</groupId>
+			<artifactId>monitoring.core</artifactId>
+			<version>${project.parent.version}</version>
+
+		</dependency>
+		<dependency>
+			<groupId>at.sti2.msee.delivery</groupId>
+			<artifactId>util.triplestore.client</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
+</project>

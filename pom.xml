@@ -14,8 +14,7 @@
 		<module>discovery</module>
 		<module>monitoring</module>
 		<module>invocation</module>
-		
-		<!-- <module>ranking</module> -->
+		<module>ranking</module>
 	</modules>
 
 	<properties>
