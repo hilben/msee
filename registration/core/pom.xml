@@ -2,20 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>registration-core</artifactId>
+	<artifactId>registration.core</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>at.sti2.msee.registration</groupId>
-		<artifactId>registration-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>registration</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
-
-
-
-	<name>registration-core</name>
-	<url>http://maven.apache.org</url>
 
 	<build>
 		<resources>
@@ -25,26 +19,17 @@
 			</resource>
 		</resources>
 	</build>
-
-
 	<dependencies>
 		<dependency>
-			<groupId>at.sti2.msee.registration</groupId>
-			<artifactId>registration-api</artifactId>
-			<scope>compile</scope>
+			<groupId>at.sti2.msee.delivery</groupId>
+			<artifactId>util.triplestore.client</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.msee.util</groupId>
-			<artifactId>util-triplestore-client</artifactId>
+			<groupId>at.sti2.msee.delivery</groupId>
+			<artifactId>registration.api</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
-
-
-
-
-
-
-
-
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>saxon</artifactId>
@@ -55,9 +40,6 @@
 			<artifactId>saxon-dom</artifactId>
 			<version>8.7</version>
 		</dependency>
-
-
-
 
 		<dependency>
 			<groupId>wsdl4j</groupId>
@@ -76,7 +58,6 @@
 			<artifactId>SAWSDL4J</artifactId>
 			<version>M4</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.ow2.easywsdl</groupId>

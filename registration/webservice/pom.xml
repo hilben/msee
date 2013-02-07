@@ -2,26 +2,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>registration-webservice</artifactId>
+	<artifactId>registration.webservice</artifactId>
 	<packaging>war</packaging>
 
 	<parent>
-		<groupId>at.sti2.msee.registration</groupId>
-		<artifactId>registration-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>registration</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
-	<name>registration-webservice</name>
-	<url>http://sesa.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
-
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -96,21 +91,25 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>registration-api</artifactId>
+			<artifactId>registration.api</artifactId>
+			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>registration-core</artifactId>
+			<artifactId>registration.core</artifactId>
+			<version>${project.parent.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>2.3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>2.3.3</version>			
 		</dependency>
 	</dependencies>
 

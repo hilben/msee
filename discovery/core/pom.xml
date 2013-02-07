@@ -2,41 +2,35 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>discovery-core</artifactId>
+	<artifactId>discovery.core</artifactId>
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>at.sti2.msee.discovery</groupId>
-		<artifactId>discovery-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>discovery</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
-	<name>discovery-core</name>
-	<url>http://sesa.sti2.at</url>
-
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
+<!-- 	<build> -->
+<!-- 		<resources> -->
+<!-- 			<resource> -->
+<!-- 				<directory>src/main/resources</directory> -->
+<!-- 				<filtering>true</filtering> -->
+<!-- 			</resource> -->
+<!-- 		</resources> -->
+<!-- 	</build> -->
 
 	<dependencies>
-		<!-- projects -->
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>discovery-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.msee.util</groupId>
-			<artifactId>util-triplestore-client</artifactId>
+			<groupId>at.sti2.msee</groupId>
+			<artifactId>util.triplestore.client</artifactId>
 			<version>${project.parent.version}</version>			
 		</dependency>
-
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>

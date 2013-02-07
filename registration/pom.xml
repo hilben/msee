@@ -1,26 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.registration</groupId>
-	<artifactId>registration-project</artifactId>
+	<artifactId>registration</artifactId>
 	<packaging>pom</packaging>
 	
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<version>m16.1-SNAPSHOT</version>
+		<artifactId>platform</artifactId>
 	</parent>
 
 	<modules>
-		<module>registration-api</module>
-		<module>registration-core</module>
-		<module>registration-webservice</module>
+		<module>api</module>
+		<module>core</module>
+		<module>webservice</module>
 	</modules>
-
-
-	<name>registration-project</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,90 +22,5 @@
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
 	</properties>
-
-	<!-- DEPENDENCY MANAGEMENT -->
-	<dependencyManagement>
-		<dependencies>
-
-			<!-- projects -->
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>registration-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>registration-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>registration-webservice</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>at.sti2.msee.util</groupId>
-				<artifactId>util-triplestore-client</artifactId>
-				<version>1.2-SNAPSHOT</version>
-			</dependency>
-
-			<!-- libraries -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxws</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-                        <!-- xslt and xquery processor (needed for xslt 2.0) 
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon-dom</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
-
--->
-			<!-- tools -->
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.16</version>
-				<!-- Because the JDK1.6 already includes the Java Activation API, otherwise 
-					this could generate ClassLoading Linkage errors in Servlets -->
-				<exclusions>
-					<exclusion>
-						<groupId>javax.activation</groupId>
-						<artifactId>activation</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.5</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<!-- DEPENDENCIES -->
-	<!-- these dependencies are included in every child project per default -->
-	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-	</dependencies>
 
 </project>
