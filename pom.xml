@@ -296,27 +296,27 @@
 						</connectors>
 						<contextHandlers>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/discovery/discovery-webservice/target/discovery-webservice.war</war>
+								<war>${basedir}/discovery/webservice/target/${groupId}.discovery.webservice-${version}.war</war>
 								<contextPath>/discovery</contextPath>
 							</contextHandler>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/registration/registration-webservice/target/registration-webservice.war</war>
+								<war>${basedir}/registration/webservice/target/${groupId}.registration.webservice-${version}.war</war>
 								<contextPath>/registration</contextPath>
 							</contextHandler>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/monitoring/monitoring-jsonservice/target/monitoring-json-webservice.war</war>
+								<war>${basedir}/monitoring/jsonservice/target/${groupId}.monitoring.jsonservice-${version}.war</war>
 								<contextPath>/monitoring-jsonservice</contextPath>
 							</contextHandler>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/monitoring/monitoring-webservice/target/monitoring-webservice.war</war>
+								<war>${basedir}/monitoring/webservice/target/${groupId}.monitoring.webservice-${version}.war</war>
 								<contextPath>/monitoring</contextPath>
 							</contextHandler>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/invocation/invocation-webservice/target/invocation-webservice.war</war>
+								<war>${basedir}/invocation/webservice/target/${groupId}.invocation.webservice-${version}.war</war>
 								<contextPath>/invocation</contextPath>
 							</contextHandler>
 							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/ranking/ranking-webservice/target/ranking-webservice.war</war>
+								<war>${basedir}/ranking/webservice/target/${groupId}.ranking.webservice-${version}.war</war>
 								<contextPath>/ranking</contextPath>
 							</contextHandler>
 						</contextHandlers>

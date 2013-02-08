@@ -18,15 +18,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>at.sti2.msee.ranking</groupId>
-			<artifactId>ranking-api</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>ranking.api</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.msee.ranking</groupId>
-			<artifactId>ranking-core</artifactId>
-			<version>1.2-SNAPSHOT</version>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>ranking.core</artifactId>
+			<version>${project.parent.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -39,8 +40,6 @@
 
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
-
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

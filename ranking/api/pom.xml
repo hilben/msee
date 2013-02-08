@@ -15,7 +15,6 @@
 		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
@@ -26,13 +25,10 @@
 		<dependency>
 			<groupId>at.sti2.msee.delivery</groupId>
 			<artifactId>monitoring.core</artifactId>
-			<version>${project.parent.version}</version>
-
 		</dependency>
 		<dependency>
 			<groupId>at.sti2.msee.delivery</groupId>
 			<artifactId>util.triplestore.client</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 </project>
