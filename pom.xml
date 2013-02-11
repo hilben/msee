@@ -27,7 +27,7 @@
 
 		<!-- Default properties -->
 		<default.port>8080</default.port>
-		<default.sesame.endpoint>http://localhost:8082/openrdf-sesame</default.sesame.endpoint>
+		<default.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</default.sesame.endpoint>
 
 		<!-- Discovery properties -->
 		<discovery.sesame.endpoint>${default.sesame.endpoint}</discovery.sesame.endpoint>

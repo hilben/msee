@@ -19,6 +19,7 @@
 			</resource>
 		</resources>
 	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>at.sti2.msee.delivery</groupId>
