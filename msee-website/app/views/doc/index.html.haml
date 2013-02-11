@@ -1,0 +1,95 @@
+.container-fluid
+  .row-fluid
+    = render "navigation"
+
+    .span9
+      .hero-unit
+        .row
+          .span2
+            %h1 &nbsp;
+            = image_tag "doc.png"
+          .span6
+            %h1 Documentation
+            %p{"align" => "justify"}
+              The following page explains each of the SESA components in greater detail. Additional to the description of
+              the components you can find here also a tutorial how to integrate the SESA services into your own platform or
+              use them manually.
+
+      %h2 High-Level Architecture Diagram
+      %p{"align" => "center"}= image_tag "sesa-architecture-overview.png"
+
+      %h2 Repository
+      %p{"align" => "justify"}
+        The repository stores the metadata about services which are needed by the other
+        components of the SESA architecture. The semantic descriptions of Web services
+        registered in the platform are stored here and can be queried, so that the
+        repository can be used in the SESA architecture also as a service registry.
+        The repository is an RDF triplestore, which can be queried via SPARQL. It is
+        however not intended to be directly accessible from outside the SESA architecture .
+
+      %h2 Management Component
+      %p{"align" => "justify"}
+        The management component allows administering the data stored in the repository,
+        and in particular it allows storing and updating ontologies. These data are not
+        used to describe a single Web service; therefore they are administered by the
+        platform owner/administrator through this component, and not by single Web service
+        owners through the registration component. The management component also allows
+        administering permissions related to service registration for service owners.
+      %p{"align" => "justify"}
+        The management component is not yet present in the first release.
+
+      %h2 Registration Component
+      %p{"align" => "justify"}
+        The registration component allows service owners to register their services
+        in the platform, by storing the relevant information in the repository. Basically,
+        service owners need to submit semantically annotated WSDL descriptions of their
+        services; the registration component extracts relevant metadata and stores it
+        in the repository as RDF triples.
+      %p{"align" => "justify"}
+        In the future, the service registration component may be enriched with extra
+        validation and checking functionalities with respect to some policy. Using self-defined
+        taxonomies the platform administrator may specify that
+        a service belonging to category A can or cannot request as input data of type
+        X (where X is a concept in the taxonomy, not a syntactic datatype).
+        By checking the SAWSDL annotations (model references for service category and
+        input/output data), the registration component can check compliance to such
+        policy when a service is registered (or the description is updated).
+
+      %h2 Discovery Component
+      %p{"align" => "justify"}
+        The discovery component allows client applications to discover services that
+        can fulfil their goals. In its simplest form, implemented in the first release,
+        the discovery is based on functional categories (classifications) defined in
+        the previous defined taxonomy. In the future, we will consider the possibility to
+        extend the discovery component in order to take into account functional
+        capabilities (condition/effect) and/or non-functional properties, depending
+        on complexity and project requirements.
+
+      %h2 Invocation Component (Invoker)
+      %p{"align" => "center"}= image_tag "invocation_process_efreight.png"
+      %p{"align" => "justify"}
+        The invoker allows client applications to invoke external Web services without
+        having to deal with their specific data schema. The client asks the invoker to
+        invoke a certain Web service (which may have been previously identified through
+        service discovery), passing to the invoker the input data in RDF format,
+        according to an self-defined ontology. The invoker retrieves from the repository
+        the metadata which is needed to invoke that service, and in particular the ones
+        about lifting and lowering transformations. The input data is lowered to the
+        specific XML schema used by the requested Web service, which is then invoked.
+        The data returned by the Web service is then lifted to RDF, and returned back
+        to the client application.
+      %p{"align" => "justify"}
+        In its simplest form, implemented in the first release, the invoker basically
+        deals with data mediation, so that client applications can deal with just RDF
+        data according to the defined ontology, without having to worry about schema
+        heterogeneities when invoking external Web services. Besides this, the invoker
+        is transparent in the communication between client applications and external
+        Web services.
+      %p{"align" => "justify"}
+        In the first release, the invoker is able to invoke WSDL-based services. We
+        will consider the possibility of adding other types of services, notably REST
+        services, in a subsequent release. In the first release, only XSLT scripts are
+        supported as lifting and lowering transformations.
+
+      %h2 Grounding Component
+      %p{"align" => "center"}= image_tag "grounding_component_messages.png"

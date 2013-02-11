@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+	<title>e-Freight SESA/Ontology - Latest News &amp; Headlines</title>
+	<link>http://efreight.sti2.at/</link>
+	<description>The latest news and headlines from e-Freight SESA and Ontology.</description>
+	<language>en-GB</language>
+	<copyright>Copyright (c) 2012 STI Innsbruck. All rights reserved</copyright>
+	<pubDate>2012-02-22T04:49:53-05:00</pubDate>
+	<item>
+		<title>SESA Release - v1.1</title>
+		<link>http://efreight.sti2.at/release.html#v10</link>
+		<description>Releasing new version of the SESA platform with a new component (service) that is able to perform lifting and lowering on an input message.
+		This component should simplify the inter-operability between different message formats.</description>
+	</item>
+	<item>
+		<title>OntoWiki goes online</title>
+		<link>http://efreight.sti2.at/ontowiki</link>
+		<description>With the help of OntoWiki the e-Freight Ontology should be improved by freight domain expert in cooperation with ontology experts.</description>
+	</item>
+	<item>
+		<title>SESA First Release - v1.0</title>
+		<link>http://efreight.sti2.at/release.html#v10</link>
+		<description>On the 20.07.2011 the first version of the Semantic Enabled Service Architecture was released. It includes a Registration, Discovery and Invocation component.</description>
+	</item>
+</channel>
+</rss>

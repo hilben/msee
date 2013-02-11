@@ -1,0 +1,22 @@
+Select QoS Parameters for the following Endpoints:
+
+<%= @endpoints %>
+<% if @qosParamKeys then%>
+<% for param in @qosParamKeys do%>
+
+<div class="Clear">
+    <%= param %>
+    <input class="star" type="radio" name="<%= param %>" value="1" title="Unimportant"/>
+    <input class="star" type="radio" name="<%= param %>" value="2" title="Somehow important"/>
+    <input class="star" type="radio" name="<%= param %>" value="3" title="Important"/>
+    <input class="star" type="radio" name="<%= param %>" value="4" title="Very Important"/>
+    <input class="star" type="radio" name="<%= param %>" value="5" title="Super Important"/>
+</div>
+
+<script type="text/javascript">$('input[type="radio"].star').rating();</script>
+
+
+
+<% end %>
+<% end %>
+

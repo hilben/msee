@@ -1,0 +1,18 @@
+= SESA Web Interface
+
+SESA, provides facilities to register, discover and invoke Web services,
+automating some of the Web service usage tasks and dealing with some
+heterogeneousness in the services (e.g. by taking care of data mediation).
+
+This component is the web frontend of the SESA Platform.
+
+
+== License
+
+The SESA Web Interface Copyright (c) 2012  by {STI Innsbruck}[http://www.sti-innsbruck.at]
+
+== Warranty
+
+This software is provided "as is" and without any express or implied
+warranties, including, without limitation, the implied warranties of
+merchantability and fitness for a particular purpose.

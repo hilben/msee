@@ -1,0 +1,2 @@
+module Dashboards::RegistrationHelper
+end

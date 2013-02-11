@@ -1,0 +1,4 @@
+= form_tag :method => "iserve" do
+  = text_field_tag(:serviceID, "", :id => "serviceID", :required => "true", :placeholder => "The service ID.") 
+  .form-actions
+    = submit_tag("Get model", :class=> "btn btn-primary")
