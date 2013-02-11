@@ -1,26 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.registration</groupId>
-	<artifactId>registration-project</artifactId>
+	<artifactId>registration</artifactId>
 	<packaging>pom</packaging>
 	
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<version>m16.1-SNAPSHOT</version>
+		<artifactId>platform</artifactId>
 	</parent>
 
 	<modules>
-		<module>registration-api</module>
-		<module>registration-core</module>
-		<module>registration-webservice</module>
+		<module>api</module>
+		<module>core</module>
+		<module>webservice</module>
 	</modules>
-
-
-	<name>registration-project</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -101,5 +95,4 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

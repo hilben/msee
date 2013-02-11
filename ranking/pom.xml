@@ -2,23 +2,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.ranking</groupId>
-	<artifactId>ranking-project</artifactId>
+	<artifactId>ranking</artifactId>
 	<packaging>pom</packaging>
-	<name>Ranking Engine</name>
-	<url>http://www.sti-innsbruck.at</url>
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>ranking-api</module>
-		<module>ranking-core</module>
-		<module>ranking-webservice</module>
+		<module>api</module>
+		<module>core</module>
+		<module>webservice</module>
 	</modules>
 
 	<properties>
@@ -27,11 +23,7 @@
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
 	</properties>
-
-	<organization>
-		<url>http://www.sti-innsbruck.at</url>
-	</organization>
-
+	
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -79,22 +71,21 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>at.sti2.msee.monitoring</groupId>
-				<artifactId>monitoring-api</artifactId>
-				<version>${project.version}</version>
+				<groupId>at.sti2.msee.delivery</groupId>
+				<artifactId>monitoring.api</artifactId>
+				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.msee.monitoring</groupId>
-				<artifactId>monitoring-core</artifactId>
-				<version>${project.version}</version>
+				<groupId>at.sti2.msee.delivery</groupId>
+				<artifactId>monitoring.core</artifactId>
+				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>at.sti2.msee.util</groupId>
-				<artifactId>util-triplestore-client</artifactId>
-				<version>${project.version}</version>
+				<groupId>at.sti2.msee.delivery</groupId>
+				<artifactId>util.triplestore.client</artifactId>
+				<version>${project.parent.version}</version>
 			</dependency>
 		
-
 			<!-- libraries -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
@@ -106,7 +97,7 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-
+			
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
@@ -141,5 +132,4 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

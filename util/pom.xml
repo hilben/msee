@@ -2,25 +2,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.util</groupId>
-	<artifactId>util-project</artifactId>
+	<artifactId>util</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>util-triplestore-client</module>
-		<module>ranking-framework</module>
+		<module>triplestore-client</module>
+<!-- 		<module>ranking-framework</module> -->
 	</modules>
-
-	<name>util-project</name>
-	<url>http://sesa.sti2.at</url>
-
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>8.7</saxon.version>
@@ -65,5 +60,4 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<version>1.2-SNAPSHOT</version>
 </project>

@@ -1,26 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.discovery</groupId>
-	<artifactId>discovery-project</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>discovery</artifactId>
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m16.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
-		<module>discovery-api</module>
-		<module>discovery-core</module>
-		<module>discovery-webservice</module>
+		<module>api</module>
+		<module>core</module>
+		<module>webservice</module>
 	</modules>
-
-	<name>discovery-project</name>
-	<url>http://sesa.sti2.at</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -85,64 +80,61 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-			
-<!-- 				<plugin> -->
-<!-- 					<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 					<artifactId>maven-assembly-plugin</artifactId> -->
-<!-- 					<version>2.2.1</version> -->
-<!-- 					<configuration> -->
-<!-- 						<descriptors> -->
-<!-- 							<descriptor>src/assembly/jaxws-jar.xml</descriptor> -->
-<!-- 						</descriptors> -->
-<!-- 						<appendAssemblyId>true</appendAssemblyId> -->
-<!-- 						<attach>true</attach> -->
-<!-- 					</configuration> -->
-<!-- 					<executions> -->
-<!-- 						<execution> -->
-<!-- 							<id>make-assembly</id> -->
-<!-- 							<phase>package</phase> -->
-<!-- 							<goals> -->
-<!-- 								<goal>single</goal> -->
-<!-- 							</goals> -->
-<!-- 						</execution> -->
-<!-- 					</executions> -->
-<!-- 				</plugin> -->
+				<!-- <plugin> -->
+				<!-- <groupId>org.apache.maven.plugins</groupId> -->
+				<!-- <artifactId>maven-assembly-plugin</artifactId> -->
+				<!-- <version>2.2.1</version> -->
+				<!-- <configuration> -->
+				<!-- <descriptors> -->
+				<!-- <descriptor>src/assembly/jaxws-jar.xml</descriptor> -->
+				<!-- </descriptors> -->
+				<!-- <appendAssemblyId>true</appendAssemblyId> -->
+				<!-- <attach>true</attach> -->
+				<!-- </configuration> -->
+				<!-- <executions> -->
+				<!-- <execution> -->
+				<!-- <id>make-assembly</id> -->
+				<!-- <phase>package</phase> -->
+				<!-- <goals> -->
+				<!-- <goal>single</goal> -->
+				<!-- </goals> -->
+				<!-- </execution> -->
+				<!-- </executions> -->
+				<!-- </plugin> -->
 
-<!-- 				<plugin>use mvn tomcat:deploy or mvn tomcat:undeploy -->
-<!-- 					<groupId>org.codehaus.mojo</groupId> -->
-<!-- 					<artifactId>tomcat-maven-plugin</artifactId> -->
-<!-- 					<version>1.1</version> -->
-<!-- 					<configuration> -->
-<!-- 						settings.xml needs <server>...</server> with username/credentials. -->
-<!-- 							see http://mojo.codehaus.org/tomcat-maven-plugin/configuration.html --> 
-<!-- 						<server>sesa-tomcat6</server> -->
-<!-- 						<url>http://sesa.sti2.at:8080/manager</url> -->
-<!-- 					</configuration> -->
-<!-- 				</plugin> -->
+				<!-- <plugin>use mvn tomcat:deploy or mvn tomcat:undeploy -->
+				<!-- <groupId>org.codehaus.mojo</groupId> -->
+				<!-- <artifactId>tomcat-maven-plugin</artifactId> -->
+				<!-- <version>1.1</version> -->
+				<!-- <configuration> -->
+				<!-- settings.xml needs <server>...</server> with username/credentials. -->
+				<!-- see http://mojo.codehaus.org/tomcat-maven-plugin/configuration.html -->
+				<!-- <server>sesa-tomcat6</server> -->
+				<!-- <url>http://sesa.sti2.at:8080/manager</url> -->
+				<!-- </configuration> -->
+				<!-- </plugin> -->
 
-<!-- 				<plugin> -->
-<!-- 					<groupId>org.apache.cxf</groupId> -->
-<!-- 					<artifactId>cxf-java2ws-plugin</artifactId> -->
-<!-- 					<version>${cxf.version}</version> -->
-<!-- 					<dependencies> -->
-<!-- 						<dependency> -->
-<!-- 							<groupId>org.apache.cxf</groupId> -->
-<!-- 							<artifactId>cxf-rt-frontend-jaxws</artifactId> -->
-<!-- 							<version>${cxf.version}</version> -->
-<!-- 						</dependency> -->
-<!-- 						<dependency> -->
-<!-- 							<groupId>org.apache.cxf</groupId> -->
-<!-- 							<artifactId>cxf-rt-frontend-simple</artifactId> -->
-<!-- 							<version>${cxf.version}</version> -->
-<!-- 						</dependency> -->
-<!-- 					</dependencies> -->
-<!-- 				</plugin> -->
-
+				<!-- <plugin> -->
+				<!-- <groupId>org.apache.cxf</groupId> -->
+				<!-- <artifactId>cxf-java2ws-plugin</artifactId> -->
+				<!-- <version>${cxf.version}</version> -->
+				<!-- <dependencies> -->
+				<!-- <dependency> -->
+				<!-- <groupId>org.apache.cxf</groupId> -->
+				<!-- <artifactId>cxf-rt-frontend-jaxws</artifactId> -->
+				<!-- <version>${cxf.version}</version> -->
+				<!-- </dependency> -->
+				<!-- <dependency> -->
+				<!-- <groupId>org.apache.cxf</groupId> -->
+				<!-- <artifactId>cxf-rt-frontend-simple</artifactId> -->
+				<!-- <version>${cxf.version}</version> -->
+				<!-- </dependency> -->
+				<!-- </dependencies> -->
+				<!-- </plugin> -->
 			</plugins>
 		</pluginManagement>
 	</build>
-
-
+		
 	<!-- DEPENDENCIES -->
 	<!-- these dependencies are included in every child project -->
 	<dependencies>
@@ -155,5 +147,4 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>
