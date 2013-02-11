@@ -23,11 +23,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>discovery-api</artifactId>
+			<artifactId>discovery.api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>at.sti2.msee</groupId>
+			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>util.triplestore.client</artifactId>
 			<version>${project.parent.version}</version>			
 		</dependency>

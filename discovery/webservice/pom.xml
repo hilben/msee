@@ -88,13 +88,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>discovery-api</artifactId>
+			<artifactId>discovery.api</artifactId>
 			<version>${project.parent.version}</version>			
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>discovery-core</artifactId>
+			<artifactId>discovery.core</artifactId>
 			<version>${project.parent.version}</version>			
 			<scope>compile</scope>
 		</dependency>
