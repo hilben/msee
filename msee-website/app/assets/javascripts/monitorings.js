@@ -11,6 +11,7 @@
 
 //= require star-rating/jquery.rating
 
+//= require bootstrap/bootstrap-dropdown
 //= require bootstrap/bootstrap-transition
 //= require bootstrap/bootstrap.min
 
