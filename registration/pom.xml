@@ -66,19 +66,7 @@
 				<artifactId>cxf-rt-transports-http</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-                        <!-- xslt and xquery processor (needed for xslt 2.0) 
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
-                        <dependency>
-                                <groupId>net.sf.saxon</groupId>
-                                <artifactId>saxon-dom</artifactId>
-                                <version>${saxon.version}</version>
-                        </dependency>
 
--->
 			<!-- tools -->
 			<dependency>
 				<groupId>log4j</groupId>
