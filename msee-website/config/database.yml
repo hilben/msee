@@ -23,5 +23,5 @@ production:
   database: sesa_production
   username: sesaadmin
   password: testing
-  pool: 5
+  pool: 8
   timeout: 5000
