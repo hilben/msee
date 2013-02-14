@@ -48,7 +48,8 @@ public class DiscoveryTest {
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
 //		categoryList.add(new URI("http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
-		System.out.println(ServiceDiscovery.discover(categoryList, RDFFormat.N3));
+		ServiceDiscovery serviceDiscovery = new ServiceDiscovery();
+		System.out.println(serviceDiscovery.discover(categoryList, RDFFormat.N3));
 //		System.out.println("---");
 		
 		List<URI> inputParamList = new ArrayList<URI>();

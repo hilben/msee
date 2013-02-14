@@ -28,7 +28,7 @@ public class StringBuilderTest {
 		List<URI> uris = new ArrayList<URI>();
 		uris.add(new URI(
 				"http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
-
-		System.out.println(ServiceDiscovery.discover(uris, RDFFormat.N3));
+		ServiceDiscovery serviceDiscovery = new ServiceDiscovery();
+		System.out.println(serviceDiscovery.discover(uris, RDFFormat.N3));
 	}
 }

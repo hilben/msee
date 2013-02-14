@@ -16,6 +16,8 @@
  */
 package at.sti2.msee.discovery.webservice;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -35,6 +37,12 @@ import at.sti2.msee.discovery.core.ServiceDiscovery;
 @WebService(targetNamespace = "http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
 public class DiscoveryWebService implements IDiscoveryWebService {
+	
+	private ServiceDiscovery serviceDiscovery;
+
+	public DiscoveryWebService() throws FileNotFoundException, IOException {
+		serviceDiscovery = new ServiceDiscovery();
+	}
 
 	/**
 	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
@@ -44,7 +52,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	public String discover(
 			@WebParam(name = "categoryList") List<URI> _categoryList)
 			throws Exception {
-		return ServiceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
+		return serviceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
 	}
 
 	/**
@@ -55,7 +63,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	@Override
 	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
 			List<URI> _outputParamList) throws Exception {
-		return ServiceDiscovery.discover(_categoryList, _inputParamList,
+		return serviceDiscovery.discover(_categoryList, _inputParamList,
 				_outputParamList, RDFFormat.RDFXML);
 	}
 
@@ -68,7 +76,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	public String lookup(@WebParam(name = "namespace") URI _namespace,
 			@WebParam(name = "operationName") String _operationName)
 			throws Exception {
-		return ServiceDiscovery.lookup(_namespace, _operationName,
+		return serviceDiscovery.lookup(_namespace, _operationName,
 				RDFFormat.RDFXML);
 	}
 
@@ -79,7 +87,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	@Override
 	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
 			throws Exception {
-		return ServiceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
+		return serviceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
 	}
 
 }

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.List;
-import java.util.Properties;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -50,9 +49,13 @@ import at.sti2.util.triplestore.RepositoryHandler;
  */
 public class ServiceDiscovery {
 	
+	private RepositoryHandler repositoryHandler;
 	
+	public ServiceDiscovery() throws FileNotFoundException, IOException{
+		repositoryHandler = getReposHandler();
+	}
 
-	public static RepositoryHandler getReposHandler()
+	private RepositoryHandler getReposHandler()
 			throws FileNotFoundException, IOException {
 		DiscoveryConfig config = new DiscoveryConfig();
 		
@@ -78,13 +81,12 @@ public class ServiceDiscovery {
 	 * @throws RDFHandlerException
 	 * @throws UnsupportedRDFormatException
 	 */
-	public static String discover(List<URI> _categoryList,
+	public String discover(List<URI> _categoryList,
 			List<URI> _inputParamList, List<URI> _outputParamList,
 			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
 
 		StringBuffer discoveryQuery = new StringBuffer();
 
@@ -263,7 +265,7 @@ public class ServiceDiscovery {
 
 		discoveryQuery.append("}");
 
-		GraphQueryResult queryResult = reposHandler
+		GraphQueryResult queryResult = repositoryHandler
 				.constructSPARQL(discoveryQuery.toString());
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -272,12 +274,11 @@ public class ServiceDiscovery {
 		return out.toString();
 	}
 
-	public static String discover(List<URI> _categoryList,
+	public String discover(List<URI> _categoryList,
 			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
 
 		String templateString = new String(
 				"group group-demo;"
@@ -400,7 +401,7 @@ public class ServiceDiscovery {
 		StringTemplate template = group.getInstanceOf("outerTemplate");
 		template.setAttribute("_categoryList", _categoryList);
 
-		GraphQueryResult queryResult = reposHandler
+		GraphQueryResult queryResult = repositoryHandler
 				.constructSPARQL(template.toString());
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -409,12 +410,11 @@ public class ServiceDiscovery {
 		return out.toString();
 	}
 
-	public static String lookup(URI _namespace, String _operationName,
+	public String lookup(URI _namespace, String _operationName,
 			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
 
 		StringTemplate lookupQuery = new StringTemplate(
 			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
@@ -443,7 +443,7 @@ public class ServiceDiscovery {
 		lookupQuery.setAttribute("_namespace", _namespace);
 		lookupQuery.setAttribute("_operationName", _operationName);
 
-		GraphQueryResult queryResult = reposHandler.constructSPARQL(lookupQuery.toString());
+		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(lookupQuery.toString());
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		QueryResultIO.write(queryResult, _outputFormat, out);
@@ -451,12 +451,11 @@ public class ServiceDiscovery {
 		return out.toString();
 	}
 
-	public static String getIServeModel(String _serviceID,
+	public String getIServeModel(String _serviceID,
 			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
 
 		StringTemplate transQuery = new StringTemplate(
 
@@ -589,7 +588,7 @@ public class ServiceDiscovery {
 		
 		transQuery.setAttribute("_serviceID", _serviceID);
 
-		GraphQueryResult queryResult = reposHandler.constructSPARQL(transQuery
+		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(transQuery
 				.toString());
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
