@@ -325,5 +325,14 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		
+		<!-- resource filtering is propagated to sub projects -->
+		<!-- @see http://redmine.sesa.sti2.at/issues/show/72 -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 </project>
