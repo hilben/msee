@@ -36,7 +36,6 @@ public interface IRegistrationEndpoint {
 
 	/**
 	 * Register a WSDL service. The service MUST contain annotations in order to be stored into the triple store.
-	 * For more info see  http://www.sesa.sti2.at/doc/service_annotation
 	 * 
 	 * @param _serviceURI The URI of the Web Service description (WSDL).
 	 * @return The URI through which the service can be deleted or updated.

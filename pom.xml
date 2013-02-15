@@ -5,16 +5,16 @@
 
 	<groupId>at.sti2.msee.delivery</groupId>
 	<artifactId>platform</artifactId>
-	<version>m16.1-SNAPSHOT</version>
+	<version>m17.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
 		<module>util</module>
 		<module>registration</module>
-		<module>discovery</module>
-		<module>monitoring</module>
-		<module>invocation</module>
-		<module>ranking</module>
+		<!-- <module>discovery</module> -->
+		<!-- <module>monitoring</module> -->
+		<!-- <module>invocation</module> -->
+		<!-- <module>ranking</module> -->
 	</modules>
 
 	<properties>
@@ -60,269 +60,76 @@
 
 		<!-- Ranking properties -->
 		<ranking.ws.port>${default.port}</ranking.ws.port>
-
 	</properties>
 
-	<organization>
-		<name>Semantic Technology Institute Innsbruck</name>
-		<url>http://www.sti2.at</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<name>Michael Rogger</name>
-		</developer>
-		<developer>
-			<name>Alex Oberhauser</name>
-		</developer>
-		<developer>
-			<name>Corneliu Stanciu</name>
-		</developer>
-		<developer>
-			<name>Benjamin Hiltpolt</name>
-		</developer>
-	</developers>
-
-	<!-- DISTRIBUTION MANAGEMENT -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>sti2-archiva-snapshots</id>
-			<name>STI snapshot distribution</name>
-			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>sti2-archiva-external</id>
-			<name>STI release distribution</name>
-			<url>http://maven.sti2.at/archiva/repository/external</url>
-		</repository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>maven</id>
-			<name>maven.org</name>
-			<url>http://repo1.maven.org/maven2</url>
-		</repository>
-		<repository>
-			<id>sti-snapshots</id>
-			<name>STI snapshots</name>
-			<url>http://maven.sti2.at/archiva/repository/snapshots</url>
-		</repository>
-		<repository>
-			<id>sesame repo</id>
-			<name>sesame</name>
-			<url>http://repo.aduna-software.org/maven2/releases/</url>
-		</repository>
-		<repository>
-			<id>sti-external</id>
-			<name>Maven STI external repository</name>
-			<url>http://maven.sti2.at/archiva/repository/external</url>
-		</repository>
-		<repository>
-			<id>ibiblio</id>
-			<name>ibiblio.org</name>
-			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-		</repository>
-		<repository>
-			<id>openrdf-sesame</id>
-			<name>OpenRDF Sesame repository</name>
-			<url>http://repo.aduna-software.org/maven2/releases</url>
-		</repository>
-		<repository>
-			<id>sun-java</id>
-			<name>sun-java</name>
-			<url>http://download.java.net/maven/2</url>
-		</repository>
-		<!-- used for saxon9 -->
-		<repository>
-			<id>phloc</id>
-			<name>phloc</name>
-			<url>http://repo.phloc.com/maven2/</url>
-		</repository>
-	</repositories>
-
 	<build>
-		<finalName>${groupId}.${artifactId}-${version}</finalName>
-		<!-- All childs inherit this plugins -->
+		<finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-			</plugin>
+			<!-- Configure java version -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
 			</plugin>
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.0</version>
-					<configuration>
-						<rules>
-							<requireMavenVersion>
-								<version>[3.0.0,)</version>
-							</requireMavenVersion>
-							<requireJavaVersion>
-								<version>[1.6,)</version>
-							</requireJavaVersion>
-							<versionRule
-								implementation="org.eclipse.jetty.toolchain.enforcer.rules.VersionRule" />
-						</rules>
-					</configuration>
-					<executions>
-						<!-- <execution> <id>enforce-java</id> <goals> <goal>enforce</goal> 
-							</goals> </execution> -->
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.eclipse.jetty.toolchain</groupId>
-							<artifactId>jetty-enforcer-rules</artifactId>
-							<version>1.0</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-						<profile>
-							<activation>
-								<jdk>1.6</jdk>
-							</activation>
-							<dependencies>
-								<dependency>
-									<groupId>javax.activation</groupId>
-									<artifactId>activation</artifactId>
-									<version>1.1</version>
-									<scope>provided</scope>
-								</dependency>
-							</dependencies>
-						</profile>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.8</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.8</version>
-					<configuration>
-						<useProjectReferences>true</useProjectReferences>
-						<downloadJavadocs>true</downloadJavadocs>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.6</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.1</version>
-					<configuration>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<!-- use local git repo -->
-						<pushChanges>false</pushChanges>
-						<localCheckout>true</localCheckout>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-scm-plugin</artifactId>
-					<version>1.5</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-enforcer-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-					<configuration>
-						<scanIntervalSeconds>10</scanIntervalSeconds>
-						<connectors>
-							<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-								<maxIdleTime>60000</maxIdleTime>
-							</connector>
-						</connectors>
-						<contextHandlers>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/discovery/webservice/target/${groupId}.discovery.webservice-${version}.war</war>
-								<contextPath>/discovery</contextPath>
-							</contextHandler>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/registration/webservice/target/${groupId}.registration.webservice-${version}.war</war>
-								<contextPath>/registration</contextPath>
-							</contextHandler>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/monitoring/jsonservice/target/${groupId}.monitoring.jsonservice-${version}.war</war>
-								<contextPath>/monitoring-jsonservice</contextPath>
-							</contextHandler>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/monitoring/webservice/target/${groupId}.monitoring.webservice-${version}.war</war>
-								<contextPath>/monitoring</contextPath>
-							</contextHandler>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/invocation/webservice/target/${groupId}.invocation.webservice-${version}.war</war>
-								<contextPath>/invocation</contextPath>
-							</contextHandler>
-							<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-								<war>${basedir}/ranking/webservice/target/${groupId}.ranking.webservice-${version}.war</war>
-								<contextPath>/ranking</contextPath>
-							</contextHandler>
-						</contextHandlers>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
+
+	<repositories>
+		<!-- Sesame -->
+		<repository>
+			<id>aduna</id>
+			<name>Aduna Software</name>
+			<url>http://repo.aduna-software.org/maven2/releases/</url>
+		</repository>
+		<!-- Easywsdl additional dependencies -->
+		<repository>
+			<id>Server-artifactory.petalslink.com</id>
+			<name>Server-artifactory.petalslink.com-releases</name>
+			<url>http://maven.petalslink.com/public</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>util.triplestore.client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openrdf.sesame</groupId>
+				<artifactId>sesame-runtime</artifactId>
+				<version>2.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-ext-sawsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>wsdl4j</groupId>
+				<artifactId>wsdl4j</artifactId>
+				<version>1.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-wsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

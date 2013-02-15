@@ -8,9 +8,41 @@
 	<parent>
 		<groupId>at.sti2.msee.delivery</groupId>
 		<artifactId>registration</artifactId>
-		<version>m16.1-SNAPSHOT</version>
+		<version>m17.1-SNAPSHOT</version>
 	</parent>
 
+	<dependencies>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>registration.api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>util.triplestore.client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-runtime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-ext-sawsdl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-wsdl</artifactId>
+		</dependency>
+	</dependencies>
+
+	<!-- Replace variables in property files  -->
 	<build>
 		<resources>
 			<resource>
@@ -19,66 +51,27 @@
 			</resource>
 		</resources>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>at.sti2.msee.delivery</groupId>
-			<artifactId>util.triplestore.client</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>at.sti2.msee.delivery</groupId>
-			<artifactId>registration.api</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.saxon</groupId>
-			<artifactId>saxon</artifactId>
-			<version>8.7</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.saxon</groupId>
-			<artifactId>saxon-dom</artifactId>
-			<version>8.7</version>
-		</dependency>
+	
+	<!-- <dependencies> -->
+	<!-- <dependency> -->
+	<!-- <groupId>net.sf.saxon</groupId> -->
+	<!-- <artifactId>saxon</artifactId> -->
+	<!-- <version>8.7</version> -->
+	<!-- </dependency> -->
+	<!-- <dependency> -->
+	<!-- <groupId>net.sf.saxon</groupId> -->
+	<!-- <artifactId>saxon-dom</artifactId> -->
+	<!-- <version>8.7</version> -->
+	<!-- </dependency> -->
+	<!-- <dependency> -->
+	<!-- <groupId>jaxen</groupId> -->
+	<!-- <artifactId>jaxen</artifactId> -->
+	<!-- <version>1.1</version> -->
+	<!-- </dependency> -->
+	<!-- <dependency> -->
+	<!-- <groupId>edu.uga.cs.lsdis</groupId> -->
+	<!-- <artifactId>SAWSDL4J</artifactId> -->
+	<!-- <version>M4</version> -->
+	<!-- </dependency> -->
 
-		<dependency>
-			<groupId>wsdl4j</groupId>
-			<artifactId>wsdl4j</artifactId>
-			<version>1.6.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.uga.cs.lsdis</groupId>
-			<artifactId>SAWSDL4J</artifactId>
-			<version>M4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-wsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-ext-sawsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<!-- <dependency> <groupId>org.openrdf</groupId> <artifactId>openrdf-sail-inferencer</artifactId> 
-			<version>2.0.1</version> </dependency> <dependency> <groupId>org.openrdf</groupId> 
-			<artifactId>openrdf-sail-api</artifactId> <version>2.0.1</version> </dependency> 
-			<dependency> <groupId>org.openrdf</groupId> <artifactId>openrdf-sail-memory</artifactId> 
-			<version>2.0.1</version> </dependency> -->
-	</dependencies>
 </project>
-

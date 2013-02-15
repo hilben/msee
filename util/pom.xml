@@ -8,28 +8,18 @@
 	<parent>
 		<groupId>at.sti2.msee.delivery</groupId>
 		<artifactId>platform</artifactId>
-		<version>m16.1-SNAPSHOT</version>
+		<version>m17.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
 		<module>triplestore-client</module>
-<!-- 		<module>ranking-framework</module> -->
+		<module>ranking-framework</module>
 	</modules>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>8.7</saxon.version>
 	</properties>
-
-	<issueManagement>
-		<system>Sourceforge</system>
-		<url>http://sesa.sti2.at</url>
-	</issueManagement>
-
-	<organization>
-		<name>Semantic Technology Institute Innsbruck</name>
-		<url>http://sesa.sti2.at</url>
-	</organization>
 
 	<developers>
 		<developer>

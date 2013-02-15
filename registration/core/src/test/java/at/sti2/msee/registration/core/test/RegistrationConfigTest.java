@@ -16,9 +16,10 @@ import at.sti2.msee.registration.core.common.RegistrationConfig;
  * @author Benjamin Hiltpolt
  *
  */
-public class ConfigTest {
+public class RegistrationConfigTest {
 
-	private Logger logger = Logger.getLogger(ConfigTest.class);
+	private Logger logger = Logger.getLogger(RegistrationConfigTest.class);
+
 	private RegistrationConfig config;
 
 	/**
@@ -27,6 +28,7 @@ public class ConfigTest {
 	@Before
 	public void setUp() throws Exception {
 		config = new RegistrationConfig();
+		assertNotNull(config);
 	}
 
 	/**
@@ -34,14 +36,6 @@ public class ConfigTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link at.sti2.msee.registration.core.common.RegistrationConfig#Config()}.
-	 */
-	@Test
-	public void testConfig() {
-		assertNotNull(this.config);
 	}
 
 	/**

@@ -38,11 +38,9 @@ public class RegistrationConfig {
 	public String getSesameEndpoint() {
 		return this.properties.getProperty("registration.sesame.endpoint");
 	}
-	
-	
-	
+
 	/**
-	 * eturns the Sesame Repository defined in the configuration file
+	 * returns the Sesame Repository defined in the configuration file
 	 * @return
 	 */
 	public String getSesameReposID() {

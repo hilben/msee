@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>at.sti2.msee.delivery</groupId>
 		<artifactId>monitoring</artifactId>
-		<version>m16.1-SNAPSHOT</version>
+		<version>m17.1-SNAPSHOT</version>
 	</parent>
 
 
