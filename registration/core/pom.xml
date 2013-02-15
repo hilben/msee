@@ -21,10 +21,6 @@
 			<artifactId>util.triplestore.client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.openrdf.sesame</groupId>
-			<artifactId>sesame-runtime</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.ow2.easywsdl</groupId>
 			<artifactId>easywsdl-ext-sawsdl</artifactId>
 		</dependency>
@@ -35,10 +31,11 @@
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.ow2.easywsdl</groupId>
-			<artifactId>easywsdl-wsdl</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>	
 		</dependency>
 	</dependencies>
 
