@@ -1,6 +1,7 @@
 package at.sti2.msee.discovery.test;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -20,8 +21,11 @@ import junit.framework.TestCase;
  * @version $Revision$
  */
 public class DiscoveryConfigTest extends TestCase {
-
-	
+	String resourceLocation = "/default.properties";
+	String endpointName = "discovery.sesame.endpoint";
+	String sesameRepositoryIDName = "discovery.sesame.reposid";
+	private DiscoveryConfig config;
+	private Properties properties = new Properties();
 	private static Logger logger = Logger.getLogger(DiscoveryConfigTest.class);
 	/**
 	 * Construct new test instance
@@ -36,37 +40,44 @@ public class DiscoveryConfigTest extends TestCase {
 	 * Perform pre-test initialization
 	 *
 	 * @throws Exception
-	 *
+	 * 
 	 * @see TestCase#setUp()
 	 */
 	protected void setUp() throws Exception {
+		config = new DiscoveryConfig();
+		config.setResourceLocation(resourceLocation);
+		
+		properties.load(DiscoveryConfig.class.getResourceAsStream(resourceLocation )); 
 		logger.info("DiscoveryConfigTest");
 	}
-
 
 	/**
 	 * Run the String getSesameEndpoint() method test
 	 * @throws IOException 
 	 */
 	public void testGetSesameEndpoint() throws IOException {
-
+		String endpoint = properties.getProperty(endpointName);
 		DiscoveryConfig fixture = new DiscoveryConfig();
+		fixture.setSesameEndpointName(endpointName);
 		String result = fixture.getSesameEndpoint();
 		
+		System.out.println(endpoint + " " + result);
+		
 		logger.info("Endpoint: " + result);
-		assertNotNull(result);
+		assertEquals(endpoint, result);
 	}
 
 	/**
-	 * Run the String getSesameReposID() method test
+	 * Run the String getSesameRepositoryID() method test
 	 * @throws IOException 
 	 */
-	public void testGetSesameReposID() throws IOException {
-
+	public void testGetSesameRepositoryID() throws IOException {
+		String sesameRepositoryID = properties.getProperty(sesameRepositoryIDName);
 		DiscoveryConfig fixture = new DiscoveryConfig();
-		String result = fixture.getSesameReposID();
+		fixture.setSesameRepositoryIDName(sesameRepositoryIDName);
+		String result = fixture.getSesameRepositoryID();
 		
 		logger.info("Repo: " + result);
-		assertNotNull(result);
+		assertEquals(sesameRepositoryID, result);
 	}
 }

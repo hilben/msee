@@ -61,7 +61,7 @@ public class ServiceDiscovery {
 		
 		
 		return new RepositoryHandler(config.getSesameEndpoint(),
-				config.getSesameReposID(), true);
+				config.getSesameRepositoryID(), true);
 	}
 
 	/**

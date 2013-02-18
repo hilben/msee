@@ -25,18 +25,33 @@ import java.util.Properties;
  */
 public class DiscoveryConfig {
 	private final Properties properties;
+	private String resourceLocation = "/default.properties";
+	private String sesameEndpointName = "discovery.sesame.endpoint";
+	private String sesameRepositoryIDName = "discovery.sesame.reposid";
 	
 	public DiscoveryConfig() throws IOException {
 		this.properties = new Properties();
-		this.properties.load(DiscoveryConfig.class.getResourceAsStream("/default.properties")); 
+		this.properties.load(DiscoveryConfig.class.getResourceAsStream(resourceLocation)); 
+	}
+	
+	public void setResourceLocation (String resourceLocation){
+		this.resourceLocation = resourceLocation;
+	}
+	
+	public void setSesameEndpointName(String sesameEndpointName) {
+		this.sesameEndpointName = sesameEndpointName;
+	}
+
+	public void setSesameRepositoryIDName(String sesameRepositoryIDName) {
+		this.sesameRepositoryIDName = sesameRepositoryIDName;
 	}
 	
 	public String getSesameEndpoint() {
-		return this.properties.getProperty("discovery.sesame.endpoint");
+		return this.properties.getProperty(sesameEndpointName);
 	}
 	
-	public String getSesameReposID() {
-		return this.properties.getProperty("discovery.sesame.reposid");
+	public String getSesameRepositoryID() {
+		return this.properties.getProperty(sesameRepositoryIDName);
 	}
 	
 }
