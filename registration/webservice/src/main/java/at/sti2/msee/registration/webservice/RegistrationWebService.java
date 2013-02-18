@@ -27,55 +27,22 @@ import at.sti2.msee.registration.api.IRegistrationEndpoint;
 import at.sti2.msee.registration.core.management.ServiceManagement;
 import at.sti2.msee.registration.core.management.TransformationWSDL;
 
-/**
- * 
- * <b>Purpose:</b>
- * <br>
- * <b>Description:</b>
- * <br>
- * <b>Copyright:</b>    Copyright (c) 2011 STI<br>
- * <b>Company:</b>      STI Innsbruck<br>
- *
- * @author      		Corneliu Stanciu<br>
- * @version     		$Id$<br>
- * Date of creation:  	23.04.2011<br>
- * File:         		$Source$<br>
- * Modifier:     		$Author$<br>
- * Last modified:  		10.07.2012<br>
- * Revision:     		$Revision$<br>
- * State:        		$State$<br>
- */
-
-@WebService(targetNamespace="http://sesa.sti2.at/services/")
-@WSDLDocumentationCollection(
-		@WSDLDocumentation("SESA Registration Component")
-	)
+@WebService(targetNamespace="http://msee.sti2.at/delivery/")
+@WSDLDocumentationCollection( @WSDLDocumentation("MSEE Registration Service"))
 public class RegistrationWebService implements IRegistrationEndpoint
 {		
-	/**
-	 * @throws Exception 
-	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#register(java.lang.String)
-	 */
 	@Override
 	@WebMethod
 	public String register(@WebParam(name="wsdlURL")String _wsdlURL) throws Exception {
 			return TransformationWSDL.transformWSDL(_wsdlURL);
 	}
 
-	/**
-	 * @throws Exception 
-	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#delete(java.lang.String)
-	 */
 	@Override
 	@WebMethod
 	public String delete(@WebParam(name="serviceURI")String _serviceURI) throws Exception {
 		return ServiceManagement.delete(_serviceURI);
 	}
 
-	/**
-	 * @throws Exception 
-	 * @see at.sti2.msee.registration.api.IRegistrationEndpoint#update(java.lang.String,java.lang.String)
-	 */
 	@Override
 	@WebMethod
 	public String update(@WebParam(name="oldServiceURI")String _oldServiceURI, 

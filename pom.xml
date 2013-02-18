@@ -75,6 +75,47 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<!-- Launch platform from jetty -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.0.0.M5</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<contextHandlers>
+						<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+							<war>${basedir}/registration/webservice/target/${project.groupId}.registration.webservice-${project.version}.war</war>
+							<contextPath>/registration</contextPath>
+						</contextHandler>
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/discovery/webservice/target/${project.groupId}.discovery.webservice-${version}.war</war> -->
+						<!-- <contextPath>/discovery</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/monitoring/jsonservice/target/${project.groupId}.monitoring.jsonservice-${version}.war</war> -->
+						<!-- <contextPath>/monitoring-jsonservice</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/monitoring/webservice/target/${project.groupId}.monitoring.webservice-${version}.war</war> -->
+						<!-- <contextPath>/monitoring</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/invocation/webservice/target/${project.groupId}.invocation.webservice-${version}.war</war> -->
+						<!-- <contextPath>/invocation</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/ranking/webservice/target/${project.groupId}.ranking.webservice-${version}.war</war> -->
+						<!-- <contextPath>/ranking</contextPath> -->
+						<!-- </contextHandler> -->
+					</contextHandlers>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -104,7 +145,7 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>registration.core</artifactId>
 				<version>${project.version}</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>util.triplestore.client</artifactId>
@@ -136,16 +177,50 @@
 				<version>2.3</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-bundle</artifactId>
-				<version>2.7.3</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-simple</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>3.0.7.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>3.0.7.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.neethi</groupId>
+				<artifactId>neethi</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>2.7.3</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
