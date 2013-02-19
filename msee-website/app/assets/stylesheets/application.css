@@ -26,5 +26,5 @@ div.hero-unit {
     box-shadow: 10px 10px 5px lightblue;
 
     -moz-border-radius: 15px;
-    border-radius: 45px;
+    /*border-radius: 45px;*/
 }
