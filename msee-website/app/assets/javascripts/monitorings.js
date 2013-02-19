@@ -4,16 +4,17 @@
 
 //= require jquery/jquery
 //= require jquery/jquery.min
+
+//= require bootstrap/bootstrap-dropdown
+//= require bootstrap/bootstrap-transition
+//= require bootstrap/bootstrap.min
+
 //= require jquery/jquery-ui.custom
 //= require jquery/jquery-ui.custom.min
 //= require jquery/jquery.dynatree-1.2.2
 //= require jquery/jquery.cookie.js
 
 //= require star-rating/jquery.rating
-
-//= require bootstrap/bootstrap-dropdown
-//= require bootstrap/bootstrap-transition
-//= require bootstrap/bootstrap.min
 
 //= require google/monitoring-jsapi
 

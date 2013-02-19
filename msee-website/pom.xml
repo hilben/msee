@@ -34,6 +34,8 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 			</plugin>
+			<!-- uncommented due to slow precomiling -->
+			<!-- 
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -50,13 +52,14 @@
                             <target name="Precompile assets">
                                 <exec executable="sh" dir="${project.basedir}" failonerror="true">
                                     <arg value="-c" />
-                                    <!-- <arg value="bundle exec rake assets:precompile" /> -->
+                                    <arg value="bundle exec rake assets:precompile" /> 
                                 </exec>
                             </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>

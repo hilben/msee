@@ -17,6 +17,7 @@
               %li.divider-vertical
               %li
                 %a{"href" => "/"} Home
+              %li.divider-vertical
               %li.dropdown
                 %a.dropdown-toggle{"href" => "#", "data-toggle" => "dropdown"} Dashboards <b class="caret"></b>
                 %ul.dropdown-menu
@@ -24,7 +25,7 @@
                   %li
                     %a{"href" => "/dashboards/registration"} <i class="icon-book"></i> Registration
                     %a{"href" => "/dashboards/discovery"} <i class="icon-book"></i> Discovery
-                    %a{"href" => "/monitorings"} <i class="icon-book"></i> Monitoring
+                    -#     %a{"href" => "/monitorings"} <i class="icon-book"></i> Monitoring
                     
               -# Only show to registered user
               -#if service_owner_signed_in?
@@ -34,6 +35,7 @@
               %li.divider-vertical
               %li
                 %a{"href" => "/release"} Release
+              %li.divider-vertical
               %li
                 %a{"href" => "http://redmine.sesa.sti2.at/projects/sesa-msee", "target" => "_blank"} Development
               %li.divider-vertical
@@ -42,7 +44,8 @@
                 %ul.dropdown-menu
                   %li.nav-header MSEE
                   %li
-                    %a{"href" => "/msee"} <i class="icon-info-sign"></i> Overview
+                    %a{"href" => "/doc"} <i class="icon-info-sign"></i> Overview
+              %li.divider-vertical
               %li
                 %a{"href" => "/faq"} FAQ
             %ul.nav.pull-right
@@ -69,7 +72,7 @@
             -if service_owner_signed_in?
               %p.navbar-text.pull-right
                 %b Last Release:
-                v1.0 - 14.01.2013
+                v1.1 - 19.02.2013
               %ul.nav.pull-right
             -unless service_owner_signed_in?
               %div.pull-right
@@ -114,8 +117,8 @@
             %a{"href" => "/dashboards/registration"} Registration
             %br
             %a{"href" => "/dashboards/discovery"} Discovery
-            %br
-            %a{"href" => "/monitorings"} Monitorings
+            -# %br
+            -# %a{"href" => "/monitorings"} Monitorings
           .span2
             %strong
               %a{"href" => "/doc"} Documentation
