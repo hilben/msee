@@ -62,37 +62,6 @@ public class InvocationCore {
 	protected static Logger logger = Logger.getLogger(InvocationCore.class);
 
 	/**
-	 * Creates a SOAP message with the input data as message body.
-	 * 
-	 * @param _loweredInputData
-	 * @return
-	 * @throws SOAPException
-	 * @throws DocumentException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws ParserConfigurationException
-	 */
-	private static SOAPMessage createSOAPMessage(String _loweredInputData)
-			throws SOAPException, DocumentException, SAXException, IOException,
-			ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		DocumentBuilder builder = factory.newDocumentBuilder();
-
-		InputSource inStream = new InputSource();
-
-		inStream.setCharacterStream(new StringReader(_loweredInputData));
-		Document doc = builder.parse(inStream);
-
-		MessageFactory messageFactory = MessageFactory.newInstance();
-		SOAPMessage message = messageFactory.createMessage();
-		SOAPBody soapBody = message.getSOAPBody();
-		soapBody.addDocument(doc);
-		message.saveChanges();
-		return message;
-	}
-
-	/**
 	 * @param _message
 	 * @return
 	 * @throws TransformerException
@@ -113,22 +82,22 @@ public class InvocationCore {
 	}
 
 	/**
-	 * @param _serviceID
-	 * @param _operationName
-	 * @param _inputData
+	 * @param serviceID
+	 * @param operationName
+	 * @param inputData
 	 * @return
 	 * @throws Exception
 	 */
-	public static String invoke(String _serviceID, List<QName> _header,
-			String _operationName, String _inputData) throws Exception {
+	public static String invoke(String serviceID,
+			String operationName, String inputData) throws Exception {
 
 		logger.setLevel(Level.INFO);
 
 		/*
 		 * Reading out all relevant information from the Triplestore
 		 */
-		InvocationMSM msmObject = TriplestoreHandler.getInvocationMSM(_serviceID,
-				_operationName);
+		InvocationMSM msmObject = TriplestoreHandler.getInvocationMSM(serviceID,
+				operationName);
 
 		IGroundingEngine groundingEngine = GroundingFactory
 				.createGroundingEngine(msmObject.getLoweringSchema(),
@@ -137,7 +106,7 @@ public class InvocationCore {
 		/*
 		 * Starting the lowering process
 		 */
-		String loweredInputData = groundingEngine.lower(_inputData);
+		String loweredInputData = groundingEngine.lower(inputData);
 
 		/*
 		 * Starting the invocation process
@@ -146,17 +115,12 @@ public class InvocationCore {
 		logger.info("Invoking Web Service '" + msmObject.getWSDL()
 				+ "' with input data '" + loweredInputData + "'");
 
-		/**
-		 * TODO: Here comes the monitoring code from InvocationHandler (in wsmf)
-		 * that was written before invoke
-		 */
-
 		SOAPMessage loweredSOAPMessage = createSOAPMessage(loweredInputData);
 
 		SOAPMessage returnMsg = null;
 
 		try {
-			logger.info("service id: " + _serviceID);
+			logger.info("service id: " + serviceID);
 			logger.info("soap content: " + loweredSOAPMessage);
 
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -170,7 +134,7 @@ public class InvocationCore {
 
 			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
 					.getConfig(endpointURL);
-			cfg.setWebServiceName(_operationName);
+			cfg.setWebServiceName(operationName);
 
 			returnMsg = generateSOAPMessage(MonitoringInvocationHandler
 					.invokeWithMonitoring(generateSOAPMessage(strMsg),
@@ -216,6 +180,37 @@ public class InvocationCore {
 		soapPart.setContent(msgSrc);
 		msg.saveChanges();
 		return msg;
+	}
+	
+	/**
+	 * Creates a SOAP message with the input data as message body.
+	 * 
+	 * @param _loweredInputData
+	 * @return
+	 * @throws SOAPException
+	 * @throws DocumentException
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
+	private static SOAPMessage createSOAPMessage(String _loweredInputData)
+			throws SOAPException, DocumentException, SAXException, IOException,
+			ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder = factory.newDocumentBuilder();
+
+		InputSource inStream = new InputSource();
+
+		inStream.setCharacterStream(new StringReader(_loweredInputData));
+		Document doc = builder.parse(inStream);
+
+		MessageFactory messageFactory = MessageFactory.newInstance();
+		SOAPMessage message = messageFactory.createMessage();
+		SOAPBody soapBody = message.getSOAPBody();
+		soapBody.addDocument(doc);
+		message.saveChanges();
+		return message;
 	}
 
 }
