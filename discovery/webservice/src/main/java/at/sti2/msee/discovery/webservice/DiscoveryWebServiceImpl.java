@@ -28,24 +28,24 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.openrdf.rio.RDFFormat;
 
-import at.sti2.msee.discovery.api.webservice.IDiscoveryWebService;
-import at.sti2.msee.discovery.core.ServiceDiscovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
+import at.sti2.msee.discovery.core.DiscoveryService;
 
 /**
  * @author Alex Oberhauser
  */
 @WebService(targetNamespace = "http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
-public class DiscoveryWebService implements IDiscoveryWebService {
+public class DiscoveryWebServiceImpl implements DiscoveryWebService {
 	
-	private ServiceDiscovery serviceDiscovery;
+	private DiscoveryService serviceDiscovery;
 
-	public DiscoveryWebService() throws FileNotFoundException, IOException {
-		serviceDiscovery = new ServiceDiscovery();
+	public DiscoveryWebServiceImpl () throws FileNotFoundException, IOException {
+		serviceDiscovery = new DiscoveryService();
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
 	 */
 	@WebMethod
 	@Override
@@ -56,7 +56,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List,
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List,
 	 *      java.util.List, java.util.List)
 	 */
 	@WebMethod(operationName = "discoverAdvanced")
@@ -68,7 +68,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI,
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#lookup(java.net.URI,
 	 *      java.lang.String)
 	 */
 	@WebMethod
@@ -81,7 +81,7 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#getIServeModel(java.lang.String)
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#getIServeModel(java.lang.String)
 	 */
 	@WebMethod
 	@Override

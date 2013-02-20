@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @version $Revision$
  */
 public class DiscoveryConfigTest extends TestCase {
-	String resourceLocation = "/default.properties";
+	String resourceLocation = "/default.test.properties";
 	String endpointName = "discovery.sesame.endpoint";
 	String sesameRepositoryIDName = "discovery.sesame.reposid";
 	private DiscoveryConfig config;
@@ -58,10 +58,9 @@ public class DiscoveryConfigTest extends TestCase {
 	public void testGetSesameEndpoint() throws IOException {
 		String endpoint = properties.getProperty(endpointName);
 		DiscoveryConfig fixture = new DiscoveryConfig();
+		fixture.setResourceLocation(resourceLocation);
 		fixture.setSesameEndpointName(endpointName);
 		String result = fixture.getSesameEndpoint();
-		
-		System.out.println(endpoint + " " + result);
 		
 		logger.info("Endpoint: " + result);
 		assertEquals(endpoint, result);
@@ -75,6 +74,7 @@ public class DiscoveryConfigTest extends TestCase {
 		String sesameRepositoryID = properties.getProperty(sesameRepositoryIDName);
 		DiscoveryConfig fixture = new DiscoveryConfig();
 		fixture.setSesameRepositoryIDName(sesameRepositoryIDName);
+		fixture.setResourceLocation(resourceLocation);
 		String result = fixture.getSesameRepositoryID();
 		
 		logger.info("Repo: " + result);

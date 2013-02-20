@@ -19,11 +19,14 @@ package at.sti2.msee.discovery.api.webservice;
 import java.net.URI;
 import java.util.List;
 
+import javax.jws.WebService;
+
 /**
  * @author Alex Oberhauser
  *
  */
-public interface IDiscoveryWebService {
+@WebService(targetNamespace = "http://sesa.sti2.at/services/")
+public interface DiscoveryWebService {
 	
 	/**
 	 * Search Behavior: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)
