@@ -15,20 +15,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.sti2.msee.registration.api.exception.RegistrationException;
-import at.sti2.msee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
 
 /**
  * @author Benjamin Hiltpolt
- *
+ * 
  */
-public class TransformationWSDLTest {
+public class RegistrationWSDLToTriplestoreWriterTest {
 
-	
-    private List<URL> webservicePass = new ArrayList<URL>();
-    private List<URL> webservicefail = new ArrayList<URL>();
-    
-    
-    private Logger logger = Logger.getLogger(this.getClass());
+	private List<URL> webservicePass = new ArrayList<URL>();
+	private List<URL> webservicefail = new ArrayList<URL>();
+
+	private RegistrationWSDLToTriplestoreWriter registration;
+
+	private Logger logger = Logger.getLogger(this.getClass());
 
 	/**
 	 * @throws java.lang.Exception
@@ -37,18 +37,24 @@ public class TransformationWSDLTest {
 	public void setUp() throws Exception {
 		this.webservicePass = TestWebserviceExtractor.getPassingWSDLs();
 		this.webservicefail = TestWebserviceExtractor.getFailingWSDLs();
+
+		this.registration = new RegistrationWSDLToTriplestoreWriter();
 	}
 
 	/**
-	 * Test method for {@link at.sti2.msee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
+	 * Test method for
+	 * {@link at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter#transformWSDLtoTriplesAndStoreInTripleStore(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testTransformWSDLPass() {
 		for (URL url : webservicePass) {
 			logger.info("Tranform: " + url);
-			
+
 			try {
-				TransformationWSDL.transformWSDL(url.toExternalForm());
+				this.registration
+						.transformWSDLtoTriplesAndStoreInTripleStore(url
+								.toExternalForm());
 			} catch (RegistrationException e) {
 				logger.error(e);
 				fail(e.toString());
@@ -56,19 +62,23 @@ public class TransformationWSDLTest {
 		}
 
 	}
-	
+
 	/**
-	 * Test method for {@link at.sti2.msee.registration.core.management.TransformationWSDL#transformWSDL(java.lang.String)}.
+	 * Test method for
+	 * {@link at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter#transformWSDLtoTriplesAndStoreInTripleStore(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testTransformWSDLFail() {
 		for (URL url : webservicefail) {
 			logger.info("Tranform: " + url);
-			
+
 			try {
-				TransformationWSDL.transformWSDL(url.toExternalForm());
-				
-				//no exception
+				this.registration
+						.transformWSDLtoTriplesAndStoreInTripleStore(url
+								.toExternalForm());
+
+				// no exception
 				fail("WSDL file was valid but shouldn't");
 			} catch (RegistrationException e) {
 				logger.info(e);
@@ -76,6 +86,5 @@ public class TransformationWSDLTest {
 			}
 		}
 	}
-	
 
 }

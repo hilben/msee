@@ -3,6 +3,7 @@
  */
 package at.sti2.msee.registration.core.management;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLException;
 import org.ow2.easywsdl.extensions.sawsdl.api.schema.Element;
 
 import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
 
@@ -24,12 +26,12 @@ import at.sti2.util.triplestore.RepositoryHandler;
  * 
  * 
  *         This class is an interface to write wsdl file information to a
- *         repository. Used by the {@link TransformationWSDL}
+ *         repository. Used by the {@link RegistrationWSDLToTriplestoreWriter}
  */
-public class WSDLtoRepositoryWriter {
+public class RegistrationTriplestoreWriter {
 
 	private static Logger logger = Logger
-			.getLogger(WSDLtoRepositoryWriter.class);
+			.getLogger(RegistrationTriplestoreWriter.class);
 
 	private RepositoryHandler reposHandler;
 
@@ -50,11 +52,13 @@ public class WSDLtoRepositoryWriter {
 	 *            the name of the namespace of the service
 	 * @param elementsMap
 	 *            the parsed elements contained of the wsdl file
+	 * @throws IOException 
 	 */
-	public WSDLtoRepositoryWriter(RepositoryHandler reposHandler,
-			String serviceName, String serviceNamespace,
-			Map<QName, Element> elementsMap) {
-		this.reposHandler = reposHandler;
+	public RegistrationTriplestoreWriter(String serviceName, String serviceNamespace,
+			Map<QName, Element> elementsMap) throws IOException {
+		RegistrationConfig cfg = new RegistrationConfig();
+		this.reposHandler = new RepositoryHandler(
+				cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 
 		this.serviceName = serviceName;
 		this.serviceNamespace = serviceNamespace;
@@ -710,5 +714,13 @@ public class WSDLtoRepositoryWriter {
 					"The service MUST contains at least one element anotated with liftingSchemaMapping. "
 							+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 		}
+	}
+	
+	/**
+	 * Finally commits all the triples to the store
+	 * @throws RepositoryException 
+	 */
+	public void commit() throws RepositoryException {
+		this.reposHandler.commit();
 	}
 }

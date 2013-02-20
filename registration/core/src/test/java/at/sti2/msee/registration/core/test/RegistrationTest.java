@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.registration.api.exception.RegistrationException;
-import at.sti2.msee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
 
 /**
  * @author Corneliu Stanciu
@@ -45,6 +45,8 @@ public class RegistrationTest {
     private List<URL> webservicePass = new ArrayList<URL>();
     private List<URL> webservicefail = new ArrayList<URL>();
     
+    
+    private RegistrationWSDLToTriplestoreWriter registration;
 	/**
 	 * 
 	 */
@@ -63,7 +65,8 @@ public class RegistrationTest {
 
 			logger.info("Test WSDL " + url);
 
-			String serviceID = TransformationWSDL.transformWSDL(url
+			this.registration = new RegistrationWSDLToTriplestoreWriter();
+			String serviceID = registration.transformWSDLtoTriplesAndStoreInTripleStore(url
 					.toExternalForm());
 
 			Assert.assertTrue(checkServiceID(serviceID));

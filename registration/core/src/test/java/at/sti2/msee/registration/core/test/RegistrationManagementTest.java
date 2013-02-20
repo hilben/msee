@@ -12,19 +12,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import at.sti2.msee.registration.api.exception.RegistrationException;
-import at.sti2.msee.registration.core.management.ServiceManagement;
-import at.sti2.msee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.core.management.RegistrationManagement;
+import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
 
 /**
  * @author Benjamin Hiltpolt
  *
  */
-public class ServiceManagementTest {
+public class RegistrationManagementTest {
 
 	
-	private Logger logger = Logger.getLogger(ServiceManagementTest.class);
+	private Logger logger = Logger.getLogger(RegistrationManagementTest.class);
 	
 	private URL url;
+	
+	private RegistrationWSDLToTriplestoreWriter registration;
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -39,30 +41,31 @@ public class ServiceManagementTest {
 		logger.info("Add wsdl file for test case " + url.toExternalForm());
 		assertNotNull(url);
 		
-	    TransformationWSDL.transformWSDL(url.toExternalForm());
+		registration = new RegistrationWSDLToTriplestoreWriter();
+		registration.transformWSDLtoTriplesAndStoreInTripleStore(url.toExternalForm());
 	}
 
 	/**
-	 * Test method for {@link at.sti2.msee.registration.core.management.ServiceManagement#delete(java.lang.String)}.
+	 * Test method for {@link at.sti2.msee.registration.core.management.RegistrationManagement#delete(java.lang.String)}.
 	 */
 	@Test
 	public void testDelete() {
 		try {
 			logger.info("Delete " + url.toExternalForm());
-			ServiceManagement.delete(url.toExternalForm());
+			RegistrationManagement.delete(url.toExternalForm());
 		} catch (RegistrationException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Test method for {@link at.sti2.msee.registration.core.management.ServiceManagement#update(java.lang.String, java.lang.String)}.
+	 * Test method for {@link at.sti2.msee.registration.core.management.RegistrationManagement#update(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testUpdate() {
 		try {
 			logger.info("Update " + url.toExternalForm() + " to " + url.toExternalForm());
-			ServiceManagement.update(url.toExternalForm(), url.toExternalForm());
+			RegistrationManagement.update(url.toExternalForm(), url.toExternalForm());
 		} catch (RegistrationException e) {
 			e.printStackTrace();
 		}
