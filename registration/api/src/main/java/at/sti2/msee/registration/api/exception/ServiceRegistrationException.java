@@ -16,39 +16,23 @@
  */
 package at.sti2.msee.registration.api.exception;
 
-/**
- * <b>Purpose:</b> This exception indicates an error during execution of the registration engine.<br>
- * <b>Description:</b>
- * <br>
- * <b>Copyright:</b>     Copyright (c) 2012 STI<br>
- * <b>Company:</b>       STI Innsbruck<br>
- *
- * @author      Corneliu Stanciu<br>
- * @version     $Id$<br>
- * Date of creation:  23.05.2012<br>
- * File:         $Source$<br>
- * Modifier:     $Author$<br>
- * Revision:     $Revision$<br>
- * State:        $State$<br>
- */
-
-public class RegistrationException extends Exception {
+public class ServiceRegistrationException extends Exception {
 
 	private static final long serialVersionUID = -2289179077479549018L;
 	
-	public RegistrationException() {
+	public ServiceRegistrationException() {
 		super();
 	}
 	
-	public RegistrationException(String message) {
+	public ServiceRegistrationException(String message) {
 		super(message);
 	}
 	
-	public RegistrationException(String message, Throwable cause) {
+	public ServiceRegistrationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	public RegistrationException(Throwable cause) {
+	public ServiceRegistrationException(Throwable cause) {
         super(cause);
     }
 }

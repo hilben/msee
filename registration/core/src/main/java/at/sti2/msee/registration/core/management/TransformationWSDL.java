@@ -34,7 +34,7 @@ import org.ow2.easywsdl.wsdl.api.Operation;
 import org.ow2.easywsdl.wsdl.api.Output;
 import org.ow2.easywsdl.wsdl.api.Service;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
@@ -59,12 +59,12 @@ public class TransformationWSDL {
 	 * @param _wsdlURI
 	 *            the url of the wsdl file
 	 * @return
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 *             if there occur any parsing, repository, etc. error this
 	 *             exception is thrown
 	 */
 	public static String transformWSDL(String _wsdlURI)
-			throws RegistrationException {
+			throws ServiceRegistrationException {
 		try {
 			RegistrationConfig cfg = new RegistrationConfig();
 			RepositoryHandler reposHandler = new RepositoryHandler(
@@ -134,7 +134,7 @@ public class TransformationWSDL {
 				 */
 				if (categories.size() == 0) {
 					logger.error("The service MUST be at least annotated with one service category.");
-					throw new RegistrationException(
+					throw new ServiceRegistrationException(
 							"The service MUST be at least annotated with one service category. "
 									+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 				}
@@ -264,26 +264,26 @@ public class TransformationWSDL {
 			return repowriter.getServiceID();
 
 		} catch (RepositoryException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring saving of triples into repository.",
 					e.getCause());
 		} catch (FileNotFoundException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The configuration file was NOT found.", e.getCause());
 		} catch (MalformedURLException e) {
-			throw new RegistrationException("The provided URL is malformed.",
+			throw new ServiceRegistrationException("The provided URL is malformed.",
 					e.getCause());
 		} catch (URISyntaxException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The URI syntax is not well formed.", e.getCause());
 		} catch (SAWSDLException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring parsing the service.", e.getCause());
 		} catch (WSDL4ComplexWsdlException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring parsing the service.", e.getCause());
 		} catch (IOException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The repository endpoint ID or the WSDL file could NOT be found.",
 					e.getCause());
 		}

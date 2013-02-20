@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.management.TransformationWSDL;
 
 /**
@@ -57,7 +57,7 @@ public class RegistrationTest {
 	@Test
 	public void testWSDL() throws RepositoryException,
 			WSDLException, IOException, URISyntaxException,
-			RegistrationException {
+			ServiceRegistrationException {
 
 		for (URL url : webservicePass) {
 

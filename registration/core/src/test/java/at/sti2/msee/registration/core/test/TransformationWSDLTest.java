@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.management.TransformationWSDL;
 
 /**
@@ -49,7 +49,7 @@ public class TransformationWSDLTest {
 			
 			try {
 				TransformationWSDL.transformWSDL(url.toExternalForm());
-			} catch (RegistrationException e) {
+			} catch (ServiceRegistrationException e) {
 				logger.error(e);
 				fail(e.toString());
 			}
@@ -70,7 +70,7 @@ public class TransformationWSDLTest {
 				
 				//no exception
 				fail("WSDL file was valid but shouldn't");
-			} catch (RegistrationException e) {
+			} catch (ServiceRegistrationException e) {
 				logger.info(e);
 				logger.info("WSDL File was rejected");
 			}

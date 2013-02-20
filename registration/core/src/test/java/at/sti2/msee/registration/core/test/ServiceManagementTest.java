@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.management.ServiceManagement;
 import at.sti2.msee.registration.core.management.TransformationWSDL;
 
@@ -50,7 +50,7 @@ public class ServiceManagementTest {
 		try {
 			logger.info("Delete " + url.toExternalForm());
 			ServiceManagement.delete(url.toExternalForm());
-		} catch (RegistrationException e) {
+		} catch (ServiceRegistrationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -63,7 +63,7 @@ public class ServiceManagementTest {
 		try {
 			logger.info("Update " + url.toExternalForm() + " to " + url.toExternalForm());
 			ServiceManagement.update(url.toExternalForm(), url.toExternalForm());
-		} catch (RegistrationException e) {
+		} catch (ServiceRegistrationException e) {
 			e.printStackTrace();
 		}
 	}

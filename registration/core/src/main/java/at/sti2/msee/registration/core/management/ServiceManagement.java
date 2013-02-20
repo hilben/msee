@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
@@ -12,7 +12,7 @@ public abstract class ServiceManagement {
 	private static RepositoryHandler reposHandler;
 
 	public static String delete(String _serviceURI)
-			throws RegistrationException {
+			throws ServiceRegistrationException {
 		// Initialising the repository
 		ServiceManagement.initRepo();
 		try {
@@ -28,7 +28,7 @@ public abstract class ServiceManagement {
 	}
 
 	public static String update(String _oldServiceURI, String _newServiceURI)
-			throws RegistrationException {
+			throws ServiceRegistrationException {
 		// Initialising the repository
 		ServiceManagement.initRepo();
 
@@ -47,13 +47,13 @@ public abstract class ServiceManagement {
 	 * 
 	 * @throws ManagementException
 	 */
-	private static void initRepo() throws RegistrationException {
+	private static void initRepo() throws ServiceRegistrationException {
 		try {
 			RegistrationConfig cfg = new RegistrationConfig();
 			reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(),
 					cfg.getSesameReposID(), false);
 		} catch (IOException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The repository endpoint ID or the WSDL file could NOT be found.",
 					e.getCause());
 		}

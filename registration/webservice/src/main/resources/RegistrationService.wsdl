@@ -39,18 +39,12 @@
       <xs:element minOccurs="0" name="return" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="Exception" type="tns:Exception"/>
-  <xs:complexType name="Exception">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="message" type="xs:string"/>
-    </xs:sequence>
+  <xs:element name="ServiceRegistrationException" type="tns:ServiceRegistrationException"/>
+  <xs:complexType name="ServiceRegistrationException">
+    <xs:sequence/>
   </xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="Exception">
-    <wsdl:part name="Exception" element="tns:Exception">
-    </wsdl:part>
-  </wsdl:message>
   <wsdl:message name="register">
     <wsdl:part name="parameters" element="tns:register">
     </wsdl:part>
@@ -67,6 +61,10 @@
     <wsdl:part name="parameters" element="tns:updateResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="ServiceRegistrationException">
+    <wsdl:part name="ServiceRegistrationException" element="tns:ServiceRegistrationException">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="registerResponse">
     <wsdl:part name="parameters" element="tns:registerResponse">
     </wsdl:part>
@@ -81,7 +79,7 @@
     </wsdl:input>
       <wsdl:output name="updateResponse" message="tns:updateResponse">
     </wsdl:output>
-      <wsdl:fault name="Exception" message="tns:Exception">
+      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="register">
@@ -89,7 +87,7 @@
     </wsdl:input>
       <wsdl:output name="registerResponse" message="tns:registerResponse">
     </wsdl:output>
-      <wsdl:fault name="Exception" message="tns:Exception">
+      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="deregister">
@@ -97,7 +95,7 @@
     </wsdl:input>
       <wsdl:output name="deregisterResponse" message="tns:deregisterResponse">
     </wsdl:output>
-      <wsdl:fault name="Exception" message="tns:Exception">
+      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
@@ -111,8 +109,8 @@
       <wsdl:output name="updateResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="ServiceRegistrationException">
+        <soap:fault name="ServiceRegistrationException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="register">
@@ -123,8 +121,8 @@
       <wsdl:output name="registerResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="ServiceRegistrationException">
+        <soap:fault name="ServiceRegistrationException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="deregister">
@@ -135,8 +133,8 @@
       <wsdl:output name="deregisterResponse">
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="ServiceRegistrationException">
+        <soap:fault name="ServiceRegistrationException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
