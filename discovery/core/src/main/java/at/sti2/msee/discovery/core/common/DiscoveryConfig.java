@@ -24,7 +24,7 @@ import java.util.Properties;
  *
  */
 public class DiscoveryConfig {
-	private final Properties properties;
+	private Properties properties;
 	private String resourceLocation = "/default.properties";
 	private String sesameEndpointName = "discovery.sesame.endpoint";
 	private String sesameRepositoryIDName = "discovery.sesame.reposid";
@@ -36,6 +36,12 @@ public class DiscoveryConfig {
 	
 	public void setResourceLocation (String resourceLocation){
 		this.resourceLocation = resourceLocation;
+		this.properties = new Properties();
+		try {
+			this.properties.load(DiscoveryConfig.class.getResourceAsStream(resourceLocation));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	public void setSesameEndpointName(String sesameEndpointName) {
