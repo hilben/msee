@@ -1,0 +1,14 @@
+%div.container
+  %h2 Ontology
+  
+  %span12
+    .accordion-group
+      .accordion-heading
+        %a.accordion-toggle{"class" => "btn-info", "data-toggle" => "collapse", "data-parent" => "#accordionSearchMechanism", "href" => "#collapse_service"}= @ontology.ontology_url
+        
+    .accordion-body.collapse.in{"id" => "collapse_service"}
+      .accordion-inner          
+        - if !@ontology_content.nil?
+          %span.label.label-info The ontology content
+          %pre.prettyprint.lang-xml
+            = @ontology_content

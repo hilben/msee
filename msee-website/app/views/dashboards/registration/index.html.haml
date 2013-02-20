@@ -1,0 +1,26 @@
+= content_for :head_include do
+  = stylesheet_link_tag  "dashboards/registration", :media => "all"  
+  = javascript_include_tag "dashboards/registration" 
+
+.container
+  .div{:id => "error"}
+  -if !@error.nil?
+    .alert.alert-block.alert-error
+      %a.close{"data-dismiss" => "alert", "href" => "#" }
+      = @error
+  -if !@notice.nil?
+    .alert.alert-block.alert-success.fade.in
+      %a.close{"data-dismiss" => "notice", "href" => "#" }
+      = raw @notice
+
+  .hero-unit
+    %div{"align" => "left", "class" => "title"}
+      %h2 Registration Dashboard    
+           
+    .row
+      .span12 
+        = form_tag(:class => "well") do
+          = label_tag("Type in the URL of the service you want to register:")
+          = text_field_tag(:wsdl_input, "", :required => "true", :placeholder => "http://example.com/service.wsdl")
+          .form-actions
+            = submit_tag("Register", :class=> "btn btn-primary")
