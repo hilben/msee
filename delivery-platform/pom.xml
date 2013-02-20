@@ -3,13 +3,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.delivery</groupId>
 	<artifactId>platform-full</artifactId>
-	<version>m17.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<parent>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m17.1-SNAPSHOT</version>
+	</parent>
 </project>

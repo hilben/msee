@@ -26,13 +26,11 @@ import at.sti2.msee.registration.core.management.TransformationWSDL;
 endpointInterface="at.sti2.msee.registration.webservice.Registration")
 public class RegistrationImpl implements Registration
 {
-	public String register(String serviceDescriptionURL)
-			throws ServiceRegistrationException {
+	public String register(String serviceDescriptionURL) throws ServiceRegistrationException {
 		return TransformationWSDL.transformWSDL(serviceDescriptionURL);		
 	}
-
-	public String deregister(String serviceURI)
-			throws ServiceRegistrationException {
+	
+	public String deregister(String serviceURI) throws ServiceRegistrationException {
 		return ServiceManagement.delete(serviceURI);
 	}
 
