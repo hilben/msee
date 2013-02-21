@@ -1,7 +1,0 @@
-[
-	{"key": "http://www.sti2.at/E-Freight/ServiceCategories#Maritime", "value": "Maritime"}, 
-	{"key": "http://www.sti2.at/E-Freight/ServiceCategories#SendArrivalNotification", "value": "SendArrivalNotification"},
-	{"key": "http://www.sti2.at/E-Freight/ServiceCategories#CustomsAuthorityPreDeparture", "value": "CustomsAuthorityPreDeparture"}, 
-	{"key": "http://www.sti2.at/E-Freight/ServiceCategories#CustomsAuthorityPreArrival", "value": "CustomsAuthorityPreArrival"},
-	{"key": "http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS", "value": "Business"}
-]

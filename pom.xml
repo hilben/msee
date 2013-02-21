@@ -11,11 +11,11 @@
 	<modules>
 		<module>util</module>
 		<module>registration</module>
+		<module>dashboard</module>				
 		<!-- <module>discovery</module> -->
 		<!-- <module>monitoring</module> -->
 		<!-- <module>invocation</module> -->
 		<!-- <module>ranking</module> -->
-		<!-- <module>msee-website</module> -->		
 	</modules>
 
 	<properties>

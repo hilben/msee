@@ -1,6 +1,0 @@
-= form_tag :method => "lookup" do
-  = text_field_tag(:namespace, "", :id => "namespace", :required => "true", :placeholder => "The namespace of service which has the requested operation.")
-  = text_field_tag(:operation, "",:id => "operation", :required => "true", :placeholder => "The requested operation name.")
-  .form-actions
-    = submit_tag("Lookup", :class=> "btn btn-primary")
-      
