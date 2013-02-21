@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns1="urn:oasis:names:specification:ubl:schema:xsd:TransportExecutionPlan-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:e="http://efreight.sti2.at/ontology/crs#">
+  <e:Document rdf:about="#1">
+    <e:hasIdentifier>1</e:hasIdentifier>
+    <e:issuedAt>2011-09-13T10:00:10+01:00</e:issuedAt>
+    <e:hasConsignor>
+      <e:Party>
+        <e:hasName>Consignor</e:hasName>
+      </e:Party>
+    </e:hasConsignor>
+    <e:hasConsignee>
+      <e:Party>
+        <e:hasName>NECOSS</e:hasName>
+      </e:Party>
+    </e:hasConsignee>
+    <e:containsConsignment>
+      <e:Consignment>
+        <e:hasIdentifier>1</e:hasIdentifier>
+        <e:hasDescription/>
+        <e:hasNetWeight>3000</e:hasNetWeight>
+        <e:hasTotalTransportHandlingUnitQuantity/>
+        <e:hasHazardousRisk>false</e:hasHazardousRisk>
+        <e:containsTransportHandlingUnit>
+          <e:Package>
+            <e:hasIdentifier>1</e:hasIdentifier>
+          </e:Package>
+        </e:containsTransportHandlingUnit>
+        <e:containsTransportHandlingUnit>
+          <e:Package>
+            <e:hasIdentifier>2</e:hasIdentifier>
+          </e:Package>
+        </e:containsTransportHandlingUnit>
+      </e:Consignment>
+    </e:containsConsignment>
+  </e:Document>
+</rdf:RDF>

@@ -1,0 +1,2 @@
+module Doc::ServiceAnnotationHelper
+end

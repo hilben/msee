@@ -1,0 +1,169 @@
+= content_for :head_include do
+  = stylesheet_link_tag  "dashboards/registration", :media => "all"
+  = javascript_include_tag "services"
+  = javascript_include_tag "ontology" 
+
+%div.container
+  %div.row
+    %div.span9
+      %h2 Registered services
+    %div.span3{"align" => "right"}
+      %a.btn.btn-primary{"data-toggle" => "modal", "href" => "#service-add-modal", "id" => "service_ontology"} Register Service
+      
+  %table.table.table-striped
+    - if @services.count > 0
+      %thead
+        %th
+          Service URL
+        %th
+          Created
+        %th
+          Last update
+        %th
+          Update
+        %th
+          Delete
+      %tbody
+        - if @services.count > 0
+          - @services.each do |service|
+            %tr
+              %td{"width" => "50%"}
+                %p
+                  %a{"href" =>"/services/#{service.id}"}= service.wsdl_url
+              %td
+                %p= time_ago_in_words(service.created_at)
+              %td
+                %p= time_ago_in_words(service.updated_at)
+              %td
+                %a{"data-toggle" => "modal", "href" => "#service-update-modal", "id" => "#{service.id}", "onclick" => "addServiceLink2Element('service-update-form', #{service.id}, 'update')"} 
+                  %i.icon-repeat
+              %td
+                %a{"data-toggle" => "modal", "href" => "#service-destroy-modal", "id" => "#{service.id}", "onclick" => "addServiceLink2Element('service-destroy-form', #{service.id}, 'destroy')"}
+                  %i.icon-trash
+    - else
+      %tr
+        %td
+          %h3 You have no services registred.
+              
+              
+%div.container
+  %div.row
+    %div.span9
+      %h2 Registered ontologies
+    %div.span3{"align" => "right"}
+      %a.btn.btn-primary{"data-toggle" => "modal", "href" => "#ontology-add-modal", "id" => "add_ontology"} Add Ontology
+
+  %table.table.table-striped
+    - if @ontologies.count > 0
+      %thead
+        %th
+          Ontology URL
+        %th
+          Created
+        %th
+          Last update
+        %th
+          Update
+        %th
+          Delete
+      %tbody
+        - if @ontologies.count > 0
+          - @ontologies.each do |ontology|
+            %tr
+              %td{"width" => "50%"}
+                %p
+                  %a{"href" =>"/ontologies/#{ontology.id}"}= ontology.ontology_url
+              %td
+                %p= time_ago_in_words(ontology.created_at)
+              %td
+                %p= time_ago_in_words(ontology.updated_at)
+              %td
+                %a{"data-toggle" => "modal", "href" => "#ontology-update-modal", "id" => "#{ontology.id}", "onclick" => "addOntologyLink2Element('ontology-update-form', #{ontology.id}, 'update')"} 
+                  %i.icon-repeat
+              %td
+                %a{"data-toggle" => "modal", "href" => "#ontology-destroy-modal", "id" => "#{ontology.id}", "onclick" => "addOntologyLink2Element('ontology-destroy-form', #{ontology.id}, 'destroy')"}
+                  %i.icon-trash
+    - else
+      %tr
+        %td
+          %h3 You have no ontologies registred.              
+
+
+/ Service modals BEGIN
+
+%div.modal.hide{"id" => "service-add-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Register service 
+  = form_tag("/dashboards/registration" , :class => "well", :method => "POST", :id => "service-add-form") do
+    %div.modal-body
+      %p For registering a service please type in its URL.
+      = text_field_tag(:wsdl_input, "", :required => "true", :placeholder => "http://example.com/service.wsdl ")
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Register", :class=> "btn btn-primary")
+
+%div.modal.hide{"id" => "service-destroy-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Delete service
+  = form_tag("", :class => "well", :method => "GET", :id => "service-destroy-form") do
+    %div.modal-body
+      %p This service is about to be deleted. Are you sure you want to procced?
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Destroy", :class=> "btn btn-primary")
+    
+    
+%div.modal.hide{"id" => "service-update-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Update service
+  = form_tag("", :class => "well", :method => "GET", :id => "service-update-form") do
+    %div.modal-body
+      %p For updating this service please type in the url of the new/updated service.
+      = text_field_tag(:wsdl_input, "", :required => "true", :placeholder => "http://example.com/service.wsdl")
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Update", :class=> "btn btn-primary")
+/ Service modals END
+
+
+/ Ontology modals BEGIN
+
+%div.modal.hide{"id" => "ontology-add-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Add ontology
+  = form_tag(ontologies_path() , :class => "well", :method => "POST", :id => "ontology-add-form") do
+    %div.modal-body
+      %p For adding on ontology please type in its URL.
+      = text_field_tag(:ontology_url, "", :required => "true", :placeholder => "http://example.com/ontology.rdf ")
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Add", :class=> "btn btn-primary")
+
+%div.modal.hide{"id" => "ontology-destroy-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Delete ontology
+  = form_tag("", :class => "well", :method => "GET", :id => "ontology-destroy-form") do
+    %div.modal-body
+      %p This ontology is about to be deleted. Are you sure you want to procced?
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Delete", :class=> "btn btn-primary")
+    
+    
+%div.modal.hide{"id" => "ontology-update-modal"}
+  %div.modal-header
+    %button.close{"type" => "button", "data-dismiss" => "modal"} x
+    %h3 Update Ontology
+  = form_tag("", :class => "well", :method => "GET", :id => "ontology-update-form") do
+    %div.modal-body
+      %p For updating this ontology please type in the url of the new/updated ontology.
+      = text_field_tag(:ontology_url, "", :required => "true", :placeholder => "http://example.com/ontology.rdf ")
+    %div.modal-footer
+      %a.btn{"href" => "#", "data-dismiss" => "modal"} Close
+      = submit_tag("Update", :class=> "btn btn-primary")
+/ Ontology modals END

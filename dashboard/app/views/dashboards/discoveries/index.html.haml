@@ -1,0 +1,61 @@
+= content_for :head_include do
+  = stylesheet_link_tag  "dashboards/discoveries", :media => "all"
+  = javascript_include_tag "dashboards/discoveries" 
+
+.container
+  .div{:id => "error"}
+  -if !@error.nil?
+    .alert.alert-block.alert-error
+      %a.close{"data-dismiss" => "alert", "href" => "#" }
+      = @error
+  -if !@notice.nil?
+    .alert.alert-block.alert-success.fade.in
+      %a.close{"data-dismiss" => "notice", "href" => "#" }
+      = raw @notice
+
+  .hero-unit
+    %div{"align" => "left", "class" => "title"}
+      %h2 Discovery Dashboard
+      %well Choose one of the fuctionalities offered by the discovery component.      
+  
+  %span12
+    .accordion-group
+      .accordion-heading
+        %a.accordion-toggle{"class" => "btn-info", "data-toggle" => "collapse", "data-parent" => "#accordionSearchMechanism", "href" => "#collapse_lookup"} <strong>Lookup</strong> - Receive more information about operations in RDF representation (inputs, outputs, faults, etc)
+        
+      .accordion-body.collapse{"id" => "collapse_lookup"}
+        .accordion-inner
+          = render "dashboards/discoveries/lookup_form"
+          
+          - if !@lookup_output.nil?
+            %span.label.label-info The lookup response
+            %pre.prettyprint.lang-xml
+              = raw @lookup_output     
+
+  %span12
+    .accordion-group
+      .accordion-heading
+        %a.accordion-toggle{"class" => "btn-info", "data-toggle" => "collapse", "data-parent" => "#accordionSearchMechanism", "href" => "#collapse_discover"} <strong>Discover</strong> - Search for registered services by categories.
+        
+      .accordion-body.collapse{"id" => "collapse_discover"}
+        .accordion-inner
+          = render "dashboards/discoveries/discover_form"
+          
+          - if !@discover_output.nil?
+            %span.label.label-info The discover response
+            %pre.prettyprint.lang-xml
+              = raw @discover_output 
+
+  %span12
+    .accordion-group
+      .accordion-heading
+        %a.accordion-toggle{"class" => "btn-info", "data-toggle" => "collapse", "data-parent" => "#accordionSearchMechanism", "href" => "#collapse_iserve"} <strong>IServe Model</strong> - Get the IServe Model of a service.
+        
+      .accordion-body.collapse{"id" => "collapse_iserve"}
+        .accordion-inner
+          = render "dashboards/discoveries/iserve_form"
+          
+          - if !@iserve_output.nil?
+            %span.label.label-info The IServe Model response
+            %pre.prettyprint.lang-xml
+              = raw @iserve_output         

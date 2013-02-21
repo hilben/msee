@@ -1,0 +1,2 @@
+module Doc::OntologyHelper
+end
