@@ -11,7 +11,7 @@
 	<modules>
 		<module>util</module>
 		<module>registration</module>
-		<module>dashboard</module>				
+		<!-- <module>dashboard</module> -->
 		<!-- <module>discovery</module> -->
 		<!-- <module>monitoring</module> -->
 		<!-- <module>invocation</module> -->
