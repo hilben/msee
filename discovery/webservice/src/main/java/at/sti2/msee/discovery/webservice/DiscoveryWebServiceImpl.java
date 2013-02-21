@@ -87,7 +87,7 @@ public class DiscoveryWebServiceImpl implements DiscoveryWebService {
 	@Override
 	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
 			throws Exception {
-		return serviceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
+		return serviceDiscovery.getIServeModel("\""+_serviceID+"\"", RDFFormat.RDFXML);
 	}
 
 }

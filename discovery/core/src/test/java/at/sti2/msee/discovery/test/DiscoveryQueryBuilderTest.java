@@ -76,9 +76,10 @@ public class DiscoveryQueryBuilderTest {
 			IOException, QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		String serviceID = "TheServiceID";
+		String serviceID = "http://www.theserviceid.com#id";
 		
 		String query = discoveryQueryBuilder.getIServeModelQuery(serviceID);
+		System.out.println(query);
 		String expected = readFile("/getIServeModelQueryTestResult");
 		Assert.assertEquals(query, expected);
 	}

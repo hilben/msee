@@ -6,12 +6,12 @@ PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#>
 PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> 
 PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
 CONSTRUCT { 
-?_serviceID rdf:type msm:Service . 
-?_serviceID rdfs:label ?serviceLabel . 
-?_serviceID rdfs:isDefinedBy ?wsdlLink . 
-?_serviceID dc:creator ?creator . 
-?_serviceID sawsdl:modelReference ?serviceModel . 
-?_serviceID msm:hasOperation ?operation . 
+<_serviceID> rdf:type msm:Service . 
+<_serviceID> rdfs:label ?serviceLabel . 
+<_serviceID> rdfs:isDefinedBy ?wsdlLink . 
+<_serviceID> dc:creator ?creator . 
+<_serviceID> sawsdl:modelReference ?serviceModel . 
+<_serviceID> msm:hasOperation ?operation . 
 ?operation rdf:type msm:Operation . 
 ?operation rdfs:label ?operationLabel . 
 ?operation sawsdl:modelReference ?operationModel . 
@@ -39,16 +39,16 @@ CONSTRUCT {
 ?outputFaultMessagePart rdf:type msm:MessagePart . 
 ?outputFaultMessagePart msm:hasName ?outputFaultMessagePartName . 
 } WHERE { 
-BIND(IRI(http://www.theserviceid.com#id) AS ?_serviceID)?_serviceID rdf:type msm_ext:Service . 
-?_serviceID rdfs:label ?serviceLabel . 
-?_serviceID rdfs:isDefinedBy ?wsdlLink . 
+<_serviceID> rdf:type msm_ext:Service . 
+<_serviceID> rdfs:label ?serviceLabel . 
+<_serviceID> rdfs:isDefinedBy ?wsdlLink . 
 OPTIONAL { 
-?_serviceID dc:creator ?creator . 
+<_serviceID> dc:creator ?creator . 
 } 
 OPTIONAL { 
-?_serviceID sawsdl:modelReference ?serviceModel . 
+<_serviceID> sawsdl:modelReference ?serviceModel . 
 } 
-?_serviceID msm_ext:wsdlDescription ?descriptionBlock . 
+<_serviceID> msm_ext:wsdlDescription ?descriptionBlock . 
 ?descriptionBlock wsdl:interface ?interfaceBlock . 
 ?interfaceBlock wsdl:interfaceOperation ?operation . 
 ?operation rdfs:label ?operationLabel . 

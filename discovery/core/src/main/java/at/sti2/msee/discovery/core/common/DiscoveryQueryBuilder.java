@@ -376,12 +376,12 @@ public class DiscoveryQueryBuilder {
 						+
 
 						"CONSTRUCT { \n"
-						+ "<_serviceID> rdf:type msm:Service . \n"
-						+ "<_serviceID> rdfs:label ?serviceLabel . \n"
-						+ "<_serviceID> rdfs:isDefinedBy ?wsdlLink . \n"
-						+ "<_serviceID> dc:creator ?creator . \n"
-						+ "<_serviceID> sawsdl:modelReference ?serviceModel . \n"
-						+ "<_serviceID> msm:hasOperation ?operation . \n"
+						+ "?_serviceID rdf:type msm:Service . \n"
+						+ "?_serviceID rdfs:label ?serviceLabel . \n"
+						+ "?_serviceID rdfs:isDefinedBy ?wsdlLink . \n"
+						+ "?_serviceID dc:creator ?creator . \n"
+						+ "?_serviceID sawsdl:modelReference ?serviceModel . \n"
+						+ "?_serviceID msm:hasOperation ?operation . \n"
 						+
 
 						"?operation rdf:type msm:Operation . \n"
@@ -421,18 +421,19 @@ public class DiscoveryQueryBuilder {
 						+
 
 						"} WHERE { \n"
+						+ "BIND(IRI($_serviceID$) AS ?_serviceID)"
 						+
 
-						"<_serviceID> rdf:type msm_ext:Service . \n"
-						+ "<_serviceID> rdfs:label ?serviceLabel . \n"
-						+ "<_serviceID> rdfs:isDefinedBy ?wsdlLink . \n"
+						"?_serviceID rdf:type msm_ext:Service . \n"
+						+ "?_serviceID rdfs:label ?serviceLabel . \n"
+						+ "?_serviceID rdfs:isDefinedBy ?wsdlLink . \n"
 						+ "OPTIONAL { \n"
-						+ "<_serviceID> dc:creator ?creator . \n"
+						+ "?_serviceID dc:creator ?creator . \n"
 						+ "} \n"
 						+ "OPTIONAL { \n"
-						+ "<_serviceID> sawsdl:modelReference ?serviceModel . \n"
+						+ "?_serviceID sawsdl:modelReference ?serviceModel . \n"
 						+ "} \n"
-						+ "<_serviceID> msm_ext:wsdlDescription ?descriptionBlock . \n"
+						+ "?_serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
 						+
 
 						"?descriptionBlock wsdl:interface ?interfaceBlock . \n"
