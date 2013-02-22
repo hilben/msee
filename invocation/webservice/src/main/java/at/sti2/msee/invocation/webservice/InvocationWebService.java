@@ -83,7 +83,7 @@ public class InvocationWebService implements IInvocationEndpoint, IAvailabilityC
 		logger.info("Invoking invoke('" + _serviceID + "', '" + _operationName + "', '" + _inputData +  "')");
 
 		List<QName> headers = this.extractHeader(SOAPHeaderThreadLocal.get());
-		return InvocationCore.invoke(_serviceID, headers, _operationName, _inputData);
+		return InvocationCore.invoke(_serviceID, _operationName, _inputData);
 	}
 
 	/**

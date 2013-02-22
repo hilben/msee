@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 /**
  * @author Benjamin Hiltpolt
  *
+ *  Helper class to extract the wsdls file whichare used for the tests
+ *
  */
 public class TestWebserviceExtractor {
 	

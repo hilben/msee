@@ -1,4 +1,4 @@
-<assembly>
+<!-- <assembly>
 	<id>jaxws</id>
 	<formats>
 		<format>jar</format>
@@ -11,3 +11,4 @@
 		</file>
 	</files>
 </assembly>
+-->

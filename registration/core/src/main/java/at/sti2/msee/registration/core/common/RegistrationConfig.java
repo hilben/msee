@@ -26,9 +26,23 @@ import java.util.Properties;
 public class RegistrationConfig {
 	private final Properties properties;
 	
+	private String propertyLocation = "/default.properties";
+	
+	/**
+	 * Use other property file as in default (mainly testing purposes)
+	 * 
+	 * @param location
+	 * @throws IOException
+	 */
+	public RegistrationConfig(String location) throws IOException {
+		this.propertyLocation = location;
+		this.properties = new Properties();
+		this.properties.load(RegistrationConfig.class.getResourceAsStream(propertyLocation));
+	}
+	
 	public RegistrationConfig() throws IOException {
 		this.properties = new Properties();
-		this.properties.load(RegistrationConfig.class.getResourceAsStream("/default.properties")); 
+		this.properties.load(RegistrationConfig.class.getResourceAsStream(propertyLocation));
 	}
 	
 	/**
@@ -38,9 +52,17 @@ public class RegistrationConfig {
 	public String getSesameEndpoint() {
 		return this.properties.getProperty("registration.sesame.endpoint");
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/remotes/origin/msee-carneval
 	/**
+<<<<<<< HEAD
 	 * returns the Sesame Repository defined in the configuration file
+=======
+	 * Returns the Sesame Repository defined in the configuration file
+>>>>>>> refs/remotes/origin/msee-carneval
 	 * @return
 	 */
 	public String getSesameReposID() {

@@ -16,6 +16,8 @@
  */
 package at.sti2.msee.discovery.webservice;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -26,41 +28,47 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.openrdf.rio.RDFFormat;
 
-import at.sti2.msee.discovery.api.webservice.IDiscoveryWebService;
-import at.sti2.msee.discovery.core.ServiceDiscovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
+import at.sti2.msee.discovery.core.DiscoveryService;
 
 /**
  * @author Alex Oberhauser
  */
 @WebService(targetNamespace = "http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
-public class DiscoveryWebService implements IDiscoveryWebService {
+public class DiscoveryWebServiceImpl implements DiscoveryWebService {
+	
+	private DiscoveryService serviceDiscovery;
+
+	public DiscoveryWebServiceImpl () throws FileNotFoundException, IOException {
+		serviceDiscovery = new DiscoveryService();
+	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List)
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
 	 */
 	@WebMethod
 	@Override
 	public String discover(
 			@WebParam(name = "categoryList") List<URI> _categoryList)
 			throws Exception {
-		return ServiceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
+		return serviceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#discover(java.util.List,
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List,
 	 *      java.util.List, java.util.List)
 	 */
 	@WebMethod(operationName = "discoverAdvanced")
 	@Override
 	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
 			List<URI> _outputParamList) throws Exception {
-		return ServiceDiscovery.discover(_categoryList, _inputParamList,
+		return serviceDiscovery.discover(_categoryList, _inputParamList,
 				_outputParamList, RDFFormat.RDFXML);
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#lookup(java.net.URI,
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#lookup(java.net.URI,
 	 *      java.lang.String)
 	 */
 	@WebMethod
@@ -68,18 +76,18 @@ public class DiscoveryWebService implements IDiscoveryWebService {
 	public String lookup(@WebParam(name = "namespace") URI _namespace,
 			@WebParam(name = "operationName") String _operationName)
 			throws Exception {
-		return ServiceDiscovery.lookup(_namespace, _operationName,
+		return serviceDiscovery.lookup(_namespace, _operationName,
 				RDFFormat.RDFXML);
 	}
 
 	/**
-	 * @see at.sti2.msee.discovery.api.webservice.IDiscoveryWebService#getIServeModel(java.lang.String)
+	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#getIServeModel(java.lang.String)
 	 */
 	@WebMethod
 	@Override
 	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
 			throws Exception {
-		return ServiceDiscovery.getIServeModel(_serviceID, RDFFormat.RDFXML);
+		return serviceDiscovery.getIServeModel("\""+_serviceID+"\"", RDFFormat.RDFXML);
 	}
 
 }

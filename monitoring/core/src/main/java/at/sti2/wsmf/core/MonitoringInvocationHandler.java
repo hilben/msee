@@ -92,7 +92,7 @@ public class MonitoringInvocationHandler {
 
 	/**
 	 * 
-	 * @param _soapRequest
+	 * @param soapRequest
 	 *            The request message encoded in SOAP
 	 * @param soapAction
 	 *            HTTP header field 'SOAPAction'
@@ -132,9 +132,6 @@ public class MonitoringInvocationHandler {
 		opts.setAction(soapAction);
 		opts.setTimeOutInMilliSeconds(TIME_OUT_MS);
 
-		/* ***************************
-		 * Monitoring Block Start
-		 */
 		activeInstance.setEndpoint(endpoint);
 		activeInstance.changeInvocationStatus(WSInvocationState.Instantiated);
 		sendStateChange(activeInstance);
@@ -142,32 +139,20 @@ public class MonitoringInvocationHandler {
 		sendQoSValue(activeInstance, new QoSParamValue(
 				QoSParamKey.RequestTotal, totalRequests, QoSUnit.Requests));
 
-		/*
-		 * Monitoring Block End***************************
-		 */
-
 		try {
 			String result;
 
-			/* ***************************
-			 * Monitoring Block Start
-			 */
 			activeInstance.changeInvocationStatus(WSInvocationState.Started);
 			sendStateChange(activeInstance);
-			/*
-			 * Monitoring Block End***************************
-			 */
 
 			long beforeInvocation = System.currentTimeMillis();
 
+			
 			/*
 			 * Invocation
 			 */
 			result = invokeWithoutMonitoring(endpoint, soapMessage, soapAction,
 					null);
-			/*
-			 * End of Invocation
-			 */
 
 			/*
 			 * Calculate the size of the response soap message
@@ -186,9 +171,7 @@ public class MonitoringInvocationHandler {
 			long afterInvocation = System.currentTimeMillis();
 			responseTime = (afterInvocation - beforeInvocation);
 
-			/* ***************************
-			 * Monitoring Block Start
-			 */
+
 			activeInstance.changeInvocationStatus(WSInvocationState.Completed);
 			sendStateChange(activeInstance);
 			double successfulRequests = currentWS.getSuccessfulRequests();
@@ -201,34 +184,26 @@ public class MonitoringInvocationHandler {
 
 			return result;
 		} catch (SOAPException e) {
-			/* ***************************
-			 * Monitoring Block Start
-			 */
+
 			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
 			double failedRequests = currentWS.getFailedRequests();
 			currentWS.addUnsuccessfullInvoke(payloadRequestSize);
 
-			sendQoSValue(activeInstance, new QoSParamValue(
-					QoSParamKey.RequestFailed, failedRequests,
-					QoSUnit.Requests));
-			/*
-			 * Monitoring Block End***************************
-			 */
+			sendQoSValue(activeInstance,
+					new QoSParamValue(QoSParamKey.RequestFailed,
+							failedRequests, QoSUnit.Requests));
+
 			throw new SOAPException(e);
 		} catch (Exception e) {
-			/* ***************************
-			 * Monitoring Block Start
-			 */
+
 			activeInstance.changeInvocationStatus(WSInvocationState.Terminated);
 			sendStateChange(activeInstance);
 			double failedRequests = currentWS.getFailedRequests();
-			sendQoSValue(activeInstance, new QoSParamValue(
-					QoSParamKey.RequestFailed, failedRequests,
-					QoSUnit.Requests));
-			/*
-			 * Monitoring Block End***************************
-			 */
+			sendQoSValue(activeInstance,
+					new QoSParamValue(QoSParamKey.RequestFailed,
+							failedRequests, QoSUnit.Requests));
+
 			throw new Exception(e);
 		} finally {
 			// TODO: handle finally
@@ -262,33 +237,33 @@ public class MonitoringInvocationHandler {
 	 * 
 	 * Invocation without monitoring
 	 * 
-	 * @param _endpointURL
-	 * @param _soapMessage
-	 * @param _soapAction
+	 * @param endpointURL
+	 * @param soapMessage
+	 * @param soapAction
 	 * @return
 	 * @throws SOAPException
 	 * @throws IOException
 	 * @throws RepositoryException
 	 */
-	public static String invokeWithoutMonitoring(String _endpointURL,
-			SOAPMessage _soapMessage, String _soapAction,
+	public static String invokeWithoutMonitoring(String endpointURL,
+			SOAPMessage soapMessage, String soapAction,
 			WebServiceEndpointConfig config) throws SOAPException, IOException,
 			RepositoryException {
 
 		WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-				.getConfig(_endpointURL);
+				.getConfig(endpointURL);
 
 		QName serviceName = new QName(cfg.getWebServiceNamespace(),
 				cfg.getWebServiceName());
 		QName portName = serviceName;
 
 		Service service = Service.create(serviceName);
-		service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, _endpointURL);
+		service.addPort(portName, SOAPBinding.SOAP11HTTP_BINDING, endpointURL);
 
 		Dispatch<SOAPMessage> dispatch = service.createDispatch(portName,
 				SOAPMessage.class, Service.Mode.MESSAGE);
 
-		if (_soapAction == null) {
+		if (soapAction == null) {
 			dispatch.getRequestContext().put(Dispatch.SOAPACTION_USE_PROPERTY,
 					false);
 		} else {
@@ -298,7 +273,7 @@ public class MonitoringInvocationHandler {
 					null);
 		}
 
-		SOAPMessage response = dispatch.invoke(_soapMessage);
+		SOAPMessage response = dispatch.invoke(soapMessage);
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		response.writeTo(os);

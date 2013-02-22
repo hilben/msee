@@ -1,90 +1,183 @@
-/**
- * Copyright (C) 2011 STI Innsbruck, UIBK
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
- */
-package at.sti2.msee.discovery.core;
+package at.sti2.msee.discovery.core.common;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.List;
-import java.util.Properties;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
-import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.resultio.QueryResultIO;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
-import at.sti2.msee.discovery.core.common.DiscoveryConfig;
-import at.sti2.util.triplestore.RepositoryHandler;
-
 /**
- * TODO: We support SPARQL 1.1: Optimize the SPARQL queries with the help of
- * paths.
- * 
- * TODO: Find further solutions to prettify the code
- * 
- * @author Alex Oberhauser, Benjamin Hiltpolt
+ * @author Christian Mayr
  * 
  */
-public class ServiceDiscovery {
-	
-	
+public class DiscoveryQueryBuilder {
 
-	public static RepositoryHandler getReposHandler()
-			throws FileNotFoundException, IOException {
-		DiscoveryConfig config = new DiscoveryConfig();
-		
-		
-		return new RepositoryHandler(config.getSesameEndpoint(),
-				config.getSesameReposID(), true);
+	public String getDiscoverQuery2Args(List<URI> _categoryList) {
+		String templateString = new String(
+				"group group-demo;"
+						+ "outerTemplate(_categoryList) ::= <<"
+						+ ""
+						+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
+						+ "PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"
+						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
+						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
+						+ "CONSTRUCT { \n"
+						+ "?serviceID msm_ext:hasOperation ?inputMessage . \n"
+						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
+						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
+						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
+						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
+						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
+						+ "?serviceID msm_ext:hasOperation ?outputMessage . \n"
+						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
+						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
+						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
+						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
+						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
+						+
+
+						"?serviceID msm_ext:hasOperation ?inputFaultMessage . \n"
+						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
+						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
+						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
+						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
+						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
+						+
+
+						"?serviceID msm_ext:hasOperation ?outputFaultMessage . \n"
+						+ "?inputFaultMessage rdf:type wsdl:OutputMessage . \n"
+						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
+						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
+						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
+						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
+						+
+
+						"} WHERE { \n"
+						+ "?serviceID rdf:type msm_ext:Service . \n"
+						+ ""
+						+ "$_categoryList:innerTemplate()$"
+						+ ""
+						+ "?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
+						+ "?descriptionBlock wsdl:namespace ?namespace . \n"
+						+ "?descriptionBlock wsdl:interface ?interfaceBlock . \n"
+						+ "?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"
+						+ "?interfaceOperation rdfs:label ?operationName . \n"
+						+
+
+						"OPTIONAL { \n"
+						+ "?operation wsdl:interfaceMessageReference ?inputMessage . \n"
+						+ "OPTIONAL { \n"
+						+ "?operation sawsdl:modelReference ?operationModel . \n"
+						+ "} \n"
+						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
+						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
+						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
+						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
+						+ "OPTIONAL { \n"
+						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
+						+ "} \n"
+						+ "} \n"
+						+
+
+						"OPTIONAL { \n"
+						+ "?operation wsdl:interfaceMessageReference ?outputMessage . \n"
+						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
+						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
+						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
+						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
+						+ "OPTIONAL { \n"
+						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
+						+ "} \n"
+						+ "} \n"
+						+
+
+						"OPTIONAL { \n"
+						+ "?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n"
+						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
+						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
+						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
+						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
+						+ "OPTIONAL { \n"
+						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
+						+ "} \n"
+						+ "} \n"
+						+
+
+						"OPTIONAL { \n"
+						+ "?operation wsdl:interfaceFaultReference ?outputFaultMessage . \n"
+						+ "?outputFaultMessage rdf:type wsdl:OutputMessage . \n"
+						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
+						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
+						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
+						+ "OPTIONAL { \n"
+						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
+						+ "} \n" + "} \n" +
+
+						"}>>" + "" +
+
+						"innerTemplate(category) ::= <<" +
+						/**
+						 * TODO: Check this part.
+						 */
+						"{ \n"
+						+ "<$category$> rdfs:subClassOf* ?superClass . \n"
+						+ "?serviceID sawsdl:modelReference ?superClass . \n"
+						+ "} UNION { \n"
+						+ "?serviceID sawsdl:modelReference <$category$> . \n"
+						+ "} \n" + ">>");
+
+		StringTemplateGroup group = new StringTemplateGroup(new StringReader(
+				templateString), DefaultTemplateLexer.class);
+
+		StringTemplate template = group.getInstanceOf("outerTemplate");
+		template.setAttribute("_categoryList", _categoryList);
+		return template.toString();
 	}
 
-	/**
-	 * TODO: Unchecked outputParamList, inputParamList
-	 * <p/>
-	 * 
-	 * @param _categoryList
-	 * @param inputParamList
-	 * @param outputParamList
-	 * @param _outputFormat
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws QueryEvaluationException
-	 * @throws RepositoryException
-	 * @throws MalformedQueryException
-	 * @throws RDFHandlerException
-	 * @throws UnsupportedRDFormatException
-	 */
-	public static String discover(List<URI> _categoryList,
-			List<URI> _inputParamList, List<URI> _outputParamList,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
-			QueryEvaluationException, RepositoryException,
-			MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
+	public String getLookupQuery(URI _namespace, String _operationName) {
+		StringTemplate template = new StringTemplate(
+				"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
+						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
+						+ "PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"
+						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
+						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
+						+
+
+						"CONSTRUCT { \n"
+						+ "?messageReference ?p ?o . \n"
+						+ "?faultMessageReference ?p1 ?o1 . \n"
+						+ "} WHERE { \n"
+						+
+
+						"?serviceID rdf:type msm_ext:Service . \n"
+						+ "?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
+						+ "?descriptionBlock wsdl:namespace <$_namespace$> . \n"
+						+ "?descriptionBlock wsdl:interface ?interfaceBlock . \n"
+						+ "?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"
+						+ "?interfaceOperation wsdl:interfaceMessageReference ?messageReference . \n"
+						+ "?interfaceOperation rdfs:label \"$_operationName$\" . \n"
+						+ "?messageReference ?p ?o . \n"
+						+ "OPTIONAL { ?interfaceOperation wsdl:interfaceFaultReference ?faultMessageReference . \n"
+						+ "?faultMessageReference ?p1 ?o1 . } \n" + "}");
+
+		template.setAttribute("_namespace", _namespace);
+		template.setAttribute("_operationName", _operationName);
+		
+		return template.toString();
+	}
+
+	public String getDiscoverQuery4Args(List<URI> _categoryList,
+			List<URI> _inputParamList, List<URI> _outputParamList) {
 
 		StringBuffer discoveryQuery = new StringBuffer();
 
@@ -263,202 +356,15 @@ public class ServiceDiscovery {
 
 		discoveryQuery.append("}");
 
-		GraphQueryResult queryResult = reposHandler
-				.constructSPARQL(discoveryQuery.toString());
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
-
-		return out.toString();
+		return discoveryQuery.toString();
 	}
-
-	public static String discover(List<URI> _categoryList,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
-			QueryEvaluationException, RepositoryException,
+	
+	public String getIServeModelQuery (String _serviceID) throws FileNotFoundException,
+			IOException, QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
 
-		String templateString = new String(
-				"group group-demo;"
-						+ "outerTemplate(_categoryList) ::= <<"
-						+ " "
-						+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
-						+ "PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"
-						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
-						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
-						+ "CONSTRUCT { \n"
-						+ "?serviceID msm_ext:hasOperation ?inputMessage . \n"
-						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
-						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
-						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
-						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
-						+ "?serviceID msm_ext:hasOperation ?outputMessage . \n"
-						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
-						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
-						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
-						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
-						+
-
-						"?serviceID msm_ext:hasOperation ?inputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
-						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
-						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
-						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
-						+
-
-						"?serviceID msm_ext:hasOperation ?outputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
-						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
-						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
-						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						+
-
-						"} WHERE { \n"
-						+ "?serviceID rdf:type msm_ext:Service . \n"
-						+ ""
-						+ "$_categoryList:innerTemplate()$"
-						+ ""
-						+ "?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
-						+ "?descriptionBlock wsdl:namespace ?namespace . \n"
-						+ "?descriptionBlock wsdl:interface ?interfaceBlock . \n"
-						+ "?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"
-						+ "?interfaceOperation rdfs:label ?operationName . \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceMessageReference ?inputMessage . \n"
-						+ "OPTIONAL { \n"
-						+ "?operation sawsdl:modelReference ?operationModel . \n"
-						+ "} \n"
-						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
-						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
-						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceMessageReference ?outputMessage . \n"
-						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
-						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
-						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
-						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
-						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceFaultReference ?outputFaultMessage . \n"
-						+ "?outputFaultMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
-						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
-						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						+ "} \n" + "} \n" +
-
-						"}>>" + "" +
-
-						"innerTemplate(category) ::= <<" +
-						/**
-						 * TODO: Check this part.
-						 */
-						"{ \n"
-						+ "<$category$> rdfs:subClassOf* ?superClass . \n"
-						+ "?serviceID sawsdl:modelReference ?superClass . \n"
-						+ "} UNION { \n"
-						+ "?serviceID sawsdl:modelReference <$category$> . \n"
-						+ "} \n" + ">>");
-
-		
-		StringTemplateGroup group = new StringTemplateGroup(
-				new StringReader(templateString), DefaultTemplateLexer.class);
-
-		StringTemplate template = group.getInstanceOf("outerTemplate");
-		template.setAttribute("_categoryList", _categoryList);
-
-		GraphQueryResult queryResult = reposHandler
-				.constructSPARQL(template.toString());
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
-
-		return out.toString();
-	}
-
-	public static String lookup(URI _namespace, String _operationName,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
-			QueryEvaluationException, RepositoryException,
-			MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
-
-		StringTemplate lookupQuery = new StringTemplate(
-			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"+
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"+
-				"PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"+
-				"PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"+
-				"PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"+
-		
-				"CONSTRUCT { \n"+
-				"?messageReference ?p ?o . \n"+
-				"?faultMessageReference ?p1 ?o1 . \n"+
-				"} WHERE { \n"+
-		
-				"?serviceID rdf:type msm_ext:Service . \n"+
-				"?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"+
-				"?descriptionBlock wsdl:namespace <$_namespace$> . \n"+
-				"?descriptionBlock wsdl:interface ?interfaceBlock . \n"+
-				"?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"+
-				"?interfaceOperation wsdl:interfaceMessageReference ?messageReference . \n"+
-				"?interfaceOperation rdfs:label \"$_operationName$\" . \n"+
-				"?messageReference ?p ?o . \n"+
-				"OPTIONAL { ?interfaceOperation wsdl:interfaceFaultReference ?faultMessageReference . \n"+
-				"?faultMessageReference ?p1 ?o1 . } \n"+
-				"}");
-		
-		lookupQuery.setAttribute("_namespace", _namespace);
-		lookupQuery.setAttribute("_operationName", _operationName);
-
-		GraphQueryResult queryResult = reposHandler.constructSPARQL(lookupQuery.toString());
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
-
-		return out.toString();
-	}
-
-	public static String getIServeModel(String _serviceID,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
-			QueryEvaluationException, RepositoryException,
-			MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
-		RepositoryHandler reposHandler = getReposHandler();
-
-		StringTemplate transQuery = new StringTemplate(
+		StringTemplate template = new StringTemplate(
 
 				"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
@@ -470,12 +376,12 @@ public class ServiceDiscovery {
 						+
 
 						"CONSTRUCT { \n"
-						+ "<_serviceID> rdf:type msm:Service . \n"
-						+ "<_serviceID> rdfs:label ?serviceLabel . \n"
-						+ "<_serviceID> rdfs:isDefinedBy ?wsdlLink . \n"
-						+ "<_serviceID> dc:creator ?creator . \n"
-						+ "<_serviceID> sawsdl:modelReference ?serviceModel . \n"
-						+ "<_serviceID> msm:hasOperation ?operation . \n"
+						+ "?_serviceID rdf:type msm:Service . \n"
+						+ "?_serviceID rdfs:label ?serviceLabel . \n"
+						+ "?_serviceID rdfs:isDefinedBy ?wsdlLink . \n"
+						+ "?_serviceID dc:creator ?creator . \n"
+						+ "?_serviceID sawsdl:modelReference ?serviceModel . \n"
+						+ "?_serviceID msm:hasOperation ?operation . \n"
 						+
 
 						"?operation rdf:type msm:Operation . \n"
@@ -515,18 +421,19 @@ public class ServiceDiscovery {
 						+
 
 						"} WHERE { \n"
+						+ "BIND(IRI($_serviceID$) AS ?_serviceID)"
 						+
 
-						"<_serviceID> rdf:type msm_ext:Service . \n"
-						+ "<_serviceID> rdfs:label ?serviceLabel . \n"
-						+ "<_serviceID> rdfs:isDefinedBy ?wsdlLink . \n"
+						"?_serviceID rdf:type msm_ext:Service . \n"
+						+ "?_serviceID rdfs:label ?serviceLabel . \n"
+						+ "?_serviceID rdfs:isDefinedBy ?wsdlLink . \n"
 						+ "OPTIONAL { \n"
-						+ "<_serviceID> dc:creator ?creator . \n"
+						+ "?_serviceID dc:creator ?creator . \n"
 						+ "} \n"
 						+ "OPTIONAL { \n"
-						+ "<_serviceID> sawsdl:modelReference ?serviceModel . \n"
+						+ "?_serviceID sawsdl:modelReference ?serviceModel . \n"
 						+ "} \n"
-						+ "<_serviceID> msm_ext:wsdlDescription ?descriptionBlock . \n"
+						+ "?_serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
 						+
 
 						"?descriptionBlock wsdl:interface ?interfaceBlock . \n"
@@ -587,15 +494,8 @@ public class ServiceDiscovery {
 
 						"}");
 		
-		transQuery.setAttribute("_serviceID", _serviceID);
+		template.setAttribute("_serviceID", _serviceID);
 
-		GraphQueryResult queryResult = reposHandler.constructSPARQL(transQuery
-				.toString());
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
-
-		return out.toString();
+		return template.toString();
 	}
-
 }
