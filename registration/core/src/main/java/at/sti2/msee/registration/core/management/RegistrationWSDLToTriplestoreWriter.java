@@ -34,7 +34,7 @@ import org.ow2.easywsdl.wsdl.api.Operation;
 import org.ow2.easywsdl.wsdl.api.Output;
 import org.ow2.easywsdl.wsdl.api.Service;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
@@ -89,13 +89,13 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * @param wsdlURLString
 	 *            the url of the wsdl file
 	 * @return
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 *             if there occur any parsing, repository, etc. error this
 	 *             exception is thrown
 	 * @throws URISyntaxException
 	 */
 	public String transformWSDLtoTriplesAndStoreInTripleStore(
-			String wsdlURLString) throws RegistrationException {
+			String wsdlURLString) throws ServiceRegistrationException {
 		try {
 			// Init readers
 			this.doPreperations(wsdlURLString);
@@ -110,27 +110,27 @@ public class RegistrationWSDLToTriplestoreWriter {
 			return repowriter.getServiceID();
 
 		} catch (RepositoryException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring saving of triples into repository.",
 					e.getCause());
 		} catch (SAWSDLException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring parsing the service.", e.getCause());
 		} catch (FileNotFoundException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The configuration file was NOT found.", e.getCause());
 		} catch (MalformedURLException e) {
-			throw new RegistrationException("The provided URL is malformed.",
+			throw new ServiceRegistrationException("The provided URL is malformed.",
 					e.getCause());
 		} catch (IOException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The repository endpoint ID or the WSDL file could NOT be found.",
 					e.getCause());
 		} catch (WSDL4ComplexWsdlException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring parsing the service.", e.getCause());
 		} catch (URISyntaxException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"Errors durring parsing the service. An URI seems to have a bad format",
 					e.getCause());
 		} finally {
@@ -147,19 +147,19 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * @param service
 	 * @throws IOException
 	 * @throws SAWSDLException
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 * @throws RepositoryException
 	 * @throws URISyntaxException
 	 */
 	private void writeServiceToTriplestore(Service service) throws IOException,
-			SAWSDLException, RegistrationException, RepositoryException,
+			SAWSDLException, ServiceRegistrationException, RepositoryException,
 			URISyntaxException {
 		String SERVICE_NAME = service.getQName().getLocalPart();
 		String serviceNamespace = service.getQName().getNamespaceURI() + "#";
 		String namespaceURI = service.getQName().getNamespaceURI();
 
 		if (serviceNamespace == null || SERVICE_NAME == null) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"service name or service namespace is null");
 		}
 
@@ -178,7 +178,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 		 */
 		if (categories.size() == 0) {
 			logger.error("The service MUST be at least annotated with one service category.");
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The service MUST be at least annotated with one service category. "
 							+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 		}
@@ -197,14 +197,14 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * Set up some variables needed by the class
 	 * 
 	 * @param wsdlURLString
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 * @throws SAWSDLException
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 * @throws WSDL4ComplexWsdlException
 	 */
 	private void doPreperations(String wsdlURLString)
-			throws RegistrationException, SAWSDLException, IOException,
+			throws ServiceRegistrationException, SAWSDLException, IOException,
 			URISyntaxException, WSDL4ComplexWsdlException {
 
 		this.wsdlURLString = wsdlURLString;
@@ -282,12 +282,12 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * @param interfaceOperationName
 	 * @param pattern
 	 * @throws RepositoryException
-	 * @throws RegistrationException 
+	 * @throws ServiceRegistrationException 
 	 * @throws SAWSDLException 
 	 */
 	private void writeOperationInputToTriplestore(Input input,
 			String interfaceName, String interfaceOperationName, String pattern)
-			throws RepositoryException, SAWSDLException, RegistrationException {
+			throws RepositoryException, SAWSDLException, ServiceRegistrationException {
 
 		QName inputMsgLabel = input.getMessageName();
 		String inputMsgLabelName = null;
@@ -369,7 +369,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 				}
 			} catch (SAWSDLException e) {
 				e.printStackTrace();
-			} catch (RegistrationException e) {
+			} catch (ServiceRegistrationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -382,11 +382,11 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * @param service
 	 * @throws RepositoryException
 	 * @throws URISyntaxException
-	 * @throws RegistrationException 
+	 * @throws ServiceRegistrationException 
 	 * @throws SAWSDLException 
 	 */
 	private void writeEndpointIntoTripleStore(Service service)
-			throws RepositoryException, URISyntaxException, SAWSDLException, RegistrationException {
+			throws RepositoryException, URISyntaxException, SAWSDLException, ServiceRegistrationException {
 		for (Endpoint endpoint : service.getEndpoints()) {
 
 			String endpointName = endpoint.getName();
@@ -414,11 +414,11 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * 
 	 * @param wsdlInterface
 	 * @throws RepositoryException
-	 * @throws RegistrationException 
+	 * @throws ServiceRegistrationException 
 	 * @throws SAWSDLException 
 	 */
 	private void writeInterfaceToTriplestore(InterfaceType wsdlInterface)
-			throws RepositoryException, SAWSDLException, RegistrationException {
+			throws RepositoryException, SAWSDLException, ServiceRegistrationException {
 		// Interface
 		String interfaceName = wsdlInterface.getQName().getLocalPart();
 
@@ -440,12 +440,12 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 * @param interfaceOperation
 	 * @param interfaceName
 	 * @throws RepositoryException
-	 * @throws RegistrationException 
+	 * @throws ServiceRegistrationException 
 	 * @throws SAWSDLException 
 	 */
 	private void writeInterfaceOperationToTriplestore(
 			Operation interfaceOperation, String interfaceName)
-			throws RepositoryException, SAWSDLException, RegistrationException {
+			throws RepositoryException, SAWSDLException, ServiceRegistrationException {
 		String interfaceOperationName = interfaceOperation.getQName()
 				.getLocalPart();
 		String pattern = interfaceOperation.getPattern().toString();

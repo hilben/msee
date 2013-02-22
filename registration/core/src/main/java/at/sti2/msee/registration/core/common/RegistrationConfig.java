@@ -52,17 +52,9 @@ public class RegistrationConfig {
 	public String getSesameEndpoint() {
 		return this.properties.getProperty("registration.sesame.endpoint");
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> refs/remotes/origin/msee-carneval
 	/**
-<<<<<<< HEAD
 	 * returns the Sesame Repository defined in the configuration file
-=======
-	 * Returns the Sesame Repository defined in the configuration file
->>>>>>> refs/remotes/origin/msee-carneval
 	 * @return
 	 */
 	public String getSesameReposID() {

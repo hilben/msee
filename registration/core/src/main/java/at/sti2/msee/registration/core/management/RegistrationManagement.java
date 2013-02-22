@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;
 
@@ -16,9 +16,9 @@ public abstract class RegistrationManagement {
 	 * 
 	 * @param serviceURI
 	 * @return
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 */
-	public static String delete(String serviceURI) throws RegistrationException {
+	public static String delete(String serviceURI) throws ServiceRegistrationException {
 
 		RegistrationManagement.initRepo();
 		try {
@@ -38,10 +38,10 @@ public abstract class RegistrationManagement {
 	 * @param oldServiceURI
 	 * @param newServiceURI
 	 * @return
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 */
 	public static String update(String oldServiceURI, String newServiceURI)
-			throws RegistrationException {
+			throws ServiceRegistrationException {
 		// Initialising the repository
 		RegistrationManagement.initRepo();
 
@@ -62,13 +62,13 @@ public abstract class RegistrationManagement {
 	 * 
 	 * @throws ManagementException
 	 */
-	private static void initRepo() throws RegistrationException {
+	private static void initRepo() throws ServiceRegistrationException {
 		try {
 			RegistrationConfig cfg = new RegistrationConfig();
 			repositoryHandler = new RepositoryHandler(cfg.getSesameEndpoint(),
 					cfg.getSesameReposID(), false);
 		} catch (IOException e) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"There was a problem initializing the repository. Maybe the endpoint or the repository do not exist.",
 					e.getCause());
 		}

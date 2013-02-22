@@ -30,13 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
-<<<<<<< HEAD
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
-import at.sti2.msee.registration.core.management.TransformationWSDL;
-=======
-import at.sti2.msee.registration.api.exception.RegistrationException;
 import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
->>>>>>> refs/remotes/origin/msee-carneval
 
 /**
  * @author Corneliu Stanciu

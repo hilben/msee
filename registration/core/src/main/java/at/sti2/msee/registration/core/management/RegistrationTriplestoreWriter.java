@@ -16,7 +16,7 @@ import org.openrdf.repository.RepositoryException;
 import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLException;
 import org.ow2.easywsdl.extensions.sawsdl.api.schema.Element;
 
-import at.sti2.msee.registration.api.exception.RegistrationException;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.QueryHelper;
 import at.sti2.util.triplestore.RepositoryHandler;
@@ -140,12 +140,12 @@ public class RegistrationTriplestoreWriter {
 	 * @param _wsdlURI
 	 * @throws RepositoryException
 	 * @throws SAWSDLException
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 */
 	public void writeElementDeclaration(QName elementQName,
 			String interfaceName, String operationName, String messageLabel,
 			String _wsdlURI) throws RepositoryException, SAWSDLException,
-			RegistrationException {
+			ServiceRegistrationException {
 		logger.info("ELEMENT DECL INFO : Triple + Context: "
 				+ getElementDeclarationNode(elementQName.getLocalPart())
 				+ " , " + QueryHelper.getRDFURI("type") + " , "
@@ -699,18 +699,18 @@ public class RegistrationTriplestoreWriter {
 	 * "loweringSchemaMapping" or "liftingSchemaMapping"
 	 * 
 	 * @param elementQName
-	 * @throws RegistrationException
+	 * @throws ServiceRegistrationException
 	 * @throws SAWSDLException
 	 */
 	public void checkAnnotations(QName elementQName)
-			throws RegistrationException, SAWSDLException {
+			throws ServiceRegistrationException, SAWSDLException {
 		List<URI> loweringURIs = elementsMap.get(elementQName)
 				.getLoweringSchemaMapping();
 		List<URI> liftingURIs = elementsMap.get(elementQName)
 				.getLiftingSchemaMapping();
 
 		if (loweringURIs.size() == 0 && liftingURIs.size() == 0) {
-			throw new RegistrationException(
+			throw new ServiceRegistrationException(
 					"The service MUST contains at least one element anotated with liftingSchemaMapping. "
 							+ "For documentation see: http://www.sesa.sti2.at/doc/service_annotation");
 		}
