@@ -140,7 +140,7 @@ public class RegistrationTriplestoreWriter {
 	 * @param _wsdlURI
 	 * @throws RepositoryException
 	 * @throws SAWSDLException
-	 * @throws ServiceRegistrationException
+	 * @throws RegistrationException
 	 */
 	public void writeElementDeclaration(QName elementQName,
 			String interfaceName, String operationName, String messageLabel,
@@ -699,7 +699,7 @@ public class RegistrationTriplestoreWriter {
 	 * "loweringSchemaMapping" or "liftingSchemaMapping"
 	 * 
 	 * @param elementQName
-	 * @throws ServiceRegistrationException
+	 * @throws RegistrationException
 	 * @throws SAWSDLException
 	 */
 	public void checkAnnotations(QName elementQName)

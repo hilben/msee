@@ -3,7 +3,7 @@
  */
 package at.sti2.msee.registration.core.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;

@@ -34,6 +34,7 @@ import org.ow2.easywsdl.wsdl.api.Operation;
 import org.ow2.easywsdl.wsdl.api.Output;
 import org.ow2.easywsdl.wsdl.api.Service;
 
+
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.util.triplestore.RepositoryHandler;

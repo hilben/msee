@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
 
@@ -71,7 +70,7 @@ public class RegistrationWSDLToTriplestoreWriterTest {
 	@Test
 	public void testTransformWSDLFail() {
 		for (URL url : webservicefail) {
-			logger.info("Tranform: " + url);
+			logger.info("Transform: " + url);
 
 			try {
 				this.registration

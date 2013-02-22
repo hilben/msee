@@ -60,7 +60,7 @@ public abstract class RegistrationManagement {
 	/**
 	 * Initialising the repository needed for all the above methods.
 	 * 
-	 * @throws ManagementException
+	 * @throws ServiceRegistrationException
 	 */
 	private static void initRepo() throws ServiceRegistrationException {
 		try {

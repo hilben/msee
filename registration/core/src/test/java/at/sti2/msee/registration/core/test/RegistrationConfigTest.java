@@ -80,6 +80,6 @@ public class RegistrationConfigTest {
 		String strFail = this.configFail.getSesameReposID();
 		
 		assertTrue(strPass.compareTo(testValueReposiotry)==0);
-		assertFalse(strFail.compareTo(testPropertyFailLocation)==0);
+		assertFalse(strFail.compareTo(testPropertyFailLocation)==0);		
 	}
 }
