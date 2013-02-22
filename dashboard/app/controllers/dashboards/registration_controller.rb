@@ -4,9 +4,9 @@ require "nokogiri"
 class Dashboards::RegistrationController < ApplicationController
   before_filter :authenticate_service_owner!
   
-#@@registration_webservice = "http://localhost:8080/registration/service/?wsdl"
-@@registration_webservice = "http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl"
-    
+  @@registration_webservice = "http://localhost:8080/registration-webservice/services/register?wsdl"
+  @@registration_webservice = "http://sesa.sti2.at:8080/registration-webservice/services/register?wsdl"
+
   def index
     input = params[:wsdl_input]
 
