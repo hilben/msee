@@ -1,8 +1,12 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-#require "lib/monitoring-webservice.jar"
+#require "lib/jar/lib.jar"
 #require "lib/monitoring.jar"
+
+Dir["lib/jar/*.jar"].each{|jar| require jar}
+
+java_import Java::at.sti2.msee.registration.core.common.RegistrationConfig
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
