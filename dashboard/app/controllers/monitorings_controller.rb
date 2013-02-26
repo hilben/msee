@@ -5,7 +5,7 @@ require 'java'
 #java_import Java::at.sti2.ngsee.monitoring.webservice.ProxyWebService
 #java_import Java::at.sti2.wsmf.core.common.MonitoringConfig
 #java_import Java::at.sti2.wsmf.core.PersistentHandler
-
+java_import Java::at.sti2.msee.registration.core.common.RegistrationConfig
 # Retrieve a JSON Resource
 class MonitoringsController < ApplicationController
 
@@ -52,9 +52,9 @@ class MonitoringsController < ApplicationController
 
 
    # @b = PersistentHandler.
-    #@a = MonitoringConfig.getConfig
-    #@a = @a.toString()
-    #logger.info "Config for Monitoring #{@a}"
+    @a = RegistrationConfig.new
+    @a = @a.toString()
+    logger.info "Config for Registration #{@a}"
 
 
     # render :id
