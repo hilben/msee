@@ -66,25 +66,22 @@ public class TransformationWSDL {
 	public static String transformWSDL(String _wsdlURI)
 			throws ServiceRegistrationException {
 		try {
+			
 			RegistrationConfig cfg = new RegistrationConfig();
-			RepositoryHandler reposHandler = new RepositoryHandler(
-					cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
+			RepositoryHandler reposHandler = new RepositoryHandler(cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
 
 			WSDLtoRepositoryWriter repowriter = null;
 
 			// Read a SAWSDL description
-			SAWSDLReader readerSAWSDL = SAWSDLFactory.newInstance()
-					.newSAWSDLReader();
-			WSDL4ComplexWsdlReader reader = WSDL4ComplexWsdlFactory
-					.newInstance().newWSDLReader();
+			SAWSDLReader readerSAWSDL = SAWSDLFactory.newInstance().newSAWSDLReader();
+			WSDL4ComplexWsdlReader reader = WSDL4ComplexWsdlFactory.newInstance().newWSDLReader();
 
 			URL wsdlURI = new URL(_wsdlURI);
-			org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL = readerSAWSDL
-					.read(wsdlURI);
+			org.ow2.easywsdl.extensions.sawsdl.api.Description descSAWSDL = readerSAWSDL.read(wsdlURI);
 			Description desc = reader.read(wsdlURI);
 
 			desc.addImportedDocumentsInWsdl();
-
+						
 			// Get all elements of the xml
 			elementsMap = new HashMap<QName, Element>();
 			Types types = descSAWSDL.getTypes();

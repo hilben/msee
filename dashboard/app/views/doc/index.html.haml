@@ -18,7 +18,7 @@
       %h2 High-Level Architecture Diagram
       %p{"align" => "center"}= image_tag "sesa-architecture-overview.png"
 
-      %h2 Repository
+      %h2{:id => "repository"} Repository 
       %p{"align" => "justify"}
         The repository stores the metadata about services which are needed by the other
         components of the SESA architecture. The semantic descriptions of Web services
@@ -27,7 +27,7 @@
         The repository is an RDF triplestore, which can be queried via SPARQL. It is
         however not intended to be directly accessible from outside the SESA architecture .
 
-      %h2 Management Component
+      %h2{:id => "management"} Management Component
       %p{"align" => "justify"}
         The management component allows administering the data stored in the repository,
         and in particular it allows storing and updating ontologies. These data are not
@@ -38,7 +38,7 @@
       %p{"align" => "justify"}
         The management component is not yet present in the first release.
 
-      %h2 Registration Component
+      %h2{:id => "registration"} Registration Component
       %p{"align" => "justify"}
         The registration component allows service owners to register their services
         in the platform, by storing the relevant information in the repository. Basically,
@@ -55,7 +55,7 @@
         input/output data), the registration component can check compliance to such
         policy when a service is registered (or the description is updated).
 
-      %h2 Discovery Component
+      %h2{:id => "discovery"} Discovery Component
       %p{"align" => "justify"}
         The discovery component allows client applications to discover services that
         can fulfil their goals. In its simplest form, implemented in the first release,
@@ -65,8 +65,8 @@
         capabilities (condition/effect) and/or non-functional properties, depending
         on complexity and project requirements.
 
-      %h2 Invocation Component (Invoker)
-      %p{"align" => "center"}= image_tag "invocation_process_efreight.png"
+      %h2{:id => "invocation"} Invocation Component (Invoker)
+      %p{"align" => "center"}= image_tag "invocation_process_msee.png"
       %p{"align" => "justify"}
         The invoker allows client applications to invoke external Web services without
         having to deal with their specific data schema. The client asks the invoker to
@@ -91,5 +91,5 @@
         services, in a subsequent release. In the first release, only XSLT scripts are
         supported as lifting and lowering transformations.
 
-      %h2 Grounding Component
+      %h2{:id => "grounding"} Grounding Component
       %p{"align" => "center"}= image_tag "grounding_component_messages.png"
