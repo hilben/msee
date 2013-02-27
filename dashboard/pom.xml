@@ -21,6 +21,11 @@
 			<artifactId>registration.core</artifactId>
 			<version>m17.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>at.sti2.msee.delivery</groupId>
+			<artifactId>discovery.core</artifactId>
+			<version>m17.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	
 	<build>

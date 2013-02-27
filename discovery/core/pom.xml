@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>util.triplestore.client</artifactId>
-			<version>${project.parent.version}</version>			
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
@@ -32,4 +32,14 @@
 			<version>3.2</version>
 		</dependency>
 	</dependencies>
+
+	<!-- Replace variables in property files -->
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 </project>
