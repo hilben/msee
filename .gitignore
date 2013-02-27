@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings
+.metadata
+target
+bin
+*.class
+*.swp
+performance.xgraph
+/global-groovy.log

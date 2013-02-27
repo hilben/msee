@@ -1,0 +1,50 @@
+.container
+  %div{"align" => "center"}
+    %h1 FAQ
+
+  %h2 General
+
+  %h3 1. How do I can access the SESA platform?
+  %p{"align" => "justify"}
+    As described under
+    %a{"href" => "release.html"} Release
+    you can use the following SOAP endpoints to access the single components.
+    %ul
+      %li
+        %a{"href" => "http://msee.sti2.at/registration-webservice/services", "target" => "_blank"} Registration Component
+        %a{"href" => "http://msee.sti2.at/registration-webservice/services/register?wsdl", "target" => "_blank"} (WSDL)
+      %li
+        %a{"href" => "http://http://msee.sti2.at/discovery-webservice", "target" => "_blank"} Discovery Component
+        %a{"href" => "http://msee.sti2.at/discovery-webservice/services/discovery?wsdl", "target" => "_blank"} (WSDL)
+      -#   
+        %li
+          %a{"href" => "http://sesa.sti2.at:8080/invoker-webservice", "target" => "_blank"} Invocation Component (Invoker)
+          %a{"href" => "http://sesa.sti2.at:8080/invoker-webservice/services/invoker?wsdl", "target" => "_blank"} (WSDL)
+    To access SOAP services you can use your favorite development environment or for a first testing
+    the graphical tool
+    %a{"href" => "http://www.soapui.org/", "target" => "_blank"} SoapUI.
+
+  %h3 2. Is it possible to register my (auto-generated) WSDL services?
+  %p{"align" => "justify"}
+    If the <u>W</u>eb <u>S</u>ervice <u>D</u>escription <u>L</u>anguage (WSDL) File is annotated semantically you
+    are able to use the Registration Component to register your service. Otherwise you have to annotate the WSDL
+    file as described under
+    %a{"href" => "/doc/service_annotation"}Service Annotation.
+    .alert.alert-info
+      %strong Heads up!
+      %br
+      You don't have to change your service in order to register it. The only thing that you must do is to
+      change the WSDL file. The changed WSDL could be stored also on another host.
+
+
+  %h3 3. Where do I can find more information about MSEE?
+  %p{"align" => "justify"}
+    Please have a look at the project website  
+    %a{"href" =>  "http://www.msee-ip.eu/project-overview", "target" => "_blank"} http://www.msee-ip.eu/project-overview
+
+  %h3 4. Where do I can find the MSEE source code?
+  %p{"align" => "justify"}
+    The current developer branch you can find in our internal
+    %a{"href" => "http://redmine.sesa.sti2.at/projects/sesa-msee/repository", "target" => "_blank"} GIT Repository
+
+  %hr

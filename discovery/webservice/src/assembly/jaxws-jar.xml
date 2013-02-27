@@ -1,0 +1,14 @@
+<!-- <assembly>
+	<id>jaxws</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<files>
+		<file>
+			<source>target/classes/at/sti2/msee/discovery/webservice/DiscoveryWebService.class</source>
+			<outputDirectory>/service</outputDirectory>
+		</file>
+	</files>
+</assembly>
+-->

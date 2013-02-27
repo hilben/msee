@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  ontology_url: MyString
+  user_id: MyString
+
+two:
+  ontology_url: MyString
+  user_id: MyString

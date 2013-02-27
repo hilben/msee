@@ -1,0 +1,98 @@
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX dc: <http://purl.org/dc/elements/1.1/> 
+PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> 
+PREFIX msm:<http://cms-wg.sti2.org/ns/minimal-service-model#> 
+PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> 
+PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+CONSTRUCT { 
+<_serviceID> rdf:type msm:Service . 
+<_serviceID> rdfs:label ?serviceLabel . 
+<_serviceID> rdfs:isDefinedBy ?wsdlLink . 
+<_serviceID> dc:creator ?creator . 
+<_serviceID> sawsdl:modelReference ?serviceModel . 
+<_serviceID> msm:hasOperation ?operation . 
+?operation rdf:type msm:Operation . 
+?operation rdfs:label ?operationLabel . 
+?operation sawsdl:modelReference ?operationModel . 
+?operation msm:hasInput ?inputMessage . 
+?inputMessage rdf:type msm:MessageContent . 
+?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . 
+?inputMessage msm:hasPart ?inputMessagePart . 
+?inputMessagePart rdf:type msm:MessagePart . 
+?inputMessagePart msm:hasName ?inputMessagePartName . 
+?operation msm:hasOutput ?outputMessage . 
+?outputMessage rdf:type msm:MessageContent . 
+?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . 
+?outputMessage msm:hasPart ?outputMessagePart . 
+?outputMessagePart rdf:type msm:MessagePart . 
+?outputMessagePart msm:hasName ?outputMessagePartName . 
+?operation msm:hasInputFault ?inputFaultMessage . 
+?inputFaultMessage rdf:type msm:MessageContent . 
+?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . 
+?inputFaultMessage msm:hasPart ?inputFaultMessagePart . 
+?inputFaultMessagePart rdf:type msm:MessagePart . 
+?inputFaultMessagePart msm:hasName ?inputFaultMessagePartName . 
+?operation msm:hasOutputFault ?outputFaultMessage . 
+?outputFaultMessage rdf:type msm:MessageContent . 
+?outputFaultMessage msm:hasPart ?outputFaultMessagePart . 
+?outputFaultMessagePart rdf:type msm:MessagePart . 
+?outputFaultMessagePart msm:hasName ?outputFaultMessagePartName . 
+} WHERE { 
+<_serviceID> rdf:type msm_ext:Service . 
+<_serviceID> rdfs:label ?serviceLabel . 
+<_serviceID> rdfs:isDefinedBy ?wsdlLink . 
+OPTIONAL { 
+<_serviceID> dc:creator ?creator . 
+} 
+OPTIONAL { 
+<_serviceID> sawsdl:modelReference ?serviceModel . 
+} 
+<_serviceID> msm_ext:wsdlDescription ?descriptionBlock . 
+?descriptionBlock wsdl:interface ?interfaceBlock . 
+?interfaceBlock wsdl:interfaceOperation ?operation . 
+?operation rdfs:label ?operationLabel . 
+OPTIONAL { 
+?operation wsdl:interfaceMessageReference ?inputMessage . 
+OPTIONAL { 
+?operation sawsdl:modelReference ?operationModel . 
+} 
+?inputMessage rdf:type wsdl:InputMessage . 
+?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . 
+?inputMessage wsdl:elementDeclaration ?inputMessagePart . 
+?inputMessagePart wsdl:localName ?inputMessagePartName . 
+OPTIONAL { 
+?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . 
+} 
+} 
+OPTIONAL { 
+?operation wsdl:interfaceMessageReference ?outputMessage . 
+?outputMessage rdf:type wsdl:OutputMessage . 
+?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . 
+?outputMessage wsdl:elementDeclaration ?outputMessagePart . 
+?outputMessagePart wsdl:localName ?outputMessagePartName . 
+OPTIONAL { 
+?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . 
+} 
+} 
+OPTIONAL { 
+?operation wsdl:interfaceFaultReference ?inputFaultMessage . 
+?inputFaultMessage rdf:type wsdl:InputMessage . 
+?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . 
+?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . 
+?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . 
+OPTIONAL { 
+?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . 
+} 
+} 
+OPTIONAL { 
+?operation wsdl:interfaceFaultReference ?outputFaultMessage . 
+?outputFaultMessage rdf:type wsdl:OutputMessage . 
+?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . 
+?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . 
+?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . 
+OPTIONAL { 
+?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . 
+} 
+} 
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+	<title>MSEE - Latest News &amp; Headlines</title>
+	<link>http://msee.sti2.at/</link>
+	<description>The latest news and headlines from MSEE Project.</description>
+	<language>en-GB</language>
+	<copyright>Copyright (c) 2013 STI Innsbruck. All rights reserved</copyright>
+	<pubDate>2012-02-22T04:49:53-05:00</pubDate>
+	<!--
+	<item>
+		<title></title>
+		<link></link>
+		<description></description>
+	</item>
+	-->
+</channel>
+</rss>

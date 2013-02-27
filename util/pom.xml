@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>util</artifactId>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m17.1-SNAPSHOT</version>
+	</parent>
+
+	<modules>
+		<module>triplestore-client</module>
+		<module>ranking-framework</module>
+	</modules>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<saxon.version>8.7</saxon.version>
+	</properties>
+
+	<developers>
+		<developer>
+			<name>Michael Rogger</name>
+		</developer>
+		<developer>
+			<name>Alex Oberhauser</name>
+		</developer>
+		<developer>
+			<name>Corneliu Stanciu</name>
+		</developer>
+	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- xslt and xquery processor (needed for xslt 2.0) -->
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon-dom</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

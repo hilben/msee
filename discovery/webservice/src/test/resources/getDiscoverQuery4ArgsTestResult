@@ -1,0 +1,81 @@
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> 
+PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> 
+PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+CONSTRUCT { 
+?serviceID msm_ext:hasOperation ?inputMessage . 
+?inputMessage rdf:type wsdl:InputMessage . 
+?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . 
+?inputMessage wsdl:elementDeclaration ?inputMessagePart . 
+?inputMessagePart wsdl:localName ?inputMessagePartName . 
+?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . 
+?serviceID msm_ext:hasOperation ?outputMessage . 
+?outputMessage rdf:type wsdl:OutputMessage . 
+?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . 
+?outputMessage wsdl:elementDeclaration ?outputMessagePart . 
+?outputMessagePart wsdl:localName ?outputMessagePartName . 
+?serviceID msm_ext:hasOperation ?inputFaultMessage . 
+?inputFaultMessage rdf:type wsdl:InputMessage . 
+?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . 
+?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . 
+?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . 
+?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . 
+?serviceID msm_ext:hasOperation ?outputFaultMessage . 
+?outputFaultMessage rdf:type wsdl:OutputMessage . 
+?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . 
+?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . 
+?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . 
+?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . 
+} WHERE { 
+?serviceID rdf:type msm_ext:Service . 
+{ 
+<http://www.sti2.at/MSEE/ServiceCategories#BUSINESS> rdfs:subClassOf* ?superClass . 
+?serviceID sawsdl:modelReference ?superClass . 
+} UNION { 
+?serviceID sawsdl:modelReference <http://www.sti2.at/MSEE/ServiceCategories#BUSINESS> . 
+} 
+?serviceID msm_ext:wsdlDescription ?descriptionBlock . 
+?descriptionBlock wsdl:namespace ?namespace . 
+?descriptionBlock wsdl:interface ?interfaceBlock . 
+?interfaceBlock wsdl:interfaceOperation ?operation . 
+?operation rdfs:label ?operationName . 
+OPTIONAL { 
+?operation wsdl:interfaceMessageReference ?inputMessage . 
+OPTIONAL { 
+?operation sawsdl:modelReference ?operationModel . 
+} 
+?inputMessage rdf:type wsdl:InputMessage . 
+?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . 
+?inputMessage wsdl:elementDeclaration ?inputMessagePart . 
+?inputMessagePart wsdl:localName ?inputMessagePartName . 
+{ ?inputMessagePart sawsdl:modelReference <http://www.sti2.at/MSEE/ServiceCategories#INPUT> . } 
+} 
+?operation wsdl:interfaceMessageReference ?outputMessage . 
+?outputMessage rdf:type wsdl:OutputMessage . 
+?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . 
+?outputMessage wsdl:elementDeclaration ?outputMessagePart . 
+?outputMessagePart wsdl:localName ?outputMessagePartName . 
+?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . 
+?outputMessagePart sawsdl:modelReference <http://www.sti2.at/MSEE/ServiceCategories#OUTPUT> . 
+OPTIONAL { 
+?operation wsdl:interfaceFaultReference ?inputFaultMessage . 
+?inputFaultMessage rdf:type wsdl:InputMessage . 
+?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . 
+?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . 
+?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . 
+OPTIONAL { 
+?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . 
+} 
+} 
+OPTIONAL { 
+?operation wsdl:interfaceFaultReference ?outputFaultMessage . 
+?outputFaultMessage rdf:type wsdl:OutputMessage . 
+?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . 
+?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . 
+?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . 
+OPTIONAL { 
+?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . 
+} 
+} 
+}

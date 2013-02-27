@@ -1,0 +1,10 @@
+<p>
+    Select QoS Parameters:
+</p>
+
+    <% if @qosParamKeys then%>
+    <% for param in @qosParamKeys do%>
+    <input class = "qoscheckbox" id="<%= param %>" name="<%= param %>" type="checkbox" value="1" />
+    <%= param %>
+    <% end %>
+    <% end %>

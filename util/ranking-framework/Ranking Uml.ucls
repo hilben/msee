@@ -1,0 +1,195 @@
+<class-diagram version="1.0.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.RankingException" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/RankingException.java" binary="false">    
+    <position x="104" y="273" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.RankingEngineInterface" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/RankingEngineInterface.java" binary="false">    
+    <position x="1102" y="218" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.Ranking" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/Ranking.java" binary="false">    
+    <position x="1268" y="-12" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.descriptions.ServiceDescription" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/descriptions/ServiceDescription.java" 
+    binary="false">    
+    <position x="853" y="294" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.descriptions.RankingPreference" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/descriptions/RankingPreference.java" 
+    binary="false">    
+    <position x="885" y="600" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.descriptions.GoalDescription" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/descriptions/GoalDescription.java" binary="false">    
+    <position x="1222" y="536" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.framework.RankingEngine" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/framework/RankingEngine.java" binary="false">    
+    <position x="883" y="-7" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.framework.RankingFramework" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/framework/RankingFramework.java" binary="false">    
+    <position x="1582" y="212" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.framework.RankingFactory" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/framework/RankingFactory.java" binary="false">    
+    <position x="1524" y="512" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.rules.NFPInfo" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/rules/NFPInfo.java" binary="false">    
+    <position x="553" y="594" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="11" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.rules.PreferencesExtractor" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/rules/PreferencesExtractor.java" binary="false">    
+    <position x="276" y="593" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="12" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.rules.RulesRanking" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/rules/RulesRanking.java" binary="false">    
+    <position x="361" y="183" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.util.Constants" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/util/Constants.java" binary="false">    
+    <position x="70" y="513" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.util.HTTPReader" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/util/HTTPReader.java" binary="false">    
+    <position x="630" y="286" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="15" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.util.DefaultLocator" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/util/DefaultLocator.java" binary="false">    
+    <position x="292" y="847" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="16" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.util.Extractor" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/util/Extractor.java" binary="false">    
+    <position x="1240" y="792" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="17" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.ws.Ranking" project="ranking" 
+    file="/ranking/src/main/java/eu/soa4all/ranking/ws/Ranking.java" binary="false">    
+    <position x="1390" y="638" width="355" height="138"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="18" corner="BOTTOM_RIGHT" language="java" name="eu.soa4all.ranking.wsmolite.WSMOLiteRDFReader" 
+    project="ranking" file="/ranking/src/main/java/eu/soa4all/ranking/wsmolite/WSMOLiteRDFReader.java" binary="false">    
+    <position x="101" y="54" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association id="19">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="20" name="rankingEngines"/>      
+      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="23" name="nfpAttributes"/>      
+      <multiplicity id="24" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="25">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="26">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <generalization id="27">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="28">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="29" name="nfps"/>      
+      <multiplicity id="30" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

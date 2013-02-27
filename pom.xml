@@ -1,0 +1,249 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>at.sti2.msee.delivery</groupId>
+	<artifactId>platform</artifactId>
+	<version>m17.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>util</module>
+		<module>registration</module>
+        <module>dashboard</module>
+		<module>discovery</module>
+		<!-- <module>monitoring</module> -->
+		<!-- <module>invocation</module> -->
+		<!-- <module>ranking</module> -->
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<cxf.version>2.4.1</cxf.version>
+		<saxon.version>8.7</saxon.version>
+		<axis.version>1.5.4</axis.version>
+
+		<!-- Default properties -->
+		<default.port>8080</default.port>
+		<default.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</default.sesame.endpoint>
+
+		<!-- Discovery properties -->
+		<discovery.sesame.endpoint>${default.sesame.endpoint}</discovery.sesame.endpoint>
+		<discovery.sesame.repository.name>msee</discovery.sesame.repository.name>
+		<discovery.port>${default.port}</discovery.port>
+
+		<!-- Monitoring properties -->
+		<monitoring.endpoint.servicename>ServiceName</monitoring.endpoint.servicename>
+		<monitoring.endpoint.namespace>http://webservice.monitoring.ngsee.sti2.at/</monitoring.endpoint.namespace>
+
+		<monitoring.triplestore.endpoint>${default.sesame.endpoint}</monitoring.triplestore.endpoint>
+		<monitoring.triplestore.reposid>wsmf</monitoring.triplestore.reposid>
+
+		<monitoring.instance.prefixuri>http://sti2.at/wsmf/instances#</monitoring.instance.prefixuri>
+		<monitoring.ws.port>${default.port}</monitoring.ws.port>
+
+		<!-- Registration properties -->
+		<registration.sesame.endpoint>${default.sesame.endpoint}</registration.sesame.endpoint>
+		<registration.sesame.reposid>msee</registration.sesame.reposid>
+		<registration.ws.port>${default.port}</registration.ws.port>
+
+		<!-- Invocation properties -->
+		<invocation.sesame.endpoint>${default.sesame.endpoint}</invocation.sesame.endpoint>
+		<invocation.sesame.reposid>sesaRepo</invocation.sesame.reposid>
+		<invocation.ws.port>${default.port}</invocation.ws.port>
+
+		<!-- Management properties -->
+		<management.sesame.endpoint>${default.sesame.endpoint}</management.sesame.endpoint>
+		<management.sesame.reposid>sesaRepo</management.sesame.reposid>
+		<management.ws.port>${default.port}</management.ws.port>
+
+		<!-- Ranking properties -->
+		<ranking.ws.port>${default.port}</ranking.ws.port>
+	</properties>
+
+	<build>
+		<finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
+		<plugins>
+			<!-- Configure java version -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<!-- Launch platform from jetty -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.0.0.M5</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<contextHandlers>
+						<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+							<war>${basedir}/registration/webservice/target/${project.groupId}.registration.webservice-${project.version}.war</war>
+							<contextPath>/registration</contextPath>
+						</contextHandler>
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/discovery/webservice/target/${project.groupId}.discovery.webservice-${version}.war</war> -->
+						<!-- <contextPath>/discovery</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/monitoring/jsonservice/target/${project.groupId}.monitoring.jsonservice-${version}.war</war> -->
+						<!-- <contextPath>/monitoring-jsonservice</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/monitoring/webservice/target/${project.groupId}.monitoring.webservice-${version}.war</war> -->
+						<!-- <contextPath>/monitoring</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/invocation/webservice/target/${project.groupId}.invocation.webservice-${version}.war</war> -->
+						<!-- <contextPath>/invocation</contextPath> -->
+						<!-- </contextHandler> -->
+						<!-- <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext"> -->
+						<!-- <war>${basedir}/ranking/webservice/target/${project.groupId}.ranking.webservice-${version}.war</war> -->
+						<!-- <contextPath>/ranking</contextPath> -->
+						<!-- </contextHandler> -->
+					</contextHandlers>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<!-- Sesame -->
+		<repository>
+			<id>aduna</id>
+			<name>Aduna Software</name>
+			<url>http://repo.aduna-software.org/maven2/releases/</url>
+		</repository>
+		<!-- Easywsdl additional dependencies -->
+		<repository>
+			<id>Server-artifactory.petalslink.com</id>
+			<name>Server-artifactory.petalslink.com-releases</name>
+			<url>http://maven.petalslink.com/public</url>
+		</repository>
+	</repositories>
+
+	<!-- Dependencies for the whole project are declared here to make sure the versions match -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>registration.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>util.triplestore.client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openrdf.sesame</groupId>
+				<artifactId>sesame-runtime</artifactId>
+				<version>2.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-ext-sawsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>wsdl4j</groupId>
+				<artifactId>wsdl4j</artifactId>
+				<version>1.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.easywsdl</groupId>
+				<artifactId>easywsdl-wsdl</artifactId>
+				<version>2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-simple</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>3.0.7.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>3.0.7.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.neethi</groupId>
+				<artifactId>neethi</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>stringtemplate</artifactId>
+				<version>3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-junit4</artifactId>
+				<version>2.6.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

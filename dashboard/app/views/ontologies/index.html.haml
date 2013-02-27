@@ -1,0 +1,21 @@
+%h1 Listing ontologies
+
+%table
+  %tr
+    %th Ontology url
+    %th User
+    %th
+    %th
+    %th
+
+  - @ontologies.each do |ontology|
+    %tr
+      %td= ontology.ontology_url
+      %td= ontology.user_id
+      %td= link_to 'Show', ontology
+      %td= link_to 'Edit', edit_ontology_path(ontology)
+      %td= link_to 'Destroy', ontology, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Ontology', new_ontology_path
