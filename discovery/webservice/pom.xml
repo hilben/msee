@@ -11,32 +11,6 @@
 		<version>m17.1-SNAPSHOT</version>
 	</parent>
 	
-	<build>
-		<plugins>
-			<plugin>
-				<!-- Generate WSDL files from annotations in the implementation -->
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<version>2.7.3</version>
-				<executions>
-					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<configuration>
-							<className>at.sti2.msee.discovery.webservice.Discovery</className>
-							<outputFile>${project.build.directory}/../src/main/resources/DiscoveryService.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-							<!-- <genClient>true</genClient> -->
-							<verbose>true</verbose>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>

@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.frontend</groupId>
 	<packaging>war</packaging>
 	<artifactId>dashboard</artifactId>
 
@@ -14,8 +13,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>at.sti2.msee.delivery</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>registration.core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>discovery.core</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -18,6 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
+
 			<artifactId>util.triplestore.client</artifactId>		
 		</dependency>
 		<dependency>
@@ -30,4 +31,15 @@
 		</dependency>
 	</dependencies>
 
+
+	<!-- Replace variables in property files -->
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+	
 </project>
