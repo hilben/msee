@@ -4,27 +4,22 @@
 
 	<groupId>at.sti2.msee.frontend</groupId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<artifactId>mseewebsite</artifactId>
-	<name>MSEE Website</name>
+	<artifactId>dashboard</artifactId>
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m17.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>at.sti2.msee.delivery</groupId>
 			<artifactId>registration.core</artifactId>
-			<version>m17.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
-		<finalName>msee</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -41,6 +36,7 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
