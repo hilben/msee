@@ -12,7 +12,7 @@
 		<module>util</module>
 		<module>registration</module>
 		<!-- <module>dashboard</module> -->
-		<!-- <module>discovery</module> -->
+		<module>discovery</module>
 		<!-- <module>monitoring</module> -->
 		<!-- <module>invocation</module> -->
 		<!-- <module>ranking</module> -->
@@ -140,6 +140,16 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>registration.api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -223,6 +233,16 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-bundle</artifactId>
 				<version>2.7.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>stringtemplate</artifactId>
+				<version>3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-junit4</artifactId>
+				<version>2.6.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

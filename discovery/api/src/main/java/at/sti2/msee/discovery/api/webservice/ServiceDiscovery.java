@@ -25,8 +25,8 @@ import javax.jws.WebService;
  * @author Alex Oberhauser
  *
  */
-@WebService(targetNamespace = "http://sesa.sti2.at/services/")
-public interface DiscoveryWebService {
+
+public interface ServiceDiscovery {
 	
 	/**
 	 * Search Behavior: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)

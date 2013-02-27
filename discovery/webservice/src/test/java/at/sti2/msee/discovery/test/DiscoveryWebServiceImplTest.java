@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
+import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
 import at.sti2.msee.discovery.webservice.DiscoveryWebServiceImpl;
 
 /**
@@ -35,7 +35,7 @@ import at.sti2.msee.discovery.webservice.DiscoveryWebServiceImpl;
  */
 public class DiscoveryWebServiceImplTest {
 	//private String resourceLocation = "/default.test.properties";
-	private DiscoveryWebService discoveryWebService;
+	private ServiceDiscovery discoveryWebService;
 
 	@Before
 	public void setup() throws FileNotFoundException, IOException {
