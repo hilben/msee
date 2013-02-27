@@ -2,22 +2,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>at.sti2.msee.frontend</groupId>
 	<!-- notice how we specify the packaging to be a war, that way, maven knows 
 		where to copy the jar files -->
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<artifactId>mseewebsite</artifactId>
-	<name>MSEE Website</name>
+	<artifactId>dashboard</artifactId>
 
 	<parent>
-		<groupId>at.sti2.msee</groupId>
-		<artifactId>sesa-project</artifactId>
-		<version>1.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>at.sti2.msee.delivery</groupId>
+		<artifactId>platform</artifactId>
+		<version>m17.1-SNAPSHOT</version>
 	</parent>
+	
 	<build>
-		<finalName>msee</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -35,31 +31,12 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 			</plugin>
 			<!-- uncommented due to slow precomiling -->
-			<!-- 
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-
-                <executions>
-                    <execution>
-                        <id>precompile-assets</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target name="Precompile assets">
-                                <exec executable="sh" dir="${project.basedir}" failonerror="true">
-                                    <arg value="-c" />
-                                    <arg value="bundle exec rake assets:precompile" /> 
-                                </exec>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<version>1.7</version> <executions> <execution> <id>precompile-assets</id> 
+				<phase>package</phase> <goals> <goal>run</goal> </goals> <configuration> 
+				<target name="Precompile assets"> <exec executable="sh" dir="${project.basedir}" 
+				failonerror="true"> <arg value="-c" /> <arg value="bundle exec rake assets:precompile" 
+				/> </exec> </target> </configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -76,7 +53,8 @@
 								<argument>-c</argument>
 								<argument>
 									mkdir -p src/main/webapp/WEB-INF
-									touch src/main/webapp/WEB-INF/web.xml
+									touch
+									src/main/webapp/WEB-INF/web.xml
 								</argument>
 							</arguments>
 						</configuration>
@@ -96,7 +74,8 @@
 								<argument>-c</argument>
 								<argument>
 									rm -f lib/*.jar
-									cp target/railsApp/WEB-INF/lib/*.jar lib
+									cp target/railsApp/WEB-INF/lib/*.jar
+									lib
 									rm -rf target/railsApp*
 									rm -rf src
 								</argument>
@@ -119,7 +98,8 @@
 								<argument>
 									rm -rf *.war tmp/war
 									jruby -S warble
-									mv *.war target/msee.war
+									mv *.war
+									target/msee.war
 								</argument>
 							</arguments>
 						</configuration>
