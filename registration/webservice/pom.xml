@@ -26,6 +26,7 @@
 							<className>at.sti2.msee.registration.webservice.Registration</className>
 							<outputFile>${project.build.directory}/../src/main/resources/RegistrationService.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
+							
 							<!-- <genClient>true</genClient> -->
 							<verbose>true</verbose>
 						</configuration>

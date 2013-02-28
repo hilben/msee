@@ -26,6 +26,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.easywsdl</groupId>
+			<artifactId>easywsdl-wsdl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.easywsdl</groupId>
 			<artifactId>easywsdl-ext-wsdl4complexwsdl</artifactId>
 		</dependency>
 		<dependency>
@@ -36,6 +40,10 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>	
+		</dependency>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
 		</dependency>
 	</dependencies>
 

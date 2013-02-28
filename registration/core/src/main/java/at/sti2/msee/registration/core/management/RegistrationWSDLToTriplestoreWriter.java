@@ -78,10 +78,6 @@ public class RegistrationWSDLToTriplestoreWriter {
 	private Types types;
 	private List<Schema> schemas;
 
-	public RegistrationWSDLToTriplestoreWriter() {
-
-	}
-
 	/**
 	 * 
 	 * Transforms a WSDL file by adding its information into the triple store if
@@ -95,8 +91,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 	 *             exception is thrown
 	 * @throws URISyntaxException
 	 */
-	public String transformWSDLtoTriplesAndStoreInTripleStore(
-			String wsdlURLString) throws ServiceRegistrationException {
+	public String transformWSDLtoTriplesAndStoreInTripleStore(String wsdlURLString) throws ServiceRegistrationException {
 		try {
 			// Init readers
 			this.doPreperations(wsdlURLString);
