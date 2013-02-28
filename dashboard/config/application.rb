@@ -4,6 +4,7 @@ require 'rails/all'
 #require "lib/jar/lib.jar"
 #require "lib/monitoring.jar"
 
+#include all jars 
 Dir["lib/jar/*.jar"].each{|jar| require jar}
 
 java_import Java::at.sti2.msee.registration.core.common.RegistrationConfig

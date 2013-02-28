@@ -1,3 +1,7 @@
+
+java_import Java::at.sti2.msee.discovery.core.DiscoveryService
+java_import Java::org.openrdf.rio.RDFFormat
+
 class Dashboards::DiscoveriesController < ApplicationController
   
   #@@discovery_url = "http://localhost:9090/discovery-webservice/services/discovery?wsdl"
@@ -41,18 +45,18 @@ class Dashboards::DiscoveriesController < ApplicationController
   # The discover method call
   private   
   def discover(categories)
+
+    rdfformat = RDFFormat::RDFXML
+
     begin
-      client = Savon::Client.new(@@discovery_url)
-        response = client.request :discover do
-          soap.body = getBody(categories)
-        end
-        
-        if response.success? && !response.soap_fault?
-          @discover_output = response.xpath("//return");
-          @notice = "The discovery was succesfull.";
-        else
-          @error = "The discovery has unsuccesfull."  + response.soap_fault
-        end
+      
+      discovery = DiscoveryService.new
+      result = discovery.discover(categories, rdfformat)
+      logger.info "discovery response #{result} + #{result.class}"
+      
+      @discover_output = result
+      @notice = "The discovery was succesfull.";
+
     rescue => e
       @error = "Discovery Process failed, through exception: " + e.to_s
     end

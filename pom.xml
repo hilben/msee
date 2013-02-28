@@ -135,7 +135,8 @@
 		</repository>
 	</repositories>
 
-	<!-- Dependencies for the whole project are declared here to make sure the versions match -->
+	<!-- Dependencies for the whole project are declared here to make sure the 
+		versions match -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -146,6 +147,16 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>registration.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>discovery.core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -229,6 +240,16 @@
 				<artifactId>xmlunit</artifactId>
 				<version>1.4</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>stringtemplate</artifactId>
+				<version>3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-junit4</artifactId>
+				<version>2.6.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

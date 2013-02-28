@@ -28,7 +28,7 @@ import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.openrdf.rio.RDFFormat;
 
-import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
+import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
 import at.sti2.msee.discovery.core.DiscoveryService;
 
 /**
@@ -36,7 +36,7 @@ import at.sti2.msee.discovery.core.DiscoveryService;
  */
 @WebService(targetNamespace = "http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
-public class DiscoveryWebServiceImpl implements DiscoveryWebService {
+public class DiscoveryWebServiceImpl implements ServiceDiscovery {
 	
 	private DiscoveryService serviceDiscovery;
 

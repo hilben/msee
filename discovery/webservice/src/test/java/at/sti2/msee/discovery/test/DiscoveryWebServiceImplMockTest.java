@@ -25,7 +25,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
+import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
 
 /**
  * @author Benjamin Hiltpolt
@@ -36,8 +36,8 @@ import at.sti2.msee.discovery.api.webservice.DiscoveryWebService;
 public class DiscoveryWebServiceImplMockTest {
 	// private String resourceLocation = "/default.test.properties";
 	Mockery context = new JUnit4Mockery();
-	private DiscoveryWebService discoveryWebService = context
-			.mock(DiscoveryWebService.class);
+	private ServiceDiscovery discoveryWebService = context
+			.mock(ServiceDiscovery.class);
 
 	@Test
 	public void testDiscovery2() throws Exception {
