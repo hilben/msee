@@ -34,10 +34,7 @@ import org.ow2.easywsdl.wsdl.api.Operation;
 import org.ow2.easywsdl.wsdl.api.Output;
 import org.ow2.easywsdl.wsdl.api.Service;
 
-
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
-import at.sti2.msee.registration.core.common.RegistrationConfig;
-import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
  * 
@@ -59,8 +56,7 @@ import at.sti2.util.triplestore.RepositoryHandler;
  */
 public class RegistrationWSDLToTriplestoreWriter {
 
-	private static Logger logger = Logger
-			.getLogger(RegistrationWSDLToTriplestoreWriter.class);
+	private static Logger logger = Logger.getLogger(RegistrationWSDLToTriplestoreWriter.class);
 
 	private Map<QName, Element> elementsMap;
 	private RegistrationTriplestoreWriter repowriter = null;
@@ -150,6 +146,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 	private void writeServiceToTriplestore(Service service) throws IOException,
 			SAWSDLException, ServiceRegistrationException, RepositoryException,
 			URISyntaxException {
+		
 		String SERVICE_NAME = service.getQName().getLocalPart();
 		String serviceNamespace = service.getQName().getNamespaceURI() + "#";
 		String namespaceURI = service.getQName().getNamespaceURI();
@@ -240,7 +237,6 @@ public class RegistrationWSDLToTriplestoreWriter {
 				this.elementsMap.put(elem.getQName(), elem);
 			}
 		}
-
 	}
 
 	/**
@@ -388,8 +384,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 			String endpointName = endpoint.getName();
 			String endpointAddress = endpoint.getAddress();
 
-			this.repowriter.writeEndpointsToTriples(endpointName,
-					endpointAddress, this.wsdlURLString);
+			this.repowriter.writeEndpointsToTriples(endpointName,endpointAddress, this.wsdlURLString);
 
 			// Obtain all bindings of the endoint and store them to the triple
 			// store

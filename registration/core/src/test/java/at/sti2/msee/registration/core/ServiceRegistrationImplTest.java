@@ -28,7 +28,7 @@ public class ServiceRegistrationImplTest extends XMLTestCase {
 		
 		ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
 		
-		String serviceDescriptionURL = ServiceRegistrationImplTest.class.getResource("/webservices/ReservationService_OneCategory.wsdl").toString();
+		String serviceDescriptionURL = this.getClass().getResource("/webservices/ReservationService.wsdl").toString();
 		
 		//Validate wsdl file		
 		String serviceURI = registration.register(serviceDescriptionURL);		

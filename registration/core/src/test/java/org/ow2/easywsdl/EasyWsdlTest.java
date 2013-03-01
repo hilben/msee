@@ -75,5 +75,4 @@ public class EasyWsdlTest {
 				services.get(0).getModelReference().get(0).toString());
 		
 	}	
-
 }
