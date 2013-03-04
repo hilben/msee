@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @version $Revision$
  */
 public class DiscoveryConfigTest extends TestCase {
-	String resourceLocation = "/default.test.properties";
+	String resourceLocation = "/default.properties";
 	String endpointName = "discovery.sesame.endpoint";
 	String sesameRepositoryIDName = "discovery.sesame.reposid";
 	private DiscoveryConfig config;

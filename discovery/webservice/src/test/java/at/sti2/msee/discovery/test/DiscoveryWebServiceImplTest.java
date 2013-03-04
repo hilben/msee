@@ -34,7 +34,7 @@ import at.sti2.msee.discovery.webservice.DiscoveryWebServiceImpl;
  * 
  */
 public class DiscoveryWebServiceImplTest {
-	//private String resourceLocation = "/default.test.properties";
+	private String resourceLocation = "/default.properties";
 	private ServiceDiscovery discoveryWebService;
 
 	@Before

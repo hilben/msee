@@ -79,7 +79,7 @@ public class DiscoveryQueryBuilderTest {
 		String serviceID = "http://www.theserviceid.com#id";
 		
 		String query = discoveryQueryBuilder.getIServeModelQuery(serviceID);
-		System.out.println(query);
+		//System.out.println(query);
 		String expected = readFile("/getIServeModelQueryTestResult");
 		Assert.assertEquals(query, expected);
 	}

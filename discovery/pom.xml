@@ -16,6 +16,18 @@
 		<module>core</module>
 		<module>webservice</module>
 	</modules>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 <!-- 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
