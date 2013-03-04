@@ -1,16 +1,17 @@
 
 java_import Java::at.sti2.msee.discovery.core.DiscoveryService
 java_import Java::org.openrdf.rio.RDFFormat
+#java_import Java::java.net.URI
 
 class Dashboards::DiscoveriesController < ApplicationController
-  
+
   #@@discovery_url = "http://localhost:9090/discovery-webservice/services/discovery?wsdl"
   @@discovery_url = "http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl"
-  
-  def index   
-    method = params[:method]    
-    
-    if method == "lookup"     
+
+  def index
+    method = params[:method]
+
+    if method == "lookup"
       lookup(params[:namespace], params[:operation])
     elsif method == "discover"
       discover(params[:categoryList])
@@ -20,40 +21,41 @@ class Dashboards::DiscoveriesController < ApplicationController
   end
 
   # The lookup method call
-  private   
+  private
   def lookup(namespace, operation)
+
+    rdfformat = RDFFormat::RDFXML
+
     begin
-      client = Savon::Client.new(@@discovery_url)
-        response = client.request :lookup do
-          soap.body do |xml|
-            xml.namespace(namespace)
-            xml.operationName(operation)
-          end
-        end
-         
-        if response.success? && !response.soap_fault?
-          @lookup_output = response.xpath("//return");
-          @notice = "The discovery was succesfull.";
-        else
-          @error = "The discovery has unsuccesfull."  + response.soap_fault
-        end
+      discovery = DiscoveryService.new
+
+      namespaceURI = java.net.URI.new(namespace)
+
+
+      result = discovery.lookup(namespaceURI, operation,rdfformat)
+      logger.info "discovery lookup: #{result}"
+
+
+      @lookup_output = result
+      @notice = "The discovery was succesfull.";
+
     rescue => e
       @error = "Discovery Process failed, through exception: " + e.to_s
-    end          
+    end
   end
-  
+
   # The discover method call
-  private   
+  private
   def discover(categories)
 
     rdfformat = RDFFormat::RDFXML
 
     begin
-      
+
       discovery = DiscoveryService.new
       result = discovery.discover(categories, rdfformat)
       logger.info "discovery response #{result} + #{result.class}"
-      
+
       @discover_output = result
       @notice = "The discovery was succesfull.";
 
@@ -61,29 +63,29 @@ class Dashboards::DiscoveriesController < ApplicationController
       @error = "Discovery Process failed, through exception: " + e.to_s
     end
   end
-  
+
   # The IServe method call
   private
   def getIServeModel(serviceID)
     begin
       client = Savon::Client.new(@@discovery_url)
-        response = client.request :getIServeModel do
-          soap.body do |xml|
-            xml.serviceID(serviceID)
-          end
+      response = client.request :getIServeModel do
+        soap.body do |xml|
+          xml.serviceID(serviceID)
         end
-        
-        if response.success? && !response.soap_fault?
-          @iserve_output = response.xpath("//return");
-          @notice = "The discovery was succesfull.";
-        else
-          @error = "The discovery has unsuccesfull."  + response.soap_fault
-        end
+      end
+
+      if response.success? && !response.soap_fault?
+        @iserve_output = response.xpath("//return");
+        @notice = "The discovery was succesfull.";
+      else
+        @error = "The discovery has unsuccesfull."  + response.soap_fault
+      end
     rescue => e
       @error = "Discovery Process failed, through exception: " + e.to_s
-    end          
+    end
   end
-  
+
   private
   def getBody(categories)
     body = ""
@@ -92,7 +94,7 @@ class Dashboards::DiscoveriesController < ApplicationController
     end
     return body
   end
-  
+
   private
   def getCategories(category)
     return "<categoryList>" + category + "</categoryList>"
