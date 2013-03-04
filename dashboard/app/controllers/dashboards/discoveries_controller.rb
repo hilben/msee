@@ -31,10 +31,8 @@ class Dashboards::DiscoveriesController < ApplicationController
 
       namespaceURI = java.net.URI.new(namespace)
 
-
       result = discovery.lookup(namespaceURI, operation,rdfformat)
-      logger.info "discovery lookup: #{result}"
-
+      logger.debug "discovery lookup: #{result}"
 
       @lookup_output = result
       @notice = "The discovery was succesfull.";
@@ -54,7 +52,7 @@ class Dashboards::DiscoveriesController < ApplicationController
 
       discovery = DiscoveryService.new
       result = discovery.discover(categories, rdfformat)
-      logger.info "discovery response #{result} + #{result.class}"
+      logger.debug "discovery response #{result} + #{result.class}"
 
       @discover_output = result
       @notice = "The discovery was succesfull.";
@@ -67,20 +65,18 @@ class Dashboards::DiscoveriesController < ApplicationController
   # The IServe method call
   private
   def getIServeModel(serviceID)
-    begin
-      client = Savon::Client.new(@@discovery_url)
-      response = client.request :getIServeModel do
-        soap.body do |xml|
-          xml.serviceID(serviceID)
-        end
-      end
 
-      if response.success? && !response.soap_fault?
-        @iserve_output = response.xpath("//return");
-        @notice = "The discovery was succesfull.";
-      else
-        @error = "The discovery has unsuccesfull."  + response.soap_fault
-      end
+    rdfformat = RDFFormat::RDFXML
+
+    begin
+
+      discovery = DiscoveryService.new
+      result = discovery.getIServeModel("\""+serviceID+"\"", rdfformat)
+      logger.debug "IServeModel Response #{result} + #{result.class}"
+
+      @iserve_output = result;
+      @notice = "The discovery was succesfull.";
+
     rescue => e
       @error = "Discovery Process failed, through exception: " + e.to_s
     end
