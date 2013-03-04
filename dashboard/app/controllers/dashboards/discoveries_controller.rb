@@ -5,9 +5,6 @@ java_import Java::org.openrdf.rio.RDFFormat
 
 class Dashboards::DiscoveriesController < ApplicationController
 
-  #@@discovery_url = "http://localhost:9090/discovery-webservice/services/discovery?wsdl"
-  @@discovery_url = "http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl"
-
   def index
     method = params[:method]
 
