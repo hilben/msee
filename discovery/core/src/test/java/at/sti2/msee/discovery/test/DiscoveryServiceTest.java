@@ -85,7 +85,7 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testDiscoverQuery2Args() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freightt/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
 		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
