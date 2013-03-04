@@ -14,53 +14,63 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.msee.discovery.test;
+package at.sti2.msee.discovery.webservice;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
-import at.sti2.msee.discovery.webservice.DiscoveryWebServiceImpl;
+import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.webservice.DiscoveryImpl;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
+import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 
 /**
  * @author Benjamin Hiltpolt
  * 
  * 
  */
-public class DiscoveryWebServiceImplTest {
-	private String resourceLocation = "/default.properties";
-	private ServiceDiscovery discoveryWebService;
+public class DiscoveryImplTest {
+	// private String resourceLocation = "/default.properties";
+	private Discovery discoveryWebService;
 
 	@Before
-	public void setup() throws FileNotFoundException, IOException {
-		discoveryWebService = new DiscoveryWebServiceImpl();
+	public void setup() throws FileNotFoundException, IOException,
+			ServiceRegistrationException {
+		discoveryWebService = new DiscoveryImpl();
+		// register
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
+		URL wsdlInput = DiscoveryImplTest.class
+				.getResource("/ReservationService.wsdl");
+		registration.register(wsdlInput.toString());
 	}
 
 	@Test
 	public void testDiscovery2() throws Exception {
 		List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
+				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
+				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
 
 		List<URI> inputParamList = new ArrayList<URI>();
 		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		System.out.println(discoveryWebService.discover(categoryList, inputParamList,
-				outputParamList));
+		outputParamList
+				.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
+		discoveryWebService.discover(categoryList, inputParamList,
+				outputParamList);
 
 	}
 
@@ -68,19 +78,19 @@ public class DiscoveryWebServiceImplTest {
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
-		System.out.println(discoveryWebService.discover(categoryList));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
+		discoveryWebService.discover(categoryList);
 	}
 
 	@Test
 	public void testLookup() throws URISyntaxException, Exception {
-		System.out.println(discoveryWebService.lookup(new URI(
-				"http://www.webserviceX.NET"), "GetWeather"));
+		discoveryWebService.lookup(new URI("http://www.webserviceX.NET"),
+				"GetWeather");
 	}
 
 	@Test
 	public void testIServeModel() throws Exception {
-		System.out.println(discoveryWebService
-				.getIServeModel("http://www.webserviceX.NET#GlobalWeather"));
+		discoveryWebService
+				.getIServeModel("http://www.webserviceX.NET#GlobalWeather");
 	}
 }

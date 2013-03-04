@@ -1,4 +1,4 @@
-package at.sti2.msee.discovery.test;
+package at.sti2.msee.discovery.core.common;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
