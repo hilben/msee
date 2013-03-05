@@ -16,14 +16,21 @@
  */
 package at.sti2.msee.discovery.core;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResultHandlerException;
+import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 
 import at.sti2.msee.discovery.core.DiscoveryService;
@@ -60,7 +67,7 @@ public class DiscoveryServiceTest extends TestCase {
 		categoryList.add(new URI(
 				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
+		discoveryService.discover(categoryList, RDFFormat.N3);
 		// System.out.println("---");
 
 		List<URI> inputParamList = new ArrayList<URI>();
@@ -87,7 +94,13 @@ public class DiscoveryServiceTest extends TestCase {
 				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
+		
+		discoveryService.discover(categoryList, RDFFormat.N3);
+	}
+	
+	@Test
+	public void testAlreadyInTripleStore() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
+		Assert.assertFalse(discoveryService.alreadyInTripleStore("http://xyz.com#one"));
 	}
 
 }

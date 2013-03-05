@@ -58,6 +58,14 @@ public class DiscoveryQueryBuilderTest {
 				categoryList, inputList, outputList);
 		String expected = readFile("/getDiscoverQuery4ArgsTestResult");
 		Assert.assertEquals(query, expected);
+		
+		// add a second category
+		categoryList.add(new URI(
+				"http://www.sti2.at/MSEE/ServiceCategories#MARITIM"));
+		query = discoveryQueryBuilder.getDiscoverQuery4Args(
+				categoryList, inputList, outputList);
+		String expected2 = readFile("/getDiscoverQuery4ArgsTestResult-secondCategory");
+		Assert.assertEquals(query, expected2);
 	}
 
 	@Test
@@ -82,6 +90,13 @@ public class DiscoveryQueryBuilderTest {
 		//System.out.println(query);
 		String expected = readFile("/getIServeModelQueryTestResult");
 		Assert.assertEquals(query, expected);
+	}
+	
+	@Test
+	public void testGetServiceCount() {
+		String serviceID = "http://www.theserviceid.com#id";
+		String query = discoveryQueryBuilder.getServiceCount(serviceID);
+		//System.out.println(query);
 	}
 
 	private static String readFile(String path) throws IOException {

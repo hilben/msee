@@ -498,4 +498,29 @@ public class DiscoveryQueryBuilder {
 
 		return template.toString();
 	}
+	
+	public String getServiceCount(String _serviceID) {
+
+		StringBuffer serviceCountQuery = new StringBuffer();
+
+		serviceCountQuery
+				.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+		serviceCountQuery
+				.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		serviceCountQuery
+				.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
+		serviceCountQuery
+				.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
+		serviceCountQuery
+				.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+
+		serviceCountQuery.append("SELECT ?_serviceID (COUNT(?_serviceID) AS ?num)  WHERE {\n");
+		serviceCountQuery
+				.append("BIND(<"+_serviceID+"> AS ?_serviceID) . \n");
+		serviceCountQuery
+				.append("?_serviceID rdf:type msm_ext:Service . }\n");
+		serviceCountQuery.append("GROUP BY ?_serviceID\n");
+
+		return serviceCountQuery.toString();
+	}
 }

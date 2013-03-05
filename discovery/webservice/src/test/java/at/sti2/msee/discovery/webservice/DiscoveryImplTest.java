@@ -26,7 +26,14 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResultHandlerException;
+import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
+import org.openrdf.repository.RepositoryException;
+
 import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.webservice.DiscoveryImpl;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
@@ -42,13 +49,20 @@ public class DiscoveryImplTest {
 
 	@Before
 	public void setup() throws FileNotFoundException, IOException,
-			ServiceRegistrationException {
+			ServiceRegistrationException, QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException {
 		discoveryWebService = new DiscoveryImpl();
+		
+		// is already in triple store
+		DiscoveryService ds = new DiscoveryService();
+		boolean alreadyThere = ds.alreadyInTripleStore("http://greath.example.com/2004/wsdl/resSvc#reservationService");
+		
 		// register
-		ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
-		URL wsdlInput = DiscoveryImplTest.class
-				.getResource("/ReservationService.wsdl");
-		registration.register(wsdlInput.toString());
+		if (!alreadyThere){
+			ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
+			URL wsdlInput = DiscoveryImplTest.class
+					.getResource("/ReservationService.wsdl");
+			registration.register(wsdlInput.toString());
+		}
 	}
 
 	@Test
