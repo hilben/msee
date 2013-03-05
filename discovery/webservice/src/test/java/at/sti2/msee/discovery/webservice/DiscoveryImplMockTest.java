@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.msee.discovery.test;
+package at.sti2.msee.discovery.webservice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,7 +25,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
+import at.sti2.msee.discovery.api.webservice.Discovery;
 
 /**
  * @author Benjamin Hiltpolt
@@ -33,23 +33,23 @@ import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
  * 
  * 
  */
-public class DiscoveryWebServiceImplMockTest {
+public class DiscoveryImplMockTest {
 	// private String resourceLocation = "/default.test.properties";
 	Mockery context = new JUnit4Mockery();
-	private ServiceDiscovery discoveryWebService = context
-			.mock(ServiceDiscovery.class);
+	private Discovery discoveryWebService = context
+			.mock(Discovery.class);
 
 	@Test
 	public void testDiscovery2() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
+				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
+				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
 
 		final List<URI> inputParamList = new ArrayList<URI>();
 		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
@@ -71,7 +71,7 @@ public class DiscoveryWebServiceImplMockTest {
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		context.checking(new Expectations() {
 			{
 				oneOf(discoveryWebService).discover(categoryList);

@@ -16,23 +16,23 @@
  */
 package at.sti2.msee.discovery.api.webservice;
 
-public class ServiceDiscoveryException extends Exception {
+public class DiscoveryException extends Exception {
 
 	private static final long serialVersionUID = -2289179077479549018L;
 
-	public ServiceDiscoveryException() {
+	public DiscoveryException() {
 		super();
 	}
 
-	public ServiceDiscoveryException(String message) {
+	public DiscoveryException(String message) {
 		super(message);
 	}
 
-	public ServiceDiscoveryException(String message, Throwable cause) {
+	public DiscoveryException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ServiceDiscoveryException(Throwable cause) {
+	public DiscoveryException(Throwable cause) {
 		super(cause);
 	}
 }

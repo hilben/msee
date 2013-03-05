@@ -19,23 +19,21 @@ package at.sti2.msee.discovery.api.webservice;
 import java.net.URI;
 import java.util.List;
 
-import javax.jws.WebService;
-
 /**
  * @author Alex Oberhauser
  *
  */
 
-public interface ServiceDiscovery {
+public interface Discovery {
 	
 	/**
 	 * Search Behavior: Conjunction of Categories with subClassOf inferencing (Subclasses match also...)
 	 * 
 	 * @param categoryList A list of categories. A category is a link to a concept in a taxonomy.
 	 * @return Services with related operation (that match the goal) in RDF Representation
-	 * @throws Exception
+	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList) throws Exception;
+	public String discover(List<URI> categoryList) throws DiscoveryException;
 	
 	/**
 	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)
@@ -49,9 +47,9 @@ public interface ServiceDiscovery {
 	 * @param inputParamList A list of input parameters (match mechanism!?!)
 	 * @param outputParamList A list of output parameters (match mechanism!?!)
 	 * @return Services with related operation (that match the goal) in RDF Representation
-	 * @throws Exception
+	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws Exception;
+	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws DiscoveryException;
 	
 	/**
 	 * Get more information about the specified operation. 
@@ -59,16 +57,16 @@ public interface ServiceDiscovery {
 	 * @param namespace The namespace related to the operation name.
 	 * @param operationName The operation name.
 	 * @return A RDF Representation of the Operation with Inputs, Outputs, Faults and related modelReferences.
-	 * @throws Exception
+	 * @throws DiscoveryException
 	 */
-	public String lookup(URI namespace, String operationName) throws Exception;
+	public String lookup(URI namespace, String operationName) throws DiscoveryException;
 	
 	/**
 	 * Exports the internal RDF service model as iServe compatible MSM model. (see {@link http://iserve.kmi.open.ac.uk/})
 	 * 
 	 * @param serviceID The service ID
 	 * @return A iServe compatible MSM model (see {@link http://iserve.kmi.open.ac.uk/wiki/index.php/IServe_vocabulary})
-	 * @throws Exception
+	 * @throws DiscoveryException
 	 */
-	public String getIServeModel(String serviceID) throws Exception;
+	public String getIServeModel(String serviceID) throws DiscoveryException;
 }

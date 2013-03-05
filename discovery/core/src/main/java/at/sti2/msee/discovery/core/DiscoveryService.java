@@ -25,7 +25,11 @@ import java.util.List;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.TupleQueryResultHandlerException;
 import org.openrdf.query.resultio.QueryResultIO;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
+import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
@@ -44,6 +48,7 @@ import at.sti2.util.triplestore.RepositoryHandler;
  * @author Alex Oberhauser, Benjamin Hiltpolt
  * 
  */
+
 public class DiscoveryService {
 	
 	private RepositoryHandler repositoryHandler;
@@ -159,6 +164,17 @@ public class DiscoveryService {
 		QueryResultIO.write(queryResult, _outputFormat, out);
 
 		return out.toString();
+	}
+	
+	public boolean alreadyInTripleStore(String _serviceID) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException{
+		String query = discoveryQueryBuilder.getServiceCount(_serviceID);
+		TupleQueryResult queryResult = repositoryHandler.selectSPARQL(query);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		QueryResultIO.write(queryResult, TupleQueryResultFormat.JSON, out);
+		String beginNum = out.toString().substring(out.toString().indexOf("\"num\": {"));
+		String beginValue = beginNum.substring(beginNum.indexOf("value")+"value\": \"".length());
+		int num = Integer.valueOf(beginValue.substring(0, beginValue.indexOf("\"")));
+		return (num>0) ? true : false;
 	}
 
 }

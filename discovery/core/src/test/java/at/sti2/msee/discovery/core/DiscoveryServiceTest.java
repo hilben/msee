@@ -14,17 +14,23 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-package at.sti2.msee.discovery.test;
+package at.sti2.msee.discovery.core;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResultHandlerException;
+import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 
 import at.sti2.msee.discovery.core.DiscoveryService;
@@ -53,15 +59,15 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testDiscovery() throws Exception {
 		List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#AUTHORITY"));
+				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#Maritime"));
+				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#HealthDeclaration"));
+				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
+		discoveryService.discover(categoryList, RDFFormat.N3);
 		// System.out.println("---");
 
 		List<URI> inputParamList = new ArrayList<URI>();
@@ -85,10 +91,16 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testDiscoverQuery2Args() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
+		
+		discoveryService.discover(categoryList, RDFFormat.N3);
+	}
+	
+	@Test
+	public void testAlreadyInTripleStore() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
+		Assert.assertFalse(discoveryService.alreadyInTripleStore("http://xyz.com#one"));
 	}
 
 }

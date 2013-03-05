@@ -26,9 +26,15 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import org.apache.cxf.annotations.WSDLDocumentation;
 import org.apache.cxf.annotations.WSDLDocumentationCollection;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.UnsupportedRDFormatException;
 
-import at.sti2.msee.discovery.api.webservice.ServiceDiscovery;
+import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.DiscoveryService;
 
 /**
@@ -36,11 +42,11 @@ import at.sti2.msee.discovery.core.DiscoveryService;
  */
 @WebService(targetNamespace = "http://sesa.sti2.at/services/")
 @WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
-public class DiscoveryWebServiceImpl implements ServiceDiscovery {
+public class DiscoveryImpl implements Discovery {
 	
 	private DiscoveryService serviceDiscovery;
 
-	public DiscoveryWebServiceImpl () throws FileNotFoundException, IOException {
+	public DiscoveryImpl () throws FileNotFoundException, IOException {
 		serviceDiscovery = new DiscoveryService();
 	}
 
@@ -51,8 +57,16 @@ public class DiscoveryWebServiceImpl implements ServiceDiscovery {
 	@Override
 	public String discover(
 			@WebParam(name = "categoryList") List<URI> _categoryList)
-			throws Exception {
-		return serviceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
+			throws DiscoveryException {
+		try {
+			return serviceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
+		} catch (QueryEvaluationException
+				| RepositoryException | MalformedQueryException
+				| RDFHandlerException | UnsupportedRDFormatException
+				| IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -62,9 +76,16 @@ public class DiscoveryWebServiceImpl implements ServiceDiscovery {
 	@WebMethod(operationName = "discoverAdvanced")
 	@Override
 	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
-			List<URI> _outputParamList) throws Exception {
-		return serviceDiscovery.discover(_categoryList, _inputParamList,
-				_outputParamList, RDFFormat.RDFXML);
+			List<URI> _outputParamList) throws DiscoveryException {
+		try {
+			return serviceDiscovery.discover(_categoryList, _inputParamList,
+					_outputParamList, RDFFormat.RDFXML);
+		} catch (QueryEvaluationException
+				| RepositoryException | MalformedQueryException
+				| RDFHandlerException | UnsupportedRDFormatException
+				| IOException e) {
+			throw new DiscoveryException(e.getMessage(), e.getCause());
+		}
 	}
 
 	/**
@@ -75,9 +96,16 @@ public class DiscoveryWebServiceImpl implements ServiceDiscovery {
 	@Override
 	public String lookup(@WebParam(name = "namespace") URI _namespace,
 			@WebParam(name = "operationName") String _operationName)
-			throws Exception {
-		return serviceDiscovery.lookup(_namespace, _operationName,
-				RDFFormat.RDFXML);
+			throws DiscoveryException {
+		try {
+			return serviceDiscovery.lookup(_namespace, _operationName,
+					RDFFormat.RDFXML);
+		} catch (QueryEvaluationException
+				| RepositoryException | MalformedQueryException
+				| RDFHandlerException | UnsupportedRDFormatException
+				| IOException e) {
+			throw new DiscoveryException(e.getMessage(), e.getCause());
+		}
 	}
 
 	/**
@@ -86,8 +114,15 @@ public class DiscoveryWebServiceImpl implements ServiceDiscovery {
 	@WebMethod
 	@Override
 	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
-			throws Exception {
-		return serviceDiscovery.getIServeModel("\""+_serviceID+"\"", RDFFormat.RDFXML);
+			throws DiscoveryException {
+		try {
+			return serviceDiscovery.getIServeModel("\""+_serviceID+"\"", RDFFormat.RDFXML);
+		} catch (QueryEvaluationException
+				| RepositoryException | MalformedQueryException
+				| RDFHandlerException | UnsupportedRDFormatException
+				| IOException e) {
+			throw new DiscoveryException(e.getMessage(), e.getCause());
+		}
 	}
 
 }
