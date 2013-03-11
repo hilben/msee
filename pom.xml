@@ -11,7 +11,7 @@
 	<modules>
 		<module>util</module>
 		<module>registration</module>
-		<!-- <module>dashboard</module> -->
+		<module>dashboard</module>
 		<module>discovery</module>
 		<!-- <module>monitoring</module> -->
 		<!-- <module>invocation</module> -->
@@ -258,4 +258,25 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<ciManagement>
+		<url>http://ci.msee.sti2.at</url>
+		<system>Jenkins</system>
+	</ciManagement>
+	<issueManagement>
+		<url>http://redmine.sesa.sti2.at/projects/sesa-msee/issues</url>
+		<system>Redmine</system>
+	</issueManagement>
+	<organization>
+		<name>STI Innsbruck</name>
+		<url>http://www.sti-innsbruck.at</url>
+	</organization>
+	<scm>
+		<url>http://redmine.sesa.sti2.at/projects/sesa-msee/repository</url>
+		<connection>git@sesa.sti2.at:msee-core.git</connection>
+		<developerConnection>git@sesa.sti2.at:msee-core.git</developerConnection>
+	</scm>
+	<name>MSEE</name>
+	<description>Manufacturing Service Ecosystem</description>
+	<inceptionYear>2012</inceptionYear>
+	<url>http://msee.sti2.at/</url>
 </project>
