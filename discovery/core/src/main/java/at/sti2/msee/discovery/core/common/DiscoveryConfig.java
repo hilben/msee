@@ -19,28 +19,35 @@ package at.sti2.msee.discovery.core.common;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * @author Benjamin Hiltpolt
  *
  */
 public class DiscoveryConfig {
+	private final static Logger LOGGER = LogManager.getLogger(DiscoveryConfig.class.getName());
+	
 	private Properties properties;
 	private String resourceLocation = "/default.properties";
 	private String sesameEndpointName = "discovery.sesame.endpoint";
 	private String sesameRepositoryIDName = "discovery.sesame.reposid";
 	
 	public DiscoveryConfig() throws IOException {
+		LOGGER.debug("Discovery Config created");
 		this.properties = new Properties();
 		this.properties.load(DiscoveryConfig.class.getResourceAsStream(resourceLocation)); 
 	}
 	
 	public void setResourceLocation (String resourceLocation){
+		LOGGER.debug("Updating resource location");
 		this.resourceLocation = resourceLocation;
 		this.properties = new Properties();
 		try {
 			this.properties.load(DiscoveryConfig.class.getResourceAsStream(resourceLocation));
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.catching(e);
 		} 
 	}
 	

@@ -71,7 +71,7 @@ public class DiscoveryImplTest {
 		categoryList.add(new URI(
 				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
+				"http://www.sti2.at/MSEE/ServiceCategories#Authority"));
 		categoryList.add(new URI(
 				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
 		categoryList.add(new URI(
@@ -92,8 +92,9 @@ public class DiscoveryImplTest {
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
+				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 		discoveryWebService.discover(categoryList);
+		System.out.println(discoveryWebService.discover(categoryList));
 	}
 
 	@Test

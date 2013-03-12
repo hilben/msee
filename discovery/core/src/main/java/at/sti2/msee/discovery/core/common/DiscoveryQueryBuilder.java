@@ -9,6 +9,8 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
@@ -20,8 +22,10 @@ import org.openrdf.rio.UnsupportedRDFormatException;
  * 
  */
 public class DiscoveryQueryBuilder {
+	private final static Logger LOGGER = LogManager.getLogger(DiscoveryConfig.class.getName());
 
 	public String getDiscoverQuery2Args(List<URI> _categoryList) {
+		LOGGER.debug("Create query for discover");
 		String templateString = new String(
 				"group group-demo;"
 						+ "outerTemplate(_categoryList) ::= <<"

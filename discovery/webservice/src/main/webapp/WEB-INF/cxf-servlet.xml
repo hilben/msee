@@ -8,7 +8,7 @@
          http://cxf.apache.org/jaxws
          http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<jaxws:endpoint id="discoveryWebService" implementor="at.sti2.msee.discovery.webservice.DiscoveryWebService" 
+	<jaxws:endpoint id="discoveryWebService" implementor="at.sti2.msee.discovery.webservice.DiscoveryImpl" 
 	address="/service">
 	</jaxws:endpoint>	
 </beans>
