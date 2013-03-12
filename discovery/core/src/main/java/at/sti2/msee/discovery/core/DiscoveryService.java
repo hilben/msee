@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -50,6 +52,8 @@ import at.sti2.util.triplestore.RepositoryHandler;
  */
 
 public class DiscoveryService {
+
+	private final static Logger LOGGER = LogManager.getLogger(DiscoveryService.class.getName());
 	
 	private RepositoryHandler repositoryHandler;
 	private String resourceLocation = "/default.properties";
@@ -61,6 +65,7 @@ public class DiscoveryService {
 
 	private RepositoryHandler getReposHandler()
 			throws FileNotFoundException, IOException {
+		LOGGER.debug("Building repository handler");
 		DiscoveryConfig config = new DiscoveryConfig();
 		config.setResourceLocation(resourceLocation);
 		
@@ -69,13 +74,14 @@ public class DiscoveryService {
 	}
 	
 	public void setDiscoveryConfigLocation(String discoveryConfigLocation){
+		LOGGER.debug("Configuration set to: " + discoveryConfigLocation);
 		resourceLocation = discoveryConfigLocation;
 		try {
 			repositoryHandler = getReposHandler();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			LOGGER.catching(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.catching(e);
 		}
 	}
 	
@@ -104,6 +110,7 @@ public class DiscoveryService {
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
+		LOGGER.debug("Starting discover()");
 		
 		String query = discoveryQueryBuilder
 				.getDiscoverQuery4Args(_categoryList, _inputParamList, _outputParamList);
@@ -121,6 +128,7 @@ public class DiscoveryService {
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
+		LOGGER.debug("Starting discover()");
 
 		String query = discoveryQueryBuilder.getDiscoverQuery2Args(_categoryList);
 
@@ -139,6 +147,7 @@ public class DiscoveryService {
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
+		LOGGER.debug("Starting lookup()");
 
 		String query = discoveryQueryBuilder.getLookupQuery(_namespace, _operationName);
 		
@@ -155,6 +164,7 @@ public class DiscoveryService {
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
+		LOGGER.debug("Starting getIServeModel()");
 
 		String query = discoveryQueryBuilder.getIServeModelQuery(_serviceID);		
 
@@ -167,6 +177,7 @@ public class DiscoveryService {
 	}
 	
 	public boolean alreadyInTripleStore(String _serviceID) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException{
+		LOGGER.debug("Starting alreadyInTripleStore()");
 		String query = discoveryQueryBuilder.getServiceCount(_serviceID);
 		TupleQueryResult queryResult = repositoryHandler.selectSPARQL(query);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -174,6 +185,7 @@ public class DiscoveryService {
 		String beginNum = out.toString().substring(out.toString().indexOf("\"num\": {"));
 		String beginValue = beginNum.substring(beginNum.indexOf("value")+"value\": \"".length());
 		int num = Integer.valueOf(beginValue.substring(0, beginValue.indexOf("\"")));
+		LOGGER.debug("Number of occurances (" + _serviceID + "): " + num);
 		return (num>0) ? true : false;
 	}
 
