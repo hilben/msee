@@ -27,6 +27,13 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
+				  <configuration>
+					<url>http://localhost:8080/manager/html</url>
+					<warFile>target/ROOT.war</warFile>
+					<warDirectory>ROOT</warDirectory>
+					<username>tomcat</username>
+					<password>tomcat</password>
+                  </configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -98,8 +105,8 @@
 								<argument>-c</argument>
 								<argument>
 									rm -rf *.war tmp/war
-									<!-- TODO: jruby -S warble
-									mv *.war target/dashboard.war -->
+									jruby -S warble
+									mv *.war target/ROOT.war
 								</argument>
 							</arguments>
 						</configuration>
@@ -135,3 +142,4 @@
 
 
 </project>
+					
