@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.openrdf.query.MalformedQueryException;
@@ -33,6 +35,7 @@ import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.webservice.DiscoveryImpl;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
@@ -88,9 +91,23 @@ public class DiscoveryImplTest {
 
 	}
 
+	/**
+	 * TODO: make test right
+	 * @throws Exception
+	 */
 	@Test
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
+		
+		boolean exceptionThrown = false;
+		try {
+			discoveryWebService.discover(categoryList);
+		} catch (DiscoveryException e) {
+			exceptionThrown = true;
+		}
+		
+		//((assertTrue(exceptionThrown);
+		
 		categoryList.add(new URI(
 				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
 		discoveryWebService.discover(categoryList);
