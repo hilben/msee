@@ -53,27 +53,28 @@ import at.sti2.util.triplestore.RepositoryHandler;
 
 public class DiscoveryService {
 
-	private final static Logger LOGGER = LogManager.getLogger(DiscoveryService.class.getName());
-	
+	private final static Logger LOGGER = LogManager
+			.getLogger(DiscoveryService.class.getName());
+
 	private RepositoryHandler repositoryHandler;
 	private String resourceLocation = "/default.properties";
 	private DiscoveryQueryBuilder discoveryQueryBuilder = new DiscoveryQueryBuilder();
-	
-	public DiscoveryService() throws FileNotFoundException, IOException{
+
+	public DiscoveryService() throws FileNotFoundException, IOException {
 		repositoryHandler = getReposHandler();
 	}
 
-	private RepositoryHandler getReposHandler()
-			throws FileNotFoundException, IOException {
+	private RepositoryHandler getReposHandler() throws FileNotFoundException,
+			IOException {
 		LOGGER.debug("Building repository handler");
 		DiscoveryConfig config = new DiscoveryConfig();
 		config.setResourceLocation(resourceLocation);
-		
+
 		return new RepositoryHandler(config.getSesameEndpoint(),
 				config.getSesameRepositoryID(), true);
 	}
-	
-	public void setDiscoveryConfigLocation(String discoveryConfigLocation){
+
+	public void setDiscoveryConfigLocation(String discoveryConfigLocation) {
 		LOGGER.debug("Configuration set to: " + discoveryConfigLocation);
 		resourceLocation = discoveryConfigLocation;
 		try {
@@ -84,17 +85,15 @@ public class DiscoveryService {
 			LOGGER.catching(e);
 		}
 	}
-	
-	
 
 	/**
 	 * TODO: Unchecked outputParamList, inputParamList
 	 * <p/>
 	 * 
-	 * @param _categoryList
+	 * @param categoryList
 	 * @param inputParamList
 	 * @param outputParamList
-	 * @param _outputFormat
+	 * @param outputFormat
 	 * @return
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -104,53 +103,72 @@ public class DiscoveryService {
 	 * @throws RDFHandlerException
 	 * @throws UnsupportedRDFormatException
 	 */
-	public String discover(List<URI> _categoryList,
-			List<URI> _inputParamList, List<URI> _outputParamList,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
+	public String discover(List<URI> categoryList, List<URI> inputParamList,
+			List<URI> outputParamList, RDFFormat outputFormat)
+			throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
+		LOGGER.debug("Starting discover()");
+
+		if (categoryList == null) {
+			LOGGER.error("Category list is null");
+			throw new NullPointerException("Category list is null");
+		}
+		if (categoryList.size() < 1) {
+			LOGGER.error("Category list is empty");
+			throw new IllegalArgumentException("Category list is empty");
+		}
+
+		String query = discoveryQueryBuilder.getDiscoverQuery4Args(
+				categoryList, inputParamList, outputParamList);
+
+		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(query);
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		QueryResultIO.write(queryResult, outputFormat, out);
+
+		return out.toString();
+	}
+
+	public String discover(List<URI> categoryList, RDFFormat outputFormat)
+			throws FileNotFoundException, IOException,
+			QueryEvaluationException, RepositoryException,
+			MalformedQueryException, RDFHandlerException,
+			UnsupportedRDFormatException {
+
 		LOGGER.debug("Starting discover()");
 		
+		if (categoryList == null) {
+			LOGGER.error("Category list is null");
+			throw new NullPointerException("Category list is null");
+		}
+		if (categoryList.size() < 1) {
+			LOGGER.error("Category list is empty");
+			throw new IllegalArgumentException("Category list is empty");
+		}
+
 		String query = discoveryQueryBuilder
-				.getDiscoverQuery4Args(_categoryList, _inputParamList, _outputParamList);
+				.getDiscoverQuery2Args(categoryList);
 
 		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(query);
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
+		QueryResultIO.write(queryResult, outputFormat, out);
 
 		return out.toString();
 	}
 
-	public String discover(List<URI> _categoryList,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
-			QueryEvaluationException, RepositoryException,
-			MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
-		LOGGER.debug("Starting discover()");
-
-		String query = discoveryQueryBuilder.getDiscoverQuery2Args(_categoryList);
-
-		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(query);
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		QueryResultIO.write(queryResult, _outputFormat, out);
-
-		return out.toString();
-	}
-
-
-
-	public String lookup(URI _namespace, String _operationName,
+	public String lookup(URI namespace, String operationName,
 			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
 		LOGGER.debug("Starting lookup()");
 
-		String query = discoveryQueryBuilder.getLookupQuery(_namespace, _operationName);
-		
+		String query = discoveryQueryBuilder.getLookupQuery(namespace,
+				operationName);
+
 		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(query);
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -159,14 +177,14 @@ public class DiscoveryService {
 		return out.toString();
 	}
 
-	public String getIServeModel(String _serviceID,
-			RDFFormat _outputFormat) throws FileNotFoundException, IOException,
+	public String getIServeModel(String _serviceID, RDFFormat _outputFormat)
+			throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
 		LOGGER.debug("Starting getIServeModel()");
 
-		String query = discoveryQueryBuilder.getIServeModelQuery(_serviceID);		
+		String query = discoveryQueryBuilder.getIServeModelQuery(_serviceID);
 
 		GraphQueryResult queryResult = repositoryHandler.constructSPARQL(query);
 
@@ -175,18 +193,24 @@ public class DiscoveryService {
 
 		return out.toString();
 	}
-	
-	public boolean alreadyInTripleStore(String _serviceID) throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException{
+
+	public boolean alreadyInTripleStore(String _serviceID)
+			throws QueryEvaluationException, RepositoryException,
+			MalformedQueryException, TupleQueryResultHandlerException,
+			UnsupportedQueryResultFormatException, IOException {
 		LOGGER.debug("Starting alreadyInTripleStore()");
 		String query = discoveryQueryBuilder.getServiceCount(_serviceID);
 		TupleQueryResult queryResult = repositoryHandler.selectSPARQL(query);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		QueryResultIO.write(queryResult, TupleQueryResultFormat.JSON, out);
-		String beginNum = out.toString().substring(out.toString().indexOf("\"num\": {"));
-		String beginValue = beginNum.substring(beginNum.indexOf("value")+"value\": \"".length());
-		int num = Integer.valueOf(beginValue.substring(0, beginValue.indexOf("\"")));
+		String beginNum = out.toString().substring(
+				out.toString().indexOf("\"num\": {"));
+		String beginValue = beginNum.substring(beginNum.indexOf("value")
+				+ "value\": \"".length());
+		int num = Integer.valueOf(beginValue.substring(0,
+				beginValue.indexOf("\"")));
 		LOGGER.debug("Number of occurances (" + _serviceID + "): " + num);
-		return (num>0) ? true : false;
+		return (num > 0) ? true : false;
 	}
 
 }
