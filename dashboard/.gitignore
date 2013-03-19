@@ -19,7 +19,6 @@ pickle-email-*.html
 *.war
 /vendor/ruby/*
 /vendor/jruby/*
-/public/*.*
 *.war
 /target/*
 
