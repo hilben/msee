@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.0'
 
 gem "activerecord-jdbc-adapter", "~> 1.2.8"
+#gem "activerecord-jdbc-adapter", "~> 1.2." #check!?
 gem "activerecord-jdbcsqlite3-adapter", "~> 1.2.5"
 gem "jdbc-sqlite3", "~> 3.7.2.1"
 gem "activerecord-jdbcpostgresql-adapter", "~> 1.2.5"

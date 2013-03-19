@@ -49,6 +49,8 @@ class Dashboards::DiscoveriesController < ApplicationController
 
       discovery = DiscoveryService.new
       result = discovery.discover(categories, rdfformat)
+
+      logger.debug "asdf asdf asdf asdf categories: #{categories} #{categories==nil}";
       logger.debug "discovery response #{result} + #{result.class}"
 
       @discover_output = result
