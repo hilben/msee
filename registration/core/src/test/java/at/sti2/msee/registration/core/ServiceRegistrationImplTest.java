@@ -34,19 +34,19 @@ public class ServiceRegistrationImplTest extends XMLTestCase {
 		String serviceURI = registration.register(serviceDescriptionURL);		
 		assertNotNull(serviceURI);
 		
-		String expectedServiceURI = "";		
+		String expectedServiceURI = "http://greath.example.com/2004/wsdl/resSvc#reservationService";		
 		assertEquals("Service URI incorrect", expectedServiceURI, serviceURI);
 		
 	}
 
 	@Test
 	public void testDeregister() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 }

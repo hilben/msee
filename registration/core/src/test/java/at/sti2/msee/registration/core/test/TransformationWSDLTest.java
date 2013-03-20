@@ -3,6 +3,7 @@
  */
 package at.sti2.msee.registration.core.test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
 import java.net.URL;
@@ -49,8 +50,7 @@ public class TransformationWSDLTest {
 			try {
 				TransformationWSDL.transformWSDL(url.toExternalForm());
 			} catch (ServiceRegistrationException e) {
-				logger.error(e);
-				fail(e.toString());
+				assertEquals(e.getMessage(), "Service already registered");
 			}
 		}
 
@@ -73,6 +73,17 @@ public class TransformationWSDLTest {
 				logger.info(e);
 				logger.info("WSDL File was rejected");
 			}
+		}
+	}
+	
+	@Test(expected=ServiceRegistrationException.class)
+	public void testDuplicateServiceID() throws ServiceRegistrationException{
+		for (URL url : webservicePass) {
+			TransformationWSDL.transformWSDL(url.toExternalForm());
+		}
+		// second should be a at least a duplicate
+		for (URL url : webservicePass) {
+			TransformationWSDL.transformWSDL(url.toExternalForm());
 		}
 	}
 	
