@@ -39,7 +39,14 @@ public class ServiceManagementTest {
 		logger.info("Add wsdl file for test case " + url.toExternalForm());
 		assertNotNull(url);
 		
-	    TransformationWSDL.transformWSDL(url.toExternalForm());
+		try {
+			TransformationWSDL.transformWSDL(url.toExternalForm());
+		} catch (ServiceRegistrationException e) {
+			if (!e.getMessage().equals("Service already registered")){
+				throw new Exception(e);
+			}
+		}	
+	    
 	}
 
 	/**
@@ -57,14 +64,17 @@ public class ServiceManagementTest {
 
 	/**
 	 * Test method for {@link at.sti2.msee.registration.core.management.ServiceManagement#update(java.lang.String, java.lang.String)}.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws Exception {
 		try {
 			logger.info("Update " + url.toExternalForm() + " to " + url.toExternalForm());
 			ServiceManagement.update(url.toExternalForm(), url.toExternalForm());
 		} catch (ServiceRegistrationException e) {
-			e.printStackTrace();
+			if (!e.getMessage().equals("Service already registered")){
+				throw new Exception(e);
+			}
 		}
 	}
 
