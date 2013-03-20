@@ -45,6 +45,7 @@
 				<artifactId>tomcat-maven-plugin</artifactId>
 				  <configuration>
 					<warFile>target/ROOT.war</warFile>
+					<path>/</path>
                   </configuration>
 			</plugin>
 			<plugin>
