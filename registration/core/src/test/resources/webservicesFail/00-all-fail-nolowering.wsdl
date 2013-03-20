@@ -13,7 +13,7 @@
                         xmlns="http://greath.example.com/2004/schemas/resSvc">
 
                         <xs:element name="checkAvailability"
-                                type="tCheckAvailability" 
+                                type="tCheckAvailability" /> 
                        <xs:complexType name="tCheckAvailability">
                                 <xs:sequence>
                                         <xs:element name="checkInDate" type="xs:date"
