@@ -16,6 +16,8 @@
  */
 package at.sti2.msee.discovery.webservice;
 
+import static org.junit.Assert.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -95,18 +97,11 @@ public class DiscoveryImplTest {
 	 * TODO: make test right
 	 * @throws Exception
 	 */
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		
-		boolean exceptionThrown = false;
-		try {
-			discoveryWebService.discover(categoryList);
-		} catch (DiscoveryException e) {
-			exceptionThrown = true;
-		}
-		
-		//((assertTrue(exceptionThrown);
+		discoveryWebService.discover(categoryList);
 		
 		categoryList.add(new URI(
 				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
