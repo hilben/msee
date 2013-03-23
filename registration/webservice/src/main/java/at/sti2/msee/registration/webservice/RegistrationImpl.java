@@ -19,22 +19,23 @@ package at.sti2.msee.registration.webservice;
 import javax.jws.WebService;
 
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
-import at.sti2.msee.registration.core.management.ServiceManagement;
-import at.sti2.msee.registration.core.management.TransformationWSDL;
+import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 
 @WebService(targetNamespace="http://msee.sti2.at/delivery/",
 endpointInterface="at.sti2.msee.registration.webservice.Registration")
-public class RegistrationImpl implements Registration
-{
+public class RegistrationImpl implements Registration {
+	
+	private ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
+	
 	public String register(String serviceDescriptionURL) throws ServiceRegistrationException {
-		return TransformationWSDL.transformWSDL(serviceDescriptionURL);		
+		return registration.register(serviceDescriptionURL);		
 	}
 	
 	public String deregister(String serviceURI) throws ServiceRegistrationException {
-		return ServiceManagement.delete(serviceURI);
+		return registration.deregister(serviceURI);
 	}
 
 	public String update(String serviceURI, String serviceURL) throws ServiceRegistrationException {
-		return ServiceManagement.update(serviceURI, serviceURL);
+		return registration.update(serviceURI, serviceURL);
 	}
 }
