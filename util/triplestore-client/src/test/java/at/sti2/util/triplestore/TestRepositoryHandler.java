@@ -59,6 +59,8 @@ public class TestRepositoryHandler {
 
 	@After
 	public void tearDown() throws Exception {
+		this.repohandler.clearContextAll();
+		this.repohandler.commit();
 		this.repohandler.shutdown();
 	}
 
@@ -79,7 +81,7 @@ public class TestRepositoryHandler {
 				//System.out.println(res.next());
 				res.next(); i++;
 			}
-			System.out.println("No of triples: "+i);
+			//System.out.println("No of triples: "+i);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.toString());

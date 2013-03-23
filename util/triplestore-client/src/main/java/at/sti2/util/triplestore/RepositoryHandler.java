@@ -162,6 +162,12 @@ public class RepositoryHandler {
 		URI contextURI = this.valueFactory.createURI(_contextID);
 		this.connection.clear(contextURI);
 	}
+	
+	public synchronized void clearContextAll() throws RepositoryException {
+		if (this.connection == null)
+			this.init();
+		this.connection.clear();  // clears the complete context
+	}
 
 	public void commit() throws RepositoryException {
 		if (this.connection != null) {
