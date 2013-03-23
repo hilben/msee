@@ -22,32 +22,31 @@ public class TestRepositoryHandler {
 	protected static Logger logger = Logger
 			.getLogger(TestRepositoryHandler.class);
 
-	// TODO: don't hardcorde url
-	private static final String REPO_URL = "http://sesa.sti2.at:8080/openrdf-sesame";
-	private static final String REPO_NAME = "test";
-	
 	private static final String subject = "http://localhost/TestSubject";
 	private static final String predicate = "http://localhost/TestPredicate";
 	private static final String object = "http://localhost/TestObject";
 	private static final String context = "http://localhost/TestContext";
+	
+	RepositoryConfig config = null;
 
 	// The repohandler which is tested
 	private RepositoryHandler repohandler;
 
 	@Before
 	public void setUp() throws Exception {
+		RepositoryConfig config = new RepositoryConfig();
 		this.repohandler = null;
 		try {
 			this.repohandler = new RepositoryHandler(
 
-			REPO_URL, REPO_NAME, true);
+			config.getSesameEndpoint(), config.getSesameRepositoryID(), true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			logger.error("Is there a repository running at " + REPO_URL);
+			logger.error("Is there a repository running at " + config.getSesameEndpoint());
 			fail(e.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
-			logger.error("Is there a repository running at " + REPO_URL);
+			logger.error("Is there a repository running at " + config.getSesameEndpoint());
 			fail(e.toString());
 		}
 
@@ -102,8 +101,8 @@ public class TestRepositoryHandler {
 			repohandler.addLiteralTriple(subject, predicate, object, context);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
-			logger.error("Do there exists a repository named " + REPO_NAME
-					+ " at " + REPO_URL);
+			logger.error("Do there exists a repository named " + config.getSesameRepositoryID()
+					+ " at " + config.getSesameEndpoint());
 			fail(e.toString());
 		}
 		TupleQueryResult res = repohandler
@@ -213,8 +212,8 @@ public class TestRepositoryHandler {
 			repohandler.addLiteralTriple(subject, predicate, object, context);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
-			logger.error("Do there exists a repository named " + REPO_NAME
-					+ " at " + REPO_URL);
+			logger.error("Do there exists a repository named " + config.getSesameRepositoryID()
+					+ " at " + config.getSesameEndpoint());
 			fail(e.toString());
 		}
 		TupleQueryResult res = repohandler
