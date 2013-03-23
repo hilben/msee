@@ -723,4 +723,8 @@ public class RegistrationTriplestoreWriter {
 	public void commit() throws RepositoryException {
 		this.reposHandler.commit();
 	}
+	
+	public void rollback() throws RepositoryException {
+		this.reposHandler.rollback();
+	}
 }

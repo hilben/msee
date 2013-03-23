@@ -1,5 +1,6 @@
 package at.sti2.msee.registration.core.management;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -13,6 +14,13 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.TupleQueryResultHandlerException;
+import org.openrdf.query.resultio.QueryResultIO;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
+import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
 import org.openrdf.repository.RepositoryException;
 import org.ow2.easywsdl.extensions.sawsdl.SAWSDLFactory;
 import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLException;
@@ -98,11 +106,15 @@ public class RegistrationWSDLToTriplestoreWriter {
 
 			// Go through all the services and write them to the triple store
 			for (Service service : desc.getServices()) {
+				String serviceComplete = service.getQName().getNamespaceURI()+"#"+service.getQName().getLocalPart();
 				this.writeServiceToTriplestore(service);
+				if(alreadyInTripleStore(serviceComplete)){
+					repowriter.rollback();
+				} else {
+					repowriter.commit();
+				}
 			}
 
-			// commit them
-			repowriter.commit();
 			return repowriter.getServiceID();
 
 		} catch (RepositoryException e) {
@@ -129,6 +141,14 @@ public class RegistrationWSDLToTriplestoreWriter {
 			throw new ServiceRegistrationException(
 					"Errors durring parsing the service. An URI seems to have a bad format",
 					e.getCause());
+		} catch (QueryEvaluationException e) {
+			throw new ServiceRegistrationException(e);
+		} catch (MalformedQueryException e) {
+			throw new ServiceRegistrationException(e);
+		} catch (TupleQueryResultHandlerException e) {
+			throw new ServiceRegistrationException(e);
+		} catch (UnsupportedQueryResultFormatException e) {
+			throw new ServiceRegistrationException(e);
 		} finally {
 			/*
 			 * Something went wrong
@@ -458,5 +478,54 @@ public class RegistrationWSDLToTriplestoreWriter {
 		Output output = interfaceOperation.getOutput();
 		this.writeOperationOutputToTriplestore(output, interfaceName,
 				interfaceOperationName, pattern);
+	}
+	
+	
+	
+	private static boolean alreadyInTripleStore(String _serviceID)
+			throws QueryEvaluationException, RepositoryException,
+			MalformedQueryException, TupleQueryResultHandlerException,
+			UnsupportedQueryResultFormatException, IOException {
+		logger.debug("Starting alreadyInTripleStore()");
+		String query = getServiceCount(_serviceID);
+		RegistrationConfig cfg = new RegistrationConfig();
+		RepositoryHandler repositoryHandler = new RepositoryHandler(
+				cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
+		TupleQueryResult queryResult = repositoryHandler.selectSPARQL(query);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		QueryResultIO.write(queryResult, TupleQueryResultFormat.JSON, out);
+		String beginNum = out.toString().substring(
+				out.toString().indexOf("\"num\": {"));
+		String beginValue = beginNum.substring(beginNum.indexOf("value")
+				+ "value\": \"".length());
+		int num = Integer.valueOf(beginValue.substring(0,
+				beginValue.indexOf("\"")));
+		logger.debug("Number of occurances (" + _serviceID + "): " + num);
+		return (num > 0) ? true : false;
+	}
+	
+	private static String getServiceCount(String _serviceID) {
+
+		StringBuffer serviceCountQuery = new StringBuffer();
+
+		serviceCountQuery
+				.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+		serviceCountQuery
+				.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
+		serviceCountQuery
+				.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
+		serviceCountQuery
+				.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
+		serviceCountQuery
+				.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
+
+		serviceCountQuery.append("SELECT ?_serviceID (COUNT(?_serviceID) AS ?num)  WHERE {\n");
+		serviceCountQuery
+				.append("BIND(<"+_serviceID+"> AS ?_serviceID) . \n");
+		serviceCountQuery
+				.append("?_serviceID rdf:type msm_ext:Service . }\n");
+		serviceCountQuery.append("GROUP BY ?_serviceID\n");
+
+		return serviceCountQuery.toString();
 	}
 }

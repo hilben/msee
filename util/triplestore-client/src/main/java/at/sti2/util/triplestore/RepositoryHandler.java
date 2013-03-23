@@ -174,6 +174,12 @@ public class RepositoryHandler {
 			this.connection.commit();
 		}
 	}
+	
+	public void rollback() throws RepositoryException {
+		if (this.connection != null) {
+			this.connection.rollback();
+		}
+	}
 
 	/**
 	 * Commit and shutdown connection
