@@ -91,7 +91,7 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testDiscoverQuery2Args() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
+				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
 
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
 		

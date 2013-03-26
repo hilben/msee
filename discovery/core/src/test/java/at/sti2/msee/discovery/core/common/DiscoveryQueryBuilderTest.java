@@ -33,9 +33,10 @@ public class DiscoveryQueryBuilderTest {
 			UnsupportedRDFormatException {
 		List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
+				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
 		String query = discoveryQueryBuilder
 				.getDiscoverQuery2Args(categoryList);
+		System.out.println(query);
 		String expected = readFile("/getDiscoverQuery2ArgsTestResult");
 		Assert.assertEquals(query, expected);
 	}

@@ -35,6 +35,8 @@ public class DiscoveryQueryBuilder {
 						+ "PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"
 						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
 						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
+						+ "PREFIX msee: <http://msee.sti2.at/properties#> \n"
+						
 						+ "CONSTRUCT { \n"
 						+ "?serviceID msm_ext:hasOperation ?inputMessage . \n"
 						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
@@ -64,10 +66,29 @@ public class DiscoveryQueryBuilder {
 						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
 						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
 						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						+
+						
+						
 
-						"} WHERE { \n"
+						+ "?serviceID msee:name ?serviceName . \n "
+						+ "?serviceID msee:description ?serviceDescription . \n"
+						+ "?serviceID msee:requirements ?serviceRequirements . \n"
+						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
+						+ "?serviceID msee:type ?serviceType . \n"
+						+ "?serviceID msee:icon ?serviceIcon . \n"
+
+
+						+ "} WHERE { \n"
 						+ "?serviceID rdf:type msm_ext:Service . \n"
+						
+						
+						+ "?serviceID msee:name ?serviceName . \n "
+						+ "?serviceID msee:description ?serviceDescription . \n"
+						+ "?serviceID msee:requirements ?serviceRequirements . \n"
+						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
+						+ "?serviceID msee:type ?serviceType . \n"
+						+ "?serviceID msee:icon ?serviceIcon . \n"
+						
+						
 						+ ""
 						+ "$_categoryList:innerTemplate()$"
 						+ ""
@@ -126,8 +147,18 @@ public class DiscoveryQueryBuilder {
 						+ "OPTIONAL { \n"
 						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
 						+ "} \n" + "} \n" +
+						
+						"OPTIONAL {"
+						+ "?serviceID msee:name ?serviceName . \n "
+						+ "?serviceID msee:decription ?serviceDescription . \n"
+						+ "?serviceID msee:requirements ?serviceRequirements . \n"
+						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
+						+ "?serviceID msee:type ?serviceType . \n"
+						+ "?serviceID msee:icon ?serviceIcon . \n"
+						+ "} \n"
+						
 
-						"}>>" + "" +
+						+"}>>" + "" +  //  end of where
 
 						"innerTemplate(category) ::= <<" +
 						/**

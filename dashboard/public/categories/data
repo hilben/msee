@@ -1,7 +1,7 @@
 [
-	{"key": "http://www.sti2.at/MSEE/ServiceCategories#Maritime", "value": "Maritime"}, 
-	{"key": "http://www.sti2.at/MSEE/ServiceCategories#SendArrivalNotification", "value": "SendArrivalNotification"},
-	{"key": "http://www.sti2.at/MSEE/ServiceCategories#CustomsAuthorityPreDeparture", "value": "CustomsAuthorityPreDeparture"}, 
-	{"key": "http://www.sti2.at/MSEE/ServiceCategories#CustomsAuthorityPreArrival", "value": "CustomsAuthorityPreArrival"},
-	{"key": "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS", "value": "Business"}
+	{"key": "http://msee.sti2.at/categories#WEB_APP", "value": "Web Application"}, 
+	{"key": "http://msee.sti2.at/categories#REST_WEB_SERVICE", "value": "Rest Web Service"},
+	{"key": "http://msee.sti2.at/categories#BUSINESS", "value": "Business"},
+	{"key": "http://msee.sti2.at/categories#Indesit", "value": "Indesit"},
+	{"key": "http://msee.sti2.at/categories#AQ113D69", "value": "AQ113D69"}
 ]

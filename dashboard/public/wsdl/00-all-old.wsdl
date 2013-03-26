@@ -65,7 +65,7 @@
 
         <service name="reservationService"
                 interface="tns:reservationInterface"
-                sawsdl:modelReference="http://msee.sti2.at/categories#BUSINESS
+                sawsdl:modelReference="http://www.sti2.at/MSEE/ServiceCategories#BUSINESS
                 http://www.sti2.at/MSEE/ServiceCategories#Maritime">
 
                 <endpoint name="reservationEndpoint"
