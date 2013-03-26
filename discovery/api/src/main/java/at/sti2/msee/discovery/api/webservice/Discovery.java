@@ -49,7 +49,7 @@ public interface Discovery {
 	 * @return Services with related operation (that match the goal) in RDF Representation
 	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws DiscoveryException;
+	public String discoverAdvanced(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws DiscoveryException;
 	
 	/**
 	 * Get more information about the specified operation. 

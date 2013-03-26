@@ -58,11 +58,11 @@ public class DiscoveryImplMockTest {
 		outputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		context.checking(new Expectations() {
 			{
-				oneOf(discoveryWebService).discover(categoryList, inputParamList,
+				oneOf(discoveryWebService).discoverAdvanced(categoryList, inputParamList,
 						outputParamList);
 			}
 		});
-		System.out.println(discoveryWebService.discover(categoryList, inputParamList,
+		System.out.println(discoveryWebService.discoverAdvanced(categoryList, inputParamList,
 				outputParamList));
 
 	}
