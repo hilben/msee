@@ -66,20 +66,16 @@ public class RegistrationTest {
 			logger.info("Test WSDL " + url);
 
 			this.registration = new RegistrationWSDLToTriplestoreWriter();
-			String serviceID = registration.transformWSDLtoTriplesAndStoreInTripleStore(url
-					.toExternalForm());
-
-			Assert.assertTrue(checkServiceID(serviceID));
-		}
-		
+			String serviceID = null;
+			try {
+				serviceID = registration.transformWSDLtoTriplesAndStoreInTripleStore(url
+						.toExternalForm());
+				Assert.assertTrue(serviceID != null);
+			} catch (ServiceRegistrationException e) {
+				Assert.assertEquals("Service already registered", e.getMessage());
+			}
+		}	
 		
 	}
 
-	private boolean checkServiceID(String serviceID) {
-		boolean hasServiceID = false;
-		if (serviceID != null)
-			hasServiceID = true;
-
-		return hasServiceID;
-	}
 }

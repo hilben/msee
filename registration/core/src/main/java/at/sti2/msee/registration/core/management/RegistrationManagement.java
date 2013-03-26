@@ -23,6 +23,7 @@ public abstract class RegistrationManagement {
 		RegistrationManagement.initRepo();
 		try {
 			repositoryHandler.deleteContext(serviceURI);
+			repositoryHandler.commit();
 			repositoryHandler.shutdown();
 
 			return serviceURI;
@@ -44,17 +45,13 @@ public abstract class RegistrationManagement {
 			throws ServiceRegistrationException {
 		// Initialising the repository
 		RegistrationManagement.initRepo();
-
-		// Update through delete and add functionality
+		RegistrationManagement.delete(oldServiceURI);
+		
 		RegistrationWSDLToTriplestoreWriter registration = new RegistrationWSDLToTriplestoreWriter();
-
 		String registredServiceURI = registration
 				.transformWSDLtoTriplesAndStoreInTripleStore(newServiceURI);
-		if (registredServiceURI != null) {
-			RegistrationManagement.delete(oldServiceURI);
-			return registredServiceURI;
-		}
-		return null;
+
+		return registredServiceURI;
 	}
 
 	/**

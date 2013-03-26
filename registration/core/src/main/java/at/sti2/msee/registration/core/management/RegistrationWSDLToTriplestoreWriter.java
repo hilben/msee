@@ -110,6 +110,7 @@ public class RegistrationWSDLToTriplestoreWriter {
 				this.writeServiceToTriplestore(service);
 				if(alreadyInTripleStore(serviceComplete)){
 					repowriter.rollback();
+					throw new ServiceRegistrationException("Service already registered");
 				} else {
 					repowriter.commit();
 				}

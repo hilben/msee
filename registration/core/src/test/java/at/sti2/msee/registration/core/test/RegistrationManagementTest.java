@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +43,13 @@ public class RegistrationManagementTest {
 		assertNotNull(url);
 		
 		registration = new RegistrationWSDLToTriplestoreWriter();
-		registration.transformWSDLtoTriplesAndStoreInTripleStore(url.toExternalForm());
+		
+		// insert if not already present
+		try {
+			registration.transformWSDLtoTriplesAndStoreInTripleStore(url.toExternalForm());
+		} catch (ServiceRegistrationException e) {
+			Assert.assertEquals("Service already registered", e.getMessage());
+		}
 	}
 
 	/**
@@ -67,6 +74,7 @@ public class RegistrationManagementTest {
 			logger.info("Update " + url.toExternalForm() + " to " + url.toExternalForm());
 			RegistrationManagement.update(url.toExternalForm(), url.toExternalForm());
 		} catch (ServiceRegistrationException e) {
+			Assert.assertEquals("Service already registered", e.getMessage());
 			e.printStackTrace();
 		}
 	}

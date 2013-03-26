@@ -5,16 +5,22 @@ package at.sti2.msee.registration.core.test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openrdf.repository.RepositoryException;
+
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
+import at.sti2.msee.registration.core.common.RegistrationConfig;
 import at.sti2.msee.registration.core.management.RegistrationWSDLToTriplestoreWriter;
+import at.sti2.util.triplestore.RepositoryHandler;
 
 /**
  * @author Benjamin Hiltpolt
@@ -39,6 +45,14 @@ public class RegistrationWSDLToTriplestoreWriterTest {
 
 		this.registration = new RegistrationWSDLToTriplestoreWriter();
 	}
+	
+	@After
+	public void after() throws IOException, RepositoryException {
+		RegistrationConfig cfg = new RegistrationConfig();
+		RepositoryHandler repositoryHandler = new RepositoryHandler(
+				cfg.getSesameEndpoint(), cfg.getSesameReposID(), false);
+		repositoryHandler.clearContextAll();
+	}
 
 	/**
 	 * Test method for
@@ -56,7 +70,8 @@ public class RegistrationWSDLToTriplestoreWriterTest {
 								.toExternalForm());
 			} catch (ServiceRegistrationException e) {
 				logger.error(e);
-				fail(e.toString());
+				if(!e.getMessage().equals("Service already registered"))
+					fail(e.toString());
 			}
 		}
 
