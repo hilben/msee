@@ -50,9 +50,7 @@ public class DiscoveryImpl implements Discovery {
 	/**
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
 	 */
-	public String discover(
-			List<URI> categoryList)
-			throws DiscoveryException {
+	public String discover(List<URI> categoryList) throws DiscoveryException {
 		LOGGER.debug("Method discover invoked with category list of size "+categoryList.size());
 		try {
 			return serviceDiscovery.discover(categoryList, RDFFormat.RDFXML);
@@ -68,12 +66,13 @@ public class DiscoveryImpl implements Discovery {
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List,
 	 *      java.util.List, java.util.List)
 	 */
-	public String discoverAdvanced(List<URI> _categoryList, List<URI> _inputParamList,
-			List<URI> _outputParamList) throws DiscoveryException {
+	public String discoverAdvanced(List<URI> categoryList,
+			List<URI> inputParamList, List<URI> outputParamList)
+			throws DiscoveryException {
 		LOGGER.debug("Method discover invoked");
 		try {
-			return serviceDiscovery.discover(_categoryList, _inputParamList,
-					_outputParamList, RDFFormat.RDFXML);
+			return serviceDiscovery.discover(categoryList, inputParamList,
+					outputParamList, RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
@@ -86,8 +85,7 @@ public class DiscoveryImpl implements Discovery {
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#lookup(java.net.URI,
 	 *      java.lang.String)
 	 */
-	public String lookup(URI namespace,
-			String operationName)
+	public String lookup(URI namespace, String operationName)
 			throws DiscoveryException {
 		LOGGER.debug("Method lookup invoked with namespace " + namespace + " and " +
 			"operation " + operationName);
