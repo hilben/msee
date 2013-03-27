@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<service name="DiscoveryImpl" scope="application">
+<service name="discovery" scope="application">
 	<description>
 		Discovery Service
 	</description>

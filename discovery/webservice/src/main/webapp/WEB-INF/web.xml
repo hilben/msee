@@ -15,7 +15,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
-		<url-pattern>/services/*</url-pattern>
+		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
 	
 	<session-config>

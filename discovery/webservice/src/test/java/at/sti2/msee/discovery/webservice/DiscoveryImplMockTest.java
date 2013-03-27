@@ -20,11 +20,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Exception;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 
 /**
@@ -39,7 +39,7 @@ public class DiscoveryImplMockTest {
 	private Discovery discoveryWebService = context
 			.mock(Discovery.class);
 
-	@Test
+	//@Test
 	public void testDiscovery2() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
@@ -67,7 +67,7 @@ public class DiscoveryImplMockTest {
 
 	}
 
-	@Test
+	//@Test
 	public void testDiscover() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
@@ -80,7 +80,7 @@ public class DiscoveryImplMockTest {
 		System.out.println(discoveryWebService.discover(categoryList));
 	}
 
-	@Test
+	//@Test
 	public void testLookup() throws URISyntaxException, Exception {
 		context.checking(new Expectations() {
 			{
@@ -92,7 +92,7 @@ public class DiscoveryImplMockTest {
 				"http://www.webserviceX.NET"), "GetWeather"));
 	}
 
-	@Test
+	//@Test
 	public void testIServeModel() throws Exception {
 		context.checking(new Expectations() {
 			{

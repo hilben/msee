@@ -16,8 +16,6 @@
  */
 package at.sti2.msee.discovery.webservice;
 
-import static org.junit.Assert.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -25,8 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
+import java.lang.Exception;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +34,6 @@ import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.discovery.api.webservice.Discovery;
-import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.webservice.DiscoveryImpl;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
