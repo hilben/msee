@@ -21,11 +21,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import org.apache.cxf.annotations.WSDLDocumentation;
-import org.apache.cxf.annotations.WSDLDocumentationCollection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -42,8 +37,7 @@ import at.sti2.msee.discovery.core.DiscoveryService;
 /**
  * @author Alex Oberhauser
  */
-@WebService(targetNamespace = "http://sesa.sti2.at/services/")
-@WSDLDocumentationCollection(@WSDLDocumentation("SESA Discovery Component"))
+
 public class DiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(DiscoveryImpl.class.getName());
 	
@@ -56,14 +50,12 @@ public class DiscoveryImpl implements Discovery {
 	/**
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
 	 */
-	@WebMethod
-	@Override
 	public String discover(
-			@WebParam(name = "categoryList") List<URI> _categoryList)
+			List<URI> categoryList)
 			throws DiscoveryException {
-		LOGGER.debug("Method discover invoked with category list of size "+_categoryList.size());
+		LOGGER.debug("Method discover invoked with category list of size "+categoryList.size());
 		try {
-			return serviceDiscovery.discover(_categoryList, RDFFormat.RDFXML);
+			return serviceDiscovery.discover(categoryList, RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
@@ -76,8 +68,6 @@ public class DiscoveryImpl implements Discovery {
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List,
 	 *      java.util.List, java.util.List)
 	 */
-	@WebMethod(operationName = "discoverAdvanced")
-	@Override
 	public String discoverAdvanced(List<URI> _categoryList, List<URI> _inputParamList,
 			List<URI> _outputParamList) throws DiscoveryException {
 		LOGGER.debug("Method discover invoked");
@@ -96,15 +86,13 @@ public class DiscoveryImpl implements Discovery {
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#lookup(java.net.URI,
 	 *      java.lang.String)
 	 */
-	@WebMethod
-	@Override
-	public String lookup(@WebParam(name = "namespace") URI _namespace,
-			@WebParam(name = "operationName") String _operationName)
+	public String lookup(URI namespace,
+			String operationName)
 			throws DiscoveryException {
-		LOGGER.debug("Method lookup invoked with namespace " + _namespace + " and " +
-			"operation " + _operationName);
+		LOGGER.debug("Method lookup invoked with namespace " + namespace + " and " +
+			"operation " + operationName);
 		try {
-			return serviceDiscovery.lookup(_namespace, _operationName,
+			return serviceDiscovery.lookup(namespace, operationName,
 					RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
@@ -117,13 +105,11 @@ public class DiscoveryImpl implements Discovery {
 	/**
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#getIServeModel(java.lang.String)
 	 */
-	@WebMethod
-	@Override
-	public String getIServeModel(@WebParam(name = "serviceID") String _serviceID)
+	public String getIServeModel(String serviceID)
 			throws DiscoveryException {
-		LOGGER.debug("Method getIServeModel invoked with serviceID: " + _serviceID);
+		LOGGER.debug("Method getIServeModel invoked with serviceID: " + serviceID);
 		try {
-			return serviceDiscovery.getIServeModel("\""+_serviceID+"\"", RDFFormat.RDFXML);
+			return serviceDiscovery.getIServeModel("\""+serviceID+"\"", RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException

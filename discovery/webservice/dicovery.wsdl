@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl" xmlns:ax29="http://net.java/xsd" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://webservice.discovery.msee.sti2.at" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap" xmlns:tns="http://webservice.discovery.msee.sti2.at" xmlns:ax26="http://webservice.api.discovery.msee.sti2.at/xsd" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:whttp="http://www.w3.org/ns/wsdl/http" targetNamespace="http://webservice.discovery.msee.sti2.at">
+    <wsdl2:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://net.java/xsd">
+            <xs:complexType name="URI">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="absolute" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="authority" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="fragment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="host" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="opaque" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="path" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="port" type="xs:int"/>
+                    <xs:element minOccurs="0" name="query" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawAuthority" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawFragment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawPath" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawQuery" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawSchemeSpecificPart" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="rawUserInfo" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="scheme" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="schemeSpecificPart" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="userInfo" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax28="http://webservice.api.discovery.msee.sti2.at/xsd" xmlns:ax210="http://net.java/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://webservice.discovery.msee.sti2.at">
+            <xs:import namespace="http://webservice.api.discovery.msee.sti2.at/xsd"/>
+            <xs:import namespace="http://net.java/xsd"/>
+            <xs:complexType name="Exception">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Exception" nillable="true" type="xs:anyType"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="DiscoveryException">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="DiscoveryException" nillable="true" type="ax26:DiscoveryException"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lookup">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="namespace" nillable="true" type="ax210:URI"/>
+                        <xs:element minOccurs="0" name="operationName" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lookupResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="discoverAdvanced">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="_categoryList" nillable="true" type="xs:anyType"/>
+                        <xs:element minOccurs="0" name="_inputParamList" nillable="true" type="xs:anyType"/>
+                        <xs:element minOccurs="0" name="_outputParamList" nillable="true" type="xs:anyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="discoverAdvancedResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getIServeModel">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="serviceID" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getIServeModelResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="discover">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="categoryList" nillable="true" type="xs:anyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="discoverResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns:ax27="http://webservice.discovery.msee.sti2.at" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://webservice.api.discovery.msee.sti2.at/xsd">
+            <xs:import namespace="http://webservice.discovery.msee.sti2.at"/>
+            <xs:complexType name="DiscoveryException">
+                <xs:complexContent>
+                    <xs:extension base="ns:Exception">
+                        <xs:sequence/>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl2:types>
+    <wsdl2:interface name="ServiceInterface">
+        <wsdl2:fault name="DiscoveryException" element="ns:DiscoveryException"/>
+        <wsdl2:operation name="getIServeModel" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="serviceID #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:getIServeModel" wsaw:Action="urn:getIServeModel"/>
+            <wsdl2:output element="ns:getIServeModelResponse" wsaw:Action="urn:getIServeModelResponse"/>
+            <wsdl2:outfault ref="tns:DiscoveryException" wsaw:Action="urn:getIServeModelDiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="discoverAdvanced" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="_categoryList #in _inputParamList #in _outputParamList #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:discoverAdvanced" wsaw:Action="urn:discoverAdvanced"/>
+            <wsdl2:output element="ns:discoverAdvancedResponse" wsaw:Action="urn:discoverAdvancedResponse"/>
+            <wsdl2:outfault ref="tns:DiscoveryException" wsaw:Action="urn:discoverAdvancedDiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="lookup" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="namespace #in operationName #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:lookup" wsaw:Action="urn:lookup"/>
+            <wsdl2:output element="ns:lookupResponse" wsaw:Action="urn:lookupResponse"/>
+            <wsdl2:outfault ref="tns:DiscoveryException" wsaw:Action="urn:lookupDiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="discover" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="categoryList #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:discover" wsaw:Action="urn:discover"/>
+            <wsdl2:output element="ns:discoverResponse" wsaw:Action="urn:discoverResponse"/>
+            <wsdl2:outfault ref="tns:DiscoveryException" wsaw:Action="urn:discoverDiscoveryException"/>
+        </wsdl2:operation>
+    </wsdl2:interface>
+    <wsdl2:binding name="DiscoveryImplSoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+        <wsdl2:fault ref="tns:DiscoveryException"/>
+        <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discoverAdvanced" wsoap:action="urn:discoverAdvanced">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:lookup" wsoap:action="urn:lookup">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discover" wsoap:action="urn:discover">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="DiscoveryImplSoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+        <wsdl2:fault ref="tns:DiscoveryException"/>
+        <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discoverAdvanced" wsoap:action="urn:discoverAdvanced">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:lookup" wsoap:action="urn:lookup">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discover" wsoap:action="urn:discover">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="DiscoveryImplHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+        <wsdl2:fault ref="tns:DiscoveryException"/>
+        <wsdl2:operation ref="tns:getIServeModel" whttp:location="getIServeModel">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discoverAdvanced" whttp:location="discoverAdvanced">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:lookup" whttp:location="lookup">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:discover" whttp:location="discover">
+            <wsdl2:outfault ref="tns:DiscoveryException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:service name="DiscoveryImpl" interface="tns:ServiceInterface">
+        <wsdl2:endpoint name="DiscoveryImplHttpEndpoint" binding="tns:DiscoveryImplHttpBinding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
+        <wsdl2:endpoint name="DiscoveryImplHttpSoap12Endpoint" binding="tns:DiscoveryImplSoap12Binding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
+        <wsdl2:endpoint name="DiscoveryImplHttpSoap11Endpoint" binding="tns:DiscoveryImplSoap11Binding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
+    </wsdl2:service>
+</wsdl2:description>

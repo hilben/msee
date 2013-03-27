@@ -10,7 +10,6 @@
 	</mime-mapping>
 	<servlet>
 		<servlet-name>AxisServlet</servlet-name>
-		<display-name>Apache-Axis Servlet</display-name>
 		<servlet-class>org.apache.axis2.transport.http.AxisServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -18,6 +17,7 @@
 		<servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
+	
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
