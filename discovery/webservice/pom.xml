@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>discovery.webservice</artifactId>
 	<packaging>war</packaging>
@@ -10,7 +10,7 @@
 		<artifactId>discovery</artifactId>
 		<version>m17.1-SNAPSHOT</version>
 	</parent>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
@@ -50,15 +50,11 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.axis</groupId>
-			<artifactId>axis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-kernel</artifactId>
-		</dependency>
-		<dependency>
+	    <dependency>
+	          <groupId>org.apache.axis</groupId>
+	          <artifactId>axis</artifactId>
+	    </dependency>
+	    <dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
 		</dependency>
@@ -74,89 +70,29 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-		</dependency>
 	</dependencies>
-
-	<!-- <build> -->
-	<!-- <plugins> -->
-	<!-- <plugin> -->
-	<!-- <groupId>org.apache.axis2</groupId> -->
-	<!-- <artifactId>axis2-java2wsdl-maven-plugin</artifactId> -->
-	<!-- <version>1.6.2</version> -->
-	<!-- <executions> -->
-	<!-- <execution> -->
-	<!-- <phase>process-classes</phase> -->
-	<!-- <goals> -->
-	<!-- <goal>java2wsdl</goal> -->
-	<!-- </goals> -->
-	<!-- </execution> -->
-	<!-- </executions> -->
-	<!-- <configuration> -->
-	<!-- <className>at.sti2.msee.discovery.webservice.DiscoveryImpl</className> -->
-	<!-- <outputFileName>${project.build.directory}/discovery.wsdl</outputFileName> -->
-	<!-- <wsdlVersion>2.0</wsdlVersion> -->
-	<!-- </configuration> -->
-	<!-- </plugin> -->
-	<!-- </plugins> -->
-	<!-- </build> -->
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jvnet.jax-ws-commons</groupId>
-				<artifactId>jaxws-maven-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>wsgen</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<packageName>at.sti2.msee.discovery.webservice</packageName> <!-- The name of your generated source package -->
-					<sei>at.sti2.msee.discovery.webservice.DiscoveryImpl</sei>
-					<genWsdl>true</genWsdl>
-					
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>com.sun.xml.ws</groupId>
-						<artifactId>jaxws-tools</artifactId>
-						<version>2.2.5</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-
-		</plugins>
-	</build>
-
-
-	<!-- <build> -->
-	<!-- <plugins> -->
-	<!-- <plugin> -->
-	<!-- <groupId>org.apache.axis2</groupId> -->
-	<!-- <artifactId>axis2-wsdl2code-maven-plugin</artifactId> -->
-	<!-- <version>1.4</version> -->
-	<!-- <executions> -->
-	<!-- <execution> -->
-	<!-- <goals> -->
-	<!-- <goal>wsdl2code</goal> -->
-	<!-- </goals> -->
-	<!-- <configuration> -->
-	<!-- <packageName>at.sti2.msee.discovery.core</packageName> -->
-	<!-- <wsdlFile>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</wsdlFile> -->
-	<!-- <databindingName>xmlbeans</databindingName> -->
-	<!-- </configuration> -->
-	<!-- </execution> -->
-	<!-- </executions> -->
-	<!-- </plugin> -->
-	<!-- </plugins> -->
-	<!-- </build> -->
+	<!--
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.axis2</groupId>
+                <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsdl2code</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>at.sti2.msee.discovery.core</packageName>
+                            <wsdlFile>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</wsdlFile>
+                            <databindingName>xmlbeans</databindingName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    -->
 
 </project>

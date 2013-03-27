@@ -88,7 +88,7 @@ public class DiscoveryImplTest {
 		List<URI> outputParamList = new ArrayList<URI>();
 		outputParamList
 				.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		discoveryWebService.discoverAdvanced(categoryList, inputParamList,
+		discoveryWebService.discover(categoryList, inputParamList,
 				outputParamList);
 
 	}

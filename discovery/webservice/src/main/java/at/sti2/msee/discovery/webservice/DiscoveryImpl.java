@@ -78,7 +78,7 @@ public class DiscoveryImpl implements Discovery {
 	 */
 	@WebMethod(operationName = "discoverAdvanced")
 	@Override
-	public String discoverAdvanced(List<URI> _categoryList, List<URI> _inputParamList,
+	public String discover(List<URI> _categoryList, List<URI> _inputParamList,
 			List<URI> _outputParamList) throws DiscoveryException {
 		LOGGER.debug("Method discover invoked");
 		try {
