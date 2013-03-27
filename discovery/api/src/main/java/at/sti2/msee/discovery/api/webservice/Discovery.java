@@ -33,7 +33,7 @@ public interface Discovery {
 	 * @return Services with related operation (that match the goal) in RDF Representation
 	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList) throws DiscoveryException;
+	public String discover(String[] categoryList) throws DiscoveryException;
 	
 	/**
 	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)

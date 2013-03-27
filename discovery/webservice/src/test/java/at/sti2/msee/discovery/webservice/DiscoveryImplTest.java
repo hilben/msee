@@ -50,15 +50,19 @@ public class DiscoveryImplTest {
 
 	@Before
 	public void setup() throws FileNotFoundException, IOException,
-			ServiceRegistrationException, QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException {
+			ServiceRegistrationException, QueryEvaluationException,
+			RepositoryException, MalformedQueryException,
+			TupleQueryResultHandlerException,
+			UnsupportedQueryResultFormatException {
 		discoveryWebService = new DiscoveryImpl();
-		
+
 		// is already in triple store
 		DiscoveryService ds = new DiscoveryService();
-		boolean alreadyThere = ds.alreadyInTripleStore("http://greath.example.com/2004/wsdl/resSvc#reservationService");
-		
+		boolean alreadyThere = ds
+				.alreadyInTripleStore("http://greath.example.com/2004/wsdl/resSvc#reservationService");
+
 		// register
-		if (!alreadyThere){
+		if (!alreadyThere) {
 			ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
 			URL wsdlInput = DiscoveryImplTest.class
 					.getResource("/ReservationService.wsdl");
@@ -91,18 +95,27 @@ public class DiscoveryImplTest {
 
 	/**
 	 * TODO: make test right
+	 * 
 	 * @throws Exception
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test()
 	public void testDiscover() throws Exception {
-		final List<URI> categoryList = new ArrayList<URI>();
-		
+		String[] categoryList = new String[1];
+		categoryList[0] = "";
+
+		try {
+			discoveryWebService.discover(categoryList);
+		} catch (Exception e) {
+			if (e.getMessage() != null
+					&& e.getMessage().contains("Not a valid (absolute) URI")) {
+			} else if (e.getMessage() != null
+					&& e.getMessage().equals("Category list is null")) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		categoryList[0] = "http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS";
 		discoveryWebService.discover(categoryList);
-		
-		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
-		discoveryWebService.discover(categoryList);
-		System.out.println(discoveryWebService.discover(categoryList));
 	}
 
 	@Test

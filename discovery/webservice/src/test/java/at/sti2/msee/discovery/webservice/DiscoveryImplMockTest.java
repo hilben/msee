@@ -25,6 +25,8 @@ import java.lang.Exception;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Test;
+
 import at.sti2.msee.discovery.api.webservice.Discovery;
 
 /**
@@ -39,7 +41,7 @@ public class DiscoveryImplMockTest {
 	private Discovery discoveryWebService = context
 			.mock(Discovery.class);
 
-	//@Test
+	@Test
 	public void testDiscovery2() throws Exception {
 		final List<URI> categoryList = new ArrayList<URI>();
 		categoryList.add(new URI(
@@ -69,9 +71,8 @@ public class DiscoveryImplMockTest {
 
 	//@Test
 	public void testDiscover() throws Exception {
-		final List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
+		final String[] categoryList = new String[1];
+		categoryList[0]="http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
 		context.checking(new Expectations() {
 			{
 				oneOf(discoveryWebService).discover(categoryList);

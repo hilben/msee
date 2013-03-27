@@ -19,7 +19,12 @@ package at.sti2.msee.discovery.webservice;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +42,7 @@ import at.sti2.msee.discovery.core.DiscoveryService;
 /**
  * @author Alex Oberhauser
  */
-
+@WebService(serviceName="discovery",  targetNamespace = "http://sesa.sti2.at/services/")
 public class DiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(DiscoveryImpl.class.getName());
 	
@@ -50,14 +55,20 @@ public class DiscoveryImpl implements Discovery {
 	/**
 	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
 	 */
-	public String discover(List<URI> categoryList) throws DiscoveryException {
-		LOGGER.debug("Method discover invoked with category list of size "+categoryList.size());
+	// @WebParam(targetNamespace="http://www.w3.org/2001/XMLSchema/string")
+	public String discover(String[] categoryList) throws DiscoveryException {
+		LOGGER.debug("Method discover invoked with category list of size "
+				+ categoryList.length);
 		try {
-			return serviceDiscovery.discover(categoryList, RDFFormat.RDFXML);
+			List<URI> categoryUriList = new ArrayList<URI>();
+			for(String s:categoryList){
+				categoryUriList.add(new URI(s));
+			}
+			return serviceDiscovery.discover(categoryUriList, RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
-				| IOException e) {
+				| IOException | URISyntaxException e) {
 			throw new DiscoveryException(e);
 		}
 	}
