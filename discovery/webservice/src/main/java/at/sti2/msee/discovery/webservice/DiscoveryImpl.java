@@ -23,9 +23,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.WebParam;
 import javax.jws.WebService;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -47,24 +45,29 @@ public class DiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(DiscoveryImpl.class.getName());
 	
 	private DiscoveryService serviceDiscovery;
+	
+	private static List<URI> stringArray2UriList(String[] stringArray) throws URISyntaxException{
+		List<URI> uriList = new ArrayList<URI>();
+		for(String s:stringArray){
+			uriList.add(new URI(s));
+		}
+		return uriList;
+	}
 
 	public DiscoveryImpl () throws FileNotFoundException, IOException {
 		serviceDiscovery = new DiscoveryService();
 	}
 
-	/**
-	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List)
+
+	/* (non-Javadoc)
+	 * @see at.sti2.msee.discovery.api.webservice.Discovery#discover(java.lang.String[])
 	 */
-	// @WebParam(targetNamespace="http://www.w3.org/2001/XMLSchema/string")
 	public String discover(String[] categoryList) throws DiscoveryException {
 		LOGGER.debug("Method discover invoked with category list of size "
 				+ categoryList.length);
 		try {
-			List<URI> categoryUriList = new ArrayList<URI>();
-			for(String s:categoryList){
-				categoryUriList.add(new URI(s));
-			}
-			return serviceDiscovery.discover(categoryUriList, RDFFormat.RDFXML);
+			return serviceDiscovery.discover(stringArray2UriList(categoryList),
+					RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
@@ -73,46 +76,48 @@ public class DiscoveryImpl implements Discovery {
 		}
 	}
 
-	/**
-	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#discover(java.util.List,
-	 *      java.util.List, java.util.List)
+
+	/* (non-Javadoc)
+	 * @see at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java.lang.String[], java.lang.String[], java.lang.String[])
 	 */
-	public String discoverAdvanced(List<URI> categoryList,
-			List<URI> inputParamList, List<URI> outputParamList)
+	public String discoverAdvanced(String[] categoryList,
+			String[] inputParamList, String[] outputParamList)
 			throws DiscoveryException {
 		LOGGER.debug("Method discover invoked");
 		try {
-			return serviceDiscovery.discover(categoryList, inputParamList,
-					outputParamList, RDFFormat.RDFXML);
+			return serviceDiscovery.discover(stringArray2UriList(categoryList),
+					stringArray2UriList(inputParamList),
+					stringArray2UriList(outputParamList), RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
-				| IOException e) {
+				| IOException | URISyntaxException e) {
 			throw new DiscoveryException(e);
 		}
 	}
 
-	/**
-	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#lookup(java.net.URI,
-	 *      java.lang.String)
+
+	/* (non-Javadoc)
+	 * @see at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String, java.lang.String)
 	 */
-	public String lookup(URI namespace, String operationName)
+	public String lookup(String namespace, String operationName)
 			throws DiscoveryException {
 		LOGGER.debug("Method lookup invoked with namespace " + namespace + " and " +
 			"operation " + operationName);
 		try {
-			return serviceDiscovery.lookup(namespace, operationName,
+			return serviceDiscovery.lookup(new URI(namespace), operationName,
 					RDFFormat.RDFXML);
 		} catch (QueryEvaluationException
 				| RepositoryException | MalformedQueryException
 				| RDFHandlerException | UnsupportedRDFormatException
-				| IOException e) {
+				| IOException | URISyntaxException e) {
 			throw new DiscoveryException(e);
 		}
 	}
 
-	/**
-	 * @see at.sti2.msee.discovery.api.webservice.DiscoveryWebService#getIServeModel(java.lang.String)
+
+	/* (non-Javadoc)
+	 * @see at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang.String)
 	 */
 	public String getIServeModel(String serviceID)
 			throws DiscoveryException {

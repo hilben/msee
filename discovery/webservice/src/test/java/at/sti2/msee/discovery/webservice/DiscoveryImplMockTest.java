@@ -16,10 +16,7 @@
  */
 package at.sti2.msee.discovery.webservice;
 
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.lang.Exception;
 
 import org.jmock.Expectations;
@@ -38,41 +35,36 @@ import at.sti2.msee.discovery.api.webservice.Discovery;
 public class DiscoveryImplMockTest {
 	// private String resourceLocation = "/default.test.properties";
 	Mockery context = new JUnit4Mockery();
-	private Discovery discoveryWebService = context
-			.mock(Discovery.class);
+	private Discovery discoveryWebService = context.mock(Discovery.class);
 
 	@Test
-	public void testDiscovery2() throws Exception {
-		final List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
+	public void testDiscoverAdvanced() throws Exception {
+		final String[] categoryList = new String[4];
+		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
+		categoryList[1] = "http://www.sti2.at/MSEE/ServiceCategories#Authority";
+		categoryList[2] = "http://www.sti2.at/MSEE/ServiceCategories#Maritime";
+		categoryList[3] = "http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration";
 
-		final List<URI> inputParamList = new ArrayList<URI>();
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		final List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
+		final String[] inputParamList = new String[2];
+		inputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
+		inputParamList[1] = "http://www.w3.org/TR/xmlschema-2/#string";
+		final String[] outputParamList = new String[1];
+		outputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
 		context.checking(new Expectations() {
 			{
-				oneOf(discoveryWebService).discoverAdvanced(categoryList, inputParamList,
-						outputParamList);
+				oneOf(discoveryWebService).discoverAdvanced(categoryList,
+						inputParamList, outputParamList);
 			}
 		});
-		System.out.println(discoveryWebService.discoverAdvanced(categoryList, inputParamList,
-				outputParamList));
+		System.out.println(discoveryWebService.discoverAdvanced(categoryList,
+				inputParamList, outputParamList));
 
 	}
 
-	//@Test
+	// @Test
 	public void testDiscover() throws Exception {
 		final String[] categoryList = new String[1];
-		categoryList[0]="http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
+		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
 		context.checking(new Expectations() {
 			{
 				oneOf(discoveryWebService).discover(categoryList);
@@ -81,19 +73,19 @@ public class DiscoveryImplMockTest {
 		System.out.println(discoveryWebService.discover(categoryList));
 	}
 
-	//@Test
+	// @Test
 	public void testLookup() throws URISyntaxException, Exception {
 		context.checking(new Expectations() {
 			{
-				oneOf(discoveryWebService).lookup(new URI("http://www.webserviceX.NET"),
+				oneOf(discoveryWebService).lookup("http://www.webserviceX.NET",
 						"GetWeather");
 			}
 		});
-		System.out.println(discoveryWebService.lookup(new URI(
-				"http://www.webserviceX.NET"), "GetWeather"));
+		System.out.println(discoveryWebService.lookup(
+				"http://www.webserviceX.NET", "GetWeather"));
 	}
 
-	//@Test
+	// @Test
 	public void testIServeModel() throws Exception {
 		context.checking(new Expectations() {
 			{

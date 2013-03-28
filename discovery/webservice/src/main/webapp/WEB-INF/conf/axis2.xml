@@ -97,7 +97,7 @@
     
     
     
-    <!-- <parameter name="servicePath">service</parameter>--> <!-- chrismayr -->
+    <parameter name="servicePath">service</parameter> <!-- chrismayr -->
     
     
     

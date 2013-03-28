@@ -16,6 +16,9 @@
  */
 package at.sti2.msee.discovery.api.webservice;
 
+import javax.xml.ws.WebFault;
+
+@WebFault(faultBean = "at.sti2.msee.discovery.api.webservice.DiscoveryException")
 public class DiscoveryException extends Exception {
 
 	private static final long serialVersionUID = -2289179077479549018L;

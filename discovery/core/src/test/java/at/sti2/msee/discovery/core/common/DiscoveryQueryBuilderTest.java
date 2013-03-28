@@ -36,7 +36,6 @@ public class DiscoveryQueryBuilderTest {
 				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
 		String query = discoveryQueryBuilder
 				.getDiscoverQuery2Args(categoryList);
-		System.out.println(query);
 		String expected = readFile("/getDiscoverQuery2ArgsTestResult");
 		Assert.assertEquals(query, expected);
 	}
@@ -94,10 +93,11 @@ public class DiscoveryQueryBuilderTest {
 	}
 	
 	@Test
-	public void testGetServiceCount() {
+	public void testGetServiceCount() throws IOException {
 		String serviceID = "http://www.theserviceid.com#id";
 		String query = discoveryQueryBuilder.getServiceCount(serviceID);
-		//System.out.println(query);
+		String expected = readFile("/getServiceCountQueryTestResult");
+		Assert.assertEquals(query, expected);
 	}
 
 	private static String readFile(String path) throws IOException {
