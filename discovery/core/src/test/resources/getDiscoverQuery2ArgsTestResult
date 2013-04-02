@@ -3,6 +3,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> 
 PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> 
 PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+PREFIX msee: <http://msee.sti2.at/properties#> 
 CONSTRUCT { 
 ?serviceID msm_ext:hasOperation ?inputMessage . 
 ?inputMessage rdf:type wsdl:InputMessage . 
@@ -28,13 +29,25 @@ CONSTRUCT {
 ?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . 
 ?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . 
 ?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . 
+?serviceID msee:name ?serviceName . 
+ ?serviceID msee:description ?serviceDescription . 
+?serviceID msee:requirements ?serviceRequirements . 
+?serviceID msee:access_point ?serviceAccessPoint . 
+?serviceID msee:type ?serviceType . 
+?serviceID msee:icon ?serviceIcon . 
 } WHERE { 
 ?serviceID rdf:type msm_ext:Service . 
+?serviceID msee:name ?serviceName . 
+ ?serviceID msee:description ?serviceDescription . 
+?serviceID msee:requirements ?serviceRequirements . 
+?serviceID msee:access_point ?serviceAccessPoint . 
+?serviceID msee:type ?serviceType . 
+?serviceID msee:icon ?serviceIcon . 
 { 
-<http://www.sti2.at/MSEE/ServiceCategories#BUSINESS> rdfs:subClassOf* ?superClass . 
+<http://msee.sti2.at/categories#REST_WEB_SERVICE> rdfs:subClassOf* ?superClass . 
 ?serviceID sawsdl:modelReference ?superClass . 
 } UNION { 
-?serviceID sawsdl:modelReference <http://www.sti2.at/MSEE/ServiceCategories#BUSINESS> . 
+?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> . 
 } ?serviceID msm_ext:wsdlDescription ?descriptionBlock . 
 ?descriptionBlock wsdl:namespace ?namespace . 
 ?descriptionBlock wsdl:interface ?interfaceBlock . 
@@ -82,5 +95,12 @@ OPTIONAL {
 OPTIONAL { 
 ?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . 
 } 
+} 
+OPTIONAL {?serviceID msee:name ?serviceName . 
+ ?serviceID msee:decription ?serviceDescription . 
+?serviceID msee:requirements ?serviceRequirements . 
+?serviceID msee:access_point ?serviceAccessPoint . 
+?serviceID msee:type ?serviceType . 
+?serviceID msee:icon ?serviceIcon . 
 } 
 }

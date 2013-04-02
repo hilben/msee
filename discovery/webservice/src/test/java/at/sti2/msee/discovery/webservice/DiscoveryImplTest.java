@@ -16,17 +16,11 @@
  */
 package at.sti2.msee.discovery.webservice;
 
-import static org.junit.Assert.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
+import java.lang.Exception;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +31,6 @@ import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.discovery.api.webservice.Discovery;
-import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.webservice.DiscoveryImpl;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
@@ -54,15 +47,19 @@ public class DiscoveryImplTest {
 
 	@Before
 	public void setup() throws FileNotFoundException, IOException,
-			ServiceRegistrationException, QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException {
+			ServiceRegistrationException, QueryEvaluationException,
+			RepositoryException, MalformedQueryException,
+			TupleQueryResultHandlerException,
+			UnsupportedQueryResultFormatException {
 		discoveryWebService = new DiscoveryImpl();
-		
+
 		// is already in triple store
 		DiscoveryService ds = new DiscoveryService();
-		boolean alreadyThere = ds.alreadyInTripleStore("http://greath.example.com/2004/wsdl/resSvc#reservationService");
-		
+		boolean alreadyThere = ds
+				.alreadyInTripleStore("http://greath.example.com/2004/wsdl/resSvc#reservationService");
+
 		// register
-		if (!alreadyThere){
+		if (!alreadyThere) {
 			ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
 			URL wsdlInput = DiscoveryImplTest.class
 					.getResource("/ReservationService.wsdl");
@@ -71,47 +68,51 @@ public class DiscoveryImplTest {
 	}
 
 	@Test
-	public void testDiscovery2() throws Exception {
-		List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#Authority"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
+	public void testDiscoverAdvanced() throws Exception {
+		String[] categoryList = new String[4];
+		categoryList[0]="http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
+		categoryList[1]="http://www.sti2.at/MSEE/ServiceCategories#Authority";
+		categoryList[2]="http://www.sti2.at/MSEE/ServiceCategories#Maritime";
+		categoryList[3]="http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration";
 
-		List<URI> inputParamList = new ArrayList<URI>();
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList
-				.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		discoveryWebService.discover(categoryList, inputParamList,
+		String[] inputParamList = new String[2];
+		inputParamList[0]="http://www.w3.org/TR/xmlschema-2/#string";
+		inputParamList[1]="http://www.w3.org/TR/xmlschema-2/#string";
+		String[] outputParamList = new String[1];
+		outputParamList[0]="http://www.w3.org/TR/xmlschema-2/#string";
+		discoveryWebService.discoverAdvanced(categoryList, inputParamList,
 				outputParamList);
 
 	}
 
 	/**
 	 * TODO: make test right
+	 * 
 	 * @throws Exception
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test()
 	public void testDiscover() throws Exception {
-		final List<URI> categoryList = new ArrayList<URI>();
-		
+		String[] categoryList = new String[1];
+		categoryList[0] = "";
+
+		try {
+			discoveryWebService.discover(categoryList);
+		} catch (Exception e) {
+			if (e.getMessage() != null
+					&& e.getMessage().contains("Not a valid (absolute) URI")) {
+			} else if (e.getMessage() != null
+					&& e.getMessage().equals("Category list is null")) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+
+		categoryList[0] = "http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS";
 		discoveryWebService.discover(categoryList);
-		
-		categoryList.add(new URI(
-				"http://www.sti2.at/E-Freight/ServiceCategories#BUSINESS"));
-		discoveryWebService.discover(categoryList);
-		System.out.println(discoveryWebService.discover(categoryList));
 	}
 
 	@Test
 	public void testLookup() throws URISyntaxException, Exception {
-		discoveryWebService.lookup(new URI("http://www.webserviceX.NET"),
+		discoveryWebService.lookup("http://www.webserviceX.NET",
 				"GetWeather");
 	}
 

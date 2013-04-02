@@ -16,9 +16,6 @@
  */
 package at.sti2.msee.discovery.api.webservice;
 
-import java.net.URI;
-import java.util.List;
-
 /**
  * @author Alex Oberhauser
  *
@@ -33,7 +30,7 @@ public interface Discovery {
 	 * @return Services with related operation (that match the goal) in RDF Representation
 	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList) throws DiscoveryException;
+	public String discover(String[] categoryList) throws DiscoveryException;
 	
 	/**
 	 * inputs:  disjunction (i1 OR i2 OR i3 OR ... OR oN)
@@ -49,7 +46,8 @@ public interface Discovery {
 	 * @return Services with related operation (that match the goal) in RDF Representation
 	 * @throws DiscoveryException
 	 */
-	public String discover(List<URI> categoryList, List<URI> inputParamList, List<URI> outputParamList) throws DiscoveryException;
+
+	public String discoverAdvanced(String[] categoryList, String[] inputParamList, String[] outputParamList) throws DiscoveryException;
 	
 	/**
 	 * Get more information about the specified operation. 
@@ -59,7 +57,7 @@ public interface Discovery {
 	 * @return A RDF Representation of the Operation with Inputs, Outputs, Faults and related modelReferences.
 	 * @throws DiscoveryException
 	 */
-	public String lookup(URI namespace, String operationName) throws DiscoveryException;
+	public String lookup(String namespace, String operationName) throws DiscoveryException;
 	
 	/**
 	 * Exports the internal RDF service model as iServe compatible MSM model. (see {@link http://iserve.kmi.open.ac.uk/})

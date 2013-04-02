@@ -22,7 +22,8 @@ import org.openrdf.rio.UnsupportedRDFormatException;
  * 
  */
 public class DiscoveryQueryBuilder {
-	private final static Logger LOGGER = LogManager.getLogger(DiscoveryConfig.class.getName());
+	private final static Logger LOGGER = LogManager
+			.getLogger(DiscoveryConfig.class.getName());
 
 	public String getDiscoverQuery2Args(List<URI> _categoryList) {
 		LOGGER.debug("Create query for discover");
@@ -36,7 +37,7 @@ public class DiscoveryQueryBuilder {
 						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
 						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
 						+ "PREFIX msee: <http://msee.sti2.at/properties#> \n"
-						
+
 						+ "CONSTRUCT { \n"
 						+ "?serviceID msm_ext:hasOperation ?inputMessage . \n"
 						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
@@ -66,8 +67,6 @@ public class DiscoveryQueryBuilder {
 						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
 						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
 						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						
-						
 
 						+ "?serviceID msee:name ?serviceName . \n "
 						+ "?serviceID msee:description ?serviceDescription . \n"
@@ -75,20 +74,17 @@ public class DiscoveryQueryBuilder {
 						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
 						+ "?serviceID msee:type ?serviceType . \n"
 						+ "?serviceID msee:icon ?serviceIcon . \n"
-
 
 						+ "} WHERE { \n"
 						+ "?serviceID rdf:type msm_ext:Service . \n"
-						
-						
+
 						+ "?serviceID msee:name ?serviceName . \n "
 						+ "?serviceID msee:description ?serviceDescription . \n"
 						+ "?serviceID msee:requirements ?serviceRequirements . \n"
 						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
 						+ "?serviceID msee:type ?serviceType . \n"
 						+ "?serviceID msee:icon ?serviceIcon . \n"
-						
-						
+
 						+ ""
 						+ "$_categoryList:innerTemplate()$"
 						+ ""
@@ -146,8 +142,10 @@ public class DiscoveryQueryBuilder {
 						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
 						+ "OPTIONAL { \n"
 						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						+ "} \n" + "} \n" +
-						
+						+ "} \n"
+						+ "} \n"
+						+
+
 						"OPTIONAL {"
 						+ "?serviceID msee:name ?serviceName . \n "
 						+ "?serviceID msee:decription ?serviceDescription . \n"
@@ -156,9 +154,10 @@ public class DiscoveryQueryBuilder {
 						+ "?serviceID msee:type ?serviceType . \n"
 						+ "?serviceID msee:icon ?serviceIcon . \n"
 						+ "} \n"
-						
 
-						+"}>>" + "" +  //  end of where
+						+ "}>>"
+						+ ""
+						+ // end of where
 
 						"innerTemplate(category) ::= <<" +
 						/**
@@ -207,7 +206,7 @@ public class DiscoveryQueryBuilder {
 
 		template.setAttribute("_namespace", _namespace);
 		template.setAttribute("_operationName", _operationName);
-		
+
 		return template.toString();
 	}
 
@@ -393,9 +392,10 @@ public class DiscoveryQueryBuilder {
 
 		return discoveryQuery.toString();
 	}
-	
-	public String getIServeModelQuery (String _serviceID) throws FileNotFoundException,
-			IOException, QueryEvaluationException, RepositoryException,
+
+	public String getIServeModelQuery(String _serviceID)
+			throws FileNotFoundException, IOException,
+			QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
 
@@ -528,12 +528,12 @@ public class DiscoveryQueryBuilder {
 						+ "} \n" + "} \n" +
 
 						"}");
-		
+
 		template.setAttribute("_serviceID", _serviceID);
 
 		return template.toString();
 	}
-	
+
 	public String getServiceCount(String _serviceID) {
 
 		StringBuffer serviceCountQuery = new StringBuffer();
@@ -541,19 +541,13 @@ public class DiscoveryQueryBuilder {
 		serviceCountQuery
 				.append("PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
 		serviceCountQuery
-				.append("PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n");
-		serviceCountQuery
-				.append("PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n");
-		serviceCountQuery
 				.append("PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n");
-		serviceCountQuery
-				.append("PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n");
 
-		serviceCountQuery.append("SELECT ?_serviceID (COUNT(?_serviceID) AS ?num)  WHERE {\n");
 		serviceCountQuery
-				.append("BIND(<"+_serviceID+"> AS ?_serviceID) . \n");
-		serviceCountQuery
-				.append("?_serviceID rdf:type msm_ext:Service . }\n");
+				.append("SELECT ?_serviceID (COUNT(?_serviceID) AS ?num)  WHERE {\n");
+		serviceCountQuery.append("BIND(<" + _serviceID
+				+ "> AS ?_serviceID) . \n");
+		serviceCountQuery.append("?_serviceID rdf:type msm_ext:Service . }\n");
 		serviceCountQuery.append("GROUP BY ?_serviceID\n");
 
 		return serviceCountQuery.toString();
