@@ -10,9 +10,14 @@ import org.junit.Test;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 
+/**
+ * This test class represents a SOAP client that tests the different methods of
+ * the discovery webservice.
+ * 
+ */
 public class DiscoveryWebserviceTestAxis {
 
-	String endpoint = "http://localhost:8080/discovery-webservice/service/discovery?wsdl";
+	String endpoint = "http://msee.sti2.at/discovery-webservice/service/discovery?wsdl";
 
 	// String endpoint =
 	// "http://localhost:8080/at.sti2.msee.delivery.discovery.webservice-m17.1-SNAPSHOT/service?wsdl";
@@ -53,9 +58,9 @@ public class DiscoveryWebserviceTestAxis {
 			String returnValue = (String) call
 					.invoke(new Object[] { empty });
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			Assert.assertEquals(
-					"org.openrdf.repository.http.HTTPQueryEvaluationException: Not a valid (absolute) URI: "
+					"org.openrdf.repository.http.HTTPQueryEvaluationException: Not a valid (absolute) URI:"
 							, e.toString());
 		}
 
