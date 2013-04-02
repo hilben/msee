@@ -138,7 +138,7 @@ public class DiscoveryService {
 			UnsupportedRDFormatException {
 
 		LOGGER.debug("Starting discover()");
-		
+
 		if (categoryList == null) {
 			LOGGER.error("Category list is null");
 			throw new NullPointerException("Category list is null");
@@ -212,19 +212,24 @@ public class DiscoveryService {
 		LOGGER.debug("Number of occurances (" + _serviceID + "): " + num);
 		return (num > 0) ? true : false;
 	}
-	
-	
+
 	/**
-	 * Returns a list containing all categories of a given service
+	 * Returns a list containing all categories of a given service TODO: Dummy
+	 * function only returning testvalues
 	 * 
 	 * @param serviceID
-	 * @return 
+	 * @return
 	 */
 	public String[] getServiceCategories(String serviceID) {
-		String categories[] = null;
-		
-		//TODO: implement
-		
+		// TODO: implement real function
+
+
+		//categories from the dashboard 
+		String categories[] = { "http://msee.sti2.at/categories#WEB_APP",
+				"http://msee.sti2.at/categories#REST_WEB_SERVICE",
+				"http://msee.sti2.at/categories#BUSINESS",
+				"http://msee.sti2.at/categories#AQ113D69" };
+
 		return categories;
 	}
 

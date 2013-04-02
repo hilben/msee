@@ -8,6 +8,9 @@ class Dashboards::DiscoveriesController < ApplicationController
   def index
     method = params[:method]
 
+    categories = DiscoveryService.getServiceCategories
+    logger.debug "categories: #{categories}"
+
     if method == "lookup"
       lookup(params[:namespace], params[:operation])
     elsif method == "discover"

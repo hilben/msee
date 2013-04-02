@@ -39,6 +39,8 @@ import at.sti2.msee.discovery.core.DiscoveryService;
  * @author Benjamin Hiltpolt
  * 
  * 
+ * 
+ *         TODO: use better logging
  */
 public class DiscoveryServiceTest extends TestCase {
 	private String resourceLocation = "/default.properties";
@@ -74,7 +76,8 @@ public class DiscoveryServiceTest extends TestCase {
 		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
+		outputParamList
+				.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
 		// System.out.println(ServiceDiscovery.discover(categoryList,
 		// inputParamList, outputParamList, RDFFormat.N3));
 
@@ -94,20 +97,38 @@ public class DiscoveryServiceTest extends TestCase {
 				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
 
 		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		
+
 		discoveryService.discover(categoryList, RDFFormat.N3);
-		System.out.println(discoveryService.discover(categoryList, RDFFormat.N3));
+		System.out.println(discoveryService
+				.discover(categoryList, RDFFormat.N3));
 	}
-	
+
 	@Test
 	public void testGetServiceCategories() {
-		TestCase.fail();
-		//TODO: write test
+
+		String[] categories = discoveryService.getServiceCategories("someid");
+
+		TestCase.assertEquals(categories.length, 4);
+
+		TestCase.assertTrue(categories[2]
+				.compareTo("http://msee.sti2.at/categories#BUSINESS") == 0);
+
+		TestCase.assertFalse(categories[1]
+				.compareTo("http://msee.sti2.at/categories#BUSINESS") == 0);
+
+		// TODO: write test for real function
+		for (String c : categories) {
+			System.out.println("testGetServiceCategories: " + c);
+		}
 	}
-	
+
 	@Test
-	public void testAlreadyInTripleStore() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
-		Assert.assertFalse(discoveryService.alreadyInTripleStore("http://xyz.com#one"));
+	public void testAlreadyInTripleStore() throws QueryEvaluationException,
+			RepositoryException, MalformedQueryException,
+			TupleQueryResultHandlerException,
+			UnsupportedQueryResultFormatException, IOException {
+		Assert.assertFalse(discoveryService
+				.alreadyInTripleStore("http://xyz.com#one"));
 	}
 
 }

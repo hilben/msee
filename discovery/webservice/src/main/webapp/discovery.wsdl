@@ -123,7 +123,7 @@
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
-    <wsdl2:binding name="discoverySoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+    <wsdl2:binding name="discoverySoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
         <wsdl2:fault ref="tns:DiscoveryException"/>
         <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
@@ -138,7 +138,7 @@
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
-    <wsdl2:binding name="discoverySoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+    <wsdl2:binding name="discoverySoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
         <wsdl2:fault ref="tns:DiscoveryException"/>
         <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
