@@ -212,5 +212,20 @@ public class DiscoveryService {
 		LOGGER.debug("Number of occurances (" + _serviceID + "): " + num);
 		return (num > 0) ? true : false;
 	}
+	
+	
+	/**
+	 * Returns a list containing all categories of a given service
+	 * 
+	 * @param serviceID
+	 * @return 
+	 */
+	public String[] getServiceCategories(String serviceID) {
+		String categories[] = null;
+		
+		//TODO: implement
+		
+		return categories;
+	}
 
 }

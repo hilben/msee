@@ -100,6 +100,12 @@ public class DiscoveryServiceTest extends TestCase {
 	}
 	
 	@Test
+	public void testGetServiceCategories() {
+		TestCase.fail();
+		//TODO: write test
+	}
+	
+	@Test
 	public void testAlreadyInTripleStore() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
 		Assert.assertFalse(discoveryService.alreadyInTripleStore("http://xyz.com#one"));
 	}
