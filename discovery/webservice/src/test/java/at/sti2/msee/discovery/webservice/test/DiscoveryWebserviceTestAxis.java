@@ -1,6 +1,14 @@
 package at.sti2.msee.discovery.webservice.test;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
@@ -42,7 +50,7 @@ public class DiscoveryWebserviceTestAxis {
 					"No parameters specified to the Call object!  You must call addParameter() for all parameters if you have called setReturnType().",
 					e.toString());
 		}
-		
+
 		// test empty list (NULL)
 		// test parameter no uri
 		String empty = null;
@@ -55,13 +63,12 @@ public class DiscoveryWebserviceTestAxis {
 					org.apache.axis.Constants.XSD_STRING,
 					javax.xml.rpc.ParameterMode.IN);
 			call.setReturnType(org.apache.axis.Constants.XSD_STRING);
-			String returnValue = (String) call
-					.invoke(new Object[] { empty });
+			String returnValue = (String) call.invoke(new Object[] { empty });
 		} catch (Exception e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			Assert.assertEquals(
-					"org.openrdf.repository.http.HTTPQueryEvaluationException: Not a valid (absolute) URI:"
-							, e.toString());
+					"org.openrdf.repository.http.HTTPQueryEvaluationException: Not a valid (absolute) URI:",
+					e.toString());
 		}
 
 		// test parameter no uri
@@ -92,13 +99,29 @@ public class DiscoveryWebserviceTestAxis {
 					org.apache.axis.Constants.XSD_STRING,
 					javax.xml.rpc.ParameterMode.IN);
 			call.setReturnType(org.apache.axis.Constants.XSD_STRING);
+
 			String returnValue = (String) call
 					.invoke(new Object[] { "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS" });
+
+			//writeToFile("returnDiscoverTest.txt", returnValue);
+
 			String minimalReturnString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:sawsdl=\"http://www.w3.org/ns/sawsdl#\" xmlns:msm_ext=\"http://sesa.sti2.at/ns/minimal-service-model-ext#\" xmlns:wsdl=\"http://www.w3.org/ns/wsdl-rdf#\"> </rdf:RDF>";
 			Assert.assertTrue(returnValue.length() >= minimalReturnString
 					.length());
 		} catch (Exception e) {
 			e.toString();
+		}
+	}
+
+	private static void writeToFile(String fileName, String content) {
+		String path = DiscoveryWebserviceTestAxis.class.getCanonicalName();
+		try {
+			Writer output = new BufferedWriter(new FileWriter(path +  fileName));
+			output.write(content);
+			output.flush();
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
