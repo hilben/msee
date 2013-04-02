@@ -220,7 +220,7 @@ public class DiscoveryService {
 	 * @param serviceID
 	 * @return
 	 */
-	public String[] getServiceCategories(String serviceID) {
+	public String[] getServiceCategories() {
 		// TODO: implement real function
 
 

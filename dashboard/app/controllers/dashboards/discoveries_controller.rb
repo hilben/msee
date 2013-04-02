@@ -1,4 +1,5 @@
 
+include Java
 java_import Java::at.sti2.msee.discovery.core.DiscoveryService
 java_import Java::org.openrdf.rio.RDFFormat
 #java_import Java::java.net.URI
@@ -8,8 +9,6 @@ class Dashboards::DiscoveriesController < ApplicationController
   def index
     method = params[:method]
 
-    categories = DiscoveryService.getServiceCategories
-    logger.debug "categories: #{categories}"
 
     if method == "lookup"
       lookup(params[:namespace], params[:operation])
@@ -17,6 +16,38 @@ class Dashboards::DiscoveriesController < ApplicationController
       discover(params[:categoryList])
     elsif method == "iserve"
       getIServeModel(params[:serviceID])
+    end
+  end
+
+  def getCategoriesOfServiceIDForAutoCompleteBox
+
+
+    #obtain the categories
+    discovery = DiscoveryService.new
+    categories = discovery.getServiceCategories("someid")
+    logger.debug "categories: #{categories}"
+
+    jsonAutoCompleteData = Array.new
+
+    categories.each do |category|
+      entry = Hash.new
+      entry[:key] = category
+      entry[:value] = category
+
+      strIndex = category.index("#")
+
+      cutDownCategory = category[strIndex+1, (category.length - 1) - strIndex]
+      entry[:value] = cutDownCategory
+
+      jsonAutoCompleteData.push(entry)
+    end
+
+
+    logger.debug "JSON RETURN: #{jsonAutoCompleteData}"
+
+    respond_to do |format|
+      format.html  {render :json => jsonAutoCompleteData}
+      format.js  {render :json => jsonAutoCompleteData}
     end
   end
 

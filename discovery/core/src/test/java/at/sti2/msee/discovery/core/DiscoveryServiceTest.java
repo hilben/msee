@@ -106,7 +106,7 @@ public class DiscoveryServiceTest extends TestCase {
 	@Test
 	public void testGetServiceCategories() {
 
-		String[] categories = discoveryService.getServiceCategories("someid");
+		String[] categories = discoveryService.getServiceCategories();
 
 		TestCase.assertEquals(categories.length, 4);
 
@@ -120,6 +120,7 @@ public class DiscoveryServiceTest extends TestCase {
 		for (String c : categories) {
 			System.out.println("testGetServiceCategories: " + c);
 		}
+		
 	}
 
 	@Test

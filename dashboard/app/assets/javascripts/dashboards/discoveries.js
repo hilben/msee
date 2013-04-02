@@ -5,14 +5,14 @@
 
 $(document).ready(function(){
 	$("#categoryList").fcbkcomplete({
-		json_url: "/categories/data",
+		select_all_text: "add all categories"
+		json_url: "/dashboards/discovery/categories",
 		addontab: true,
 		maxitems: 10,
 		input_min_size: 0,
 		height: 10,
 		cache: true,
 		newel: true,
-		select_all_text: "add all categories"
 	});
 	
 	var method = getUrlVar(window.location.href)["method"];	

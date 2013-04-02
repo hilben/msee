@@ -7,6 +7,8 @@ SesaWebsite::Application.routes.draw do
   match "dashboards/registration" => "dashboards/registration#index"
   match "dashboards/discovery" => "dashboards/discoveries#index"
   
+  match "dashboards/discovery/categories" => "dashboards/discoveries#getCategoriesOfServiceIDForAutoCompleteBox"
+
   match "monitorings" => "monitorings#index"
   get "monitorings/index"
 
