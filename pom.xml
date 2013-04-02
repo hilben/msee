@@ -31,7 +31,7 @@
 		<default.port>8080</default.port>
 		<default.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</default.sesame.endpoint>
 		<default.sesame.repository.name>msee</default.sesame.repository.name>
-		<default.sesame.test.repository.name>test</default.sesame.test.repository.name>
+		<default.sesame.test.repository.name>msee</default.sesame.test.repository.name>
 
 		<!-- Discovery properties -->
 		<discovery.sesame.endpoint>${default.sesame.endpoint}</discovery.sesame.endpoint>
