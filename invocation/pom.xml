@@ -6,8 +6,6 @@
 	<packaging>pom</packaging>
 
 
-
-
 	<parent>
 		<groupId>at.sti2.msee.delivery</groupId>
 		<artifactId>platform</artifactId>
