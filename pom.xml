@@ -13,9 +13,9 @@
 		<module>registration</module>
 		<module>discovery</module>
 		<module>dashboard</module>
-		<!-- <module>monitoring</module> -->
-		<!-- <module>invocation</module> -->
-		<!-- <module>ranking</module> -->
+		<module>monitoring</module>
+		<module>invocation</module>
+		<!--<module>ranking</module> -->
 	</modules>
 
 	<properties>
@@ -31,7 +31,7 @@
 		<default.port>8080</default.port>
 		<default.sesame.endpoint>http://sesa.sti2.at:8080/openrdf-sesame</default.sesame.endpoint>
 		<default.sesame.repository.name>msee</default.sesame.repository.name>
-		<default.sesame.test.repository.name>test</default.sesame.test.repository.name>
+		<default.sesame.test.repository.name>msee</default.sesame.test.repository.name>
 
 		<!-- Discovery properties -->
 		<discovery.sesame.endpoint>${default.sesame.endpoint}</discovery.sesame.endpoint>
@@ -313,6 +313,11 @@
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
 				<version>2.0-beta4</version>
+			</dependency>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
 			</dependency>
 
 			<dependency>

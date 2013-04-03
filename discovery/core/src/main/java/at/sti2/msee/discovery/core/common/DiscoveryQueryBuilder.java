@@ -534,6 +534,44 @@ public class DiscoveryQueryBuilder {
 		return template.toString();
 	}
 
+	/**
+	 * Returns a SPARQL Query to return all categories stored in the triple
+	 * store
+	 * 
+	 * @return
+	 */
+	public String getAllCategoriesQuery() {
+		String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n"
+				+ "PREFIX psys:<http://proton.semanticweb.org/protonsys#>\n"
+				+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n"
+				+ "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n"
+				+ "PREFIX msee:<http://msee.sti2.at/properties#>\n"
+				+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "PREFIX pext:<http://proton.semanticweb.org/protonext#>\n"
+
+				+ "SELECT DISTINCT ?category\n"
+				+ "WHERE {\n"
+				+ "?service <http://www.w3.org/ns/sawsdl#modelReference> ?category.\n"
+				+ "?service a <http://sesa.sti2.at/ns/minimal-service-model-ext#Service>.\n"
+				+ "}\n";
+
+		return queryString;
+	}
+
+	/**
+	 * Returns a SPARQL Query to return all categories stored in the triple
+	 * store of a specific service id
+	 * 
+	 * TODO: not implemented
+	 * 
+	 * @param serviceID
+	 * @return
+	 */
+	public String getAllCategoriesForServiceIdQuery(String serviceID) {
+		// TODO: implement
+		return null;
+	}
+
 	public String getServiceCount(String _serviceID) {
 
 		StringBuffer serviceCountQuery = new StringBuffer();

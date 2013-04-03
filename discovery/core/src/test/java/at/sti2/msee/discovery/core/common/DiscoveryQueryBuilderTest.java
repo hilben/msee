@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import junit.framework.TestCase;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openrdf.query.MalformedQueryException;
@@ -16,6 +20,7 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
+import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 
 /**
@@ -25,6 +30,8 @@ import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 public class DiscoveryQueryBuilderTest {
 
 	DiscoveryQueryBuilder discoveryQueryBuilder = new DiscoveryQueryBuilder();
+	private final static Logger LOGGER = LogManager
+			.getLogger(DiscoveryService.class.getName());
 
 	@Test
 	public void testGetDiscoverQuery2Args() throws URISyntaxException,
@@ -58,12 +65,12 @@ public class DiscoveryQueryBuilderTest {
 				categoryList, inputList, outputList);
 		String expected = readFile("/getDiscoverQuery4ArgsTestResult");
 		Assert.assertEquals(query, expected);
-		
+
 		// add a second category
 		categoryList.add(new URI(
 				"http://www.sti2.at/MSEE/ServiceCategories#MARITIM"));
-		query = discoveryQueryBuilder.getDiscoverQuery4Args(
-				categoryList, inputList, outputList);
+		query = discoveryQueryBuilder.getDiscoverQuery4Args(categoryList,
+				inputList, outputList);
 		String expected2 = readFile("/getDiscoverQuery4ArgsTestResult-secondCategory");
 		Assert.assertEquals(query, expected2);
 	}
@@ -85,13 +92,13 @@ public class DiscoveryQueryBuilderTest {
 			MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
 		String serviceID = "http://www.theserviceid.com#id";
-		
+
 		String query = discoveryQueryBuilder.getIServeModelQuery(serviceID);
-		//System.out.println(query);
+		// System.out.println(query);
 		String expected = readFile("/getIServeModelQueryTestResult");
 		Assert.assertEquals(query, expected);
 	}
-	
+
 	@Test
 	public void testGetServiceCount() throws IOException {
 		String serviceID = "http://www.theserviceid.com#id";
@@ -99,6 +106,21 @@ public class DiscoveryQueryBuilderTest {
 		String expected = readFile("/getServiceCountQueryTestResult");
 		Assert.assertEquals(query, expected);
 	}
+
+	@Test
+	public void testGetAllCategoriesQuery() throws IOException {
+		String query = discoveryQueryBuilder.getAllCategoriesQuery();
+		String expected = readFile("/getAllCategoriesQuery");
+		Assert.assertEquals(query, expected);
+	}
+
+	// @Test
+	// public void testGetAllCategoriesForServiceIdQuery() {
+	// LOGGER.debug("getAllCategoriesForServiceIdQuery:");
+	//
+	// //TODO: implement
+	// TestCase.fail();
+	// }
 
 	private static String readFile(String path) throws IOException {
 		Scanner sc = new Scanner(

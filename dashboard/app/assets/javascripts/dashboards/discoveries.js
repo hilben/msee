@@ -4,8 +4,9 @@
 //= require bootstrap/bootstrap-collapse
 
 $(document).ready(function(){
+    $("#collapse_discover").collapse('show');    
+
 	$("#categoryList").fcbkcomplete({
-		select_all_text: "add all categories"
 		json_url: "/dashboards/discovery/categories",
 		addontab: true,
 		maxitems: 10,
@@ -13,8 +14,11 @@ $(document).ready(function(){
 		height: 10,
 		cache: true,
 		newel: true,
+		select_all_text: "add all categories"
+
 	});
 	
-	var method = getUrlVar(window.location.href)["method"];	
+	var method = getUrlVar(window.location.href)["method"];
+
     $("#collapse_" + method).collapse('show');    
 });

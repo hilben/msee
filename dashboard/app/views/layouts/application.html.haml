@@ -69,11 +69,6 @@
                     %li
                       %a{"href" => "/service_owners/sign_out", "data-method" => "delete", "rel" => "nofollow"} <i class="icon-book"></i> Logout
   
-            -if service_owner_signed_in?
-              %p.navbar-text.pull-right
-                %b Last Release:
-                v1.1 - 19.02.2013
-              %ul.nav.pull-right
             -unless service_owner_signed_in?
               %div.pull-right
                 %ul.nav

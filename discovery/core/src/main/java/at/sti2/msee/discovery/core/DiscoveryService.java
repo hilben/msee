@@ -20,10 +20,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.openrdf.query.Binding;
+import org.openrdf.query.BindingSet;
 import org.openrdf.query.GraphQueryResult;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -219,18 +222,40 @@ public class DiscoveryService {
 	 * 
 	 * @param serviceID
 	 * @return
+	 * @throws MalformedQueryException 
+	 * @throws RepositoryException 
+	 * @throws QueryEvaluationException 
+	 * @throws IOException 
+	 * @throws UnsupportedQueryResultFormatException 
+	 * @throws TupleQueryResultHandlerException 
 	 */
-	public String[] getServiceCategories() {
-		// TODO: implement real function
+	public String[] getServiceCategories() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
+		String query = discoveryQueryBuilder.getAllCategoriesQuery();
 
-
-		//categories from the dashboard 
-		String categories[] = { "http://msee.sti2.at/categories#WEB_APP",
-				"http://msee.sti2.at/categories#REST_WEB_SERVICE",
-				"http://msee.sti2.at/categories#BUSINESS",
-				"http://msee.sti2.at/categories#AQ113D69" };
-
-		return categories;
+		TupleQueryResult queryResult = repositoryHandler.selectSPARQL(query);
+		
+		LOGGER.debug("Querying all categories via");
+		LOGGER.debug(query);
+		
+		ArrayList<String> categories = new ArrayList<String>();
+		
+    	while (queryResult.hasNext()) {
+    		BindingSet nextElement = queryResult.next();
+    		Binding binding = nextElement.getBinding("category");
+			String category = binding.getValue().stringValue();
+			categories.add(category);
+			LOGGER.debug("Category : " + category);
+		}
+    	
+    	//Cast to array
+    	String returnArray[] = new String[categories.size()];
+    	int i = 0;
+    	for (String c : categories) {
+    		returnArray[i] = c;
+    		i++;
+    	}
+    	
+		return returnArray;
 	}
 
 }

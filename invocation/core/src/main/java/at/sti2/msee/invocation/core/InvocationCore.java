@@ -20,9 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -132,6 +130,8 @@ public class InvocationCore {
 			 */
 			String endpointURL = msmObject.getEndpointURL().toExternalForm();
 
+			//TODO:!!!!
+			
 			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
 					.getConfig(endpointURL);
 			cfg.setWebServiceName(operationName);
@@ -141,6 +141,7 @@ public class InvocationCore {
 							msmObject.getSOAPAction(),
 							new ActivityInstantiatedEvent(endpointURL),
 							strMsg.length()));
+			
 
 			out = new ByteArrayOutputStream();
 			returnMsg.writeTo(out);
