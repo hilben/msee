@@ -31,8 +31,8 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.ranking.core.ranking.QoSParamsEndpointRankingTable;
 import at.sti2.ranking.core.ranking.QoSRankingEngine;
-import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
+import at.sti2.wsmf.api.data.qos.QoSParamKey;
 import at.sti2.wsmf.core.PersistentHandler;
 
 /**

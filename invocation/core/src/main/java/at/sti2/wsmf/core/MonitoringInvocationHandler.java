@@ -48,6 +48,7 @@ import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSInvocationStateChannelHandler;
 import at.sti2.wsmf.core.data.channel.WSQoSChannelHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
+import at.sti2.msee.invocation.api.core.IInvocationMSM;;
 
 /**
  * @author Alex Oberhauser

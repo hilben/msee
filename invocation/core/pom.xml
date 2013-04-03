@@ -17,23 +17,14 @@
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>invocation.api</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
-		 <dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<artifactId>monitoring.core</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>  
-
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>invocation.grounding</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>util.triplestore.client</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<!-- axis -->
 		<dependency>
@@ -50,10 +41,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- FIX THIS TODO: 
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-transport-local</artifactId>
+			<artifactId>axis2-transport-locjaral</artifactId>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-http</artifactId>
@@ -76,6 +70,37 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- axis -->
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-kernel</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.geronimo.specs</groupId>
+					<artifactId>geronimo-activation_1.1_spec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.ws.commons.schema</groupId>
+					<artifactId>XmlSchema</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-local</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-http</artifactId>
 		</dependency>
 	</dependencies>
 </project>

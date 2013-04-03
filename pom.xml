@@ -12,8 +12,7 @@
 		<module>util</module>
 		<module>registration</module>
 		<module>discovery</module>
-		<module>dashboard</module>
-		<module>monitoring</module>
+		<!--TODO: uncomment: commented for testing purposes: <module>dashboard</module> -->
 		<module>invocation</module>
 		<!--<module>ranking</module> -->
 	</modules>
@@ -184,6 +183,21 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>discovery.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>invocation.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>invocation.api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>invocation.grounding</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

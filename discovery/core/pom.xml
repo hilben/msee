@@ -18,8 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
-
-	<artifactId>util.triplestore.client</artifactId>
+			<artifactId>util.triplestore.client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
