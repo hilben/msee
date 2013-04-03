@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,9 +39,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axis.client.Call;
+import org.apache.axis.client.Service;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.dom4j.DocumentException;
+import org.junit.Assert;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -86,79 +90,31 @@ public class InvocationCore {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String invoke(String serviceID,
-			String operationName, String inputData) throws Exception {
-
-		logger.setLevel(Level.INFO);
-
-		/*
-		 * Reading out all relevant information from the Triplestore
-		 */
-		InvocationMSM msmObject = TriplestoreHandler.getInvocationMSM(serviceID,
-				operationName);
-
-		IGroundingEngine groundingEngine = GroundingFactory
-				.createGroundingEngine(msmObject.getLoweringSchema(),
-						msmObject.getLifingSchema());
-
-		/*
-		 * Starting the lowering process
-		 */
-		String loweredInputData = groundingEngine.lower(inputData);
-
-		/*
-		 * Starting the invocation process
-		 */
-
-		logger.info("Invoking Web Service '" + msmObject.getWSDL()
-				+ "' with input data '" + loweredInputData + "'");
-
-		SOAPMessage loweredSOAPMessage = createSOAPMessage(loweredInputData);
-
-		SOAPMessage returnMsg = null;
+	public static String invoke(String serviceID, String operationName,
+			String inputData) throws Exception {
+		Service service = new Service();
+		Call call = null;
+		String endpoint = "http://msee.sti2.at/discovery-webservice/service/discovery?wsdl";
 
 		try {
-			logger.info("service id: " + serviceID);
-			logger.info("soap content: " + loweredSOAPMessage);
-
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			loweredSOAPMessage.writeTo(out);
-			String strMsg = new String(out.toByteArray());
-
-			/*
-			 * Monitoring!
-			 */
-			String endpointURL = msmObject.getEndpointURL().toExternalForm();
-
-			//TODO:!!!!
-			
-			WebServiceEndpointConfig cfg = WebServiceEndpointConfig
-					.getConfig(endpointURL);
-			cfg.setWebServiceName(operationName);
-
-			returnMsg = generateSOAPMessage(MonitoringInvocationHandler
-					.invokeWithMonitoring(generateSOAPMessage(strMsg),
-							msmObject.getSOAPAction(),
-							new ActivityInstantiatedEvent(endpointURL),
-							strMsg.length()));
-			
-
-			out = new ByteArrayOutputStream();
-			returnMsg.writeTo(out);
-			String strMsg2 = new String(out.toByteArray());
-
-			logger.info("return msg_new" + strMsg2);
-
+			call = (org.apache.axis.client.Call) service.createCall();
+			call.setTargetEndpointAddress(new java.net.URL(endpoint));
+			call.setOperationName(new QName(serviceID,
+					operationName));
+			call.addParameter("categoryList",
+					org.apache.axis.Constants.XSD_STRING,
+					javax.xml.rpc.ParameterMode.IN);
+			call.setReturnType(org.apache.axis.Constants.XSD_STRING);
+			String returnValue = (String) call
+					.invoke(new Object[] { inputData });
+			return returnValue;
 		} catch (Exception e) {
-			logger.info(e.getCause());
-			logger.info(e.getMessage());
-			e.printStackTrace();
+			Assert.assertEquals(
+					"No parameters specified to the Call object!  You must call addParameter() for all parameters if you have called setReturnType().",
+					e.toString());
 		}
 
-		/*
-		 * Return the lifted data
-		 */
-		return groundingEngine.lift(getBodyContent(returnMsg));
+		return null;
 	}
 
 	/**

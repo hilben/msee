@@ -9,7 +9,7 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
-public class TestTripleStoreHandler extends TestCase{
+public class TripleStoreHandlerTest extends TestCase{
 
 	
 	/**
