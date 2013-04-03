@@ -48,15 +48,13 @@ import at.sti2.wsmf.core.data.WebServiceEndpoint;
 import at.sti2.wsmf.core.data.channel.WSInvocationStateChannelHandler;
 import at.sti2.wsmf.core.data.channel.WSQoSChannelHandler;
 import at.sti2.wsmf.core.data.qos.QoSParamValue;
-import at.sti2.msee.invocation.api.core.IInvocationMSM;;
 
 /**
  * @author Alex Oberhauser
  * 
  * @author Benjamin Hiltpolt The {@link MonitoringInvocationHandler} invokes web
  *         services and stores monitoring informations about the webservice also
- *         it starts an AvailabilityChecker for the invoked webservice {TODO:
- *         removed use of {@link WSQoSChannelHandler} maybe reuse later?}
+ *         it starts an AvailabilityChecker for the invoked webservice
  * 
  */
 public class MonitoringInvocationHandler {
@@ -148,7 +146,6 @@ public class MonitoringInvocationHandler {
 
 			long beforeInvocation = System.currentTimeMillis();
 
-			
 			/*
 			 * Invocation
 			 */
@@ -171,7 +168,6 @@ public class MonitoringInvocationHandler {
 			// Get Response time
 			long afterInvocation = System.currentTimeMillis();
 			responseTime = (afterInvocation - beforeInvocation);
-
 
 			activeInstance.changeInvocationStatus(WSInvocationState.Completed);
 			sendStateChange(activeInstance);

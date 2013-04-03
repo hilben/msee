@@ -26,18 +26,19 @@ import java.util.Scanner;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 
+import org.junit.Test;
+import org.openrdf.repository.RepositoryException;
+
 import junit.framework.TestCase;
 
-import org.openrdf.repository.RepositoryException;
 
 import at.sti2.wsmf.core.MonitoringInvocationHandler;
 import at.sti2.wsmf.core.availability.WSAvailabilityChecker;
+import at.sti2.wsmf.core.common.WebServiceEndpointConfig;
 import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 
 /**
@@ -45,8 +46,11 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
  */
 public class TestInvocationHandler extends TestCase {
 
+
+	// TODO: What is this test doing?
 	// @Test
 	public void testInvocationHandler() throws RepositoryException, IOException {
+
 		List<QName> soapHeaderList = new ArrayList<QName>();
 		MessageFactory messageFactory;
 		SOAPMessage message = null;
@@ -109,8 +113,8 @@ public class TestInvocationHandler extends TestCase {
 		}
 
 		System.out.println(WSAvailabilityChecker.isWebServiceAvailable(
-				"http://example.org", null));
-		// System.out.println(WebServiceEndpointConfig.getDefaultConfig().getEndpointMaster());
+				"http://example.org", null)); //
+
 		System.out
 				.println("Sesa Valencia Port Service: "
 						+ WSAvailabilityChecker
@@ -123,5 +127,6 @@ public class TestInvocationHandler extends TestCase {
 								.isWebServiceAvailable(
 										"http://localhost:9292/at.sti2.msee.testwebservices/services/dummy",
 										null));
+
 	}
 }

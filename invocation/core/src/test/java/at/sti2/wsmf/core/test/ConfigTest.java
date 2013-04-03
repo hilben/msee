@@ -3,9 +3,9 @@
  */
 package at.sti2.wsmf.core.test;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
+
+import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -18,7 +18,7 @@ import at.sti2.wsmf.core.common.MonitoringConfig;
  * @author Benjamin Hiltpolt
  *
  */
-public class ConfigTest {
+public class ConfigTest extends TestCase {
 
 	private Logger logger = Logger.getLogger(ConfigTest.class);
 	private MonitoringConfig config;
