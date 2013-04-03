@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -94,11 +95,15 @@ public class InvocationCore {
 			String inputData) throws Exception {
 		Service service = new Service();
 		Call call = null;
-		String endpoint = "http://msee.sti2.at/discovery-webservice/service/discovery?wsdl";
-
+		//String endpoint = "http://msee.sti2.at/discovery-webservice/service/discovery?wsdl";
+		
+		InvocationMSM msmObject = TriplestoreHandler.getInvocationMSM(serviceID,
+				operationName);
+		URL endpoint = msmObject.getWSDL();
+		
 		try {
 			call = (org.apache.axis.client.Call) service.createCall();
-			call.setTargetEndpointAddress(new java.net.URL(endpoint));
+			call.setTargetEndpointAddress(endpoint);
 			call.setOperationName(new QName(serviceID,
 					operationName));
 			call.addParameter("categoryList",
