@@ -4,6 +4,8 @@
 //= require bootstrap/bootstrap-collapse
 
 $(document).ready(function(){
+    $("#collapse_discover").collapse('show');    
+
 	$("#categoryList").fcbkcomplete({
 		json_url: "/dashboards/discovery/categories",
 		addontab: true,
@@ -16,6 +18,7 @@ $(document).ready(function(){
 
 	});
 	
-	var method = getUrlVar(window.location.href)["method"];	
+	var method = getUrlVar(window.location.href)["method"];
+
     $("#collapse_" + method).collapse('show');    
 });
