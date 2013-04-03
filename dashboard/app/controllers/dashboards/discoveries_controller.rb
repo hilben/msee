@@ -24,7 +24,7 @@ class Dashboards::DiscoveriesController < ApplicationController
 
     #obtain the categories
     discovery = DiscoveryService.new
-    categories = discovery.getServiceCategories("")
+    categories = discovery.getServiceCategories()
     logger.debug "categories: #{categories}"
 
     jsonAutoCompleteData = Array.new
