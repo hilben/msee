@@ -3,35 +3,37 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>invocation Webservice - for testing purpose only</display-name>
-        <mime-mapping>
-                <extension>ico</extension>
-                <mime-type>image/x-icon</mime-type>
-        </mime-mapping>
-        <listener>
-                <!-- For Metro, use this listener-class instead: com.sun.xml.ws.transport.http.servlet.WSServletContextListener -->
-                <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-        </listener>
-        <!-- Remove below context-param element if using Metro -->
-        <context-param>
-                <param-name>contextConfigLocation</param-name>
-                <param-value>
+	<display-name>Web Service Monitoring Framework</display-name>
+	<mime-mapping>
+		<extension>ico</extension>
+		<mime-type>image/x-icon</mime-type>
+	</mime-mapping>
+	<listener>
+		<!-- For Metro, use this listener-class instead: com.sun.xml.ws.transport.http.servlet.WSServletContextListener -->
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- Remove below context-param element if using Metro -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
                         classpath:META-INF/cxf/cxf.xml
-                        <!-- classpath:META-INF/cxf/cxf-extension-soap.xml -->
-                        classpath:META-INF/cxf/cxf-servlet.xml 
+                        classpath:META-INF/cxf/cxf-extension-soap.xml
+                        classpath:META-INF/cxf/cxf-servlet.xml
                 </param-value>
-        </context-param>
-        <servlet>
-                <servlet-name>WebServicePort</servlet-name>
-                <!-- For Metro, use this servlet-class instead: com.sun.xml.ws.transport.http.servlet.WSServlet -->
-                <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-                <load-on-startup>1</load-on-startup>
-        </servlet>
-        <servlet-mapping>
-                <servlet-name>WebServicePort</servlet-name>
-                <url-pattern>/*</url-pattern>
-        </servlet-mapping>
-        <session-config>
-                <session-timeout>60</session-timeout>
-        </session-config>
+	</context-param>
+	
+	
+	<servlet>
+		<servlet-name>WebServicePort</servlet-name>
+		<!-- For Metro, use this servlet-class instead: com.sun.xml.ws.transport.http.servlet.WSServlet -->
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WebServicePort</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 </web-app>

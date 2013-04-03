@@ -59,25 +59,6 @@ import at.sti2.wsmf.core.data.ActivityInstantiatedEvent;
 public class InvocationCore {
 	protected static Logger logger = Logger.getLogger(InvocationCore.class);
 
-	/**
-	 * @param _message
-	 * @return
-	 * @throws TransformerException
-	 * @throws SOAPException
-	 */
-	private static String getBodyContent(SOAPMessage _message)
-			throws TransformerException, SOAPException {
-		Document doc = _message.getSOAPBody().extractContentAsDocument();
-
-		Source source = new DOMSource(doc);
-		StringWriter stringWriter = new StringWriter();
-		Result result = new StreamResult(stringWriter);
-		TransformerFactory factory = TransformerFactory.newInstance();
-		Transformer transformer = factory.newTransformer();
-		transformer.transform(source, result);
-
-		return stringWriter.getBuffer().toString();
-	}
 
 	/**
 	 * @param serviceID
@@ -181,6 +162,27 @@ public class InvocationCore {
 		soapPart.setContent(msgSrc);
 		msg.saveChanges();
 		return msg;
+	}
+	
+	
+	/**
+	 * @param _message
+	 * @return
+	 * @throws TransformerException
+	 * @throws SOAPException
+	 */
+	private static String getBodyContent(SOAPMessage _message)
+			throws TransformerException, SOAPException {
+		Document doc = _message.getSOAPBody().extractContentAsDocument();
+
+		Source source = new DOMSource(doc);
+		StringWriter stringWriter = new StringWriter();
+		Result result = new StreamResult(stringWriter);
+		TransformerFactory factory = TransformerFactory.newInstance();
+		Transformer transformer = factory.newTransformer();
+		transformer.transform(source, result);
+
+		return stringWriter.getBuffer().toString();
 	}
 	
 	/**
