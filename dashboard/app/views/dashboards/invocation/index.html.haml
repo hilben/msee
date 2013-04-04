@@ -21,36 +21,20 @@
       .span12 
         = form_tag do
           = label_tag("URL of the Endpoint: ") 
-          = text_field_tag(:serviceID, @serviceID, :required => "true", :placeholder => "http://example.com/service") if !@serviceID.nil?
-          = text_field_tag(:serviceID, "", :required => "true", :placeholder => "http://example.com/service" ) if @serviceID.nil?
+          = text_field_tag(:serviceID, @serviceID, :required => "false", :placeholder => "http://example.com/service") 
           = label_tag("Operation of the Endpoint:") 
-          = text_field_tag(:operation, @operation, :required => "false", :placeholder => "") if !@operation.nil?
-          = text_field_tag(:operation, "", :required => "false", :placeholder => "") if @operation.nil?
+          = text_field_tag(:operation, @operation, :required => "false", :placeholder => "", :content => "not implemented") 
           = label_tag("SOAP Message:")
-          = text_area_tag(:data, raw(@data), :required => "true", :placeholder => "Enter the SOAP message which is send to the service") if !@data.nil? 
-          = text_area_tag(:data, "", :required => "true", :placeholder => "Enter the SOAP message which is send to the service") if @data.nil?          
+          = text_area_tag(:data, raw(@data), :required => "false", :placeholder => "Enter the SOAP message which is send to the service")       
           .form-actions         
             = submit_tag("Execute", :class=> "btn btn-primary") 
  
-
-
     .accordion{"id" => "accordionGrounding"}
-      - if !@ontology.nil?
-        .accordion-group
-          .accordion-heading
-            %a.accordion-toggle{"data-toggle" => "collapse", "data-parent" => "#accordionGrounding", "href" => "#collapseFulltext"} 
-              %small Intermidiate Message (Lifting to Ontology Instace)
-
-          .accordion-body.collapse{"id" => "collapseFulltext"}
-            .accordion-inner
-              %pre.prettyprint.lang-xml
-                = raw @ontology 
-
       - if !@output.nil?
         .accordion-group
           .accordion-heading
             %a.accordion-toggle{"data-toggle" => "collapse", "data-parent" => "#accordionGrounding", "href" => "#collapseLocation"} 
-              %small Output Message (Lowering from Ontology Instance)           
+              %small Return Message      
 
           .accordion-body.collapse.in{"id" => "collapseLocation"}
             .accordion-inner

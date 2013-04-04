@@ -4,7 +4,6 @@ java_import Java::at.sti2.msee.invocation.core.ServiceInvocationImpl
 
 class Dashboards::InvocationController < ApplicationController
 
-
 	def index
 
 		serviceID = params[:serviceID]
