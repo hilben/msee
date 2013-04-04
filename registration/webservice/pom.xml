@@ -10,53 +10,116 @@
 		<artifactId>registration</artifactId>
 		<version>m17.1-SNAPSHOT</version>
 	</parent>
-
+	
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Generate WSDL files from annotations in the implementation -->
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<version>2.7.3</version>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-java2wsdl-maven-plugin</artifactId>
+				<version>1.6.2</version>
 				<executions>
 					<execution>
 						<id>install</id>
 						<phase>install</phase>
-						<configuration>
-							<className>at.sti2.msee.registration.api.ServiceRegistration</className>
-							<outputFile>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-							<genClient>true</genClient>
-							<verbose>true</verbose>
-						</configuration>
 						<goals>
-							<goal>java2ws</goal>
+							<goal>java2wsdl</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<className>at.sti2.msee.registration.api.ServiceRegistration</className>
+					<outputFileName>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</outputFileName>
+					<wsdlVersion>2</wsdlVersion>
+				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>2.7.3</version>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+				<version>1.6.2</version>
 				<executions>
 					<execution>
-						<id>generate-sources</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<sourceRoot>${project.build.directory}/../src/test/java/</sourceRoot>
-							<wsdlOptions>
-								<wsdlOption>
-									<wsdl>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</wsdl>
-								</wsdlOption>
-							</wsdlOptions>
-						</configuration>
+						<id>install</id>
+						<phase>install</phase>
 						<goals>
-							<goal>wsdl2java</goal>
+							<goal>wsdl2code</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<classpathElements>${project.build.outputDirectory}</classpathElements>
+					<wsdlFile>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</wsdlFile>
+					<wsdlVersion>2</wsdlVersion>
+					<databindingName>adb</databindingName>
+					<packageName>at.sti2.msee.registration</packageName>
+					<outputDirectory>${project.build.directory}/../src/test/</outputDirectory>
+					<targetSourceFolderLocation>java</targetSourceFolderLocation>
+					<databindingName>xmlbeans</databindingName>
+				</configuration>
 			</plugin>
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.codehaus.mojo</groupId> -->
+			<!-- <artifactId>build-helper-maven-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>generate-sources</id> -->
+			<!-- <phase>generate-sources</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>add-source</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <sources> -->
+			<!-- <source>${project.build.directory}/axis2/wsdl2code/src</source> -->
+			<!-- </sources> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+			<!-- <plugin> -->
+			<!-- Generate WSDL files from annotations in the implementation -->
+			<!-- <groupId>org.apache.cxf</groupId> -->
+			<!-- <artifactId>cxf-java2ws-plugin</artifactId> -->
+			<!-- <version>2.7.3</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>install</id> -->
+			<!-- <phase>install</phase> -->
+			<!-- <configuration> -->
+			<!-- <className>at.sti2.msee.registration.api.ServiceRegistration</className> -->
+			<!-- <outputFile>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</outputFile> -->
+			<!-- <genWsdl>true</genWsdl> -->
+			<!-- <genClient>true</genClient> -->
+			<!-- <verbose>true</verbose> -->
+			<!-- </configuration> -->
+			<!-- <goals> -->
+			<!-- <goal>java2ws</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.cxf</groupId> -->
+			<!-- <artifactId>cxf-codegen-plugin</artifactId> -->
+			<!-- <version>2.7.3</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>generate-sources</id> -->
+			<!-- <phase>generate-sources</phase> -->
+			<!-- <configuration> -->
+			<!-- <sourceRoot>${project.build.directory}/../src/test/java/</sourceRoot> -->
+			<!-- <wsdlOptions> -->
+			<!-- <wsdlOption> -->
+			<!-- <wsdl>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</wsdl> -->
+			<!-- </wsdlOption> -->
+			<!-- </wsdlOptions> -->
+			<!-- </configuration> -->
+			<!-- <goals> -->
+			<!-- <goal>wsdl2java</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 		</plugins>
 		<resources>
 			<resource>
@@ -74,27 +137,42 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle</artifactId>
-		</dependency>
 		<!-- Even though this is dependency of cxf it must be added explicitly 
 			for jetty (maven problem) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 		</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-api</artifactId>
+    <version>1.2.14</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-impl</artifactId>
+    <version>1.2.14</version>
+</dependency>
 		<dependency>
-			<groupId>org.apache.ws.xmlschema</groupId>
-			<artifactId>xmlschema-core</artifactId>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-kernel</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+			<version>1.6.2</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-xmlbeans</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -51,7 +51,7 @@ public class ServiceRegistrationImplTest{
 		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();	
 		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
 		
-		String serviceURI = registration.register(serviceDescriptionURL, contextURI);
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
 		assertNotNull(serviceURI);
 		
 		//Service is in repository
@@ -67,7 +67,7 @@ public class ServiceRegistrationImplTest{
 		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();	
 		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
 		
-		String serviceURI = registration.register(serviceDescriptionURL, contextURI);
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
 		assertNotNull(serviceURI);
 		
 		//Service is in repository
@@ -83,11 +83,11 @@ public class ServiceRegistrationImplTest{
 		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
 
 		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();		
-		String serviceURI = registration.register(serviceDescriptionURL, contextURI);
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
 		assertNotNull(serviceURI);
 
 		serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService2.sawsdl").toString();		
-		serviceURI = registration.register(serviceDescriptionURL, contextURI);
+		serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
 		assertNotNull(serviceURI);
 		
 		//Service is in repository
@@ -101,11 +101,7 @@ public class ServiceRegistrationImplTest{
 		repositoryModel.close();		
 		return services.size();
 	}
-	
-	
-	
-	
-	
+		
 //	@Test
 //	public void testDeregister() {
 //		fail("Not yet implemented");

@@ -26,7 +26,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 	}
 	
 	@Override
-	public String register(String serviceDescriptionURL, String contextURI) throws ServiceRegistrationException {
+	public String registerInContext(String serviceDescriptionURL, String contextURI) throws ServiceRegistrationException {
 		
 		URL descriptionURL = this.getServiceDescriptionURL(serviceDescriptionURL);
 		ServiceModelFormat format = this.getServiceDescriptionFormat(descriptionURL);
@@ -38,7 +38,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 
 	@Override
 	public String register(String serviceDescriptionURL) throws ServiceRegistrationException {
-		return this.register(serviceDescriptionURL,null);			
+		return this.registerInContext(serviceDescriptionURL,null);			
 	}
 
 	

@@ -89,11 +89,11 @@ public class WebServiceRegistrationImpl implements ServiceRegistration
 
 	@Override
 	@WebMethod
-	public String register(
+	public String registerInContext(
 			@WebParam(name = "serviceDescriptionURL") String serviceDescriptionURL,
 			@WebParam(name = "contextURI") String contextURI)
 			throws ServiceRegistrationException {
-		return registrationDelegate.register(serviceDescriptionURL,contextURI);
+		return registrationDelegate.registerInContext(serviceDescriptionURL,contextURI);
 	}
 
 	@Override

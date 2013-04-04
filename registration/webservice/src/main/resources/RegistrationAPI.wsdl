@@ -1,187 +1,174 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="ServiceRegistrationService" targetNamespace="http://msee.sti2.at/delivery/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://msee.sti2.at/delivery/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
-  <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://msee.sti2.at/delivery/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://msee.sti2.at/delivery/">
-  <xs:element name="deregister" type="tns:deregister"/>
-  <xs:element name="deregisterResponse" type="tns:deregisterResponse"/>
-  <xs:element name="register" type="tns:register"/>
-  <xs:element name="registerInContext" type="tns:registerInContext"/>
-  <xs:element name="registerInContextResponse" type="tns:registerInContextResponse"/>
-  <xs:element name="registerResponse" type="tns:registerResponse"/>
-  <xs:element name="update" type="tns:update"/>
-  <xs:element name="updateResponse" type="tns:updateResponse"/>
-  <xs:complexType name="update">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="serviceURI" type="xs:string"/>
-      <xs:element minOccurs="0" name="serviceURL" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="updateResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="register">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="serviceDescriptionURL" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="registerResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="registerInContext">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="serviceDescriptionURL" type="xs:string"/>
-      <xs:element minOccurs="0" name="contextURI" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="registerInContextResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="deregister">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="serviceURI" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="deregisterResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ServiceRegistrationException" type="tns:ServiceRegistrationException"/>
-  <xs:complexType name="ServiceRegistrationException">
-    <xs:sequence/>
-  </xs:complexType>
-</xs:schema>
-  </wsdl:types>
-  <wsdl:message name="register">
-    <wsdl:part name="parameters" element="tns:register">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="update">
-    <wsdl:part name="parameters" element="tns:update">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deregisterResponse">
-    <wsdl:part name="parameters" element="tns:deregisterResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="registerInContextResponse">
-    <wsdl:part name="parameters" element="tns:registerInContextResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="updateResponse">
-    <wsdl:part name="parameters" element="tns:updateResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="ServiceRegistrationException">
-    <wsdl:part name="ServiceRegistrationException" element="tns:ServiceRegistrationException">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="registerInContext">
-    <wsdl:part name="parameters" element="tns:registerInContext">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="registerResponse">
-    <wsdl:part name="parameters" element="tns:registerResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="deregister">
-    <wsdl:part name="parameters" element="tns:deregister">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="RegistrationServicePortType">
-    <wsdl:operation name="update">
-      <wsdl:input name="update" message="tns:update">
-    </wsdl:input>
-      <wsdl:output name="updateResponse" message="tns:updateResponse">
-    </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="register">
-      <wsdl:input name="register" message="tns:register">
-    </wsdl:input>
-      <wsdl:output name="registerResponse" message="tns:registerResponse">
-    </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="registerInContext">
-      <wsdl:input name="registerInContext" message="tns:registerInContext">
-    </wsdl:input>
-      <wsdl:output name="registerInContextResponse" message="tns:registerInContextResponse">
-    </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="deregister">
-      <wsdl:input name="deregister" message="tns:deregister">
-    </wsdl:input>
-      <wsdl:output name="deregisterResponse" message="tns:deregisterResponse">
-    </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException" message="tns:ServiceRegistrationException">
-    </wsdl:fault>
-    </wsdl:operation>
-  </wsdl:portType>
-  <wsdl:binding name="ServiceRegistrationServiceSoapBinding" type="tns:RegistrationServicePortType">
-    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="update">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="update">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="updateResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException">
-        <soap:fault name="ServiceRegistrationException" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="register">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="register">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="registerResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException">
-        <soap:fault name="ServiceRegistrationException" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="registerInContext">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="registerInContext">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="registerInContextResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException">
-        <soap:fault name="ServiceRegistrationException" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="deregister">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="deregister">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="deregisterResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="ServiceRegistrationException">
-        <soap:fault name="ServiceRegistrationException" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-  </wsdl:binding>
-  <wsdl:service name="ServiceRegistrationService">
-    <wsdl:port name="RegistrationServicePortTypePort" binding="tns:ServiceRegistrationServiceSoapBinding">
-      <soap:address location="http://localhost:9090/RegistrationServicePortTypePort"/>
-    </wsdl:port>
-  </wsdl:service>
-</wsdl:definitions>
+<?xml version="1.0" encoding="UTF-8"?><wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://msee.sti2.at/delivery/registration/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap" xmlns:tns="http://api.registration.msee.sti2.at" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions" xmlns:ax21="http://exception.api.registration.msee.sti2.at/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:whttp="http://www.w3.org/ns/wsdl/http" targetNamespace="http://api.registration.msee.sti2.at">
+    <wsdl2:types>
+        <xs:schema xmlns:ax22="http://exception.api.registration.msee.sti2.at/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://msee.sti2.at/delivery/registration/">
+            <xs:import namespace="http://exception.api.registration.msee.sti2.at/xsd"/>
+            <xs:element name="ServiceRegistrationServiceServiceRegistrationException">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="ServiceRegistrationException" nillable="true" type="ax21:ServiceRegistrationException"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="register">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="serviceDescriptionURL" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="registerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="update">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="serviceURI" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="serviceURL" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="updateResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="registerInContext">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="serviceDescriptionURL" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="contextURI" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="registerInContextResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="deregister">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="serviceURI" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="deregisterResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.api.registration.msee.sti2.at/xsd">
+            <xs:complexType name="ServiceRegistrationException">
+                <xs:sequence/>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl2:types>
+    <wsdl2:interface name="ServiceInterface">
+        <wsdl2:fault name="ServiceRegistrationServiceServiceRegistrationException" element="ns:ServiceRegistrationServiceServiceRegistrationException"/>
+        <wsdl2:operation name="deregister" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="serviceURI #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:deregister" wsaw:Action="urn:deregister"/>
+            <wsdl2:output element="ns:deregisterResponse" wsaw:Action="urn:deregisterResponse"/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException" wsaw:Action="urn:deregisterServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="registerInContext" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="serviceDescriptionURL #in contextURI #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:registerInContext" wsaw:Action="urn:registerInContext"/>
+            <wsdl2:output element="ns:registerInContextResponse" wsaw:Action="urn:registerInContextResponse"/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException" wsaw:Action="urn:registerInContextServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="register" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="serviceDescriptionURL #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:register" wsaw:Action="urn:register"/>
+            <wsdl2:output element="ns:registerResponse" wsaw:Action="urn:registerResponse"/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException" wsaw:Action="urn:registerServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation name="update" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="serviceURI #in serviceURL #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:update" wsaw:Action="urn:update"/>
+            <wsdl2:output element="ns:updateResponse" wsaw:Action="urn:updateResponse"/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException" wsaw:Action="urn:updateServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+    </wsdl2:interface>
+    <wsdl2:binding name="ServiceRegistrationServiceSoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+        <wsdl2:fault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        <wsdl2:operation ref="tns:deregister" wsoap:action="urn:deregister">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:register" wsoap:action="urn:register">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:registerInContext" wsoap:action="urn:registerInContext">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:update" wsoap:action="urn:update">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="ServiceRegistrationServiceHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+        <wsdl2:fault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        <wsdl2:operation ref="tns:deregister" whttp:location="deregister">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:register" whttp:location="register">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:registerInContext" whttp:location="registerInContext">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:update" whttp:location="update">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="ServiceRegistrationServiceSoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+        <wsdl2:fault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        <wsdl2:operation ref="tns:deregister" wsoap:action="urn:deregister">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:register" wsoap:action="urn:register">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:registerInContext" wsoap:action="urn:registerInContext">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+        <wsdl2:operation ref="tns:update" wsoap:action="urn:update">
+            <wsdl2:input/>
+            <wsdl2:output/>
+            <wsdl2:outfault ref="tns:ServiceRegistrationServiceServiceRegistrationException"/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:service name="ServiceRegistrationService" interface="tns:ServiceInterface">
+        <wsdl2:endpoint name="ServiceRegistrationServiceHttpSoap12Endpoint" binding="tns:ServiceRegistrationServiceSoap12Binding" address="http://localhost:8080/axis2/services/ServiceRegistration"/>
+        <wsdl2:endpoint name="ServiceRegistrationServiceHttpSoap11Endpoint" binding="tns:ServiceRegistrationServiceSoap11Binding" address="http://localhost:8080/axis2/services/ServiceRegistration"/>
+        <wsdl2:endpoint name="ServiceRegistrationServiceHttpEndpoint" binding="tns:ServiceRegistrationServiceHttpBinding" address="http://localhost:8080/axis2/services/ServiceRegistration"/>
+    </wsdl2:service>
+</wsdl2:description>

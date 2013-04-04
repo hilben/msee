@@ -16,7 +16,7 @@ These cannot be used in the SEI:
 - portName: wsdl:portName. 
 - wsdlLocation: Web address of the WSDL document defining the Web service.
 **/
-@WebService(name="RegistrationServicePortType", targetNamespace = "http://msee.sti2.at/delivery/")
+@WebService(name="RegistrationServicePortType", targetNamespace = "http://msee.sti2.at/delivery/registration/")
 public interface ServiceRegistration {
 
 	@WebMethod
@@ -25,7 +25,7 @@ public interface ServiceRegistration {
 			throws ServiceRegistrationException;
 
 	@WebMethod(operationName="registerInContext")
-	public String register(
+	public String registerInContext(
 			@WebParam(name = "serviceDescriptionURL") String serviceDescriptionURL,
 			@WebParam(name = "contextURI") String contextURI)
 			throws ServiceRegistrationException;
