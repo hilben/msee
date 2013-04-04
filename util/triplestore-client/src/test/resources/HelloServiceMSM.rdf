@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:msm="http://cms-wg.sti2.org/ns/minimal-service-model#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/HelloResponse">
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#MessagePart"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/Hello">
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#MessagePart"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)">
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#Service"/>
+	<modelReference xmlns="http://www.w3.org/ns/sawsdl#" rdf:resource="http://msee.sti2.at/categories/business"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello">
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#Operation"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)">
+	<msm:hasOperation rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello">
+	<msm:hasInput rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello/input/In"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello/input/In">
+	<msm:hasPart rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/Hello"/>
+	<msm:hasPartTransitive rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/Hello"/>
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#MessageContent"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello">
+	<msm:hasOutput rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello/output/Out"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#wsdl.service(helloService)/Hello/output/Out">
+	<msm:hasPart rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/HelloResponse"/>
+	<msm:hasPartTransitive rdf:resource="http://msee.sti2.at/services/a0acb8ac-dca7-4fc8-9859-a08e3be817fb#types/HelloResponse"/>
+	<rdf:type rdf:resource="http://cms-wg.sti2.org/ns/minimal-service-model#MessageContent"/>
+</rdf:Description>
+
+</rdf:RDF>

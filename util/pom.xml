@@ -13,7 +13,9 @@
 
 	<modules>
 		<module>triplestore-client</module>
-		<module>ranking-framework</module>
+<!-- 		<module>ranking-framework</module> -->
+		<module>iserve-importer-api</module>
+		<module>iserve-importer-sawsdl</module>
 	</modules>
 	
 	<properties>

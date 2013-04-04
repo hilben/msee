@@ -23,11 +23,10 @@
 						<id>install</id>
 						<phase>install</phase>
 						<configuration>
-							<className>at.sti2.msee.registration.webservice.Registration</className>
-							<outputFile>${project.build.directory}/../src/main/resources/RegistrationService.wsdl</outputFile>
+							<className>at.sti2.msee.registration.api.ServiceRegistration</className>
+							<outputFile>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
-							
-							<!-- <genClient>true</genClient> -->
+							<genClient>true</genClient>
 							<verbose>true</verbose>
 						</configuration>
 						<goals>
@@ -36,7 +35,35 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>2.7.3</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${project.build.directory}/../src/test/java/</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${project.build.directory}/../src/main/resources/RegistrationAPI.wsdl</wsdl>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<dependencies>
 		<dependency>
@@ -60,6 +87,14 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.xmlschema</groupId>
+			<artifactId>xmlschema-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>
