@@ -1,0 +1,71 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+  
+  
+      #= form_tag do
+        #  = label_tag("Input message:")          
+        #  = text_area_tag(:input)
+        #  = label_tag("URL of the lifting XSLT:") 
+        #  = text_field_tag(:xslt_input)
+        #  = label_tag("URL of the lowering XSLT:") 
+        #  = text_field_tag(:xslt_output)          
+        #  = submit_tag("Execute", :class=> "btn btn-primary")        
+    
+  
+  
+*/
+
+.title h2 {
+	position: relative;
+	top: -10px;
+}
+
+#data {
+	width: 80%;
+	max-width: 80%;
+	height: 200px;
+	max-height: 200px;
+}
+
+#serviceID {
+	width: 80%;
+	height: 30px;
+}
+
+#operation {
+	width: 80%;
+	height: 30px;
+}
+
+#millisec {
+	float: right;
+	position: relative;
+	top: -30px;
+	width: 100px;
+	text-align: right; 
+}
+
+.form-actions {
+	width: 78%;
+}
+
+
+/* DRAG AND DROP*/
+/*#input {
+	border: 2px solid #DDD;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	background-color: #FEFFEC;
+	text-align: center;
+	color: #BBB;
+	font-size: 2em;
+	font-family: Arial, sans-serif;
+}*/
+
+#progressbar {
+	margin-left: 20px;
+	margin-right: 20px;
+	position: relative;
+	top: 75%;
+}

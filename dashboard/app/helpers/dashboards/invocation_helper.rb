@@ -1,0 +1,2 @@
+module Dashboards::InvocationHelper
+end

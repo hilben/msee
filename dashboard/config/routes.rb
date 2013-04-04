@@ -6,6 +6,7 @@ SesaWebsite::Application.routes.draw do
   root :to => "home#index"
   match "dashboards/registration" => "dashboards/registration#index"
   match "dashboards/discovery" => "dashboards/discoveries#index"
+  match "dashboards/invocation" => "dashboards/invocation#index"
   
   match "dashboards/discovery/categories" => "dashboards/discoveries#getCategoriesOfServiceIDForAutoCompleteBox"
 

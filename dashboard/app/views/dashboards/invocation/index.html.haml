@@ -1,0 +1,59 @@
+= content_for :head_include do
+  = stylesheet_link_tag  "dashboards/invocation", :media => "all"
+  = javascript_include_tag "dashboards/invocation" 
+ 
+.container
+  .div{:id => "error"}
+  -if !@error.nil?
+    .alert.alert-block.alert-error
+      %a.close{"data-dismiss" => "alert", "href" => "#" }
+      = @error
+  -if !@notice.nil?
+    .alert.alert-block.alert-success.fade.in
+      %a.close{"data-dismiss" => "notice", "href" => "#" }
+      = raw @notice
+
+  .hero-unit    
+    %div{"align" => "left", "class" => "title"}
+      %h2 Invocaction Dashboard
+
+    .row
+      .span12 
+        = form_tag do
+          = label_tag("URL of the Endpoint: ") 
+          = text_field_tag(:serviceID, @serviceID, :required => "true", :placeholder => "http://example.com/service") if !@serviceID.nil?
+          = text_field_tag(:serviceID, "", :required => "true", :placeholder => "http://example.com/service" ) if @serviceID.nil?
+          = label_tag("Operation of the Endpoint:") 
+          = text_field_tag(:operation, @operation, :required => "false", :placeholder => "") if !@operation.nil?
+          = text_field_tag(:operation, "", :required => "false", :placeholder => "") if @operation.nil?
+          = label_tag("SOAP Message:")
+          = text_area_tag(:data, raw(@data), :required => "true", :placeholder => "Enter the SOAP message which is send to the service") if !@data.nil? 
+          = text_area_tag(:data, "", :required => "true", :placeholder => "Enter the SOAP message which is send to the service") if @data.nil?          
+          .form-actions         
+            = submit_tag("Execute", :class=> "btn btn-primary") 
+ 
+
+
+    .accordion{"id" => "accordionGrounding"}
+      - if !@ontology.nil?
+        .accordion-group
+          .accordion-heading
+            %a.accordion-toggle{"data-toggle" => "collapse", "data-parent" => "#accordionGrounding", "href" => "#collapseFulltext"} 
+              %small Intermidiate Message (Lifting to Ontology Instace)
+
+          .accordion-body.collapse{"id" => "collapseFulltext"}
+            .accordion-inner
+              %pre.prettyprint.lang-xml
+                = raw @ontology 
+
+      - if !@output.nil?
+        .accordion-group
+          .accordion-heading
+            %a.accordion-toggle{"data-toggle" => "collapse", "data-parent" => "#accordionGrounding", "href" => "#collapseLocation"} 
+              %small Output Message (Lowering from Ontology Instance)           
+
+          .accordion-body.collapse.in{"id" => "collapseLocation"}
+            .accordion-inner
+              %pre.prettyprint.lang-xml
+                = raw @output
+              
