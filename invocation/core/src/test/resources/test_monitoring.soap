@@ -1,15 +1,8 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.monitoring.ngsee.sti2.at/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tes="http://testws.monitoring.ngsee.sti2.at/">
    <soapenv:Header/>
    <soapenv:Body>
-      <web:invoke>
-         <soapRequest><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dum="http://sesa.sti2.at/services/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <dum:getRandomNumberAndCalculationTime>
-         <number>10</number>
-      </dum:getRandomNumberAndCalculationTime>
-   </soapenv:Body>
-</soapenv:Envelope>]]></soapRequest>
-      </web:invoke>
+      <tes:getBigAnswer>
+         <inputString>a</inputString>
+      </tes:getBigAnswer>
    </soapenv:Body>
 </soapenv:Envelope>

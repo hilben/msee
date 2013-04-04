@@ -70,7 +70,7 @@ public class TestInvocationHandler extends TestCase {
 		try {
 			scanner = new Scanner(new FileInputStream(
 					TestInvocationHandler.class.getResource(
-							"/valencia-input.rdf.xml").getFile()));
+							"/test_monitoring.soap").getFile()));
 		} catch (FileNotFoundException e) {
 
 			System.exit(0);
@@ -96,7 +96,7 @@ public class TestInvocationHandler extends TestCase {
 							message,
 							null,
 							new ActivityInstantiatedEvent(
-									"http://sesa.sti2.at:8080/invocation-dummy-webservice/services/valenciatPortWebService"),
+									"http://sesa.sti2.at:8080/monitoring-testwebservices/services/big"),
 							os.size());
 
 			System.out.println(responseMessage);
