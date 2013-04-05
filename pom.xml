@@ -12,7 +12,7 @@
 		<module>util</module>
 		<module>registration</module>
 		<module>discovery</module>
-		<!--TODO: uncomment: commented for testing purposes: <module>dashboard</module> -->
+		<module>dashboard</module>
 		<module>invocation</module>
 		<!--<module>ranking</module> -->
 	</modules>
