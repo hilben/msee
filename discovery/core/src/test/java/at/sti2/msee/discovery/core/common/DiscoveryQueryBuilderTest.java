@@ -8,20 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import junit.framework.TestCase;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.UnsupportedRDFormatException;
-
-import at.sti2.msee.discovery.core.DiscoveryService;
-import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 
 /**
  * @author Christian Mayr
@@ -31,7 +27,12 @@ public class DiscoveryQueryBuilderTest {
 
 	DiscoveryQueryBuilder discoveryQueryBuilder = new DiscoveryQueryBuilder();
 	private final static Logger LOGGER = LogManager
-			.getLogger(DiscoveryService.class.getName());
+			.getLogger(DiscoveryQueryBuilderTest.class.getName());
+	
+	@BeforeClass
+	public static void setup(){
+		LOGGER.debug("DiscoveryQueryBuilderTest "+"starting ...");
+	}
 
 	@Test
 	public void testGetDiscoverQuery2Args() throws URISyntaxException,
@@ -43,8 +44,8 @@ public class DiscoveryQueryBuilderTest {
 				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
 		String query = discoveryQueryBuilder
 				.getDiscoverQuery2Args(categoryList);
-		String expected = readFile("/getDiscoverQuery2ArgsTestResult");
-		Assert.assertEquals(query, expected);
+		String expected = replaceNewline(readFile("/getDiscoverQuery2ArgsTestResult"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
@@ -71,8 +72,8 @@ public class DiscoveryQueryBuilderTest {
 				"http://www.sti2.at/MSEE/ServiceCategories#MARITIM"));
 		query = discoveryQueryBuilder.getDiscoverQuery4Args(categoryList,
 				inputList, outputList);
-		String expected2 = readFile("/getDiscoverQuery4ArgsTestResult-secondCategory");
-		Assert.assertEquals(query, expected2);
+		String expected2 = replaceNewline(readFile("/getDiscoverQuery4ArgsTestResult-secondCategory"));
+		Assert.assertEquals(replaceNewline(query), expected2);
 	}
 
 	@Test
@@ -82,8 +83,8 @@ public class DiscoveryQueryBuilderTest {
 
 		String query = discoveryQueryBuilder.getLookupQuery(namespace,
 				operationName);
-		String expected = readFile("/getLookupQueryTestResult");
-		Assert.assertEquals(query, expected);
+		String expected = replaceNewline(readFile("/getLookupQueryTestResult"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
@@ -95,23 +96,23 @@ public class DiscoveryQueryBuilderTest {
 
 		String query = discoveryQueryBuilder.getIServeModelQuery(serviceID);
 		// System.out.println(query);
-		String expected = readFile("/getIServeModelQueryTestResult");
-		Assert.assertEquals(query, expected);
+		String expected = replaceNewline(readFile("/getIServeModelQueryTestResult"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
 	public void testGetServiceCount() throws IOException {
 		String serviceID = "http://www.theserviceid.com#id";
 		String query = discoveryQueryBuilder.getServiceCount(serviceID);
-		String expected = readFile("/getServiceCountQueryTestResult");
-		Assert.assertEquals(query, expected);
+		String expected = replaceNewline(readFile("/getServiceCountQueryTestResult"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
 	public void testGetAllCategoriesQuery() throws IOException {
 		String query = discoveryQueryBuilder.getAllCategoriesQuery();
-		String expected = readFile("/getAllCategoriesQuery");
-		Assert.assertEquals(query, expected);
+		String expected = replaceNewline(readFile("/getAllCategoriesQuery"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	// @Test
@@ -128,6 +129,15 @@ public class DiscoveryQueryBuilderTest {
 		String text = sc.useDelimiter("\\A").next();
 		sc.close();
 		return text;
+	}
+	
+	/**
+	 * Replaces end of line symbols for compatibility with windows.
+	 * @param origin - original 
+	 * @return
+	 */
+	private static String replaceNewline(String origin){
+		return origin.replaceAll("\\r\\n|\\r|\\n", "");
 	}
 
 }
