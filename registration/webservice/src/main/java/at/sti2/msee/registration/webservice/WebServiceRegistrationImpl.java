@@ -18,8 +18,6 @@ package at.sti2.msee.registration.webservice;
 
 import java.io.IOException;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import at.sti2.msee.registration.api.ServiceRegistration;
@@ -30,83 +28,67 @@ import at.sti2.msee.registration.webservice.configuration.Configuration;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 
 /**
-- name: wsdl:portType. 
-- targetNamespace: XML namespace of the WSDL and XML elements generated from the Web service. 
-These cannot be used in the SEI:
-- serviceName: wsdl:service 
-- endpointInterface: the java interface that defines the SEI contract
-- portName: wsdl:portName. 
-- wsdlLocation: Web address of the WSDL document defining the Web service.
-**/
+ * - name: wsdl:portType. - targetNamespace: XML namespace of the WSDL and XML
+ * elements generated from the Web service. These cannot be used in the SEI: -
+ * serviceName: wsdl:service - endpointInterface: the java interface that
+ * defines the SEI contract - portName: wsdl:portName. - wsdlLocation: Web
+ * address of the WSDL document defining the Web service.
+ **/
 
-
-@WebService(targetNamespace = "http://msee.sti2.at/delivery/",
-endpointInterface="at.sti2.msee.registration.api.ServiceRegistration",
-portName="RegistrationServicePort",
-serviceName="RegistrationService")
-public class WebServiceRegistrationImpl implements ServiceRegistration
-{
+@WebService(targetNamespace = "http://msee.sti2.at/delivery/", endpointInterface = "at.sti2.msee.registration.api.ServiceRegistration", portName = "RegistrationServicePort", serviceName = "RegistrationService")
+public class WebServiceRegistrationImpl implements ServiceRegistration {
 	ServiceRegistration registrationDelegate;
-	
-	public WebServiceRegistrationImpl() throws IOException
-	{
+
+	public WebServiceRegistrationImpl() throws IOException {
 		Configuration configuration = new Configuration();
 		this.loadConfiguration(configuration);
 	}
-	
-	public WebServiceRegistrationImpl(ServiceRegistration registrationDelegate)
-	{
+
+	public WebServiceRegistrationImpl(ServiceRegistration registrationDelegate) {
 		this.registrationDelegate = registrationDelegate;
 	}
-	
-	
-	WebServiceRegistrationImpl(Configuration configuration) throws IOException
-	{
+
+	WebServiceRegistrationImpl(Configuration configuration) throws IOException {
 		this.loadConfiguration(configuration);
 	}
-	
+
 	private void loadConfiguration(Configuration configuration) {
 		String repositoryId = configuration.getSesameReposID();
 		String serverEndpoint = configuration.getSesameEndpoint();
 
 		ServiceRegistrationConfiguration registrationConfiguration = new ServiceRegistrationConfiguration();
-				
+
 		ServiceRepositoryConfiguration repositoryConfiguration = new ServiceRepositoryConfiguration();
 		repositoryConfiguration.setRepositoryID(repositoryId);
 		repositoryConfiguration.setServerEndpoint(serverEndpoint);
-		registrationConfiguration.setRepositoryConfiguration(repositoryConfiguration);
-		
-		registrationDelegate = ServiceRegistrationFactory.createServiceRegistration(registrationConfiguration);		
+		registrationConfiguration
+				.setRepositoryConfiguration(repositoryConfiguration);
+
+		registrationDelegate = ServiceRegistrationFactory
+				.createServiceRegistration(registrationConfiguration);
 	}
-	
+
 	@Override
-	@WebMethod
-	public String register(
-			@WebParam(name = "serviceDescriptionURL") String serviceDescriptionURL)
+	public String register(String serviceDescriptionURL)
 			throws ServiceRegistrationException {
 		return registrationDelegate.register(serviceDescriptionURL);
 	}
 
 	@Override
-	@WebMethod
-	public String registerInContext(
-			@WebParam(name = "serviceDescriptionURL") String serviceDescriptionURL,
-			@WebParam(name = "contextURI") String contextURI)
-			throws ServiceRegistrationException {
-		return registrationDelegate.registerInContext(serviceDescriptionURL,contextURI);
+	public String registerInContext(String serviceDescriptionURL,
+			String contextURI) throws ServiceRegistrationException {
+		return registrationDelegate.registerInContext(serviceDescriptionURL,
+				contextURI);
 	}
 
 	@Override
-	@WebMethod
-	public String deregister(@WebParam(name = "serviceURI") String serviceURI)
+	public String deregister(String serviceURI)
 			throws ServiceRegistrationException {
 		throw new ServiceRegistrationException("Not yet implemented");
 	}
 
 	@Override
-	@WebMethod
-	public String update(@WebParam(name = "serviceURI") String serviceURI,
-			@WebParam(name = "serviceURL") String serviceURL)
+	public String update(String serviceURI, String serviceURL)
 			throws ServiceRegistrationException {
 		throw new ServiceRegistrationException("Not yet implemented");
 	}
