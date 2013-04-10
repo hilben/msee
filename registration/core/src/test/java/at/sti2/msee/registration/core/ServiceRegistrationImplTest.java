@@ -27,9 +27,9 @@ public class ServiceRegistrationImplTest{
 	public void setUp() throws Exception {
 		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
 		
-		//Comment these lines to force a in-memory repository
-//		serviceRepositoryConfiguration.setRepositoryID("msee-test");
-//		serviceRepositoryConfiguration.setServerEndpoint("http://sesa.sti2.at:8080/openrdf-sesame");
+		//Comment these 2 lines to force a in-memory repository
+		serviceRepositoryConfiguration.setRepositoryID("msee-test");
+		serviceRepositoryConfiguration.setServerEndpoint("http://sesa.sti2.at:8080/openrdf-sesame");
 	
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
@@ -93,6 +93,23 @@ public class ServiceRegistrationImplTest{
 		//Service is in repository
 		assertEquals(2,this.getNumberOfServices(contextURI));
 	}
+	
+//	@Test
+//	public void testRegisterIndesitM18Services() throws ServiceRegistrationException
+//	{
+//		String contextURI = null;
+//		//Repo is empty
+//		assertEquals(0, this.getNumberOfServices(contextURI));
+//
+//		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+//
+//		String serviceDescriptionURL = this.getClass().getResource("/webservices/M18Indesit/Indesit_companysite.sawsdl").toString();		
+//		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+//		assertNotNull(serviceURI);
+//		
+//		//Service is in repository
+//		assertEquals(2,this.getNumberOfServices(contextURI));		
+//	}
 
 	private int getNumberOfServices(String contextURI){
 		Model repositoryModel = serviceRepository.getModel(contextURI);

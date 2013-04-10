@@ -1,5 +1,3 @@
-<https://dl.dropbox.com/s/r9fmzqdazvp7gkb/Indesit_rest.wsdl?token_hash=AAEwXYbyyvAhLio4fJqYygfGguJXFWjzY-NyXJNNZh3Usw&dl=1>
-
 <http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#name> "Indesit Carefree REST Service" .
 <http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#description> "Provides data on customers washing machines and best practices to be proposed to the customers." .
 <http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#requirements> "REST client" .

@@ -1,5 +1,3 @@
-<https://dl.dropbox.com/s/idzwk4oudhh9gka/Indesit_webapp.wsdl?token_hash=AAGGw_ewczXj-74Mb74BAYejInPAY_dEwv-dyx7-I80-Hg&dl=1>
-
 <http://greath.example.com/2004/wsdl/resSvc#indesitService> <http://msee.sti2.at/properties#name> "Indesit Carefree Washing Service" .
 <http://greath.example.com/2004/wsdl/resSvc#indesitService> <http://msee.sti2.at/properties#description> "Get the most out of your washing machine using the innovative service offered by Indesit. The application allows the visualization of the statistical data of your washing machine (washing programs, washing temperatures, wash list, etc.) and analyses your usage data to propose personalized best practices to improve the way in which you use your product." .
 <http://greath.example.com/2004/wsdl/resSvc#indesitService> <http://msee.sti2.at/properties#requirements> "Mobile Web Browser" .

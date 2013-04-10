@@ -1,5 +1,3 @@
-<https://dl.dropbox.com/s/5qhvmjy0wxxjuir/Indesit_companysite.wsdl?token_hash=AAHLm-R3HcMDBP-LI7Jw6QKKQLZfvh6E2nkl1ejaPBzUEA&dl=1>
-
 <http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#name> "Indesit Company Site" .
 <http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#description> "Discover the range of Indesit appliances for your home. Washing machines, dryers, refrigerators and combined, hoods, ovens and hobs and functional design." .
 <http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#requirements> "Web Browser" .
