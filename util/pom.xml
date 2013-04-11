@@ -12,28 +12,18 @@
 	</parent>
 
 	<modules>
-		<module>triplestore-client</module>
 <!-- 		<module>ranking-framework</module> -->
+		<module>iserve-commons-io</module>
+		<module>iserve-commons-vocabulary</module>
 		<module>iserve-importer-api</module>
 		<module>iserve-importer-sawsdl</module>
+		<module>triplestore-client</module>
 	</modules>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>8.7</saxon.version>
 	</properties>
-
-	<developers>
-		<developer>
-			<name>Michael Rogger</name>
-		</developer>
-		<developer>
-			<name>Alex Oberhauser</name>
-		</developer>
-		<developer>
-			<name>Corneliu Stanciu</name>
-		</developer>
-	</developers>
 
 	<dependencyManagement>
 		<dependencies>
