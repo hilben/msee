@@ -52,5 +52,17 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.semweb4j</groupId>
+			<artifactId>rdf2go.impl.sesame23</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.semweb4j</groupId>
+			<artifactId>rdf2go.api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.open.kmi.iserve</groupId>
+			<artifactId>iserve-commons-vocabulary</artifactId>
+		</dependency>
 	</dependencies>
 </project>

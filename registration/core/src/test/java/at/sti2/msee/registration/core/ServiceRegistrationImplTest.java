@@ -1,60 +1,132 @@
 package at.sti2.msee.registration.core;
 
-import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.node.URI;
+import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
+import at.sti2.msee.triplestore.ServiceRepository;
+import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
+import at.sti2.msee.triplestore.ServiceRepositoryFactory;
+import at.sti2.msee.triplestore.query.ModelQueryHelper;
 
-public class ServiceRegistrationImplTest extends XMLTestCase {
+public class ServiceRegistrationImplTest{
 
+	ServiceRepository serviceRepository;
+	
 	@Before
 	public void setUp() throws Exception {
-		XMLUnit.getTestDocumentBuilderFactory().setValidating(true);
-		XMLUnit.setIgnoreAttributeOrder(true);
-		XMLUnit.setIgnoreComments(true);
-		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
-		XMLUnit.setIgnoreWhitespace(true);
+		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
+		
+		//Comment these 2 lines to force a in-memory repository
+		serviceRepositoryConfiguration.setRepositoryID("msee-test");
+		serviceRepositoryConfiguration.setServerEndpoint("http://sesa.sti2.at:8080/openrdf-sesame");
+	
+		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
+		serviceRepository.init();
+		serviceRepository.clear();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		serviceRepository.shutdown();
 	}
 		
 	@Test
-	public void testRegisterAnnotatedWSDLWithOneCategory() throws Exception {
-		String expectedServiceURI = "http://greath.example.com/2004/wsdl/resSvc#reservationService";		
+
+	public void testRegister_SAWSDL_WithOneCategory() throws ServiceRegistrationException, RepositoryException {
+		String contextURI = "http://msee.sti2.at/msee";
+
+		//Repo is empty
+		assertEquals(0, this.getNumberOfServices(contextURI));
 		
-		ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
+		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();	
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
 		
-		String serviceDescriptionURL = ServiceRegistrationImplTest.class.getResource("/webservices/ReservationService_OneCategory.wsdl").toString();
-		
-		//Validate wsdl file		
-		String serviceURI = null;
-		try {
-			serviceURI = registration.register(serviceDescriptionURL);
-		} catch (ServiceRegistrationException e) {
-			if (e.getMessage().equals("Service already registered")){
-				serviceURI = expectedServiceURI;
-			} else {
-				throw new Exception(e);
-			}
-		}		
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
 		assertNotNull(serviceURI);
-		assertEquals("Service URI incorrect", expectedServiceURI, serviceURI);
 		
+		//Service is in repository
+		assertEquals(1,this.getNumberOfServices(contextURI));
 	}
 
 	@Test
-	public void testDeregister() {
-		//fail("Not yet implemented");
+	public void testRegister_SAWSDL_WithOneCategory_EmptyContext() throws ServiceRegistrationException, RepositoryException {
+		String contextURI = null;
+		//Repo is empty
+		assertEquals(0, this.getNumberOfServices(contextURI));
+		
+		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();	
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+		
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+		assertNotNull(serviceURI);
+		
+		//Service is in repository
+		assertEquals(1,this.getNumberOfServices(contextURI));
 	}
-
+	
 	@Test
-	public void testUpdate() {
-		//fail("Not yet implemented");
+	public void testRegister_SAWSDL_SeveralServices() throws ServiceRegistrationException, RepositoryException {
+		String contextURI = null;
+		//Repo is empty
+		assertEquals(0, this.getNumberOfServices(contextURI));
+
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+
+		String serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService.sawsdl").toString();		
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+		assertNotNull(serviceURI);
+
+		serviceDescriptionURL = this.getClass().getResource("/webservices/sawsdl/HelloService2.sawsdl").toString();		
+		serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+		assertNotNull(serviceURI);
+		
+		//Service is in repository
+		assertEquals(2,this.getNumberOfServices(contextURI));
 	}
+	
+//	@Test
+//	public void testRegisterIndesitM18Services() throws ServiceRegistrationException
+//	{
+//		String contextURI = null;
+//		//Repo is empty
+//		assertEquals(0, this.getNumberOfServices(contextURI));
+//
+//		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+//
+//		String serviceDescriptionURL = this.getClass().getResource("/webservices/M18Indesit/Indesit_companysite.sawsdl").toString();		
+//		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+//		assertNotNull(serviceURI);
+//		
+//		//Service is in repository
+//		assertEquals(2,this.getNumberOfServices(contextURI));		
+//	}
+
+	private int getNumberOfServices(String contextURI){
+		Model repositoryModel = serviceRepository.getModel(contextURI);
+		repositoryModel.open();
+		List<URI> services = ModelQueryHelper.findServices(repositoryModel);
+		repositoryModel.close();		
+		return services.size();
+	}
+		
+//	@Testv
+//	public void testDeregister() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	public void testUpdate() {
+//		fail("Not yet implemented");
+//	}
 
 }

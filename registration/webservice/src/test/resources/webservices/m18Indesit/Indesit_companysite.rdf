@@ -1,0 +1,6 @@
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#name> "Indesit Company Site" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#description> "Discover the range of Indesit appliances for your home. Washing machines, dryers, refrigerators and combined, hoods, ovens and hobs and functional design." .
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#requirements> "Web Browser" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#access_point> "http://www.indesit.it/" . 
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#type> "Web Application" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitCompanySiteService> <http://msee.sti2.at/properties#icon> "http://www.indesitcompany.com/inst/_css/images/logos/site_logo.png" .

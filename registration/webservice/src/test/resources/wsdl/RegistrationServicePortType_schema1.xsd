@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://msee.sti2.at/delivery/registration/" xmlns:tns="http://msee.sti2.at/delivery/registration/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="ServiceRegistrationException" type="tns:ServiceRegistrationException"/>
+
+  <xs:element name="deregister" type="tns:deregister"/>
+
+  <xs:element name="deregisterResponse" type="tns:deregisterResponse"/>
+
+  <xs:element name="register" type="tns:register"/>
+
+  <xs:element name="registerInContext" type="tns:registerInContext"/>
+
+  <xs:element name="registerInContextResponse" type="tns:registerInContextResponse"/>
+
+  <xs:element name="registerResponse" type="tns:registerResponse"/>
+
+  <xs:element name="update" type="tns:update"/>
+
+  <xs:element name="updateResponse" type="tns:updateResponse"/>
+
+  <xs:complexType name="update">
+    <xs:sequence>
+      <xs:element name="serviceURI" type="xs:string" minOccurs="0"/>
+      <xs:element name="serviceURL" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ServiceRegistrationException">
+    <xs:sequence>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="register">
+    <xs:sequence>
+      <xs:element name="serviceDescriptionURL" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registerResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registerInContext">
+    <xs:sequence>
+      <xs:element name="serviceDescriptionURL" type="xs:string" minOccurs="0"/>
+      <xs:element name="contextURI" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="registerInContextResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deregister">
+    <xs:sequence>
+      <xs:element name="serviceURI" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deregisterResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

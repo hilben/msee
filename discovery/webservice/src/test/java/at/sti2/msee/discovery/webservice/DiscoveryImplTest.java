@@ -33,8 +33,12 @@ import org.openrdf.repository.RepositoryException;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.core.DiscoveryService;
 import at.sti2.msee.discovery.webservice.DiscoveryImpl;
+import at.sti2.msee.registration.api.ServiceRegistration;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
+import at.sti2.msee.registration.core.ServiceRegistrationFactory;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
+import at.sti2.msee.registration.core.configuration.ServiceRegistrationConfiguration;
+import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 
 /**
  * @author Benjamin Hiltpolt
@@ -60,13 +64,26 @@ public class DiscoveryImplTest {
 
 		// register
 		if (!alreadyThere) {
-			ServiceRegistrationImpl registration = new ServiceRegistrationImpl();
+			ServiceRegistration registration = this.createRegistrationService();
 			URL wsdlInput = DiscoveryImplTest.class
 					.getResource("/ReservationService.wsdl");
 			registration.register(wsdlInput.toString());
 		}
 	}
 
+	private ServiceRegistration createRegistrationService()
+	{
+		ServiceRegistrationConfiguration registrationConfiguration = new ServiceRegistrationConfiguration();
+
+		ServiceRepositoryConfiguration repositoryConfiguration = new ServiceRepositoryConfiguration();
+		//Empty configuration means inmemory store
+//		repositoryConfiguration.setRepositoryID(repositoryId);
+//		repositoryConfiguration.setServerEndpoint(serverEndpoint);
+		registrationConfiguration.setRepositoryConfiguration(repositoryConfiguration);
+
+		return ServiceRegistrationFactory.createServiceRegistration(registrationConfiguration);
+	}
+		
 	@Test
 	public void testDiscoverAdvanced() throws Exception {
 		String[] categoryList = new String[4];

@@ -1,0 +1,11 @@
+SAWSDL Annotations for WSDL 2.0 services can only go in these elements:
+
+wsdl:interface 		//For the categories
+
+wsdl:operation 	 	//Links to concepts in the domain ontology
+wsdl:fault
+
+xs:element			//Link to concepts in the domain ontology and lifting/lowering 
+xs:complexType
+xs:simpleType
+xs:attribute

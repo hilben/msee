@@ -1,0 +1,6 @@
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#name> "Indesit Carefree REST Service" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#description> "Provides data on customers washing machines and best practices to be proposed to the customers." .
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#requirements> "REST client" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#access_point> "Please contact the Indesit technical staff. Phone: +39 0732 6611 - Fax: +39 0732 662501." . 
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#type> "REST Service" .
+<http://greath.example.com/2004/wsdl/resSvc#indesitRestService> <http://msee.sti2.at/properties#icon> "Not available" .

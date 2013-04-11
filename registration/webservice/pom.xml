@@ -14,29 +14,87 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Generate WSDL files from annotations in the implementation -->
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<version>2.7.3</version>
+				<groupId>org.jvnet.jax-ws-commons</groupId>
+				<artifactId>jaxws-maven-plugin </artifactId>
+				<version>2.2</version>
 				<executions>
 					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<configuration>
-							<className>at.sti2.msee.registration.webservice.Registration</className>
-							<outputFile>${project.build.directory}/../src/main/resources/RegistrationService.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-							
-							<!-- <genClient>true</genClient> -->
-							<verbose>true</verbose>
-						</configuration>
+						<id>Create WSDL</id>
+						<phase>generate-test-resources</phase>
 						<goals>
-							<goal>java2ws</goal>
+							<goal>wsgen</goal>
 						</goals>
+						<configuration>
+							<sei>at.sti2.msee.registration.webservice.WebServiceRegistrationImpl</sei>
+							<genWsdl>true</genWsdl>
+							<keep>false</keep>
+							<verbose>true</verbose>
+							<resourceDestDir>src/test/resources/wsdl</resourceDestDir>
+						</configuration>
 					</execution>
+					<execution>
+						<id>Create client</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<wsdlDirectory>src/test/resources/wsdl</wsdlDirectory>
+							<wsdlFiles>
+								<wsdlFile>RegistrationService.wsdl</wsdlFile>
+							</wsdlFiles>
+							<implDestDir>src/test/java</implDestDir>
+							<sourceDestDir>src/test/java</sourceDestDir>
+							<verbose>true</verbose>
+							<keep>true</keep>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.jvnet.jax-ws-commons
+										</groupId>
+										<artifactId>
+											jaxws-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.2,)
+										</versionRange>
+										<goals>
+											<goal>wsgen</goal>
+											<goal>wsimport</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>
@@ -47,19 +105,11 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle</artifactId>
-		</dependency>
 		<!-- Even though this is dependency of cxf it must be added explicitly 
 			for jetty (maven problem) -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
 		</dependency>
 	</dependencies>
 </project>

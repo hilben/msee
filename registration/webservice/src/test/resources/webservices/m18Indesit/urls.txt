@@ -1,0 +1,23 @@
+To Add in Sesame repository:
+
+Context - Company Site:
+	https://dl.dropbox.com/s/27xue7dxjo7fmn0/Indesit_companysite.wsdl?token_hash=AAEAw9UxoTDqh7VtB8bR1adbg7BFi61b4EmdKQEN9pXZJA&dl=1
+
+RDF URL:
+	https://dl.dropbox.com/s/ub97w7p9vlxyp2x/Indesit_companysite.rdf?token_hash=AAFIryJp7biqLAAqc2JbEHU2sn2hmryN3gGSGh7Z0GF4IA&dl=1	
+
+--
+
+Context - Rest:
+	https://dl.dropbox.com/s/i5bqib4shr7h2e9/Indesit_rest.wsdl?token_hash=AAH7oMH3AiP7R8iAiUpV8Vo-nK-qj-ttxWxDf58TzRE3-Q&dl=1
+
+RDF URL:
+	https://dl.dropbox.com/s/w2yuw6o7kvd2k3r/Indesit_rest.rdf?token_hash=AAFnwSznRlHWqysA2ReX15IWDP4gr9bGYynqcrtreWJfxg&dl=1
+	
+--	
+
+Context - Webapp:
+	https://dl.dropbox.com/s/idzwk4oudhh9gka/Indesit_webapp.wsdl?token_hash=AAGGw_ewczXj-74Mb74BAYejInPAY_dEwv-dyx7-I80-Hg&dl=1
+		
+RDF URL:
+	https://dl.dropbox.com/s/3qekjro6m3cjyqw/Indesit_webapp.rdf?token_hash=AAGeBU1Kvo0G_7orJnkTAgj4jcdLix5T50KyMY4DoaMNwg&dl=1

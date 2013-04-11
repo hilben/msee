@@ -1,0 +1,27 @@
+#Service and category
+<HelloService#wsdl.service(helloService)> a <msm:Service> ;
+	<sawsdl:modelReference> <http://msee.sti2.at/categories/business> .
+
+#hasOperation
+<HelloService#wsdl.service(helloService)> <msm:hasOperation> <HelloService#wsdl.service(helloService)/Hello> .
+
+#Operation
+<HelloService#wsdl.service(helloService)/Hello> a <msm:Operation> .
+
+#Operation Input
+<HelloService#wsdl.service(helloService)/Hello> <msm:hasInput> <HelloService#wsdl.service(helloService)/Hello/input/In> .
+
+<HelloService#wsdl.service(helloService)/Hello/input/In> a <msm:MessageContent>;
+    <msm:hasPart> <HelloService#types/Hello> ;
+	<msm:hasPartTransitive> <HelloService#types/Hello> .
+
+<HelloService#types/Hello> a <msm:MessagePart> .
+
+#Operation Output
+<HelloService#wsdl.service(helloService)/Hello> <msm:hasOutput> <HelloService#wsdl.service(helloService)/Hello/output/Out> .
+
+<HelloService#wsdl.service(helloService)/Hello/output/Out> a <msm:MessageContent>;
+	<msm:hasPart> <HelloService#types/HelloResponse> ;
+	<msm:hasPartTransitive> <HelloService#types/HelloResponse> .
+	
+<HelloService#types/HelloResponse> a <msm:MessagePart> .

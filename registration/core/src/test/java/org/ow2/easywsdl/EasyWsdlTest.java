@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.ow2.easywsdl.extensions.sawsdl.SAWSDLFactory;
 import org.ow2.easywsdl.extensions.sawsdl.api.SAWSDLReader;
@@ -22,26 +20,13 @@ import org.xml.sax.SAXException;
 
 public class EasyWsdlTest {
 
-	@Before
-	public void setUp() throws Exception {
-//		XMLUnit.getTestDocumentBuilderFactory().setValidating(true);
-//		XMLUnit.setIgnoreAttributeOrder(true);
-//		XMLUnit.setIgnoreComments(true);
-//		XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
-//		XMLUnit.setIgnoreWhitespace(true);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testEasyWSDL_WSDLReader() throws WSDLException, IOException, URISyntaxException, SAXException
 	{
 		WSDLFactory wsdlFactory = WSDLFactory.newInstance();
 		WSDLReader wsdlReader = wsdlFactory.newWSDLReader();
 
-		URL serviceDescriptionURL = EasyWsdlTest.class.getResource("/webservices/ReservationService.wsdl");
+		URL serviceDescriptionURL = EasyWsdlTest.class.getResource("/webservices/sawsdl/ReservationService.sawsdl");
 		assertNotNull(serviceDescriptionURL);
 		
 		Description description = wsdlReader.read(serviceDescriptionURL);
@@ -60,7 +45,7 @@ public class EasyWsdlTest {
 	{
 		SAWSDLReader sawsdlReader = SAWSDLFactory.newInstance().newSAWSDLReader();
 		
-		URL serviceDescriptionURL = EasyWsdlTest.class.getResource("/webservices/ReservationService.wsdl");
+		URL serviceDescriptionURL = EasyWsdlTest.class.getResource("/webservices/sawsdl/ReservationService.sawsdl");
 		assertNotNull(serviceDescriptionURL);
 		
 		org.ow2.easywsdl.extensions.sawsdl.api.Description description = sawsdlReader.read(serviceDescriptionURL);
@@ -75,5 +60,4 @@ public class EasyWsdlTest {
 				services.get(0).getModelReference().get(0).toString());
 		
 	}	
-
 }
