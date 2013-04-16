@@ -1,0 +1,33 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sawsdl: <http://www.w3.org/ns/sawsdl#> 
+PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> 
+PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+PREFIX msee: <http://msee.sti2.at/properties#> 
+CONSTRUCT {
+	?serviceID rdf:type msm:Service .
+	?serviceID msm:hasOperation ?operation .
+	?serviceID sawsdl:modelReference ?category .
+	
+	
+	?operation a msm:Operation .
+	?operation msm:hasOutput ?outputMessageContent .
+	?operation msm:hasInput ?inputMessageContent .
+		
+	?outputMessageContent a msm:MessageContent .
+	?inputMessageContent a msm:MessageContent .
+
+
+} WHERE { 
+	?serviceID rdf:type msm:Service . 
+%categories% 
+	?serviceID msm:hasOperation ?operation .
+	?serviceID sawsdl:modelReference ?category .
+	
+	?operation a msm:Operation .
+	?operation msm:hasOutput ?outputMessageContent .
+	?operation msm:hasOutput/a msm:MessageContent .
+	?operation msm:hasInput ?inputMessageContent .
+	?operation msm:hasInput/a msm:MessageContent .
+
+}

@@ -12,6 +12,6 @@
 			class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
 	</messageReceivers>
 	<parameter name="ServiceClass">
-		at.sti2.msee.discovery.webservice.DiscoveryImpl
+		at.sti2.msee.discovery.webservice.WebServiceDiscoveryImpl
 	</parameter>
 </service>

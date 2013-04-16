@@ -35,7 +35,7 @@
 			<artifactId>discovery.api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>discovery.core</artifactId>
 		</dependency>
 		<dependency>
@@ -151,7 +151,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<className>at.sti2.msee.discovery.webservice.DiscoveryImpl</className>
+					<className>at.sti2.msee.discovery.webservice.WebServiceDiscoveryImpl</className>
 					<outputFileName>${basedir}/src/main/webapp/discovery.wsdl</outputFileName>
 					<wsdlVersion>2</wsdlVersion>
 				</configuration>

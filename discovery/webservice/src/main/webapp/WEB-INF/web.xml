@@ -26,7 +26,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
-		<url-pattern>/service/*</url-pattern>
+		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
 	<mime-mapping>
 		<extension>inc</extension>

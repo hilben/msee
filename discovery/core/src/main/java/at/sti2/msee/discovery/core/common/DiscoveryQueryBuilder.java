@@ -2,13 +2,11 @@ package at.sti2.msee.discovery.core.common;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.List;
+import java.util.Scanner;
 
 import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openrdf.query.MalformedQueryException;
@@ -22,162 +20,26 @@ import org.openrdf.rio.UnsupportedRDFormatException;
  * 
  */
 public class DiscoveryQueryBuilder {
-	private final static Logger LOGGER = LogManager
-			.getLogger(DiscoveryConfig.class.getName());
+	private final Logger LOGGER = LogManager.getLogger(this.getClass()
+			.getName());
 
-	public String getDiscoverQuery2Args(List<URI> _categoryList) {
+	public String getDiscoverQuery2Args(String[] _categoryList) {
 		LOGGER.debug("Create query for discover");
-		String templateString = new String(
-				"group group-demo;"
-						+ "outerTemplate(_categoryList) ::= <<"
-						+ ""
-						+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
-						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n"
-						+ "PREFIX sawsdl:<http://www.w3.org/ns/sawsdl#> \n"
-						+ "PREFIX msm_ext: <http://sesa.sti2.at/ns/minimal-service-model-ext#> \n"
-						+ "PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> \n"
-						+ "PREFIX msee: <http://msee.sti2.at/properties#> \n"
 
-						+ "CONSTRUCT { \n"
-						+ "?serviceID msm_ext:hasOperation ?inputMessage . \n"
-						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
-						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
-						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
-						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
-						+ "?serviceID msm_ext:hasOperation ?outputMessage . \n"
-						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
-						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
-						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
-						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
-						+
-
-						"?serviceID msm_ext:hasOperation ?inputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
-						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
-						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
-						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
-						+
-
-						"?serviceID msm_ext:hasOperation ?outputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
-						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
-						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
-						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-
-						+ "?serviceID msee:name ?serviceName . \n "
-						+ "?serviceID msee:description ?serviceDescription . \n"
-						+ "?serviceID msee:requirements ?serviceRequirements . \n"
-						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
-						+ "?serviceID msee:type ?serviceType . \n"
-						+ "?serviceID msee:icon ?serviceIcon . \n"
-
-						+ "} WHERE { \n"
-						+ "?serviceID rdf:type msm_ext:Service . \n"
-
-						+ "?serviceID msee:name ?serviceName . \n "
-						+ "?serviceID msee:description ?serviceDescription . \n"
-						+ "?serviceID msee:requirements ?serviceRequirements . \n"
-						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
-						+ "?serviceID msee:type ?serviceType . \n"
-						+ "?serviceID msee:icon ?serviceIcon . \n"
-
-						+ ""
-						+ "$_categoryList:innerTemplate()$"
-						+ ""
-						+ "?serviceID msm_ext:wsdlDescription ?descriptionBlock . \n"
-						+ "?descriptionBlock wsdl:namespace ?namespace . \n"
-						+ "?descriptionBlock wsdl:interface ?interfaceBlock . \n"
-						+ "?interfaceBlock wsdl:interfaceOperation ?interfaceOperation . \n"
-						+ "?interfaceOperation rdfs:label ?operationName . \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceMessageReference ?inputMessage . \n"
-						+ "OPTIONAL { \n"
-						+ "?operation sawsdl:modelReference ?operationModel . \n"
-						+ "} \n"
-						+ "?inputMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputMessage sawsdl:loweringSchemaMapping ?inputMessageLowering . \n"
-						+ "?inputMessage wsdl:elementDeclaration ?inputMessagePart . \n"
-						+ "?inputMessagePart wsdl:localName ?inputMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?inputMessagePart sawsdl:modelReference ?inputMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceMessageReference ?outputMessage . \n"
-						+ "?outputMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputMessage sawsdl:liftingSchemaMapping ?outputMessageLifting . \n"
-						+ "?outputMessage wsdl:elementDeclaration ?outputMessagePart . \n"
-						+ "?outputMessagePart wsdl:localName ?outputMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?outputMessagePart sawsdl:modelReference ?outputMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceFaultReference ?inputFaultMessage . \n"
-						+ "?inputFaultMessage rdf:type wsdl:InputMessage . \n"
-						+ "?inputFaultMessage sawsdl:loweringSchemaMapping ?inputFaultMessageLowering . \n"
-						+ "?inputFaultMessage wsdl:elementDeclaration ?inputFaultMessagePart . \n"
-						+ "?inputFaultMessagePart wsdl:localName ?inputFaultMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?inputFaultMessagePart sawsdl:modelReference ?inputFaultMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL { \n"
-						+ "?operation wsdl:interfaceFaultReference ?outputFaultMessage . \n"
-						+ "?outputFaultMessage rdf:type wsdl:OutputMessage . \n"
-						+ "?outputFaultMessage sawsdl:liftingSchemaMapping ?outputFaultMessageLifting . \n"
-						+ "?outputFaultMessage wsdl:elementDeclaration ?outputFaultMessagePart . \n"
-						+ "?outputFaultMessagePart wsdl:localName ?outputFaultMessagePartName . \n"
-						+ "OPTIONAL { \n"
-						+ "?outputFaultMessagePart sawsdl:modelReference ?outputFaultMessagePartModel . \n"
-						+ "} \n"
-						+ "} \n"
-						+
-
-						"OPTIONAL {"
-						+ "?serviceID msee:name ?serviceName . \n "
-						+ "?serviceID msee:decription ?serviceDescription . \n"
-						+ "?serviceID msee:requirements ?serviceRequirements . \n"
-						+ "?serviceID msee:access_point ?serviceAccessPoint . \n"
-						+ "?serviceID msee:type ?serviceType . \n"
-						+ "?serviceID msee:icon ?serviceIcon . \n"
-						+ "} \n"
-
-						+ "}>>"
-						+ ""
-						+ // end of where
-
-						"innerTemplate(category) ::= <<" +
-						/**
-						 * TODO: Check this part.
-						 */
-						"{ \n"
-						+ "<$category$> rdfs:subClassOf* ?superClass . \n"
-						+ "?serviceID sawsdl:modelReference ?superClass . \n"
-						+ "} UNION { \n"
-						+ "?serviceID sawsdl:modelReference <$category$> . \n"
-						+ "} \n" + ">>");
-
-		StringTemplateGroup group = new StringTemplateGroup(new StringReader(
-				templateString), DefaultTemplateLexer.class);
-
-		StringTemplate template = group.getInstanceOf("outerTemplate");
-		template.setAttribute("_categoryList", _categoryList);
-		return template.toString();
+		String query = readFile("/sparql/discover-sparql.txt");
+		
+		StringBuilder categories = new StringBuilder();
+		categories.append("{");
+		for (String category : _categoryList) {
+			categories.append("\t\t?serviceID sawsdl:modelReference <" + category + "> .");
+			categories.append("\n} UNION {\n");
+		}
+		categories.append("}");
+		query = query.replace("%categories%", categories);
+		return query;
 	}
 
+	@Deprecated
 	public String getLookupQuery(URI _namespace, String _operationName) {
 		StringTemplate template = new StringTemplate(
 				"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n"
@@ -210,6 +72,7 @@ public class DiscoveryQueryBuilder {
 		return template.toString();
 	}
 
+	@Deprecated
 	public String getDiscoverQuery4Args(List<URI> _categoryList,
 			List<URI> _inputParamList, List<URI> _outputParamList) {
 
@@ -393,6 +256,7 @@ public class DiscoveryQueryBuilder {
 		return discoveryQuery.toString();
 	}
 
+	@Deprecated
 	public String getIServeModelQuery(String _serviceID)
 			throws FileNotFoundException, IOException,
 			QueryEvaluationException, RepositoryException,
@@ -589,5 +453,12 @@ public class DiscoveryQueryBuilder {
 		serviceCountQuery.append("GROUP BY ?_serviceID\n");
 
 		return serviceCountQuery.toString();
+	}
+
+	private String readFile(String path) {
+		Scanner sc = new Scanner(this.getClass().getResourceAsStream(path));
+		String text = sc.useDelimiter("\\A").next();
+		sc.close();
+		return text;
 	}
 }

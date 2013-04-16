@@ -16,25 +16,17 @@
  */
 package at.sti2.msee.discovery.core;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
 
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.CosNaming.IstringHelper;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.query.TupleQueryResultHandlerException;
-import org.openrdf.query.resultio.UnsupportedQueryResultFormatException;
-import org.openrdf.repository.RepositoryException;
-import org.openrdf.rio.RDFFormat;
-
-import at.sti2.msee.discovery.core.DiscoveryService;
+import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.registration.core.ServiceRegistrationImpl;
+import at.sti2.msee.triplestore.ServiceRepository;
+import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
+import at.sti2.msee.triplestore.ServiceRepositoryFactory;
 
 /**
  * @author Benjamin Hiltpolt
@@ -45,71 +37,50 @@ import at.sti2.msee.discovery.core.DiscoveryService;
  */
 public class DiscoveryServiceTest extends TestCase {
 	private String resourceLocation = "/default.properties";
-	private DiscoveryService discoveryService;
+	private static Discovery discoveryService;
+	private static ServiceRepository serviceRepository;
 
 	@Before
 	public void setUp() throws Exception {
-		discoveryService = new DiscoveryService();
+		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
+		
+		DiscoveryConfig config = new DiscoveryConfig();
+		config.setResourceLocation(resourceLocation);		
+		
+		//Comment these 2 lines to force a in-memory repository
+		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
+		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
+	
+		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
+		serviceRepository.init();
+		serviceRepository.clear();
+
+		String serviceDescriptionURL = this.getClass().getResource("/HelloService.sawsdl").toString();	
+		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
+		registrationService.register(serviceDescriptionURL);
+
+		discoveryService = new DiscoveryServiceImpl(serviceRepository);
 	}
-
-	/**
-	 * TODO: Make better test
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	@Test
-	public void testDiscovery() throws Exception {
-		List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#AUTHORITY"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#Maritime"));
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration"));
-		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-		discoveryService.discover(categoryList, RDFFormat.N3);
-		// System.out.println("---");
-
-		List<URI> inputParamList = new ArrayList<URI>();
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		inputParamList.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		List<URI> outputParamList = new ArrayList<URI>();
-		outputParamList
-				.add(new URI("http://www.w3.org/TR/xmlschema-2/#string"));
-		// System.out.println(ServiceDiscovery.discover(categoryList,
-		// inputParamList, outputParamList, RDFFormat.N3));
-
-		// System.out.println(ServiceDiscovery.lookup(new
-		// URI("http://www.webserviceX.NET"), "GetWeather", RDFFormat.N3));
-		// System.out.println("---");
-
-		// System.out.println(ServiceDiscovery.getIServeModel("http://www.webserviceX.NET#GlobalWeather",
-		// RDFFormat.N3));
-		// System.out.println("---");
+	
+	@After
+	public void tearDown() throws Exception {
+		serviceRepository.shutdown();
 	}
 
 	@Test
 	public void testDiscoverQuery2Args() throws Exception {
-		final List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://msee.sti2.at/categories#REST_WEB_SERVICE"));
-
-		discoveryService.setDiscoveryConfigLocation(resourceLocation);
-
-		discoveryService.discover(categoryList, RDFFormat.N3);
-		//System.out.println(discoveryService
-		//		.discover(categoryList, RDFFormat.N3));
+		final String[] categoryList = new String[1];
+		categoryList[0] = "http://msee.sti2.at/categories#business";
+		assertTrue(discoveryService.discover(categoryList).length()>0);
+		System.out.println(discoveryService.discover(categoryList));
 	}
-
+/*
 	@Test
 	public void testGetServiceCategoriesHasElements() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
 
 		String[] categories = discoveryService.getServiceCategories();
 
-		TestCase.assertTrue(categories.length>=0);
+		TestCase.assertTrue(categories.length>0);
 		// TODO: write test for real function after registration is working?
 	}
 	
@@ -128,5 +99,5 @@ public class DiscoveryServiceTest extends TestCase {
 		Assert.assertFalse(discoveryService
 				.alreadyInTripleStore("http://xyz.com#one"));
 	}
-
+*/
 }

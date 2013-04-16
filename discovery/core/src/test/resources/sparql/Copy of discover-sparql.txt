@@ -38,10 +38,7 @@ CONSTRUCT {
 } WHERE { 
 	?serviceID rdf:type msm:Service . 
 
-	{
-		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .
-	} UNION {
-	} 
+	%categories% 
 	?serviceID msm:wsdlDescription ?descriptionBlock . 
 	?descriptionBlock wsdl:namespace ?namespace . 
 	?descriptionBlock wsdl:interface ?interfaceBlock . 

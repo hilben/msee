@@ -108,18 +108,18 @@
             <wsdl2:outfault ref="tns:DiscoveryException" wsaw:Action="urn:discoverDiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:interface>
-    <wsdl2:binding name="discoveryHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+    <wsdl2:binding name="discoverySoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
         <wsdl2:fault ref="tns:DiscoveryException"/>
-        <wsdl2:operation ref="tns:getIServeModel" whttp:location="getIServeModel">
+        <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:discoverAdvanced" whttp:location="discoverAdvanced">
+        <wsdl2:operation ref="tns:discoverAdvanced" wsoap:action="urn:discoverAdvanced">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:lookup" whttp:location="lookup">
+        <wsdl2:operation ref="tns:lookup" wsoap:action="urn:lookup">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:discover" whttp:location="discover">
+        <wsdl2:operation ref="tns:discover" wsoap:action="urn:discover">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
@@ -138,24 +138,24 @@
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
-    <wsdl2:binding name="discoverySoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+    <wsdl2:binding name="discoveryHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
         <wsdl2:fault ref="tns:DiscoveryException"/>
-        <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
+        <wsdl2:operation ref="tns:getIServeModel" whttp:location="getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:discoverAdvanced" wsoap:action="urn:discoverAdvanced">
+        <wsdl2:operation ref="tns:discoverAdvanced" whttp:location="discoverAdvanced">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:lookup" wsoap:action="urn:lookup">
+        <wsdl2:operation ref="tns:lookup" whttp:location="lookup">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
-        <wsdl2:operation ref="tns:discover" wsoap:action="urn:discover">
+        <wsdl2:operation ref="tns:discover" whttp:location="discover">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
     <wsdl2:service name="discovery" interface="tns:ServiceInterface">
-        <wsdl2:endpoint name="discoveryHttpSoap11Endpoint" binding="tns:discoverySoap11Binding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
-        <wsdl2:endpoint name="discoveryHttpSoap12Endpoint" binding="tns:discoverySoap12Binding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
-        <wsdl2:endpoint name="discoveryHttpEndpoint" binding="tns:discoveryHttpBinding" address="http://localhost:8080/axis2/services/DiscoveryImpl"/>
+        <wsdl2:endpoint name="discoveryHttpSoap11Endpoint" binding="tns:discoverySoap11Binding" address="http://localhost:8080/axis2/services/WebServiceDiscoveryImpl"/>
+        <wsdl2:endpoint name="discoveryHttpSoap12Endpoint" binding="tns:discoverySoap12Binding" address="http://localhost:8080/axis2/services/WebServiceDiscoveryImpl"/>
+        <wsdl2:endpoint name="discoveryHttpEndpoint" binding="tns:discoveryHttpBinding" address="http://localhost:8080/axis2/services/WebServiceDiscoveryImpl"/>
     </wsdl2:service>
 </wsdl2:description>
