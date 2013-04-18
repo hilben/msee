@@ -1,5 +1,5 @@
-
-include Java
+require 'java'
+Dir["lib/jar/*.jar"].each { |jar| require jar }
 java_import Java::at.sti2.msee.discovery.core.DiscoveryServiceImpl
 java_import Java::at.sti2.msee.discovery.api.webservice.Discovery
 java_import Java::at.sti2.msee.discovery.api.webservice.DiscoveryException
@@ -7,9 +7,13 @@ java_import Java::at.sti2.msee.discovery.core.ServiceDiscoveryFactory
 java_import Java::at.sti2.msee.discovery.core.common.ServiceDiscoveryConfiguration
 java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
 java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
-#java_import Java::java.net.URI
+
+
 
 class Dashboards::DiscoveriesController < ApplicationController
+
+  @serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+  @repositoryId = "msee-test"
 
   def index
     method = params[:method]
@@ -27,12 +31,30 @@ class Dashboards::DiscoveriesController < ApplicationController
   def getCategoriesOfServiceIDForAutoCompleteBox
 
     #obtain the categories
-    categories = Array.new(1) { "http://msee.sti2.at/categories#business"}
-    logger.debug "categories: #{categories}"
+
+    repositoryConfiguration = ServiceRepositoryConfiguration.new
+    repositoryConfiguration.setRepositoryID(@repositoryId)
+    repositoryConfiguration.setServerEndpoint(@serverEndpoint)
+
+    #serviceRepository = SesameServiceRepositoryImpl.new(repositoryConfiguration)
+    #serviceRepository.init()
+
+    serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
+    discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
+
+    $categories = nil
+    begin
+      $categories = discovery.getServiceCategories()
+    rescue Exception => e
+      logger.error "Discovery Process failed, through exception: " + e.to_s + "\n" + "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+      $categories = Array.new(1) { "http://msee.sti2.at/categories#business"}
+    end
+
+    logger.debug "categories: #{$categories}"
 
     jsonAutoCompleteData = Array.new
 
-    categories.each do |category|
+    $categories.each do |category|
       entry = Hash.new
       entry[:key] = category
       entry[:value] = category
@@ -84,19 +106,21 @@ class Dashboards::DiscoveriesController < ApplicationController
 
     begin
 
-      repositoryId = "http://sesa.sti2.at:8080/openrdf-sesame"
-      serverEndpoint = "msee"
+      serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+      repositoryId = "msee"
 
-      discoveryConfiguration = ServiceDiscoveryConfiguration.new
 
       repositoryConfiguration = ServiceRepositoryConfiguration.new
-      repositoryConfiguration.setRepositoryID(repositoryId)
-      repositoryConfiguration.setServerEndpoint(serverEndpoint)
-      discoveryConfiguration.setRepositoryConfiguration(repositoryConfiguration)
+      repositoryConfiguration.setRepositoryID(@repositoryId)
+      repositoryConfiguration.setServerEndpoint(@serverEndpoint)
 
-      serviceRepository = SesameServiceRepositoryImpl.new(repositoryConfiguration)
+      #serviceRepository = SesameServiceRepositoryImpl.new(repositoryConfiguration)
+      #serviceRepository.init()
 
-      discovery = DiscoveryServiceImpl.new(serviceRepository)
+      serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
+      discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
+
+      #discovery = DiscoveryServiceImpl.new(serviceRepository)
 
       result = discovery.discover(categories)
 
@@ -106,8 +130,8 @@ class Dashboards::DiscoveriesController < ApplicationController
       @discover_output = result
       @notice = "The discovery was succesfull.";
 
-    rescue => e
-      @error = "Discovery Process failed, through exception: " + e.to_s
+    rescue Exception => e
+      @error = "Discovery Process failed, through exception: " + e.to_s + "\n" # + "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
     end
   end
 

@@ -27,12 +27,14 @@ public class DiscoveryQueryBuilder {
 		LOGGER.debug("Create query for discover");
 
 		String query = readFile("/sparql/discover-sparql.txt");
-		
+
 		StringBuilder categories = new StringBuilder();
 		categories.append("{");
 		for (String category : _categoryList) {
 			categories.append("\t\t?serviceID sawsdl:modelReference <" + category + "> .");
-			categories.append("\n} UNION {\n");
+			if (_categoryList.length > 1) {
+				categories.append("\n} UNION {\n");
+			}
 		}
 		categories.append("}");
 		query = query.replace("%categories%", categories);
@@ -450,7 +452,7 @@ public class DiscoveryQueryBuilder {
 	}
 
 	private String readFile(String path) {
-		Scanner sc = new Scanner(this.getClass().getResourceAsStream(path));
+		Scanner sc = new Scanner(DiscoveryQueryBuilder.class.getResourceAsStream(path));
 		String text = sc.useDelimiter("\\A").next();
 		sc.close();
 		return text;

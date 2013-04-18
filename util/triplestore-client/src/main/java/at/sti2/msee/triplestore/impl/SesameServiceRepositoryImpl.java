@@ -8,6 +8,7 @@ import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.node.URI;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rdf2go.RepositoryModel;
 import org.openrdf.rdf2go.RepositoryModelFactory;
 import org.openrdf.repository.Repository;
@@ -15,6 +16,7 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.rio.RDFFormat;
 import org.openrdf.sail.memory.MemoryStore;
 
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -38,10 +40,13 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 
 		if (configuration.getServerEndpoint() == null)
 			this.repository = new SailRepository(new MemoryStore());
-		else
+		else {
 			this.repository = new HTTPRepository(
 					configuration.getServerEndpoint(),
 					configuration.getRepositoryID());
+			((HTTPRepository) this.repository).setPreferredRDFFormat(RDFFormat.RDFXML);
+			((HTTPRepository) this.repository).setPreferredTupleQueryResultFormat(TupleQueryResultFormat.SPARQL);
+		}
 
 		this.repository.initialize();
 

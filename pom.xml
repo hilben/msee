@@ -26,6 +26,7 @@
 		<cxf.version>2.4.1</cxf.version>
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
+		<openrdf-sesame.version>2.6.5</openrdf-sesame.version>
 
 		<!-- Default properties -->
 		<default.port>8080</default.port>
@@ -154,6 +155,10 @@
 			<name>Aduna Software</name>
 			<url>http://repo.aduna-software.org/maven2/releases/</url>
 		</repository>
+		<repository>
+			<id>blackbook</id>
+			<url>http://blackbook.jhuapl.edu:8080/artifactory/plugins-releases/</url>
+		</repository>
 		<!-- Easywsdl additional dependencies -->
 		<repository>
 			<id>Server-artifactory.petalslink.com</id>
@@ -223,7 +228,7 @@
 			<dependency>
 				<groupId>org.openrdf.sesame</groupId>
 				<artifactId>sesame-runtime</artifactId>
-				<version>2.6.1</version>
+				<version>${openrdf-sesame.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.easywsdl</groupId>
@@ -375,13 +380,19 @@
 			</dependency>
 			<dependency>
 				<groupId>org.semweb4j</groupId>
-				<artifactId>rdf2go.impl.sesame23</artifactId>
-				<version>4.8.1</version>
+				<artifactId>rdf2go.impl.sesame</artifactId>
+				<version>4.8.2</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.openrdf.sesame</groupId>
+						<artifactId>sesame-runtime-osgi</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.semweb4j</groupId>
 				<artifactId>rdf2go.api</artifactId>
-				<version>4.8.1</version>
+				<version>4.8.2</version>
 			</dependency>
 			<dependency>
 				<groupId>uk.ac.open.kmi.iserve</groupId>

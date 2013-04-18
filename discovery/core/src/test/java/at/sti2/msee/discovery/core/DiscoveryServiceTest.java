@@ -16,6 +16,8 @@
  */
 package at.sti2.msee.discovery.core;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -74,16 +76,16 @@ public class DiscoveryServiceTest extends TestCase {
 		assertTrue(discoveryService.discover(categoryList).length()>0);
 		System.out.println(discoveryService.discover(categoryList));
 	}
-/*
-	@Test
-	public void testGetServiceCategoriesHasElements() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
 
-		String[] categories = discoveryService.getServiceCategories();
+	@Test
+	public void testGetServiceCategoriesHasElements() throws IOException  {
+
+		String[] categories = ((DiscoveryServiceImpl)discoveryService).getServiceCategories();
 
 		TestCase.assertTrue(categories.length>0);
 		// TODO: write test for real function after registration is working?
 	}
-	
+/*
 //	@Test
 //	public void testGetServiceCategories() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
 //		String[] categories = discoveryService.getServiceCategories();
