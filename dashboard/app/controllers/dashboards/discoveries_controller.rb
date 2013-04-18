@@ -12,9 +12,6 @@ java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
 
 class Dashboards::DiscoveriesController < ApplicationController
 
-  @serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-  @repositoryId = "msee-test"
-
   def index
     method = params[:method]
 
@@ -31,13 +28,12 @@ class Dashboards::DiscoveriesController < ApplicationController
   def getCategoriesOfServiceIDForAutoCompleteBox
 
     #obtain the categories
+    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+    repositoryId = "msee-test"
 
     repositoryConfiguration = ServiceRepositoryConfiguration.new
-    repositoryConfiguration.setRepositoryID(@repositoryId)
-    repositoryConfiguration.setServerEndpoint(@serverEndpoint)
-
-    #serviceRepository = SesameServiceRepositoryImpl.new(repositoryConfiguration)
-    #serviceRepository.init()
+    repositoryConfiguration.setRepositoryID(repositoryId)
+    repositoryConfiguration.setServerEndpoint(serverEndpoint)
 
     serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
     discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
@@ -49,8 +45,6 @@ class Dashboards::DiscoveriesController < ApplicationController
       logger.error "Discovery Process failed, through exception: " + e.to_s + "\n" + "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
       $categories = Array.new(1) { "http://msee.sti2.at/categories#business"}
     end
-
-    logger.debug "categories: #{$categories}"
 
     jsonAutoCompleteData = Array.new
 
@@ -107,25 +101,20 @@ class Dashboards::DiscoveriesController < ApplicationController
     begin
 
       serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-      repositoryId = "msee"
+      repositoryId = "msee-test"
 
 
       repositoryConfiguration = ServiceRepositoryConfiguration.new
-      repositoryConfiguration.setRepositoryID(@repositoryId)
-      repositoryConfiguration.setServerEndpoint(@serverEndpoint)
-
-      #serviceRepository = SesameServiceRepositoryImpl.new(repositoryConfiguration)
-      #serviceRepository.init()
+      repositoryConfiguration.setRepositoryID(repositoryId)
+      repositoryConfiguration.setServerEndpoint(serverEndpoint)
 
       serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
       discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
 
-      #discovery = DiscoveryServiceImpl.new(serviceRepository)
-
       result = discovery.discover(categories)
 
-      logger.debug "asdf asdf asdf asdf categories: #{categories} #{categories==nil}";
-      logger.debug "discovery response #{result} + #{result.class}"
+      #logger.debug "asdf asdf asdf asdf categories: #{categories} #{categories==nil}";
+      #logger.debug "discovery response #{result} + #{result.class}"
 
       @discover_output = result
       @notice = "The discovery was succesfull.";

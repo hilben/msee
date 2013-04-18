@@ -25,6 +25,7 @@ class Dashboards::RegistrationController < ApplicationController
     repositoryConfiguration.setServerEndpoint(serverEndpoint)
 
     serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
+    serviceRepository.init()
     writer = ServiceRegistrationImpl.new(serviceRepository);
 
 
