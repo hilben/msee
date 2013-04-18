@@ -1,5 +1,5 @@
 require 'java'
-Dir["lib/jar/*.jar"].each { |jar| require jar }
+
 java_import Java::at.sti2.msee.discovery.core.DiscoveryServiceImpl
 java_import Java::at.sti2.msee.discovery.api.webservice.Discovery
 java_import Java::at.sti2.msee.discovery.api.webservice.DiscoveryException
@@ -49,6 +49,7 @@ class Dashboards::DiscoveriesController < ApplicationController
     jsonAutoCompleteData = Array.new
 
     $categories.each do |category|
+      logger.debug category
       entry = Hash.new
       entry[:key] = category
       entry[:value] = category
