@@ -405,18 +405,12 @@ public class DiscoveryQueryBuilder {
 	 * @return
 	 */
 	public String getAllCategoriesQuery() {
-		String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>\n"
-				+ "PREFIX psys:<http://proton.semanticweb.org/protonsys#>\n"
-				+ "PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>\n"
-				+ "PREFIX owl:<http://www.w3.org/2002/07/owl#>\n"
-				+ "PREFIX msee:<http://msee.sti2.at/properties#>\n"
-				+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX pext:<http://proton.semanticweb.org/protonext#>\n"
+		String queryString = ""
 
 				+ "SELECT DISTINCT ?category\n"
 				+ "WHERE {\n"
 				+ "?service <http://www.w3.org/ns/sawsdl#modelReference> ?category.\n"
-				+ "?service a <http://sesa.sti2.at/ns/minimal-service-model-ext#Service>.\n"
+				+ "?service a <http://cms-wg.sti2.org/ns/minimal-service-model#Service>.\n"
 				+ "}\n";
 
 		return queryString;

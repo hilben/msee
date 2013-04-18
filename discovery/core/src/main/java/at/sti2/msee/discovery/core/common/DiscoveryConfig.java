@@ -60,10 +60,16 @@ public class DiscoveryConfig {
 	}
 	
 	public String getSesameEndpoint() {
+		//if(this.properties.getProperty(sesameEndpointName)==null){
+			//return "http://sesa.sti2.at:8080/openrdf-sesame";
+		//}
 		return this.properties.getProperty(sesameEndpointName);
 	}
 	
 	public String getSesameRepositoryID() {
+		//if(this.properties.getProperty(sesameRepositoryIDName)==null){
+			//return "msee";
+		//}
 		return this.properties.getProperty(sesameRepositoryIDName);
 	}
 	

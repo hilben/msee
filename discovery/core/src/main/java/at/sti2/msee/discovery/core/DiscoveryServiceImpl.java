@@ -3,18 +3,17 @@ package at.sti2.msee.discovery.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import javax.wsdl.Output;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ontoware.aifbcommons.collection.ClosableIterable;
 import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
-import org.openrdf.model.Value;
 import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
@@ -35,7 +34,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	private DiscoveryQueryBuilder discoveryQueryBuilder = null;
 
 	public DiscoveryServiceImpl(ServiceRepository serviceRepository) {
-		if(serviceRepository == null) {
+		if (serviceRepository == null) {
 			throw new IllegalArgumentException("Repository cannot be null");
 		}
 		this.serviceRepository = serviceRepository;
@@ -48,13 +47,15 @@ public class DiscoveryServiceImpl implements Discovery {
 
 		checkCategoryList(categoryList);
 
-		String query = discoveryQueryBuilder.getDiscoverQuery2Args(categoryList);
+		String query = discoveryQueryBuilder
+				.getDiscoverQuery2Args(categoryList);
 
 		Model rdfModel = serviceRepository.getModel();
-		if(!rdfModel.isOpen()) {
+		if (!rdfModel.isOpen()) {
 			rdfModel.open();
 		}
-		ClosableIterable<Statement> resultTable = rdfModel.sparqlConstruct(query);
+		ClosableIterable<Statement> resultTable = rdfModel
+				.sparqlConstruct(query);
 		ClosableIterator<Statement> results = resultTable.iterator();
 
 		String rdfxml = convertQueryResult2RDFXML(results);
@@ -112,6 +113,39 @@ public class DiscoveryServiceImpl implements Discovery {
 	@Override
 	public String getIServeModel(String serviceID) throws DiscoveryException {
 		throw new DiscoveryException("Not yet implemented");
+	}
+
+	public String[] getServiceCategories() throws IOException {
+		String query = discoveryQueryBuilder.getAllCategoriesQuery();
+
+		Model rdfModel = serviceRepository.getModel();
+		if (!rdfModel.isOpen()) {
+			rdfModel.open();
+		}
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
+		ClosableIterator<QueryRow> results = resultTable.iterator();
+
+		LOGGER.debug("Querying all categories via");
+		LOGGER.debug(query);
+
+		ArrayList<String> categories = new ArrayList<String>();
+
+		while (results.hasNext()) {
+			QueryRow nextElement = results.next();
+			String category = nextElement.getLiteralValue("category");
+			categories.add(category);
+			LOGGER.debug("Category : " + category);
+		}
+
+		// Cast to array
+		String returnArray[] = new String[categories.size()];
+		int i = 0;
+		for (String c : categories) {
+			returnArray[i] = c;
+			i++;
+		}
+
+		return returnArray;
 	}
 
 }
