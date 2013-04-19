@@ -74,7 +74,7 @@ public class DiscoveryServiceTest extends TestCase {
 		final String[] categoryList = new String[1];
 		categoryList[0] = "http://msee.sti2.at/categories#business";
 		assertTrue(discoveryService.discover(categoryList).length()>0);
-		System.out.println(discoveryService.discover(categoryList));
+		//System.out.println(discoveryService.discover(categoryList));
 	}
 
 	@Test

@@ -1,5 +1,3 @@
-require 'java'
-
 java_import Java::at.sti2.msee.discovery.core.DiscoveryServiceImpl
 java_import Java::at.sti2.msee.discovery.api.webservice.Discovery
 java_import Java::at.sti2.msee.discovery.api.webservice.DiscoveryException
@@ -56,8 +54,10 @@ class Dashboards::DiscoveriesController < ApplicationController
 
       strIndex = category.index("#")
 
-      cutDownCategory = category[strIndex+1, (category.length - 1) - strIndex]
-      entry[:value] = cutDownCategory
+      if strIndex!=nil
+        cutDownCategory = category[strIndex+1, (category.length - 1) - strIndex]
+        entry[:value] = cutDownCategory
+      end
 
       jsonAutoCompleteData.push(entry)
     end

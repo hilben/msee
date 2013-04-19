@@ -21,4 +21,5 @@ pickle-email-*.html
 /vendor/jruby/*
 *.war
 /target/*
+/lib/*.jar
 

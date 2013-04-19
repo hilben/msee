@@ -29,7 +29,7 @@
 							<genWsdl>true</genWsdl>
 
 							<!-- <genClient>true</genClient> -->
-							<verbose>true</verbose>
+							<verbose>false</verbose>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>

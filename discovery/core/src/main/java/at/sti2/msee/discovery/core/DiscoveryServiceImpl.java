@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.ontoware.aifbcommons.collection.ClosableIterable;
 import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.model.Model;
-import org.ontoware.rdf2go.model.QueryResultTable;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
 import org.openrdf.model.Resource;
@@ -18,8 +17,6 @@ import org.openrdf.model.URI;
 import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
-import org.openrdf.rdf2go.GraphIterable;
-import org.openrdf.rdf2go.StatementIterable;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
@@ -128,7 +125,7 @@ public class DiscoveryServiceImpl implements Discovery {
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
 
-		QueryResultTable resultTable = rdfModel.sparqlSelect(query);
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
 		ClosableIterator<QueryRow> results = resultTable.iterator();
 
 		LOGGER.debug("Querying all categories via");

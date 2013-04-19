@@ -1,5 +1,4 @@
-require 'java'
-Dir["lib/jar/*.jar"].each { |jar| require jar }
+
 
 java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
 java_import Java::at.sti2.msee.triplestore.ServiceRepositoryFactory

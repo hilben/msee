@@ -2,17 +2,6 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-#include all jars
-#TODO: messy
-
-begin
-    #Dir["../../lib/jar/*.jar"].each{|jar| require jar}
-    Dir["../lib/jar/*.jar"].each{|jar| require jar}
-    Dir["lib/jar/*.jar"].each{|jar| require jar}
-rescue Exception => e
-    puts e.message
-end
-
 
 if defined?(Bundler)
     # If you precompile assets before deploying to production, use this line

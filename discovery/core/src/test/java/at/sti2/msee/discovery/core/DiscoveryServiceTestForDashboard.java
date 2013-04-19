@@ -31,6 +31,6 @@ public class DiscoveryServiceTestForDashboard {
 		} catch (DiscoveryException e) {
 			e.printStackTrace();
 		}
-		System.out.println(result);
+		//System.out.println(result);
 	}
 }
