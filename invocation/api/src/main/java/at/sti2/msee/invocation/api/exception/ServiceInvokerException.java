@@ -1,6 +1,6 @@
 package at.sti2.msee.invocation.api.exception;
 
-public class ServiceInvokerException  extends Exception{
+public class ServiceInvokerException extends Exception {
 
 	/**
 	 * 
@@ -28,5 +28,4 @@ public class ServiceInvokerException  extends Exception{
 		super(cause);
 	}
 
-	
 }

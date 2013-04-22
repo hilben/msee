@@ -14,7 +14,7 @@
 		<module>discovery</module>
 		<module>invocation</module>
 		<module>dashboard</module>
-		<!-- <module>monitoring</module> -->
+		<module>monitoring</module>
 		<!-- <module>ranking</module> -->
 	</modules>
 
