@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dum="http://sesa.sti2.at/services/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <dum:getRandomNumberAndCalculationTime>
+         <number>989800</number>
+      </dum:getRandomNumberAndCalculationTime>
+   </soapenv:Body>
+</soapenv:Envelope>
