@@ -17,14 +17,16 @@
 package at.sti2.msee.discovery.core;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 import at.sti2.msee.triplestore.ServiceRepository;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
@@ -32,24 +34,22 @@ import at.sti2.msee.triplestore.ServiceRepositoryFactory;
 
 /**
  * @author Benjamin Hiltpolt
+ * @author Christian Mayr
  * 
- * 
- * 
- *         TODO: use better logging
+
  */
 public class DiscoveryServiceTest extends TestCase {
 	private String resourceLocation = "/default.properties";
 	private static Discovery discoveryService;
 	private static ServiceRepository serviceRepository;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
 		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
-		
+				
+		//Comment these 4 lines to force a in-memory repository
 		DiscoveryConfig config = new DiscoveryConfig();
-		config.setResourceLocation(resourceLocation);		
-		
-		//Comment these 2 lines to force a in-memory repository
+		config.setResourceLocation(resourceLocation);	
 		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
 		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
 	
@@ -64,8 +64,9 @@ public class DiscoveryServiceTest extends TestCase {
 		discoveryService = new DiscoveryServiceImpl(serviceRepository);
 	}
 	
-	@After
+	@AfterClass
 	public void tearDown() throws Exception {
+		serviceRepository.clear();
 		serviceRepository.shutdown();
 	}
 
@@ -73,33 +74,56 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testDiscoverQuery2Args() throws Exception {
 		final String[] categoryList = new String[1];
 		categoryList[0] = "http://msee.sti2.at/categories#business";
-		assertTrue(discoveryService.discover(categoryList).length()>0);
-		//System.out.println(discoveryService.discover(categoryList));
+		String result = discoveryService.discover(categoryList);
+		assertTrue("Result is empty", result.length() > 0);
+		assertContains(result, "wsdl.service(helloService)");
+		assertContains(result, "wsdl.service(helloService)/Hello");
+		assertContains(result, "wsdl.service(helloService)/Hello/output/Out");
+		assertContains(result, "wsdl.service(helloService)/Hello/input/In");
+		
+		assertNotContains(result, "wsdl.service(someService)");
+		assertNotContains(result, "wsdl.service(someService)/Hello");
+		assertNotContains(result, "wsdl.service(someService)/Hello/output/Out");
+		assertNotContains(result, "wsdl.service(someService)/Hello/input/In");
+	}
+
+	private void assertContains(String haystack, String needle) {
+		assertTrue(needle + " not found in " + haystack, haystack.contains(needle));
+	}
+	
+	private void assertNotContains(String haystack, String needle) {
+		assertTrue(needle + " FALSE found in " + haystack, !haystack.contains(needle));
+	}
+	
+	private void assertContainsStrings(String haystack, String[] needleList){
+		for(String needle : needleList){
+			assertContains(haystack, needle);
+		}
 	}
 
 	@Test
 	public void testGetServiceCategoriesHasElements() throws IOException  {
-
+		String[] expectedCategories = {"http://msee.sti2.at/categories#business"};
 		String[] categories = ((DiscoveryServiceImpl)discoveryService).getServiceCategories();
-
-		TestCase.assertTrue(categories.length>0);
-		// TODO: write test for real function after registration is working?
+		for(String category : categories){
+			assertContainsStrings(category, expectedCategories);
+		}
+		assertTrue(categories.length==1);
 	}
-/*
-//	@Test
-//	public void testGetServiceCategories() throws QueryEvaluationException, RepositoryException, MalformedQueryException, TupleQueryResultHandlerException, UnsupportedQueryResultFormatException, IOException {
-//		String[] categories = discoveryService.getServiceCategories();
-//		TestCase.assertTrue(categories.length>0);
-//		// TODO: write test for real function after registration is working?
-//	}
-
+	
 	@Test
-	public void testAlreadyInTripleStore() throws QueryEvaluationException,
-			RepositoryException, MalformedQueryException,
-			TupleQueryResultHandlerException,
-			UnsupportedQueryResultFormatException, IOException {
-		Assert.assertFalse(discoveryService
-				.alreadyInTripleStore("http://xyz.com#one"));
+	public void testGetServiceCategoriesTwoElements() throws IOException, ServiceRegistrationException  {
+		// add a second wsdl
+		String serviceDescriptionURL = this.getClass().getResource("/HelloServiceWith2Categories.sawsdl").toString();	
+		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
+		registrationService.register(serviceDescriptionURL);
+		
+		String[] expectedCategories = {"http://msee.sti2.at/categories#business", "http://msee.sti2.at/categories#otherbusiness"};
+		String[] categories = ((DiscoveryServiceImpl)discoveryService).getServiceCategories();
+		for(String expectedCategory : expectedCategories){
+			assertContains(Arrays.toString(categories), expectedCategory);
+		}
+		assertTrue(categories.length==2);
 	}
-*/
+
 }

@@ -14,16 +14,10 @@ public class ServiceRepositoryConfiguration {
 	}
 
 	public String getServerEndpoint() {
-		if(serverEndpoint==null){
-			throw new IllegalArgumentException("Server Endpoint is NULL");
-		}
 		return serverEndpoint;
 	}
 
 	public String getRepositoryID() {
-		if(repositoryId==null){
-			throw new IllegalArgumentException("Repository ID is NULL");
-		}
 		return repositoryId;
 	}
 
