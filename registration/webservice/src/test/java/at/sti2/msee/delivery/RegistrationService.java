@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "RegistrationService", targetNamespace = "http://msee.sti2.at/delivery/", wsdlLocation = "file:/home/chrmay/git/msee-core/registration/webservice/src/test/resources/wsdl/RegistrationService.wsdl")
+@WebServiceClient(name = "RegistrationService", targetNamespace = "http://msee.sti2.at/delivery/", wsdlLocation = "file:/home/benni/workspace/msee-core/registration/webservice/src/test/resources/wsdl/RegistrationService.wsdl")
 public class RegistrationService
     extends Service
 {
@@ -30,7 +30,7 @@ public class RegistrationService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/home/chrmay/git/msee-core/registration/webservice/src/test/resources/wsdl/RegistrationService.wsdl");
+            url = new URL("file:/home/benni/workspace/msee-core/registration/webservice/src/test/resources/wsdl/RegistrationService.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }
