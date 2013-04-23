@@ -4,6 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +30,11 @@ import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.triplestore.ServiceRepository;
 
+/**
+ * This class represents the concrete implementation of the {@link Discovery}
+ * interface. It provides methods for retrieving registered services.
+ * 
+ */
 public class DiscoveryServiceImpl implements Discovery {
 
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
@@ -47,6 +55,12 @@ public class DiscoveryServiceImpl implements Discovery {
 		discoveryQueryBuilder = new DiscoveryQueryBuilder();
 	}
 
+	/**
+	 * This method discovers all services that belong to a category of the
+	 * argument {@literal categoryList}.
+	 * 
+	 * @see at.sti2.msee.discovery.api.webservice.Discovery#discover(java.lang.String[])
+	 */
 	@Override
 	public String discover(String[] categoryList) throws DiscoveryException {
 		LOGGER.debug("Starting discover()");
@@ -66,7 +80,30 @@ public class DiscoveryServiceImpl implements Discovery {
 		rdfModel.close();
 		return rdfxml;
 	}
+	
+	/**
+	 * This method discovers all services that belong to a category of the
+	 * argument {@literal categoryList}. It returns the services grouped by the
+	 * category. The key of the returned map is the category and the value
+	 * points out the services as String.
+	 * 
+	 */
+	public Map<String, String>  discoverMap(String[] categoryList) throws DiscoveryException {
+		Map<String, String> categoryMap = new HashMap<String, String>();
+		for(String category : categoryList){
+			categoryMap.put(category, discover(new String[]{category}));
+		}
+		return categoryMap;
+	}
 
+	/**
+	 * This method converts the RDF statements called through an interator into
+	 * rdf/xml format.
+	 * 
+	 * @param results
+	 *            - Iterator of Statements
+	 * @return the statements in rdf/xml format
+	 */
 	private String convertQueryResult2RDFXML(ClosableIterator<Statement> results) {
 		OutputStream out = new ByteArrayOutputStream();
 		RDFHandler rdfxmlWriter = new RDFXMLWriter(out);
@@ -90,6 +127,11 @@ public class DiscoveryServiceImpl implements Discovery {
 		return out.toString();
 	}
 
+	/**
+	 * Checks the category list to contain values.
+	 * 
+	 * @param categoryList
+	 */
 	private void checkCategoryList(String[] categoryList) {
 		if (categoryList == null) {
 			LOGGER.error("Category list is null");
@@ -119,6 +161,10 @@ public class DiscoveryServiceImpl implements Discovery {
 		throw new DiscoveryException("Not yet implemented");
 	}
 
+	/**
+	 * @return
+	 * @throws IOException
+	 */
 	public String[] getServiceCategories() throws IOException {
 		String query = discoveryQueryBuilder.getAllCategoriesQuery();
 
@@ -128,29 +174,32 @@ public class DiscoveryServiceImpl implements Discovery {
 		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
 		ClosableIterator<QueryRow> results = resultTable.iterator();
 
-		LOGGER.debug("Querying all categories via");
-		LOGGER.debug(query);
+		LOGGER.debug("Querying all categories via query: " + query);
 
 		ArrayList<String> categories = new ArrayList<String>();
-
 		while (results.hasNext()) {
-			QueryRow nextElement = results.next();
-			String category = nextElement.getValue("category").toString();
-			categories.add(category);
-			LOGGER.debug("Category : " + category);
+			categories.add(getValueOfQueryRow(results.next(), "category"));
 		}
+		LOGGER.debug("Categories: " + Arrays.toString(categories.toArray()));
 
 		// Cast to array
-		String returnArray[] = new String[categories.size()];
-		int i = 0;
-		for (String c : categories) {
-			returnArray[i] = c;
-			i++;
-		}
+		String returnArray[] = categories.toArray(new String[categories.size()]);
 
 		return returnArray;
 	}
 
+	/**
+	 * Returns the value of a QueryRow in the given column
+	 */
+	private String getValueOfQueryRow(QueryRow row, String column) {
+		return row.getValue(column).toString();
+	}
+
+	/**
+	 * Returns the service repository.
+	 * 
+	 * @return service repository
+	 */
 	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
