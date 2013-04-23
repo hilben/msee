@@ -86,7 +86,7 @@ class Dashboards::DiscoveriesController < ApplicationController
   #     logger.debug "discovery lookup: #{result}"
 
   #     @lookup_output = result
-  #     @notice = "The discovery was succesfull.";
+  #     @notice = "The discovery was successful.";
 
   #   rescue => e
   #     @error = "Discovery Process failed, through exception: " + e.to_s
@@ -112,13 +112,38 @@ class Dashboards::DiscoveriesController < ApplicationController
       serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
       discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
 
-      result = discovery.discover(categories)
+      result = discovery.discoverMap(categories)
 
-      #logger.debug "asdf asdf asdf asdf categories: #{categories} #{categories==nil}";
-      #logger.debug "discovery response #{result} + #{result.class}"
+      output = ""
+      output += "<div class=\"accordion\" id=\"accordion2\">"
+      catcounter = 1
+      for s in result.keySet()
+        output += " <div class=\"accordion-group\">"
+        output += "  <div class=\"accordion-heading\">"
+        output += "   <a class=\"accordion-toggle theButton\" href=\"#collapse_#{catcounter}\" data-toggle=\"collapse\" data-parent=\"#accordion2\">#{s}</a>"
+        output += "  </div>"
+        output += "  <div id=\"collapse_#{catcounter}\" class=\"accordion-body in collapse\" style=\"height:0px;\">"
+        output += "   <div class=\"accordion-inner\" style=\"white-space: pre-wrap;\">"
+        inner = result.get s
+        output += CGI::escapeHTML(inner.html_safe)
+        output += "   </div>"
+        output += "  </div>"
+        output += " </div>"
+        catcounter +=1
+      end
+      output += "</div>"
 
-      @discover_output = result
-      @notice = "The discovery was succesfull.";
+      output += "<script>"
+      output += " $(document).ready(function(){"
+      output += "  $('#accordion2 .theButton').on('click', function(e) {"
+      output += "   $('#collapse_discover').css('height', 'auto');"
+      output += "  });"
+      output += " });"
+      output += "</script>"
+
+
+      @discover_output = output
+      @notice = "The discovery was successful.";
 
     rescue Exception => e
       @error = "Discovery Process failed, through exception: " + e.to_s + "\n" # + "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
@@ -138,7 +163,7 @@ class Dashboards::DiscoveriesController < ApplicationController
   #     logger.debug "IServeModel Response #{result} + #{result.class}"
 
   #     @iserve_output = result;
-  #     @notice = "The discovery was succesfull.";
+  #     @notice = "The discovery was successful.";
 
   #   rescue => e
   #     @error = "Discovery Process failed, through exception: " + e.to_s
