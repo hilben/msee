@@ -33,7 +33,7 @@ public class ConfigurationTest {
 	@Test
 	public void testLoadPropertFile() throws IOException {
 		Configuration configuration = new Configuration();
-		configuration.load("/test.properties");
+		configuration.load("/tester.properties");
 		
 		String sesameEndpoint = configuration.getSesameEndpoint();
 		assertEquals("http://localhost:8080/openrdf-sesame",sesameEndpoint);
