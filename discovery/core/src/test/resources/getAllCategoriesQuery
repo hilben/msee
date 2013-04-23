@@ -1,12 +1,5 @@
-PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
-PREFIX psys:<http://proton.semanticweb.org/protonsys#>
-PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
-PREFIX owl:<http://www.w3.org/2002/07/owl#>
-PREFIX msee:<http://msee.sti2.at/properties#>
-PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX pext:<http://proton.semanticweb.org/protonext#>
 SELECT DISTINCT ?category
 WHERE {
-?service <http://www.w3.org/ns/sawsdl#modelReference> ?category.
-?service a <http://sesa.sti2.at/ns/minimal-service-model-ext#Service>.
+	?service <http://www.w3.org/ns/sawsdl#modelReference> ?category.
+	?service a <http://cms-wg.sti2.org/ns/minimal-service-model#Service>.
 }

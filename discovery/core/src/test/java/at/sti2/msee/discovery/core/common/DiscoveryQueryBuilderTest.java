@@ -1,5 +1,7 @@
 package at.sti2.msee.discovery.core.common;
 
+import static org.junit.Assert.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
@@ -39,16 +41,30 @@ public class DiscoveryQueryBuilderTest {
 			FileNotFoundException, IOException, QueryEvaluationException,
 			RepositoryException, MalformedQueryException, RDFHandlerException,
 			UnsupportedRDFormatException {
-		String[] categoryList = new String[1];
-		categoryList[0] = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
-		String query = discoveryQueryBuilder
-				.getDiscoverQuery2Args(categoryList);
 		String expected = replaceNewline(readFile("/getDiscoverQuery2ArgsTestResult"));
-		//TODO make correct assertion test
-		//Assert.assertEquals(replaceNewline(query), expected);
+		String[] categoryList = new String[1];
+		String query = null;
+
+		//pass
+		categoryList[0] = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
+		query = discoveryQueryBuilder.getDiscoverQuery2Args(categoryList);
+		assertEquals(replaceNewline(query), expected);
+		
+		//fail
+		categoryList[0] = "http://msee.sti2.at/categories#FAIL";
+		query = discoveryQueryBuilder.getDiscoverQuery2Args(categoryList);
+		assertNotEquals(replaceNewline(query), expected);
+	}
+	
+	@Test
+	public void testGetAllCategoriesQuery() throws IOException {
+		String query = discoveryQueryBuilder.getAllCategoriesQuery();
+		String expected = replaceNewline(readFile("/getAllCategoriesQuery"));
+		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
+	@Deprecated
 	public void testGetDiscoverQuery4Args() throws URISyntaxException,
 			FileNotFoundException, IOException, QueryEvaluationException,
 			RepositoryException, MalformedQueryException, RDFHandlerException,
@@ -77,6 +93,7 @@ public class DiscoveryQueryBuilderTest {
 	}
 
 	@Test
+	@Deprecated
 	public void testGetLookupQuery() throws URISyntaxException, IOException {
 		URI namespace = new URI("http://www.sti2.at/MSEE/");
 		String operationName = "getData";
@@ -88,6 +105,7 @@ public class DiscoveryQueryBuilderTest {
 	}
 
 	@Test
+	@Deprecated
 	public void testGetIServeModelQuery() throws URISyntaxException,
 			IOException, QueryEvaluationException, RepositoryException,
 			MalformedQueryException, RDFHandlerException,
@@ -106,13 +124,6 @@ public class DiscoveryQueryBuilderTest {
 		String query = discoveryQueryBuilder.getServiceCount(serviceID);
 		String expected = replaceNewline(readFile("/getServiceCountQueryTestResult"));
 		Assert.assertEquals(replaceNewline(query), expected);
-	}
-
-	@Test
-	public void testGetAllCategoriesQuery() throws IOException {
-		String query = discoveryQueryBuilder.getAllCategoriesQuery();
-		String expected = replaceNewline(readFile("/getAllCategoriesQuery"));
-		//Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	// @Test
@@ -139,7 +150,7 @@ public class DiscoveryQueryBuilderTest {
 	 * @return
 	 */
 	private static String replaceNewline(String origin) {
-		return origin.replaceAll("\\r\\n|\\r|\\n", "");
+		return origin.replaceAll("\\r\\n|\\r|\\n|\\t", "");
 	}
 
 }

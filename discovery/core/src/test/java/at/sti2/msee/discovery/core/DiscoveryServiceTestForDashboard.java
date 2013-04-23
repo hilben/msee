@@ -25,12 +25,12 @@ public class DiscoveryServiceTestForDashboard {
 
 		String category1 = "http://msee.sti2.at/categories#business";
 		String[] categories = { category1 };
+		@SuppressWarnings("unused")
 		String result = null;
 		try {
 			result = discovery.discover(categories);
 		} catch (DiscoveryException e) {
 			e.printStackTrace();
 		}
-		//System.out.println(result);
 	}
 }
