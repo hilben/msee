@@ -57,8 +57,8 @@ import old.at.sti2.wsmf.api.data.qos.QoSParamKey;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import at.sti2.wsmf.core.PersistentHandler;
-import at.sti2.wsmf.core.data.qos.QoSParamAtTime;
+import at.sti2.monitoring.core.PersistentHandler;
+import at.sti2.monitoring.core.data.qos.QoSParamAtTime;
 import at.sti2.wsmf.ws.json.chartcore.ChartColumnDataTableEntry;
 import at.sti2.wsmf.ws.json.chartcore.GoogleChartJSONDataTableCreator;
 

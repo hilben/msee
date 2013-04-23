@@ -5,6 +5,6 @@ package at.sti2.msee.monitoring.api;
  *
  * class to identify monitored instances
  */
-public class MonitoredIntace {
+public class MonitoredInstance {
 
 }
