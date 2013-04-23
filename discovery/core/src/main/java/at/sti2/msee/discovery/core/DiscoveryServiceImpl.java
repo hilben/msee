@@ -42,6 +42,12 @@ public class DiscoveryServiceImpl implements Discovery {
 	private ServiceRepository serviceRepository = null;
 	private DiscoveryQueryBuilder discoveryQueryBuilder = null;
 
+	/**
+	 * The constructor takes the service repository as argument, which can not
+	 * be NULL.
+	 * 
+	 * @param serviceRepository
+	 */
 	public DiscoveryServiceImpl(ServiceRepository serviceRepository) {
 		if (serviceRepository == null) {
 			throw new IllegalArgumentException(
@@ -100,7 +106,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	}
 
 	/**
-	 * This method converts the RDF statements called through an interator into
+	 * This method converts the RDF statements called through an iterator into
 	 * rdf/xml format.
 	 * 
 	 * @param results
