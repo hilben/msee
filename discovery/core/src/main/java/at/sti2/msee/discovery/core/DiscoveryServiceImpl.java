@@ -44,7 +44,8 @@ public class DiscoveryServiceImpl implements Discovery {
 
 	public DiscoveryServiceImpl(ServiceRepository serviceRepository) {
 		if (serviceRepository == null) {
-			throw new IllegalArgumentException("Service repository cannot be null");
+			throw new IllegalArgumentException(
+					"Service repository cannot be null");
 		}
 		this.serviceRepository = serviceRepository;
 		try {
@@ -73,14 +74,15 @@ public class DiscoveryServiceImpl implements Discovery {
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
 
-		ClosableIterable<Statement> resultTable = rdfModel.sparqlConstruct(query);
+		ClosableIterable<Statement> resultTable = rdfModel
+				.sparqlConstruct(query);
 		ClosableIterator<Statement> results = resultTable.iterator();
 
 		String rdfxml = convertQueryResult2RDFXML(results);
 		rdfModel.close();
 		return rdfxml;
 	}
-	
+
 	/**
 	 * This method discovers all services that belong to a category of the
 	 * argument {@literal categoryList}. It returns the services grouped by the
@@ -88,10 +90,11 @@ public class DiscoveryServiceImpl implements Discovery {
 	 * points out the services as String.
 	 * 
 	 */
-	public Map<String, String>  discoverMap(String[] categoryList) throws DiscoveryException {
+	public Map<String, String> discoverMap(String[] categoryList)
+			throws DiscoveryException {
 		Map<String, String> categoryMap = new HashMap<String, String>();
-		for(String category : categoryList){
-			categoryMap.put(category, discover(new String[]{category}));
+		for (String category : categoryList) {
+			categoryMap.put(category, discover(new String[] { category }));
 		}
 		return categoryMap;
 	}
@@ -112,10 +115,7 @@ public class DiscoveryServiceImpl implements Discovery {
 			rdfxmlWriter.startRDF();
 			while (results.hasNext()) {
 				Statement statement = results.next();
-				Resource s = new BNodeImpl(statement.getSubject().toString());
-				URI p = new URIImpl(statement.getPredicate().toString());
-				Resource o = new BNodeImpl(statement.getObject().toString());
-				rdfxmlWriter.handleStatement(new StatementImpl(s, p, o));
+				rdfxmlWriter.handleStatement(convertStatement(statement));
 			}
 			rdfxmlWriter.endRDF();
 		} catch (RDFHandlerException e) {
@@ -125,6 +125,17 @@ public class DiscoveryServiceImpl implements Discovery {
 			}
 		}
 		return out.toString();
+	}
+	
+	/**
+	 * Converts the given statement of type {@link Statement} (from RDF2GO) into
+	 * {@link StatementImpl} (from openrdf).
+	 */
+	private StatementImpl convertStatement(Statement statement) {
+		Resource s = new BNodeImpl(statement.getSubject().toString());
+		URI p = new URIImpl(statement.getPredicate().toString());
+		Resource o = new BNodeImpl(statement.getObject().toString());
+		return new StatementImpl(s, p, o);
 	}
 
 	/**
@@ -143,6 +154,13 @@ public class DiscoveryServiceImpl implements Discovery {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
+	 * .lang.String[], java.lang.String[], java.lang.String[])
+	 */
 	@Override
 	public String discoverAdvanced(String[] categoryList,
 			String[] inputParamList, String[] outputParamList)
@@ -150,19 +168,34 @@ public class DiscoveryServiceImpl implements Discovery {
 		throw new DiscoveryException("Not yet implemented");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
+	 * java.lang.String)
+	 */
 	@Override
 	public String lookup(String namespace, String operationName)
 			throws DiscoveryException {
 		throw new DiscoveryException("Not yet implemented");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
+	 * .String)
+	 */
 	@Override
 	public String getIServeModel(String serviceID) throws DiscoveryException {
 		throw new DiscoveryException("Not yet implemented");
 	}
 
 	/**
-	 * @return
+	 * Returns the service categories as a String list.
+	 * 
 	 * @throws IOException
 	 */
 	public String[] getServiceCategories() throws IOException {
@@ -183,7 +216,8 @@ public class DiscoveryServiceImpl implements Discovery {
 		LOGGER.debug("Categories: " + Arrays.toString(categories.toArray()));
 
 		// Cast to array
-		String returnArray[] = categories.toArray(new String[categories.size()]);
+		String returnArray[] = categories
+				.toArray(new String[categories.size()]);
 
 		return returnArray;
 	}
