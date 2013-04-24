@@ -16,59 +16,80 @@
  */
 package at.sti2.monitoring.core;
 
+import java.io.IOException;
+import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import at.sti2.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
-/**
+import at.sti2.msee.monitoring.api.MonitoringInvocationState;
+import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
+import at.sti2.msee.monitoring.api.exception.MonitoringException;
+import at.sti2.msee.monitoring.api.qos.QoSParamKey;
 
+/**
  * 
- * @author Benjamin Hiltpolt 
+ * 
+ * @author Benjamin Hiltpolt
  * 
  */
-public class MonitoringComponentImpl implements MonitoringComponent{
+public class MonitoringComponentImpl implements MonitoringComponent {
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
+	private MonitoringConfig configuration;
 
-	@Override
-	public boolean isMonitoredWebService() {
-		// TODO Auto-generated method stub
-		return false;
+	public MonitoringComponentImpl() throws IOException {
+		this.configuration = MonitoringConfig.getConfig();
 	}
 
 	@Override
-	public MonitoringInvocationInstance getInvocationInstance() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isMonitoredWebService(URL WebService)
+			throws MonitoringException {
+		throw new MonitoringException("not implemented");
 	}
 
 	@Override
-	public void enableMonitoring() {
-		// TODO Auto-generated method stub
-		
+	public MonitoringInvocationInstance getInvocationInstance(URL WebService)
+			throws MonitoringException {
+		throw new MonitoringException("not implemented");
 	}
 
 	@Override
-	public void disableMonitoring() {
-		// TODO Auto-generated method stub
-		
+	public void enableMonitoring(URL WebService) throws MonitoringException {
+		throw new MonitoringException("not implemented");
+
 	}
 
 	@Override
-	public void getMonitoringData() {
-		// TODO Auto-generated method stub
-		
+	public void disableMonitoring(URL WebService) throws MonitoringException {
+		throw new MonitoringException("not implemented");
 	}
 
 	@Override
-	public void updateAvailabilityState() {
-		// TODO Auto-generated method stub
-		
+	public void updateAvailabilityState(URL WebService)
+			throws MonitoringException {
+		throw new MonitoringException("not implemented");
 	}
 
+	@Override
+	public MonitoringInvocationState getInvocationInstanceInvocationState(
+			MonitoringInvocationInstance instance) throws MonitoringException {
+		throw new MonitoringException("not implemented");
+	}
 
+	@Override
+	public void getMonitoringData(URL WebService) throws MonitoringException {
+		throw new MonitoringException("not implemented");
+	}
+
+	@Override
+	public MonitoringWSAvailabilityState getAvailabilityState(URL WebService)
+			throws MonitoringException {
+		throw new MonitoringException("not implemented");
+	}
 
 }

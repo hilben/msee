@@ -21,4 +21,11 @@ public class ServiceRepositoryConfiguration {
 		return repositoryId;
 	}
 
+	@Override
+	public String toString() {
+		return "ServiceRepositoryConfiguration [serverEndpoint="
+				+ serverEndpoint + ", repositoryId=" + repositoryId
+				+ "]";
+	}
+
 }

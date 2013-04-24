@@ -80,6 +80,14 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		List<URI> services = ModelQueryHelper.findServices(msmModel);
 		return services.get(0).toString();
 	}
+	
+	public void insertModel(Model model, URI contextURI) {
+		Model repositoryModel = new RepositoryModel(contextURI, repository);
+		repositoryModel.open();
+		repositoryModel.addModel(model);		
+		this.fillNamespaces(repositoryModel);
+		repositoryModel.close();
+	}
 
 	private void fillNamespaces(Model repositoryModel) {
 		repositoryModel.setNamespace("msm", "http://cms-wg.sti2.org/ns/minimal-service-model#");

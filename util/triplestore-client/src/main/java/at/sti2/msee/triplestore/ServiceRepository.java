@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
 import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.node.URI;
 import org.openrdf.repository.RepositoryException;
 
 public interface ServiceRepository {
@@ -16,6 +17,8 @@ public interface ServiceRepository {
 	void shutdown() throws RepositoryException;
 	void clear();
 
+	void insertModel(Model model, URI contextURI); //todo: check
+	
 	Model getModel();
 	Model getModel(String contextURI);
 	

@@ -1,17 +1,17 @@
 package at.sti2.msee.monitoring.api;
 
-import at.sti2.msee.monitoring.api.exception.MonitoringInvocationInstanceException;
+import at.sti2.msee.monitoring.api.exception.MonitoringException;
 
 public interface MonitoringInvocationInstance {
 
 	public void updateInvocationState(MonitoringInvocationState state)
-			throws MonitoringInvocationInstanceException;
+			throws MonitoringException;
 
 	public void updateAndCloseSuccessfullInvocation(double payloadSizeResponse,
 			double payloadSizeRequest, double responseTime)
-			throws MonitoringInvocationInstanceException;
+			throws MonitoringException;
 
 	public void updateAndCloseUnsuccessfullInvocation()
-			throws MonitoringInvocationInstanceException;
+			throws MonitoringException;
 
 }
