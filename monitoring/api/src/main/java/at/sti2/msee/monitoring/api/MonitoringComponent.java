@@ -14,8 +14,7 @@ public interface MonitoringComponent {
 	public boolean isMonitoredWebService(URL WebService) throws MonitoringException;
 
 	/**
-	 * Returns an invocation instance generated for the web service. Returns
-	 * null if no such webservice is monitored
+	 * Returns an invocation instance generated for a web service. 
 	 * 
 	 * @return
 	 */

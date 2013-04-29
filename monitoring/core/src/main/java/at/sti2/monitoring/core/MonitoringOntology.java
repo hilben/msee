@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,13 +11,10 @@ import org.apache.logging.log4j.Logger;
 import at.sti2.monitoring.core.common.MonitoringConfig;
 
 import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.ObjectProperty;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.vocabulary.XSD;
@@ -45,7 +41,7 @@ public class MonitoringOntology {
 	/*
 	 * Object properties
 	 */
-	public static final String hasInvocationInstance ="hasInvocationInstance";
+	public static final String hasInvocationInstance = "hasInvocationInstance";
 	public static final String hasInvocationState = "hasInvocationState";
 	public static final String hasCurrentInvocationState = "hasCurrentInvocationState";
 
@@ -166,7 +162,7 @@ public class MonitoringOntology {
 
 		hasInvocationInstance.addDomain(MonitoredWebservice);
 		hasInvocationInstance.addRange(InvocationInstance);
-		
+
 		hasInvocationState.addDomain(InvocationInstance);
 		hasInvocationState.addRange(InvocationState);
 		// hasInvocationState.addLabel("has Invocationstate", "en");

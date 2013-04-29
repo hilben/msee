@@ -2,10 +2,6 @@ package at.sti2.monitoring.core;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.UUID;
-
-import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 
