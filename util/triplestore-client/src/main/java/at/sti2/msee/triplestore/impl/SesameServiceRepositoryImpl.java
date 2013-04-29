@@ -8,6 +8,10 @@ import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.node.URI;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.Update;
+import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rdf2go.RepositoryModel;
 import org.openrdf.rdf2go.RepositoryModelFactory;
@@ -138,5 +142,21 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		URI contextURI = model.createURI(context);
 		model.close();
 		return contextURI;
+	}
+	
+	/**
+	 * TODO: added because not supported in rdf2go
+	 * @throws RepositoryException
+	 * @throws MalformedQueryException 
+	 * @throws UpdateExecutionException 
+	 */
+	public void performSPARQLUpdate(String updateQuery) throws RepositoryException, MalformedQueryException, UpdateExecutionException {
+		RepositoryConnection c = this.repository.getConnection();
+		Update update = c.prepareUpdate(QueryLanguage.SPARQL, updateQuery);
+		
+		update.execute();
+		
+		c.close();
+	
 	}
 }

@@ -1,10 +1,14 @@
 package at.sti2.monitoring.core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,20 +17,25 @@ import at.sti2.msee.monitoring.api.exception.MonitoringException;
 
 public class MonitoringComponentImplTest {
 
+	private final Logger LOGGER = LogManager.getLogger(this.getClass()
+			.getName());
+	
 	private MonitoringComponent component;
-	
+
 	private String testServiceURL = "http://www.example.com/testwebservice";
-	
+
 	private URL testService = null;
-	
+
 	@Before
 	public void setUp() throws Exception {
+		System.out.println("before");
+		
 		component = new MonitoringComponentImpl();
 		testService = new URL(testServiceURL);
-		
+
 		assertNotNull(component);
 		assertNotNull(testService);
-		
+
 		component.enableMonitoring(testService);
 	}
 
@@ -52,7 +61,12 @@ public class MonitoringComponentImplTest {
 
 	@Test
 	public void testDisableMonitoring() {
-		fail("Not yet implemented");
+		try {
+			component.disableMonitoring(testService);
+			assertFalse(component.isMonitoredWebService(testService));
+		} catch (MonitoringException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test

@@ -1,47 +1,36 @@
 package at.sti2.monitoring.core;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ontoware.aifbcommons.collection.ClosableIterable;
 import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.QueryResultTable;
 import org.ontoware.rdf2go.model.QueryRow;
-import org.ontoware.rdf2go.model.Statement;
 import org.ontoware.rdf2go.model.node.URI;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
-
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
 
 import at.sti2.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.triplestore.ServiceRepository;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 import at.sti2.msee.triplestore.ServiceRepositoryFactory;
+import at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl;
 
 public class MonitoringRepositoryHandler {
 
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
-	private ServiceRepository serviceRepository = null;
+	private SesameServiceRepositoryImpl serviceRepository = null;
 
 	private MonitoringOntology ontology = null;
 	private MonitoringConfig config = null;
-	private String ns = null;
-
 	private static MonitoringRepositoryHandler handler = null;
 
 	public static MonitoringRepositoryHandler getMonitoringRepositoryHandler()
@@ -58,67 +47,101 @@ public class MonitoringRepositoryHandler {
 		ServiceRepositoryConfiguration repositoryConfig = new ServiceRepositoryConfiguration();
 
 		this.config = MonitoringConfig.getConfig();
-		ns = this.config.getInstancePrefix();
+		this.config.getInstancePrefix();
 
 		repositoryConfig.setServerEndpoint(config.getTriplestoreEndpoint());
 		repositoryConfig.setRepositoryID(config.getTriplestoreReposID());
 
-		this.serviceRepository = ServiceRepositoryFactory
+		ServiceRepository sr = ServiceRepositoryFactory
 				.newInstance(repositoryConfig);
+		if (sr instanceof SesameServiceRepositoryImpl) {
+			this.serviceRepository = (SesameServiceRepositoryImpl) sr;
+		} else {
+			throw new RepositoryException(
+					"Monitoring component only supports SesameServiceRepositoryImpl");
+		}
+
 		this.serviceRepository.init();
 
 		this.ontology = MonitoringOntology.getMonitoringOntology();
+
+		this.init();
 	}
 
-	public void setMonitoredWebservice(URL url, boolean monitored)
-			throws IOException {
+	private void init() throws IOException {
 		Model m = RDF2Go.getModelFactory().createModel();
 		m.open();
-		URI webserviceURI = m.createURI(url.toExternalForm());
 
-		String rdf = this.ontology.getTriplesForWebService(url, monitored);
+		URI ns = m.createURI(this.ontology.NS);
+		String rdf = this.ontology.getOntologyAsRDFXML();
 
 		m.readFrom(new ByteArrayInputStream(rdf.getBytes()));
 
-		this.serviceRepository.insertModel(m, webserviceURI);
+		this.serviceRepository.insertModel(m, ns);
 
 		m.close();
 	}
 
-	// public String[] getServiceCategories() throws IOException {
-	//
-	// String query = "somequery";
-	//
-	// Model rdfModel = serviceRepository.getModel();
-	// rdfModel.open();
-	//
-	// ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
-	// ClosableIterator<QueryRow> results = resultTable.iterator();
-	//
-	// LOGGER.debug("Querying all categories via");
-	// LOGGER.debug(query);
-	//
-	// ArrayList<String> categories = new ArrayList<String>();
-	//
-	// while (results.hasNext()) {
-	// QueryRow nextElement = results.next();
-	// String category = nextElement.getValue("category").toString();
-	// categories.add(category);
-	// LOGGER.debug("Category : " + category);
-	// }
-	//
-	// // Cast to array
-	// String returnArray[] = new String[categories.size()];
-	// int i = 0;
-	// for (String c : categories) {
-	// returnArray[i] = c;
-	// i++;
-	// }
-	//
-	// return returnArray;
-	// }
+	public void clearAllContentForWebservice(URL url) throws IOException,
+			RepositoryException, MalformedQueryException,
+			UpdateExecutionException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
 
-	public ServiceRepository getServiceRepository() {
-		return serviceRepository;
+		String query = MonitoringQueries.removeMonitoredWebserviceAndData(url);
+
+		this.serviceRepository.performSPARQLUpdate(query);
+
+		LOGGER.debug("QUERY: " + query);
+
+		m.close();
 	}
+
+	public void enableMonitoringForWebservice(URL url, boolean monitored)
+			throws IOException, RepositoryException, MalformedQueryException,
+			UpdateExecutionException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		String query = MonitoringQueries.insertMonitoredWebservice(url,
+				monitored);
+
+		this.serviceRepository.performSPARQLUpdate(query);
+
+		LOGGER.debug("QUERY: " + query);
+
+		m.close();
+	}
+
+	public boolean isMonitored(URL url) throws IOException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		String query = MonitoringQueries
+				.getIsWebServiceMonitoredSPARQLQuery(url);
+
+		LOGGER.debug("QUERY: " + query);
+
+		QueryResultTable t = m.sparqlSelect(query);
+
+		LOGGER.debug("result vars: " + t.getVariables());
+
+		ClosableIterator<QueryRow> res = t.iterator();
+
+		String result = null;
+		if (res.hasNext()) {
+			result = res.next().getLiteralValue(t.getVariables().get(0));
+		}
+
+		LOGGER.debug("results: " + result);
+
+		m.close();
+		return Boolean.parseBoolean(result);
+	}
+
+	public SesameServiceRepositoryImpl getServiceRepository() {
+
+		return (SesameServiceRepositoryImpl) serviceRepository;
+	}
+
 }

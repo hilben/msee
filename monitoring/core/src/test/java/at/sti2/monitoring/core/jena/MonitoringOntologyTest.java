@@ -62,20 +62,20 @@ public class MonitoringOntologyTest extends TestCase {
 	}
 	
 
-	@Test
-	public void testCreateWebservice() throws IOException {
-
-		OntModel m = this.ontology.getOntology();
-		DatatypeProperty data = m.getDatatypeProperty(ns + "hasURL");
-		System.out.println(ns);
-		OntClass c = m.getOntClass(ns + "MonitoredWebservice");
-
-		for (int i = 0; i < 100; i++) {
-			Individual curi = c.createIndividual(ns + UUID.randomUUID());
-			curi.addProperty(data, "http://someadress.com/asdf");
-		}
-
-		this.ontology.storeToFile(storeLocation + "2");
-	}
+//	@Test
+//	public void testCreateWebservice() throws IOException {
+//
+//		OntModel m = this.ontology.getOntology();
+//		DatatypeProperty data = m.getDatatypeProperty(ns + "hasURL");
+//		System.out.println(ns);
+//		OntClass c = m.getOntClass(ns + "MonitoredWebservice");
+//
+//		for (int i = 0; i < 100; i++) {
+//			Individual curi = c.createIndividual(ns + UUID.randomUUID());
+//			curi.addProperty(data, "http://someadress.com/asdf");
+//		}
+//
+//		this.ontology.storeToFile(storeLocation + "2");
+//	}
 
 }

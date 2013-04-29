@@ -1,14 +1,17 @@
 package at.sti2.msee.monitoring.api.qos;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class QoSParameter {
 	private QoSParamKey key;
-	private QoSUnit unit;
-	private String value;
-	
-	public QoSParameter(QoSParamKey key, QoSUnit unit, String value) {
+	private SimpleDateFormat time = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ssZ");;
+	String value;
+
+	public QoSParameter(QoSParamKey key, String value, Date time) {
 		super();
 		this.key = key;
-		this.unit = unit;
 		this.value = value;
 	}
 
@@ -20,14 +23,6 @@ public class QoSParameter {
 		this.key = key;
 	}
 
-	public QoSUnit getUnit() {
-		return unit;
-	}
-
-	public void setUnit(QoSUnit unit) {
-		this.unit = unit;
-	}
-
 	public String getValue() {
 		return value;
 	}
@@ -35,7 +30,24 @@ public class QoSParameter {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
+	public SimpleDateFormat getTime() {
+		return time;
+	}
+
+	public void setTime(SimpleDateFormat time) {
+		this.time = time;
+	}
+
+	/**
+	 * TODO: where to put this
+	 * 
+	 * @return The dateTime in xsd format with timezone.
+	 */
+	public static String getXSDDateTime() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ssZ");
+		return simpleDateFormat.format(new Date());
+	}
 
 }

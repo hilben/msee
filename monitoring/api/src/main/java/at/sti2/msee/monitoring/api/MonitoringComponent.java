@@ -34,7 +34,9 @@ public interface MonitoringComponent {
 	public void updateAvailabilityState(URL WebService)
 			throws MonitoringException;
 
-	public MonitoringWSAvailabilityState getAvailabilityState(URL WebService)
+	public MonitoringWSAvailabilityState getAvailabilityState(URL webService)
 			throws MonitoringException;
+	
+	public void clearAllContentOfWebservice(URL webService) throws MonitoringException; 
 
 }

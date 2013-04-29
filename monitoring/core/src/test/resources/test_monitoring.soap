@@ -1,8 +1,0 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tes="http://testws.monitoring.ngsee.sti2.at/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <tes:getBigAnswer>
-         <inputString>a</inputString>
-      </tes:getBigAnswer>
-   </soapenv:Body>
-</soapenv:Envelope>

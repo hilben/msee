@@ -28,7 +28,7 @@ public class MonitoringOntology {
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
-	private String NS = "";
+	public String NS = "";
 	private OntModel m;
 	private static MonitoringOntology monitoringOntology = null;
 
@@ -39,16 +39,19 @@ public class MonitoringOntology {
 	public static final String InvocationState = "InvocationState";
 	public static final String AvailabilityState = "AvailabilityState";
 	public static final String QoSParameter = "QoSParameter";
+	public static final String QoSParameterType ="QoSParameterType";
 
 	/*
 	 * Object properties
 	 */
 	public static final String hasInvocationState = "hasInvocationState";
-	public static final String hasCurrentQoSParameter = "hasQoSParameter";
-	public static final String hasAvailabilityState = "hasAvailabilityState";
-
-	public static final String hasCurrentInvocationState = "hasInvocationState";
+	public static final String hasCurrentInvocationState = "hasCurrentInvocationState";
+	
 	public static final String hasQoSParameter = "hasQoSParameter";
+	public static final String hasCurrentQoSParameter = "hasQoSParameter";
+	
+	public static final String hasAvailabilityState = "hasAvailabilityState";
+	public static final String hasCurrentAvailabilityState = "hasCurrentAvailabilityState";
 
 	/*
 	 * Datatype properties
@@ -131,6 +134,7 @@ public class MonitoringOntology {
 	private void init() {
 		m.setNsPrefix("ns", NS);
 		
+		//Classes
 		OntClass MonitoredWebservice = m.createClass(NS
 				+ MonitoringOntology.MonitoredWebservice);
 		OntClass InvocationState = m.createClass(NS
@@ -139,7 +143,9 @@ public class MonitoringOntology {
 				+ MonitoringOntology.AvailabilityState);
 		OntClass QoSParameter = m.createClass(NS
 				+ MonitoringOntology.QoSParameter);
-
+		OntClass QoSParameterType = m.createClass(NS
+				+ MonitoringOntology.QoSParameterType);
+		
 		ObjectProperty hasInvocationState = m.createObjectProperty(NS
 				+ MonitoringOntology.hasInvocationState);
 		ObjectProperty hasAvailabilityState = m.createObjectProperty(NS
@@ -150,7 +156,7 @@ public class MonitoringOntology {
 		ObjectProperty hasCurrentInvocationState = m.createObjectProperty(NS
 				+ MonitoringOntology.hasCurrentInvocationState);
 		ObjectProperty hasCurrentAvailabilityState = m.createObjectProperty(NS
-				+ MonitoringOntology.hasQoSType);
+				+ MonitoringOntology.hasCurrentAvailabilityState);
 		ObjectProperty hasCurrentQoSParameter = m.createObjectProperty(NS
 				+ MonitoringOntology.hasCurrentQoSParameter);
 
@@ -203,23 +209,7 @@ public class MonitoringOntology {
 		DatatypeProperty hasQoSUnit = m.createDatatypeProperty(NS
 				+ MonitoringOntology.hasQoSUnit);
 		hasQoSUnit.addRange(XSD.xstring);
-		hasQoSUnit.addDomain(QoSParameter);
-	}
-
-	public String getTriplesForWebService(URL url, boolean monitored) throws IOException {
-		
-		OntModel m = this.getOntology();
-		
-		OntClass c = m.getOntClass(NS+MonitoringOntology.MonitoredWebservice);
-		Individual webservice = c.createIndividual(url.toExternalForm());
-		
-		OntProperty hasURL = m.getOntProperty(NS+MonitoringOntology.hasURL);
-		OntProperty isCurrentlyMonitored = m.getOntProperty(NS+MonitoringOntology.isCurrentlyMonitored); 
-		
-		webservice.addProperty(hasURL, url.toExternalForm());
-		webservice.addProperty(isCurrentlyMonitored, String.valueOf(monitored));
-		
-		return this.getOntologyModelAsRDFXML(m);
+		hasQoSUnit.addDomain(QoSParameterType);
 	}
 
 }
