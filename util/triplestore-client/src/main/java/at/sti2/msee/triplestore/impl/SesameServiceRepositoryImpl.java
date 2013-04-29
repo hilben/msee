@@ -36,6 +36,9 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 
 	@Override
 	public void init() throws RepositoryException {
+		if(this.repository!=null){
+			return; // repository already initialized
+		}
 		RDF2Go.register(new RepositoryModelFactory());
 
 		if (configuration.getServerEndpoint() == null)

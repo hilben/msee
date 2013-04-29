@@ -3,8 +3,11 @@ package at.sti2.msee.registration.core;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
+import org.apache.log4j.Logger;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
+import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.model.ServiceModelFormat;
 import at.sti2.msee.model.ServiceModelFormatDetector;
@@ -18,11 +21,17 @@ import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.triplestore.ServiceRepository;
 
 public class ServiceRegistrationImpl implements ServiceRegistration {
+	Logger LOGGER = Logger.getLogger(this.getClass().getCanonicalName());
 
 	private ServiceRepository serviceRepository = null;
 			
 	public ServiceRegistrationImpl(ServiceRepository serviceRepository) {
 		this.serviceRepository = serviceRepository;
+		try {
+			this.serviceRepository.init();
+		} catch (RepositoryException e) {
+			LOGGER.error(e.getMessage() + Arrays.toString(e.getStackTrace()));
+		}
 	}
 	
 	@Override
