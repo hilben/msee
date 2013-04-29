@@ -18,6 +18,9 @@ package at.sti2.monitoring.core;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,9 +70,62 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 	}
 
 	@Override
-	public MonitoringInvocationInstance getInvocationInstance(URL WebService)
+	public MonitoringInvocationInstance createInvocationInstance(URL WebService)
 			throws MonitoringException {
-		throw new MonitoringException("not implemented");
+		MonitoringInvocationInstance instance = new MonitoringInvocationInstanceImpl(
+				WebService, this);
+
+		UUID invocationStateID = UUID.randomUUID();
+		String invocationStateIDstr = invocationStateID.toString();
+
+		String invocationInstanceIDstr = instance.getUUID().toString();
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ssZ");
+
+		String time = simpleDateFormat.format(new Date());
+		String state = instance.getState().toString();
+
+		try {
+			this.repositoryHandler.updateInvocationInstanceState(WebService,
+					invocationInstanceIDstr, invocationStateIDstr, state, time);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e) {
+			LOGGER.error("Error creating Invocation Instance"
+					+ e.getLocalizedMessage());
+			throw new MonitoringException(
+					"Error creating Invocation Instance ", e);
+		}
+
+		return instance;
+	}
+
+	@Override
+	public void updateInvocationInstance(MonitoringInvocationInstance instance)
+			throws MonitoringException {
+
+		UUID invocationStateID = UUID.randomUUID();
+		String invocationStateIDstr = invocationStateID.toString();
+
+		String invocationInstanceIDstr = instance.getUUID().toString();
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ssZ");
+
+		String time = simpleDateFormat.format(new Date());
+		String state = instance.getState().toString();
+
+		try {
+			this.repositoryHandler.updateInvocationInstanceState(
+					instance.getWebService(), invocationInstanceIDstr,
+					invocationStateIDstr, state, time);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e) {
+			LOGGER.error("Error creating Invocation Instance"
+					+ e.getLocalizedMessage());
+			throw new MonitoringException(
+					"Error creating Invocation Instance ", e);
+		}
 	}
 
 	@Override
@@ -103,9 +159,14 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 	}
 
 	@Override
-	public MonitoringInvocationState getInvocationInstanceInvocationState(
-			MonitoringInvocationInstance instance) throws MonitoringException {
-		throw new MonitoringException("not implemented");
+	public MonitoringInvocationInstance getInvocationInstance(
+			String UUID) throws MonitoringException {
+		try {
+			return this.repositoryHandler.getInvocationInstance(UUID, this);
+		} catch (IOException e) {
+			LOGGER.error("Error getting invocation instance: " + e.getLocalizedMessage());
+			throw new MonitoringException("Error getting invocation instance: ", e);
+		}
 	}
 
 	@Override
@@ -120,7 +181,8 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 	}
 
 	@Override
-	public void clearAllContentOfWebservice(URL webService) throws MonitoringException {
+	public void clearAllContentOfWebservice(URL webService)
+			throws MonitoringException {
 		try {
 			this.repositoryHandler.clearAllContentForWebservice(webService);
 		} catch (RepositoryException | MalformedQueryException

@@ -1,5 +1,8 @@
 package at.sti2.msee.monitoring.api;
 
+import java.net.URL;
+import java.util.UUID;
+
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 
 public interface MonitoringInvocationInstance {
@@ -13,5 +16,13 @@ public interface MonitoringInvocationInstance {
 
 	public void updateAndCloseUnsuccessfullInvocation()
 			throws MonitoringException;
+	
+	public URL getWebService();
+	
+	public UUID getUUID();
+	
+	public MonitoringInvocationState getState();
+	
+	public void setState(MonitoringInvocationState state) throws MonitoringException;
 
 }

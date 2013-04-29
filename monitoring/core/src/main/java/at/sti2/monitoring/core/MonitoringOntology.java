@@ -37,19 +37,21 @@ public class MonitoringOntology {
 	 */
 	public static final String MonitoredWebservice = "MonitoredWebservice";
 	public static final String InvocationState = "InvocationState";
+	public static final String InvocationInstance = "InvocationInstance";
 	public static final String AvailabilityState = "AvailabilityState";
 	public static final String QoSParameter = "QoSParameter";
-	public static final String QoSParameterType ="QoSParameterType";
+	public static final String QoSParameterType = "QoSParameterType";
 
 	/*
 	 * Object properties
 	 */
+	public static final String hasInvocationInstance ="hasInvocationInstance";
 	public static final String hasInvocationState = "hasInvocationState";
 	public static final String hasCurrentInvocationState = "hasCurrentInvocationState";
-	
+
 	public static final String hasQoSParameter = "hasQoSParameter";
 	public static final String hasCurrentQoSParameter = "hasQoSParameter";
-	
+
 	public static final String hasAvailabilityState = "hasAvailabilityState";
 	public static final String hasCurrentAvailabilityState = "hasCurrentAvailabilityState";
 
@@ -79,7 +81,7 @@ public class MonitoringOntology {
 	}
 
 	public OntModel getOntology() {
-		//Return a copy of the ontology
+		// Return a copy of the ontology
 		OntModel ret = ModelFactory.createOntologyModel();
 		ret.add(m);
 		return ret;
@@ -102,50 +104,52 @@ public class MonitoringOntology {
 	}
 
 	public String getOntologyAsRDFXML() throws IOException {
-		
+
 		RDFWriter writer = m.getWriter("RDF/XML");
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		writer.write(m, out, null);
 		out.close();
-		
 
 		String rdf = out.toString();
-		
+
 		return rdf;
 	}
-	
+
 	public String getOntologyModelAsRDFXML(OntModel model) throws IOException {
 		RDFWriter writer = model.getWriter("RDF/XML");
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		writer.write(model, out, null);
 		out.close();
-		
 
 		String rdf = out.toString();
-		
+
 		return rdf;
 	}
-	
+
 	/**
 	 * Set up the ontology for the monitoring component
 	 */
 	private void init() {
 		m.setNsPrefix("ns", NS);
-		
-		//Classes
+
+		// Classes
 		OntClass MonitoredWebservice = m.createClass(NS
 				+ MonitoringOntology.MonitoredWebservice);
 		OntClass InvocationState = m.createClass(NS
 				+ MonitoringOntology.InvocationState);
+		OntClass InvocationInstance = m.createClass(NS
+				+ MonitoringOntology.InvocationInstance);
 		OntClass AvailabilityState = m.createClass(NS
 				+ MonitoringOntology.AvailabilityState);
 		OntClass QoSParameter = m.createClass(NS
 				+ MonitoringOntology.QoSParameter);
 		OntClass QoSParameterType = m.createClass(NS
 				+ MonitoringOntology.QoSParameterType);
-		
+
+		ObjectProperty hasInvocationInstance = m.createObjectProperty(NS
+				+ MonitoringOntology.hasInvocationInstance);
 		ObjectProperty hasInvocationState = m.createObjectProperty(NS
 				+ MonitoringOntology.hasInvocationState);
 		ObjectProperty hasAvailabilityState = m.createObjectProperty(NS
@@ -160,7 +164,10 @@ public class MonitoringOntology {
 		ObjectProperty hasCurrentQoSParameter = m.createObjectProperty(NS
 				+ MonitoringOntology.hasCurrentQoSParameter);
 
-		hasInvocationState.addDomain(MonitoredWebservice);
+		hasInvocationInstance.addDomain(MonitoredWebservice);
+		hasInvocationInstance.addRange(InvocationInstance);
+		
+		hasInvocationState.addDomain(InvocationInstance);
 		hasInvocationState.addRange(InvocationState);
 		// hasInvocationState.addLabel("has Invocationstate", "en");
 
@@ -172,7 +179,7 @@ public class MonitoringOntology {
 		hasQoSParameter.addRange(QoSParameter);
 		// hasQoSParameter.addLabel("has QoSParameter", "en");
 
-		hasCurrentInvocationState.addDomain(MonitoredWebservice);
+		hasCurrentInvocationState.addDomain(InvocationInstance);
 		hasCurrentInvocationState.addRange(InvocationState);
 		// hasCurrentInvocationState.addLabel("has current Invocationstate",
 		// "en");
@@ -194,7 +201,8 @@ public class MonitoringOntology {
 				+ MonitoringOntology.hasStateName);
 		hasStateName.addRange(XSD.xstring);
 
-		DatatypeProperty hasURL = m.createDatatypeProperty(NS + MonitoringOntology.hasURL);
+		DatatypeProperty hasURL = m.createDatatypeProperty(NS
+				+ MonitoringOntology.hasURL);
 		hasURL.addRange(XSD.QName);
 
 		DatatypeProperty isCurrentlyMonitored = m.createDatatypeProperty(NS

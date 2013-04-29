@@ -19,24 +19,29 @@ public interface MonitoringComponent {
 	 * 
 	 * @return
 	 */
-	public MonitoringInvocationInstance getInvocationInstance(URL WebService)
+	public MonitoringInvocationInstance createInvocationInstance(URL WebService)
 			throws MonitoringException;
 
-	public MonitoringInvocationState getInvocationInstanceInvocationState(
-			MonitoringInvocationInstance instance) throws MonitoringException;
+	public MonitoringInvocationInstance getInvocationInstance(
+			String UUID) throws MonitoringException;
+	
+	void updateInvocationInstance(MonitoringInvocationInstance instance)
+			throws MonitoringException; 
 
 	public void enableMonitoring(URL WebService) throws MonitoringException;
 
 	public void disableMonitoring(URL WebService) throws MonitoringException;
 
 	public void getMonitoringData(URL WebService) throws MonitoringException;
-
+	
 	public void updateAvailabilityState(URL WebService)
 			throws MonitoringException;
 
 	public MonitoringWSAvailabilityState getAvailabilityState(URL webService)
 			throws MonitoringException;
 	
-	public void clearAllContentOfWebservice(URL webService) throws MonitoringException; 
+	public void clearAllContentOfWebservice(URL webService) throws MonitoringException;
+
+
 
 }

@@ -17,6 +17,9 @@ import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.monitoring.core.common.MonitoringConfig;
+import at.sti2.msee.monitoring.api.MonitoringComponent;
+import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
+import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.triplestore.ServiceRepository;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 import at.sti2.msee.triplestore.ServiceRepositoryFactory;
@@ -46,6 +49,8 @@ public class MonitoringRepositoryHandler {
 			RepositoryException {
 		ServiceRepositoryConfiguration repositoryConfig = new ServiceRepositoryConfiguration();
 
+		this.ontology = MonitoringOntology.getMonitoringOntology();
+
 		this.config = MonitoringConfig.getConfig();
 		this.config.getInstancePrefix();
 
@@ -62,8 +67,6 @@ public class MonitoringRepositoryHandler {
 		}
 
 		this.serviceRepository.init();
-
-		this.ontology = MonitoringOntology.getMonitoringOntology();
 
 		this.init();
 	}
@@ -94,6 +97,23 @@ public class MonitoringRepositoryHandler {
 
 		LOGGER.debug("QUERY: " + query);
 
+		m.close();
+	}
+
+	public void updateInvocationInstanceState(URL webService,
+			String invocationInstanceID, String invocationStateID,
+			String statename, String time) throws IOException,
+			RepositoryException, MalformedQueryException,
+			UpdateExecutionException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		String query = MonitoringQueries.setInvocationInstanceState(webService,
+				invocationInstanceID, invocationStateID, statename, time);
+
+		this.serviceRepository.performSPARQLUpdate(query);
+
+		LOGGER.debug("QUERY: " + query);
 		m.close();
 	}
 
@@ -144,4 +164,45 @@ public class MonitoringRepositoryHandler {
 		return (SesameServiceRepositoryImpl) serviceRepository;
 	}
 
+	//TODO: refactor
+	public MonitoringInvocationInstance getInvocationInstance(String UUID,
+			MonitoringComponent component) throws IOException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		String query = MonitoringQueries.getInvocationInstance(UUID);
+
+		LOGGER.debug("QUERY: " + query);
+
+		QueryResultTable t = m.sparqlSelect(query);
+
+		LOGGER.debug("result vars: " + t.getVariables());
+
+		ClosableIterator<QueryRow> res = t.iterator();
+
+		String currentstate = null;
+		String time = null;
+		String webservice = null;
+
+		String result = null;
+		if (res.hasNext()) {
+			QueryRow qr = res.next();
+
+			currentstate = qr.getLiteralValue("statename");
+			time = qr.getLiteralValue("time");
+			webservice = qr.getValue("webservice").asURI().toString();
+
+			System.out.println("READ OUT OF DB: " + currentstate + " " + time
+					+ " " + webservice);
+		}
+
+		LOGGER.debug("results: " + result);
+
+		m.close();
+
+		MonitoringInvocationState s = MonitoringInvocationState
+				.valueOf(currentstate);
+
+		return new MonitoringInvocationInstanceImpl(new URL(webservice), component, s, UUID);
+	}
 }
