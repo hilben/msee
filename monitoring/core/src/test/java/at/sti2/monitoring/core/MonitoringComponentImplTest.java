@@ -16,9 +16,9 @@ import org.junit.Test;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
-import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStored;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
@@ -71,7 +71,7 @@ public class MonitoringComponentImplTest {
 		} catch (MonitoringException e) {
 			e.printStackTrace();
 			fail();
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			catchNoDataException = true;
 		}
 
@@ -128,8 +128,8 @@ public class MonitoringComponentImplTest {
 
 	@Test
 	public void testUpdateAvailabilityState() {
-		MonitoringWSAvailabilityState state1 = MonitoringWSAvailabilityState.NotChecked;
-		MonitoringWSAvailabilityState state2 = MonitoringWSAvailabilityState.NotChecked;
+		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.NotChecked;
+		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.NotChecked;
 		try {
 			component.updateAvailabilityState(testService1, state1);
 			component.updateAvailabilityState(testService1, state2);
@@ -141,9 +141,9 @@ public class MonitoringComponentImplTest {
 	
 	@Test
 	public void testgetAvailability() {
-		MonitoringWSAvailabilityState state1 = MonitoringWSAvailabilityState.NotChecked;
-		MonitoringWSAvailabilityState state2 = MonitoringWSAvailabilityState.Unavailable;
-		MonitoringWSAvailabilityState state3 = MonitoringWSAvailabilityState.Available;
+		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.NotChecked;
+		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.Unavailable;
+		MonitoringWebserviceAvailabilityState state3 = MonitoringWebserviceAvailabilityState.Available;
 		
 		try {
 			component.updateAvailabilityState(testService1, state1);
@@ -249,7 +249,7 @@ public class MonitoringComponentImplTest {
 			assertTrue(extractDoubleFromParameter(component.getQoSParameter(
 					testService1, QoSType.RequestFailed)) == 4.0);
 
-		} catch (MonitoringException | MonitoringNoDataStored e) {
+		} catch (MonitoringException | MonitoringNoDataStoredException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -285,7 +285,7 @@ public class MonitoringComponentImplTest {
 			assertTrue(respTime.getType() == QoSType.ResponseTime);
 			assertTrue(respTimeAve.getType() == QoSType.ResponseTimeAverage);
 
-		} catch (MonitoringException | MonitoringNoDataStored e) {
+		} catch (MonitoringException | MonitoringNoDataStoredException e) {
 			fail();
 			e.printStackTrace();
 		}

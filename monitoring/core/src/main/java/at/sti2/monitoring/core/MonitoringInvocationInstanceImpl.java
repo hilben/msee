@@ -39,14 +39,14 @@ public class MonitoringInvocationInstanceImpl implements
 	}
 
 	@Override
-	public void updateAndCloseSuccessfullInvocation(double payloadSizeResponse,
+	public void sendSuccessfulInvocation(double payloadSizeResponse,
 			double payloadSizeRequest, double responseTime)
 			throws MonitoringException {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void updateAndCloseUnsuccessfullInvocation()
+	public void sendUnsuccessfulInvocation()
 			throws MonitoringException {
 		// TODO Auto-generated method stub
 

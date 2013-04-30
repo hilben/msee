@@ -14,7 +14,7 @@ import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStored;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
@@ -130,7 +130,7 @@ public class MonitoringParameterStoreHandler {
 		try {
 			oldAverageValueStr = this.monitoringComponent.getQoSParameter(
 					webservice, parameter.getType()).getValue();
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			oldAverageValueStr = "0.0";
 		}
 		double oldAverageValue = Double.parseDouble(oldAverageValueStr);
@@ -140,7 +140,7 @@ public class MonitoringParameterStoreHandler {
 			totalSuccessfullRequestsStr = this.monitoringComponent
 					.getQoSParameter(webservice, QoSType.RequestSuccessful)
 					.getValue();
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			totalSuccessfullRequestsStr = "0";
 		}
 		double totalSuccessfullRequests = Double
@@ -168,7 +168,7 @@ public class MonitoringParameterStoreHandler {
 		try {
 			oldTotalValueStr = this.monitoringComponent.getQoSParameter(
 					webservice, parameter.getType()).getValue();
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			oldTotalValueStr = "0.0";
 		}
 
@@ -196,7 +196,7 @@ public class MonitoringParameterStoreHandler {
 			oldMinimumValueStr = this.monitoringComponent.getQoSParameter(
 					webservice, parameter.getType()).getValue();
 			oldMinimumValue = Double.parseDouble(oldMinimumValueStr);
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			oldMinimumValue = Double.POSITIVE_INFINITY;
 		}
 
@@ -228,7 +228,7 @@ public class MonitoringParameterStoreHandler {
 			oldMaximumValueStr = this.monitoringComponent.getQoSParameter(
 					webservice, parameter.getType()).getValue();
 			oldMaximumValue = Double.parseDouble(oldMaximumValueStr);
-		} catch (MonitoringNoDataStored e) {
+		} catch (MonitoringNoDataStoredException e) {
 			oldMaximumValue = Double.NEGATIVE_INFINITY;
 		}
 

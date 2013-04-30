@@ -23,9 +23,9 @@ import at.sti2.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
-import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
-import at.sti2.msee.monitoring.api.MonitoringWebserviceAvailability;
-import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStored;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -99,7 +99,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries.removeMonitoredWebserviceAndData(url);
+		String query = MonitoringQueryBuilder.removeMonitoredWebserviceAndData(url);
 
 		this.serviceRepository.performSPARQLUpdate(query);
 
@@ -116,7 +116,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries.setInvocationInstanceState(webService,
+		String query = MonitoringQueryBuilder.setInvocationInstanceState(webService,
 				invocationInstanceID, invocationStateID, statename, time);
 
 		this.serviceRepository.performSPARQLUpdate(query);
@@ -131,7 +131,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries.insertMonitoredWebservice(url,
+		String query = MonitoringQueryBuilder.insertMonitoredWebservice(url,
 				monitored);
 
 		this.serviceRepository.performSPARQLUpdate(query);
@@ -145,7 +145,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries
+		String query = MonitoringQueryBuilder
 				.getIsWebServiceMonitoredSPARQLQuery(url);
 
 		LOGGER.debug("QUERY: " + query);
@@ -177,7 +177,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries.getInvocationInstance(UUID);
+		String query = MonitoringQueryBuilder.getInvocationInstance(UUID);
 
 		LOGGER.debug("QUERY: " + query);
 
@@ -215,7 +215,7 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueries.addQoSParam(url, UUID, qosparam);
+		String query = MonitoringQueryBuilder.addQoSParam(url, UUID, qosparam);
 
 		this.serviceRepository.performSPARQLUpdate(query);
 
@@ -226,13 +226,13 @@ public class MonitoringRepositoryHandler {
 
 	public QoSParameter getCurrentQoSParameter(URL url, QoSType qosparamtype)
 			throws IOException, RepositoryException, MalformedQueryException,
-			UpdateExecutionException, ParseException, MonitoringNoDataStored {
+			UpdateExecutionException, ParseException, MonitoringNoDataStoredException {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
 		QoSParameter returnParameter = null;
 
-		String query = MonitoringQueries.getCurrentQoSParameter(url,
+		String query = MonitoringQueryBuilder.getCurrentQoSParameter(url,
 				qosparamtype);
 
 		LOGGER.debug("QUERY: " + query);
@@ -254,7 +254,7 @@ public class MonitoringRepositoryHandler {
 
 		if (time == null || value == null) {
 			m.close();
-			throw new MonitoringNoDataStored(qosparamtype
+			throw new MonitoringNoDataStoredException(qosparamtype
 					+ " does not exist for " + url);
 		}
 
@@ -268,14 +268,14 @@ public class MonitoringRepositoryHandler {
 	}
 
 	public void updateAvailabilityState(URL webService,
-			MonitoringWSAvailabilityState state, String time)
+			MonitoringWebserviceAvailabilityState state, String time)
 			throws IOException, RepositoryException, MalformedQueryException,
 			UpdateExecutionException {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
 		String id = UUID.randomUUID().toString();
-		String query = MonitoringQueries.updateAvailabilityState(webService,
+		String query = MonitoringQueryBuilder.updateAvailabilityState(webService,
 				id, time, state.toString());
 
 		this.serviceRepository.performSPARQLUpdate(query);
@@ -285,13 +285,13 @@ public class MonitoringRepositoryHandler {
 	}
 
 	public MonitoringWebserviceAvailability getAvailability(URL webService)
-			throws IOException, MonitoringNoDataStored, ParseException {
+			throws IOException, MonitoringNoDataStoredException, ParseException {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
 		MonitoringWebserviceAvailability monitoringAvailability = null;
 
-		String query = MonitoringQueries
+		String query = MonitoringQueryBuilder
 				.getCurrentAvailabilityState(webService);
 
 		LOGGER.debug("QUERY: " + query);
@@ -313,7 +313,7 @@ public class MonitoringRepositoryHandler {
 
 		if (time == null || state == null) {
 			m.close();
-			throw new MonitoringNoDataStored(
+			throw new MonitoringNoDataStoredException(
 					"availability state does not exist for " + webService);
 		}
 

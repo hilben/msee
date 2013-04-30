@@ -83,21 +83,21 @@ public class MonitoringRepositoryHandlerTest {
 			MalformedQueryException, UpdateExecutionException, IOException {
 		Model m1full = repositoryHandler.getServiceRepository().getModel();
 		m1full.open();
-		QueryResultTable t1full = m1full.sparqlSelect(MonitoringQueries
+		QueryResultTable t1full = m1full.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL1));
 		m1full.close();
 		assertTrue(t1full.iterator().hasNext());
 
 		Model m2full = repositoryHandler.getServiceRepository().getModel();
 		m2full.open();
-		QueryResultTable t2full = m2full.sparqlSelect(MonitoringQueries
+		QueryResultTable t2full = m2full.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL2));
 		m2full.close();
 		assertTrue(t2full.iterator().hasNext());
 
 		Model m3full = repositoryHandler.getServiceRepository().getModel();
 		m3full.open();
-		QueryResultTable t3full = m3full.sparqlSelect(MonitoringQueries
+		QueryResultTable t3full = m3full.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL3));
 		m3full.close();
 		assertTrue(t3full.iterator().hasNext());
@@ -119,21 +119,21 @@ public class MonitoringRepositoryHandlerTest {
 
 		Model m1 = repositoryHandler.getServiceRepository().getModel();
 		m1.open();
-		QueryResultTable t1 = m1.sparqlSelect(MonitoringQueries
+		QueryResultTable t1 = m1.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL1));
 		m1.close();
 		assertFalse(t1.iterator().hasNext());
 
 		Model m2 = repositoryHandler.getServiceRepository().getModel();
 		m2.open();
-		QueryResultTable t2 = m2.sparqlSelect(MonitoringQueries
+		QueryResultTable t2 = m2.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL2));
 		m2.close();
 		assertFalse(t2.iterator().hasNext());
 
 		Model m3 = repositoryHandler.getServiceRepository().getModel();
 		m3.open();
-		QueryResultTable t3 = m3.sparqlSelect(MonitoringQueries
+		QueryResultTable t3 = m3.sparqlSelect(MonitoringQueryBuilder
 				.getAllTriplesOfContext(wsURL3));
 		m3.close();
 		assertFalse(t3.iterator().hasNext());

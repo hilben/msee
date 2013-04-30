@@ -34,10 +34,10 @@ import at.sti2.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
-import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
-import at.sti2.msee.monitoring.api.MonitoringWebserviceAvailability;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStored;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 
@@ -159,7 +159,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 
 	@Override
 	public void updateAvailabilityState(URL webService,
-			MonitoringWSAvailabilityState state) throws MonitoringException {
+			MonitoringWebserviceAvailabilityState state) throws MonitoringException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ssZ");
@@ -193,7 +193,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 			throws MonitoringException {
 		try {
 			return this.repositoryHandler.getAvailability(webService);
-		} catch (IOException | MonitoringNoDataStored | ParseException e) {
+		} catch (IOException | MonitoringNoDataStoredException | ParseException e) {
 			LOGGER.error("Error getting Availability of webService: " + e.getLocalizedMessage());
 			throw new MonitoringException("Error getting Availability of webService: ", e);
 		}
@@ -246,7 +246,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 
 	@Override
 	public QoSParameter getQoSParameter(URL webService, QoSType qostype)
-			throws MonitoringException, MonitoringNoDataStored {
+			throws MonitoringException, MonitoringNoDataStoredException {
 		QoSParameter ret = null;
 		try {
 			ret = this.repositoryHandler.getCurrentQoSParameter(webService,

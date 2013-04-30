@@ -2,8 +2,10 @@ package at.sti2.msee.monitoring.api;
 
 import java.net.URL;
 
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStored;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
@@ -68,9 +70,9 @@ public interface MonitoringComponent {
 			throws MonitoringException;
 
 	public QoSParameter getQoSParameter(URL webService, QoSType qostype)
-			throws MonitoringException, MonitoringNoDataStored;
+			throws MonitoringException, MonitoringNoDataStoredException;
 
 	void updateAvailabilityState(URL WebService,
-			MonitoringWSAvailabilityState state) throws MonitoringException;
+			MonitoringWebserviceAvailabilityState state) throws MonitoringException;
 	
 }

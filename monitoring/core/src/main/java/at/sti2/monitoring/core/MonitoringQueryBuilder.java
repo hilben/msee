@@ -3,13 +3,13 @@ package at.sti2.monitoring.core;
 import java.io.IOException;
 import java.net.URL;
 
-import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 
-public class MonitoringQueries {
+public class MonitoringQueryBuilder {
 
 	private static void setNSPrefix(ParameterizedSparqlString queryString) {
 		queryString
@@ -34,7 +34,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 
@@ -57,7 +57,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 		queryString.setIri("?webservicetype", ns
@@ -83,7 +83,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 		queryString.setIri("?webservicetype", ns
@@ -102,7 +102,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?context", context);
 
@@ -133,7 +133,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 		queryString.setIri("?hasInvocation", ns
@@ -175,7 +175,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?hasInvocation", ns
 				+ MonitoringOntology.hasInvocationInstance);
@@ -213,7 +213,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", url);
 		queryString.setIri("?qosparamid", ns + UUID);
@@ -245,7 +245,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", url);
 
@@ -279,7 +279,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 		queryString.setIri("?hasCurAvailState", ns
@@ -313,7 +313,7 @@ public class MonitoringQueries {
 		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
 				query);
 
-		MonitoringQueries.setNSPrefix(queryString);
+		MonitoringQueryBuilder.setNSPrefix(queryString);
 
 		queryString.setIri("?webservice", webService);
 		queryString.setIri("?hasCurAvailState", ns
