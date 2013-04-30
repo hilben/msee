@@ -3,8 +3,6 @@ package at.sti2.monitoring.core;
 import java.net.URL;
 import java.util.UUID;
 
-import com.hp.hpl.jena.sparql.function.library.min;
-
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;

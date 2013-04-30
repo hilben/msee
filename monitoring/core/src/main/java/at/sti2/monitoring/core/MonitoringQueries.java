@@ -3,6 +3,10 @@ package at.sti2.monitoring.core;
 import java.io.IOException;
 import java.net.URL;
 
+import at.sti2.msee.monitoring.api.MonitoringWSAvailabilityState;
+import at.sti2.msee.monitoring.api.qos.QoSParameter;
+import at.sti2.msee.monitoring.api.qos.QoSType;
+
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 
 public class MonitoringQueries {
@@ -110,7 +114,7 @@ public class MonitoringQueries {
 			String invocationInstanceID, String invocationStateID,
 			String statename, String time) throws IOException {
 		String ns = MonitoringOntology.getMonitoringOntology().NS;
-		
+
 		String query = new String(
 				"DELETE DATA\n"
 						+ "{ GRAPH ?webservice { ?webservice  ?hasInvocation  ?invocationInstanceID  . \n"
@@ -184,6 +188,136 @@ public class MonitoringQueries {
 				+ MonitoringOntology.hasInvocationState);
 		queryString.setIri("?hascurstate", ns
 				+ MonitoringOntology.hasCurrentInvocationState);
+		queryString.setIri("?hasstatename", ns
+				+ MonitoringOntology.hasStateName);
+
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		return queryString.toString();
+	}
+
+	public static String addQoSParam(URL url, String UUID, QoSParameter qosparam)
+			throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String("\nWITH ?webservice\n"
+				+ "DELETE {?webservice  ?hascurqos  ?curparamid }    \n"
+				+ "WHERE { ?curparamid ?hastype ?qostype}; \n"
+				+ "INSERT DATA\n" + "{ " + "GRAPH ?webservice {"
+				+ "?webservice  ?hascurqos  ?qosparamid  . \n"
+				+ "?webservice ?hasqos ?qosparamid  . \n"
+				+ "?qosparamid ?hasvalue ?qosvalue  . \n"
+				+ "?qosparamid ?hastime ?qostime. \n"
+				+ "?qosparamid ?hastype ?qostype" + " } };");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueries.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", url);
+		queryString.setIri("?qosparamid", ns + UUID);
+		queryString.setLiteral("?qosvalue", qosparam.getValue());
+		queryString.setLiteral("?qostime", qosparam.getTime());
+		queryString.setIri("?qostype", ns + qosparam.getType().toString());
+
+		queryString.setIri("?hascurqos", ns
+				+ MonitoringOntology.hasCurrentQoSParameter);
+		queryString.setIri("?hasqos", ns + MonitoringOntology.hasQoSParameter);
+		queryString.setIri("?hastype", ns + MonitoringOntology.hasQoSType);
+		queryString.setIri("?hasvalue", ns + MonitoringOntology.hasQoSValue);
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		return queryString.toString();
+	}
+
+	public static String getCurrentQoSParameter(URL url, QoSType qosparamtype)
+			throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String("\n"
+				+ "SELECT ?value ?time\n FROM ?webservice\n" + "WHERE {"
+				+ "?webservice  ?hascurqos  ?qosparamid  . \n"
+				+ "?qosparamid ?hastype ?qostype  . \n"
+				+ "?qosparamid ?hasvalue ?value  . \n"
+				+ "?qosparamid ?hastime ?time. \n }");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueries.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", url);
+
+		queryString.setIri("?qostype", ns + qosparamtype.toString());
+
+		queryString.setIri("?hascurqos", ns
+				+ MonitoringOntology.hasCurrentQoSParameter);
+
+		queryString.setIri("?hastype", ns + MonitoringOntology.hasQoSType);
+		queryString.setIri("?hasvalue", ns + MonitoringOntology.hasQoSValue);
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		return queryString.toString();
+	}
+
+	public static String updateAvailabilityState(URL webService, String UUID,
+			String time, String statename) throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String(
+				"DELETE DATA\n"
+						+ "{ GRAPH ?webservice { ?webservice  ?hasCurAvailState  ?curstate  . \n"
+						+ " } }; \n"
+						+ "INSERT DATA\n"
+						+ "{ GRAPH ?webservice { ?webservice  ?hasCurAvailState  ?availStateID  . \n"
+						+ "?webservice  ?hasAvailState  ?availStateID  . \n"
+						+ "?availStateID rdf:type ?availStateType .\n"
+						+ "?availStateID ?hastime ?time .\n"
+						+ "?availStateID ?hasstatename ?statename .\n } }");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueries.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", webService);
+		queryString.setIri("?hasCurAvailState", ns
+				+ MonitoringOntology.hasCurrentAvailabilityState);
+		queryString.setIri("?hasAvailState", ns
+				+ MonitoringOntology.hasAvailabilityState);
+		queryString.setIri("?hasstatename", ns
+				+ MonitoringOntology.hasStateName);
+
+		queryString.setIri("?availStateID", ns + UUID);
+		queryString.setIri("?availStateType", ns
+				+ MonitoringOntology.AvailabilityState);
+
+		queryString.setLiteral("?statename", statename);
+		queryString.setLiteral("?time", time);
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		return queryString.toString();
+	}
+
+	public static String getCurrentAvailabilityState(URL webService)
+			throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String("\n"
+				+ "SELECT ?state ?time\n FROM ?webservice\n" + "WHERE {"
+				+ "?webservice  ?hasCurAvailState  ?availID  . \n"
+				+ "?availID ?hasstatename ?state  . \n"
+				+ "?availID ?hastime ?time. \n }");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueries.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", webService);
+		queryString.setIri("?hasCurAvailState", ns
+				+ MonitoringOntology.hasCurrentAvailabilityState);
 		queryString.setIri("?hasstatename", ns
 				+ MonitoringOntology.hasStateName);
 

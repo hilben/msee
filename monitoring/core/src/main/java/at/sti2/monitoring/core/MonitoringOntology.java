@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import at.sti2.monitoring.core.common.MonitoringConfig;
+import at.sti2.msee.monitoring.api.MonitoringInvocationState;
+import at.sti2.msee.monitoring.api.qos.QoSType;
 
 import com.hp.hpl.jena.ontology.DatatypeProperty;
 import com.hp.hpl.jena.ontology.ObjectProperty;
@@ -37,7 +39,6 @@ public class MonitoringOntology {
 	public static final String AvailabilityState = "AvailabilityState";
 	public static final String QoSParameter = "QoSParameter";
 	public static final String QoSParameterType = "QoSParameterType";
-
 	/*
 	 * Object properties
 	 */
@@ -61,6 +62,7 @@ public class MonitoringOntology {
 	public static final String isCurrentlyMonitored = "isCurrentlyMonitored";
 	public static final String hasQoSType = "hasQoSType";
 	public static final String hasQoSUnit = "hasQoSUnit";
+	public static final String hasQoSValue = "hasQoSValue";
 
 	private MonitoringOntology(String namespace) {
 		this.NS = namespace;
@@ -143,7 +145,7 @@ public class MonitoringOntology {
 				+ MonitoringOntology.QoSParameter);
 		OntClass QoSParameterType = m.createClass(NS
 				+ MonitoringOntology.QoSParameterType);
-
+		
 		ObjectProperty hasInvocationInstance = m.createObjectProperty(NS
 				+ MonitoringOntology.hasInvocationInstance);
 		ObjectProperty hasInvocationState = m.createObjectProperty(NS
@@ -174,6 +176,8 @@ public class MonitoringOntology {
 		hasQoSParameter.addDomain(MonitoredWebservice);
 		hasQoSParameter.addRange(QoSParameter);
 		// hasQoSParameter.addLabel("has QoSParameter", "en");
+		
+
 
 		hasCurrentInvocationState.addDomain(InvocationInstance);
 		hasCurrentInvocationState.addRange(InvocationState);
@@ -214,6 +218,18 @@ public class MonitoringOntology {
 				+ MonitoringOntology.hasQoSUnit);
 		hasQoSUnit.addRange(XSD.xstring);
 		hasQoSUnit.addDomain(QoSParameterType);
+		
+		DatatypeProperty hasQoSValue = m.createDatatypeProperty(NS+MonitoringOntology.hasQoSValue);
+		hasQoSValue.addDomain(QoSParameter);
+		hasQoSValue.addRange(XSD.xstring);
+		
+		//Generate Classes for QoSParamTypes
+		for (QoSType qt : QoSType.values()) {
+			OntClass qostype = m.createClass(NS+qt.toString());
+			qostype.addSuperClass(QoSParameterType);
+			qostype.addProperty(hasQoSUnit, qt.getUnit());
+		}
+
 	}
 
 }

@@ -8,9 +8,9 @@ package at.sti2.msee.monitoring.api.qos;
  *         This enum represents all possible QoS Parameters (should be used for
  *         monitoring webservice)
  */
-public enum QoSParamKey {
+public enum QoSType {
 
-	RequestTotal("COUNT"), RequestSuccessful("COUNT"), RequestFailed("COUNT"),
+	RequestTotal("Number"), RequestSuccessful("Number"), RequestFailed("Number"),
 
 	MonitoredTime("Minutes"), AvailableTime("Minutes"), UnavailableTime(
 			"Minutes"),
@@ -29,7 +29,7 @@ public enum QoSParamKey {
 
 	private String unit;
 
-	private QoSParamKey(String unit) {
+	private QoSType(String unit) {
 		this.unit = unit;
 	}
 

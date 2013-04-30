@@ -39,6 +39,7 @@ public class MonitoringRepositoryHandlerTest {
 		wsURL2 = new URL(ws2);
 		wsURL3 = new URL(ws3);
 	}
+	
 
 	@Test
 	public void testSetMonitoredWebservice() throws IOException,
@@ -56,25 +57,25 @@ public class MonitoringRepositoryHandlerTest {
 		repositoryHandler.enableMonitoringForWebservice(wsURL2, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL3, true);
 
-		assertTrue(repositoryHandler.isMonitored(wsURL1));
-		assertTrue(repositoryHandler.isMonitored(wsURL2));
-		assertTrue(repositoryHandler.isMonitored(wsURL3));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL1));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL2));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL3));
 
 		repositoryHandler.enableMonitoringForWebservice(wsURL1, false);
 		repositoryHandler.enableMonitoringForWebservice(wsURL2, false);
 		repositoryHandler.enableMonitoringForWebservice(wsURL3, false);
 
-		assertFalse(repositoryHandler.isMonitored(wsURL1));
-		assertFalse(repositoryHandler.isMonitored(wsURL2));
-		assertFalse(repositoryHandler.isMonitored(wsURL3));
+		assertFalse(repositoryHandler.isMonitoredWebservice(wsURL1));
+		assertFalse(repositoryHandler.isMonitoredWebservice(wsURL2));
+		assertFalse(repositoryHandler.isMonitoredWebservice(wsURL3));
 
 		repositoryHandler.enableMonitoringForWebservice(wsURL1, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL2, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL3, true);
 
-		assertTrue(repositoryHandler.isMonitored(wsURL1));
-		assertTrue(repositoryHandler.isMonitored(wsURL2));
-		assertTrue(repositoryHandler.isMonitored(wsURL3));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL1));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL2));
+		assertTrue(repositoryHandler.isMonitoredWebservice(wsURL3));
 	}
 
 	@Test

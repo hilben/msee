@@ -16,13 +16,14 @@ public interface MonitoringInvocationInstance {
 
 	public void updateAndCloseUnsuccessfullInvocation()
 			throws MonitoringException;
-	
+
 	public URL getWebService();
-	
+
 	public UUID getUUID();
-	
+
 	public MonitoringInvocationState getState();
-	
-	public void setState(MonitoringInvocationState state) throws MonitoringException;
+
+	public void setState(MonitoringInvocationState state)
+			throws MonitoringException;
 
 }
