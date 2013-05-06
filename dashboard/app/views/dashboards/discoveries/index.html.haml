@@ -37,14 +37,13 @@
       .accordion-heading
         %a.accordion-toggle{"class" => "btn-info", "data-toggle" => "collapse", "data-parent" => "#accordionSearchMechanism", "href" => "#collapse_discover"} <strong>Discover</strong> - Search for registered services by categories.
         
-      .accordion-body.collapse{"id" => "collapse_discover"}
+      .accordion-body.collapse{"id" => "collapse_discover", "style" => "height:auto;"}
         .accordion-inner
           = render "dashboards/discoveries/discover_form"
           
           - if !@discover_output.nil?
             %span.label.label-info The discover response
-            %pre.prettyprint.lang-xml
-              = @discover_output 
+            = raw @discover_output          # raw  is important!
 
   /%span12
   /  .accordion-group

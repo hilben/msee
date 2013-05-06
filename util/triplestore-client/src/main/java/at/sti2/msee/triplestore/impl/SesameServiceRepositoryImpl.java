@@ -31,7 +31,6 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 
 	private ServiceRepositoryConfiguration configuration = null;
 	private Repository repository = null;
-	private RepositoryConnection connection = null;
 
 	public SesameServiceRepositoryImpl(
 			ServiceRepositoryConfiguration serviceRepositoryConfiguration) {
@@ -40,6 +39,9 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 
 	@Override
 	public void init() throws RepositoryException {
+		if(this.repository!=null){
+			return; // repository already initialized
+		}
 		RDF2Go.register(new RepositoryModelFactory());
 
 		if (configuration.getServerEndpoint() == null)
@@ -53,9 +55,6 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		}
 
 		this.repository.initialize();
-
-		this.connection = this.repository.getConnection();
-		this.connection.setAutoCommit(true);
 	}
 
 	@Override
@@ -125,6 +124,7 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 	@Override
 	public void clear() {
 		try {
+			RepositoryConnection connection = this.repository.getConnection();
 			connection.clear();
 			connection.commit();
 		} catch (RepositoryException e) {

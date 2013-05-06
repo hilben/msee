@@ -55,7 +55,7 @@ public class RDF2GoTest {
 	}
 
 	@After
-	public void tearDown() throws Exception {		
+	public void tearDown() throws Exception {	
 		repository.shutDown();
 	}
 
@@ -84,10 +84,12 @@ public class RDF2GoTest {
 	}
 	
 	private void isContextInRepository(URI contextURI) throws RepositoryException {
-		RepositoryResult<Resource> contextURIs = repository.getConnection().getContextIDs();	
+		RepositoryConnection connection = repository.getConnection();
+		RepositoryResult<Resource> contextURIs = connection.getContextIDs();	
 		Resource insertedContextURI = contextURIs.next();
 		assertEquals(contextURI.toString(),insertedContextURI.toString());
 		assertFalse(contextURIs.hasNext());		
+		connection.close();
 	}
 
 	private void isServiceInRepository(URI contextURI, String serviceURI) throws RepositoryException
