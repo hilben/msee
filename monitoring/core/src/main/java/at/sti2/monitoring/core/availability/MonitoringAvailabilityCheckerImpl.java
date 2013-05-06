@@ -46,9 +46,7 @@ public class MonitoringAvailabilityCheckerImpl implements
 	@Override
 	public void run() {
 		try {
-
 			while (this.handler.isCheckingEndpoint(this.url)) {
-
 				if (this.isAdressIsAvailable(url)) {
 					this.monitoringComponent.updateAvailabilityState(this.url,
 							MonitoringWebserviceAvailabilityState.Available);
@@ -61,6 +59,9 @@ public class MonitoringAvailabilityCheckerImpl implements
 				
 				Thread.sleep(INTERVALL_SECONDS*1000);
 			}
+			this.monitoringComponent.updateAvailabilityState(this.url,
+					MonitoringWebserviceAvailabilityState.NotChecked);
+			
 		} catch (MonitoringException | InterruptedException e) {
 			try {
 				LOGGER.error("Error updating availability of webservice ", e);

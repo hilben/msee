@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>at.sti2.msee.delivery</groupId>
 	<artifactId>platform</artifactId>
 	<version>m17.1-SNAPSHOT</version>
@@ -13,7 +13,7 @@
 		<module>registration</module>
 		<module>discovery</module>
 		<module>invocation</module>
-		<!-- <module>dashboard</module>-->
+		<!-- <module>dashboard</module> -->
 		<module>monitoring</module>
 		<!-- <module>ranking</module> -->
 	</modules>
@@ -418,6 +418,17 @@
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
 				<version>3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>apache-jena-libs</artifactId>
+				<type>pom</type>
+				<version>2.10.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.8.4</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
