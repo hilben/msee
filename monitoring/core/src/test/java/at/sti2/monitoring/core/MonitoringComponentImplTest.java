@@ -105,7 +105,6 @@ public class MonitoringComponentImplTest {
 			back.setState(MonitoringInvocationState.Started);
 
 			back = component.getInvocationInstance(back.getUUID().toString());
-			;
 
 			assertTrue(back.getState() == MonitoringInvocationState.Started);
 
@@ -138,26 +137,25 @@ public class MonitoringComponentImplTest {
 			fail();
 		}
 	}
-	
+
 	@Test
-	public void testgetAvailability() {
+	public void testGetAvailability() {
 		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.NotChecked;
 		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.Unavailable;
 		MonitoringWebserviceAvailabilityState state3 = MonitoringWebserviceAvailabilityState.Available;
-		
+
 		try {
 			component.updateAvailabilityState(testService1, state1);
 			component.updateAvailabilityState(testService1, state2);
 			component.updateAvailabilityState(testService1, state3);
-			
+
 			component.updateAvailabilityState(testService2, state2);
-			
-			assertTrue(component.getAvailability(testService1).getState()==state3);
-			assertTrue(component.getAvailability(testService2).getState()==state2);
-			
-			assertFalse(component.getAvailability(testService2).getState()==state1);
-			
-			
+
+			assertTrue(component.getAvailability(testService1).getState() == state3);
+			assertTrue(component.getAvailability(testService2).getState() == state2);
+
+			assertFalse(component.getAvailability(testService2).getState() == state1);
+
 		} catch (MonitoringException e) {
 			e.printStackTrace();
 			fail();

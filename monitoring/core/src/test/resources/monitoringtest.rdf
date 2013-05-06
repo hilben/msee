@@ -10,12 +10,43 @@
                 <rdfs:domain rdf:resource="#MonitoredWebservice"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
         </rdf:Description>
+        <rdf:Description rdf:about="#QoSParameterType">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasCurrentInvocationState">
+                <rdfs:range rdf:resource="#InvocationState"/>
+                <rdfs:domain rdf:resource="#InvocationInstance"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeRequestMaximum">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#RequestFailed">
+                <ns:hasQoSUnit>Number</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeResponseTotal">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#AvailabilityState">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#ResponseTimeTotal">
+                <ns:hasQoSUnit>Milliseconds</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
         <rdf:Description rdf:about="#hasURL">
                 <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#QName"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
         </rdf:Description>
         <rdf:Description rdf:about="#hasQoSUnit">
-                <rdfs:domain rdf:resource="#QoSParameter"/>
+                <rdfs:domain rdf:resource="#QoSParameterType"/>
                 <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
         </rdf:Description>
@@ -23,21 +54,124 @@
                 <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
         </rdf:Description>
+        <rdf:Description rdf:about="#AvailableTime">
+                <ns:hasQoSUnit>Minutes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeResponseMaximum">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasQoSParameter">
+                <rdfs:range rdf:resource="#QoSParameter"/>
+                <rdfs:domain rdf:resource="#MonitoredWebservice"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#ResponseTimeAverage">
+                <ns:hasQoSUnit>Milliseconds</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#MonitoredWebservice">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeResponseMinimum">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasDateTime">
+                <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeRequestMinimum">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#MonitoredTime">
+                <ns:hasQoSUnit>Minutes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#ResponseTimeMaximum">
+                <ns:hasQoSUnit>Milliseconds</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#UnavailableTime">
+                <ns:hasQoSUnit>Minutes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
         <rdf:Description rdf:about="#hasQoSType">
                 <rdfs:domain rdf:resource="#QoSParameter"/>
                 <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#RequestSuccessful">
+                <ns:hasQoSUnit>Number</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#InvocationInstance">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasInvocationState">
+                <rdfs:range rdf:resource="#InvocationState"/>
+                <rdfs:domain rdf:resource="#InvocationInstance"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#ResponseTime">
+                <ns:hasQoSUnit>Milliseconds</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#QoSParameter">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasQoSValue">
+                <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+                <rdfs:domain rdf:resource="#QoSParameter"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeRequestTotal">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#InvocationState">
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeRequestAverage">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#PayloadSizeRequest">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#RequestTotal">
+                <ns:hasQoSUnit>Number</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+        </rdf:Description>
+        <rdf:Description rdf:about="#hasCurrentAvailabilityState">
                 <rdfs:range rdf:resource="#AvailabilityState"/>
                 <rdfs:domain rdf:resource="#MonitoredWebservice"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
         </rdf:Description>
-        <rdf:Description rdf:about="#hasInvocationState">
-                <rdfs:range rdf:resource="#InvocationState"/>
-                <rdfs:domain rdf:resource="#MonitoredWebservice"/>
-                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+        <rdf:Description rdf:about="#ResponseTimeMinimum">
+                <ns:hasQoSUnit>Milliseconds</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
+                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
         </rdf:Description>
-        <rdf:Description rdf:about="#hasQoSParameter">
-                <rdfs:range rdf:resource="#QoSParameter"/>
+        <rdf:Description rdf:about="#hasInvocationInstance">
+                <rdfs:range rdf:resource="#InvocationInstance"/>
                 <rdfs:domain rdf:resource="#MonitoredWebservice"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
         </rdf:Description>
@@ -46,20 +180,14 @@
                 <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
         </rdf:Description>
-        <rdf:Description rdf:about="#MonitoredWebservice">
+        <rdf:Description rdf:about="#PayloadSizeResponse">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
         </rdf:Description>
-        <rdf:Description rdf:about="#AvailabilityState">
+        <rdf:Description rdf:about="#PayloadSizeResponseAverage">
+                <ns:hasQoSUnit>Bytes</ns:hasQoSUnit>
+                <rdfs:subClassOf rdf:resource="#QoSParameterType"/>
                 <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-        </rdf:Description>
-        <rdf:Description rdf:about="#QoSParameter">
-                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-        </rdf:Description>
-        <rdf:Description rdf:about="#InvocationState">
-                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-        </rdf:Description>
-        <rdf:Description rdf:about="#hasDateTime">
-                <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
-                <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
         </rdf:Description>
 </rdf:RDF>
