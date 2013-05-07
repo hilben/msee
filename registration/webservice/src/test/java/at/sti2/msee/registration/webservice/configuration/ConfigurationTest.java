@@ -27,18 +27,18 @@ public class ConfigurationTest {
 		assertEquals("http://sesa.sti2.at:8080/openrdf-sesame",sesameEndpoint);
 		
 		String repositoryId = configuration.getSesameReposID();
-		assertEquals("msee",repositoryId);		
+		assertEquals("msee-test",repositoryId); // takes repository for tests, for passing tests on Jenkins
 	}
 	
 	@Test
 	public void testLoadPropertFile() throws IOException {
 		Configuration configuration = new Configuration();
-		configuration.load("/tester.propertiez");
+		configuration.load("/tester.properties");
 		
 		String sesameEndpoint = configuration.getSesameEndpoint();
 		assertEquals("http://localhost:8080/openrdf-sesame",sesameEndpoint);
 		
 		String repositoryId = configuration.getSesameReposID();
-		assertEquals("msee-test",repositoryId);		
+		assertEquals("msee-test-test",repositoryId);		
 	}
 }
