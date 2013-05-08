@@ -27,6 +27,8 @@ public class MonitoringQueryBuilder {
 		queryString.setNsPrefix("msm",
 				"http://cms-wg.sti2.org/ns/minimal-service-model#");
 	}
+	
+	public final static String xsddatetime = "^^xsd:dateTime";
 
 	public static String removeMonitoredWebserviceAndData(URL webService)
 			throws IOException {
@@ -156,8 +158,8 @@ public class MonitoringQueryBuilder {
 
 		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
 
-		queryString.setLiteral("?time", time);
-//		queryString.setIri("?time", XSD.date);
+		queryString.setLiteral("?time", time+xsddatetime);
+
 
 		return queryString.toString();
 	}
@@ -220,7 +222,7 @@ public class MonitoringQueryBuilder {
 		queryString.setIri("?webservice", url);
 		queryString.setIri("?qosparamid", ns + UUID);
 		queryString.setLiteral("?qosvalue", qosparam.getValue());
-		queryString.setLiteral("?qostime", qosparam.getTime());
+		queryString.setLiteral("?qostime", qosparam.getTime()+xsddatetime);
 		queryString.setIri("?qostype", ns + qosparam.getType().toString());
 
 		queryString.setIri("?hascurqos", ns
@@ -296,7 +298,7 @@ public class MonitoringQueryBuilder {
 				+ MonitoringOntology.AvailabilityState);
 
 		queryString.setLiteral("?statename", statename);
-		queryString.setLiteral("?time", time);
+		queryString.setLiteral("?time", time+xsddatetime);
 		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
 
 		return queryString.toString();
