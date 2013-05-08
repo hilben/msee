@@ -39,11 +39,11 @@ public class MonitoringAvailabilityCheckerHandlerImpl implements
 	public void addEndpoint(URL url) throws MonitoringException {
 
 		if (!this.checkedEndpoints.contains(url)) {
+			this.checkedEndpoints.add(url);
+			
 			Runnable checker = new MonitoringAvailabilityCheckerImpl(url, this,
 					this.monitoringComponent);
 			executor.execute(checker);
-
-			this.checkedEndpoints.add(url);
 		}
 	}
 

@@ -30,6 +30,7 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
 
+import at.sti2.monitoring.core.availability.MonitoringAvailabilityCheckerHandlerImpl;
 import at.sti2.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
@@ -51,16 +52,17 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
-	private MonitoringConfig configuration;
 	private MonitoringParameterStoreHandler parameterStorageHandler;
 	private MonitoringRepositoryHandler repositoryHandler;
+	private MonitoringAvailabilityCheckerHandlerImpl availabilityHandler;
 
 	public MonitoringComponentImpl() throws IOException, RepositoryException {
-		this.configuration = MonitoringConfig.getConfig();
 		this.repositoryHandler = MonitoringRepositoryHandler
 				.getMonitoringRepositoryHandler();
 		this.parameterStorageHandler = new MonitoringParameterStoreHandler(this);
+		this.availabilityHandler = new MonitoringAvailabilityCheckerHandlerImpl(this);
 	}
+	
 
 	@Override
 	public boolean isMonitoredWebService(URL webService)
@@ -138,6 +140,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					true);
+			this.availabilityHandler.addEndpoint(webService);
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
 			LOGGER.error("Error enabling Monitoring " + e.getLocalizedMessage());
@@ -150,6 +153,8 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					false);
+			this.availabilityHandler.removeEndpoint(webService);
+			
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
 			LOGGER.error("Error enabling Monitoring " + e.getLocalizedMessage());
@@ -159,7 +164,8 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 
 	@Override
 	public void updateAvailabilityState(URL webService,
-			MonitoringWebserviceAvailabilityState state) throws MonitoringException {
+			MonitoringWebserviceAvailabilityState state)
+			throws MonitoringException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 				"yyyy-MM-dd'T'HH:mm:ssZ");
@@ -170,7 +176,8 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 					time);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException e) {
-			LOGGER.error("Error updating AvailabilityState" + e.getLocalizedMessage());
+			LOGGER.error("Error updating AvailabilityState"
+					+ e.getLocalizedMessage());
 			throw new MonitoringException("Error updating AvailabilityState", e);
 		}
 	}
@@ -194,8 +201,10 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			return this.repositoryHandler.getAvailability(webService);
 		} catch (IOException | MonitoringNoDataStoredException | ParseException e) {
-			LOGGER.error("Error getting Availability of webService: " + e.getLocalizedMessage());
-			throw new MonitoringException("Error getting Availability of webService: ", e);
+			LOGGER.error("Error getting Availability of webService: "
+					+ e.getLocalizedMessage());
+			throw new MonitoringException(
+					"Error getting Availability of webService: ", e);
 		}
 	}
 
@@ -251,6 +260,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			ret = this.repositoryHandler.getCurrentQoSParameter(webService,
 					qostype);
+		LOGGER.debug("Get: " + qostype + " for " + webService);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | ParseException e) {
 			LOGGER.error("Error loading QoSParameter: "
@@ -261,5 +271,13 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		return ret;
 	}
 
+
+	@Override
+	public String toString() {
+		return "MonitoringComponentImpl [LOGGER=" + LOGGER
+				+ ", parameterStorageHandler=" + parameterStorageHandler
+				+ ", repositoryHandler=" + repositoryHandler
+				+ ", availabilityHandler=" + availabilityHandler + "]";
+	}
 
 }

@@ -42,14 +42,13 @@ public class MonitoringInvocationInstanceImpl implements
 	public void sendSuccessfulInvocation(double payloadSizeResponse,
 			double payloadSizeRequest, double responseTime)
 			throws MonitoringException {
-		// TODO Auto-generated method stub
+		this.monitoringComponent.addSuccessfulInvocationData(this.webService, payloadSizeResponse, payloadSizeRequest, responseTime);
 	}
 
 	@Override
 	public void sendUnsuccessfulInvocation()
 			throws MonitoringException {
-		// TODO Auto-generated method stub
-
+		this.monitoringComponent.addUnsuccessfullInvocationData(this.webService);
 	}
 
 

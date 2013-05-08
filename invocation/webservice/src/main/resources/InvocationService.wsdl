@@ -6,7 +6,7 @@
   <xs:element name="invokeResponse" type="tns:invokeResponse"/>
   <xs:complexType name="invoke">
     <xs:sequence>
-      <xs:element minOccurs="0" name="serviceID" type="xs:string"/>
+      <xs:element minOccurs="0" name="serviceID" type="xs:anyURI"/>
       <xs:element minOccurs="0" name="operationName" type="xs:string"/>
       <xs:element minOccurs="0" name="inputData" type="xs:string"/>
     </xs:sequence>

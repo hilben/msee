@@ -326,4 +326,11 @@ public class MonitoringRepositoryHandler {
 
 		return monitoringAvailability;
 	}
+
+	@Override
+	public String toString() {
+		return "MonitoringRepositoryHandler [LOGGER=" + LOGGER
+				+ ", serviceRepository=" + serviceRepository + ", ontology="
+				+ ontology + ", config=" + config + "]";
+	}
 }

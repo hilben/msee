@@ -22,7 +22,7 @@ public class MonitoringAvailabilityCheckerImpl implements
 //	public static long TIMEOUT_MS = 30*1000;
 //	public static long INTERVALL_SECONDS = 60*60;
 	
-	public static long TIMEOUT_MS =2000;
+	public static int TIMEOUT_MS =2000;
 	public static long INTERVALL_SECONDS =5;
 	
 	private MonitoringAvailabilityCheckerHandler handler;
@@ -48,10 +48,12 @@ public class MonitoringAvailabilityCheckerImpl implements
 		try {
 			while (this.handler.isCheckingEndpoint(this.url)) {
 				if (this.isAdressIsAvailable(url)) {
+					System.out.println(url + " is available");
 					this.monitoringComponent.updateAvailabilityState(this.url,
 							MonitoringWebserviceAvailabilityState.Available);
 
 				} else {
+					System.out.println(url + " is not available");
 					this.monitoringComponent.updateAvailabilityState(this.url,
 							MonitoringWebserviceAvailabilityState.Unavailable);
 
@@ -75,28 +77,39 @@ public class MonitoringAvailabilityCheckerImpl implements
 
 	private boolean isAdressIsAvailable(URL url) {
 
-		HttpURLConnection httpUrlConn;
+		HttpURLConnection httpUrlConn = null;
 
 		try {
 			httpUrlConn = (HttpURLConnection) url.openConnection();
 
-			httpUrlConn.setRequestMethod("HEAD");
+//			httpUrlConn.setRequestMethod("HEAD");
 
 			// Set timeouts in milliseconds
-			httpUrlConn.setConnectTimeout(30000);
-			httpUrlConn.setReadTimeout(30000);
+			httpUrlConn.setConnectTimeout(TIMEOUT_MS);
+			httpUrlConn.setReadTimeout(TIMEOUT_MS);
 
 
 			LOGGER.info("Response Code: "
 					+ httpUrlConn.getResponseCode());
 			LOGGER.info("Response Message: "
 					+ httpUrlConn.getResponseMessage());
+			
+			System.out.println(httpUrlConn.getResponseCode());
+			System.out.println(httpUrlConn.getResponseMessage());
+			System.out.println(httpUrlConn.getContent().toString());
+			System.out.println(httpUrlConn.getContentLengthLong());
+			System.out.println(httpUrlConn.getContentType());
 
-			return (httpUrlConn.getResponseCode() == HttpURLConnection.HTTP_OK);
+			boolean isAvailable = (httpUrlConn.getResponseCode() == HttpURLConnection.HTTP_OK);
+			
+			httpUrlConn.disconnect();
+			
+			return isAvailable;
 		} catch (IOException e) {
-
+			
+			httpUrlConn.disconnect();
 			return false;
 		}
 	}
-
+	
 }

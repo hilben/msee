@@ -1,5 +1,7 @@
 package at.sti2.msee.invocation.webservice;
 
+import java.net.URL;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -17,7 +19,7 @@ public interface Invocation extends ServiceInvocation {
 
 	@Override
 	@WebMethod
-	public String invoke(@WebParam(name = "serviceID") String serviceID,
+	public String invoke(@WebParam(name = "serviceID") URL serviceID,
 			@WebParam(name = "operationName") String operationName,
 			@WebParam(name = "inputData") String inputData)
 			throws ServiceInvokerException;

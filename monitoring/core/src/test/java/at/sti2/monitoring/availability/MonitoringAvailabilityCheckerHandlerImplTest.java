@@ -42,8 +42,6 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 			fail();
 		}
 
-		System.out.println(this.handler);
-
 		assertTrue(this.handler.isCheckingEndpoint(testWebService1url));
 		assertFalse(this.handler.isCheckingEndpoint(testWebService2url));
 

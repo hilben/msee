@@ -23,7 +23,7 @@ import at.sti2.msee.monitoring.api.exception.MonitoringException;
 public class MonitoringAvailabilityCheckerImplTest {
 
 	private String notOnline = "http://www.a.aaa/a";
-	private String isOnline = "http://www.google.com";
+	private String isOnline = "http://msee.sti2.at/discovery-webservice/service?wsdl";
 	private URL notOnlineURL;
 	private URL isOnlineURL;
 
@@ -77,7 +77,6 @@ public class MonitoringAvailabilityCheckerImplTest {
 		}
 
 		MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS = 5;
-		MonitoringAvailabilityCheckerImpl.TIMEOUT_MS = 2500;
 
 		Thread m = new Thread(checker);
 
@@ -148,7 +147,6 @@ public class MonitoringAvailabilityCheckerImplTest {
 		}
 
 		MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS = 5;
-		MonitoringAvailabilityCheckerImpl.TIMEOUT_MS = 2500;
 
 		Thread m = new Thread(checker);
 

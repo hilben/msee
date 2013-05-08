@@ -1,5 +1,7 @@
 package at.sti2.msee.invocation.webservice;
 
+import java.net.URL;
+
 import javax.jws.WebService;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
@@ -11,7 +13,7 @@ public class InvocationImpl implements Invocation {
 	private ServiceInvocationImpl invoker = new ServiceInvocationImpl();
 
 	@Override
-	public String invoke(String serviceID, String operationName,
+	public String invoke(URL serviceID, String operationName,
 			String inputData) throws ServiceInvokerException {
 
 		return invoker.invoke(serviceID, operationName, inputData);

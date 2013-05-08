@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
@@ -107,11 +108,15 @@ public class MonitoringComponentImplTest {
 			back = component.getInvocationInstance(back.getUUID().toString());
 
 			assertTrue(back.getState() == MonitoringInvocationState.Started);
+			
+			MonitoringInvocationInstance i = component.createInvocationInstance(new URL("http://aaa.someurl.aaa/whichdonotexists"));
+			assertNotNull(i);
+			
 
-		} catch (MonitoringException e) {
+		} catch (MonitoringException | MalformedURLException e) {
 			e.printStackTrace();
 			fail();
-		}
+		} 
 	}
 
 	@Test

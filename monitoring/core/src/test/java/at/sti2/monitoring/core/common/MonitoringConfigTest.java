@@ -18,7 +18,7 @@ public class MonitoringConfigTest {
 	@Before
 	public void setUp() throws Exception {
 		this.config = MonitoringConfig.getConfig();
-		System.out.println(this.config);
+//		System.out.println(this.config);
 	}
 
 	@Test

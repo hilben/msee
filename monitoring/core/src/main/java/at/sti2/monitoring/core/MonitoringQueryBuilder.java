@@ -8,6 +8,7 @@ import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
+import com.hp.hpl.jena.vocabulary.XSD;
 
 public class MonitoringQueryBuilder {
 
@@ -156,6 +157,7 @@ public class MonitoringQueryBuilder {
 		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
 
 		queryString.setLiteral("?time", time);
+//		queryString.setIri("?time", XSD.date);
 
 		return queryString.toString();
 	}
