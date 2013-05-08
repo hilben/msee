@@ -12,7 +12,6 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
-import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
