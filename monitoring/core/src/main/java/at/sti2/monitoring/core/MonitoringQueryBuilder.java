@@ -264,6 +264,36 @@ public class MonitoringQueryBuilder {
 
 		return queryString.toString();
 	}
+	
+	public static String getAllQoSParametersInTimeframe(URL url, QoSType qosparamtype, String begin, String end)
+			throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String("\n"
+				+ "SELECT ?value ?time\n FROM ?webservice\n" + "WHERE {"
+				+ "?webservice  ?hasqos  ?qosparamid  . \n"
+				+ "?qosparamid ?hastype ?qostype  . \n"
+				+ "?qosparamid ?hasvalue ?value  . \n"
+				+ "?qosparamid ?hastime ?time. \n }");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueryBuilder.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", url);
+
+		queryString.setIri("?qostype", ns + qosparamtype.toString());
+
+		queryString.setIri("?hasqos", ns
+				+ MonitoringOntology.hasQoSParameter);
+
+		queryString.setIri("?hastype", ns + MonitoringOntology.hasQoSType);
+		queryString.setIri("?hasvalue", ns + MonitoringOntology.hasQoSValue);
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		return queryString.toString();
+	}
 
 	public static String updateAvailabilityState(URL webService, String UUID,
 			String time, String statename) throws IOException {
@@ -327,6 +357,33 @@ public class MonitoringQueryBuilder {
 
 		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
 
+		return queryString.toString();
+	}
+
+	public static String getAllAvailabilityStates(URL webService,
+			String begin, String end) throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+
+		String query = new String("\n"
+				+ "SELECT ?state ?time\n FROM ?webservice\n" + "WHERE {"
+				+ "?webservice  ?hasAvailState  ?availID  . \n"
+				+ "?availID ?hasstatename ?state  . \n"
+				+ "?availID ?hastime ?time. \n }");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		MonitoringQueryBuilder.setNSPrefix(queryString);
+
+		queryString.setIri("?webservice", webService);
+		queryString.setIri("?hasAvailState", ns
+				+ MonitoringOntology.hasAvailabilityState);
+		queryString.setIri("?hasstatename", ns
+				+ MonitoringOntology.hasStateName);
+
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+
+		System.out.println(queryString);
 		return queryString.toString();
 	}
 

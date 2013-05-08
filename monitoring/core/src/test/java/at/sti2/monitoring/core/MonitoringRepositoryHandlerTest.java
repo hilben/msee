@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +21,12 @@ import org.ontoware.rdf2go.model.QueryRow;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
+
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
+import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
+import at.sti2.msee.monitoring.api.qos.QoSParameter;
+import at.sti2.msee.monitoring.api.qos.QoSType;
 
 public class MonitoringRepositoryHandlerTest {
 
@@ -39,20 +50,21 @@ public class MonitoringRepositoryHandlerTest {
 		wsURL2 = new URL(ws2);
 		wsURL3 = new URL(ws3);
 	}
-	
 
 	@Test
-	public void testSetMonitoredWebservice() throws IOException,
+	public void testEnableMonitoringForWebservice() throws IOException,
 			RepositoryException, MalformedQueryException,
 			UpdateExecutionException {
 		repositoryHandler.enableMonitoringForWebservice(wsURL1, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL2, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL3, true);
+
 	}
 
 	@Test
-	public void testIsMonitored() throws IOException, RepositoryException,
-			MalformedQueryException, UpdateExecutionException {
+	public void testIsMonitoredWebservice() throws IOException,
+			RepositoryException, MalformedQueryException,
+			UpdateExecutionException {
 		repositoryHandler.enableMonitoringForWebservice(wsURL1, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL2, true);
 		repositoryHandler.enableMonitoringForWebservice(wsURL3, true);
@@ -140,8 +152,202 @@ public class MonitoringRepositoryHandlerTest {
 	}
 
 	@Test
-	public void testGetServiceRepository() {
+	public void testGetMonitoringRepositoryHandler() {
 		assertNotNull(repositoryHandler.getServiceRepository());
+	}
+
+	@Test
+	public void testAddAndGetCurrentQoSParameter() {
+		Date now = new Date();
+		QoSParameter send = new QoSParameter(QoSType.UnavailableTime, "123",
+				now);
+		try {
+
+			this.repositoryHandler.addQoSParameter(wsURL1, UUID.randomUUID()
+					.toString(), send);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e) {
+			fail();
+		}
+		QoSParameter p = null;
+		try {
+			p = this.repositoryHandler.getCurrentQoSParameter(wsURL1,
+					QoSType.UnavailableTime);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException | ParseException
+				| MonitoringNoDataStoredException e) {
+			fail();
+		}
+
+		assertTrue(p.getTime().compareTo(send.getTime()) == 0);
+		assertTrue(p.getType() == send.getType());
+		assertTrue(p.getValue().compareTo(send.getValue()) == 0);
+	}
+
+	@Test
+	public void testUpdateAvailabilityState() {
+		Date now = new Date();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ssZ");
+		String time = simpleDateFormat.format(now);
+
+		try {
+			this.repositoryHandler.updateAvailabilityState(wsURL1,
+					MonitoringWebserviceAvailabilityState.Available, time);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e) {
+			fail();
+		}
+
+		MonitoringWebserviceAvailability avail;
+		try {
+			avail = repositoryHandler.getAvailability(wsURL1);
+
+			assertTrue(avail.getState() == MonitoringWebserviceAvailabilityState.Available);
+			assertTrue(avail.getTime().compareTo(time) == 0);
+
+		} catch (IOException | MonitoringNoDataStoredException | ParseException e) {
+			fail();
+		}
+	}
+
+	@Test
+	public void testGetAllQoSParameterInTimeframe() {
+		try {
+			this.repositoryHandler.clearAllContentForWebservice(wsURL1);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e1) {
+			fail();
+		}
+
+		ArrayList<QoSParameter> qosparams = new ArrayList<QoSParameter>();
+		ArrayList<String> times = new ArrayList<String>();
+
+		for (int i = 0; i < 10; i++) {
+			Date now = new Date();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd'T'HH:mm:ssZ");
+			String time = simpleDateFormat.format(now);
+
+			times.add(time);
+
+			QoSParameter p = null;
+			try {
+				p = new QoSParameter(QoSType.PayloadSizeResponseMinimum,
+						String.valueOf(3 * i), time);
+			} catch (ParseException e) {
+				fail();
+			}
+			qosparams.add(p);
+
+			try {
+				this.repositoryHandler.addQoSParameter(wsURL1, UUID
+						.randomUUID().toString(), p);
+			} catch (RepositoryException | MalformedQueryException
+					| UpdateExecutionException | IOException e) {
+				fail();
+			}
+		}
+
+		// TODO: Write test with several different timeframe delimiters
+		ArrayList<QoSParameter> returnparams = null;
+
+		try {
+			returnparams = this.repositoryHandler
+					.getAllQoSParameterInTimeframe(wsURL1,
+							QoSType.PayloadSizeResponseMinimum);
+		} catch (MonitoringNoDataStoredException | ParseException | IOException e) {
+			fail();
+		}
+
+		assertNotNull(returnparams);
+
+		for (int i = 0; i < 10; i++) {
+			QoSParameter c = returnparams.get(9 - i);
+			assertTrue(c.getTime().compareTo(times.get(i)) == 0);
+			assertTrue(c.getType().compareTo(qosparams.get(i).getType()) == 0);
+			assertTrue(c.getValue().compareTo(qosparams.get(i).getValue()) == 0);
+		}
+
+	}
+
+	@Test
+	public void testGetAllAvailabilityStatesInTimeframe() throws IOException,
+			ParseException {
+		try {
+			this.repositoryHandler.clearAllContentForWebservice(wsURL1);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e1) {
+			fail();
+		}
+
+		ArrayList<MonitoringWebserviceAvailability> availabilities = new ArrayList<MonitoringWebserviceAvailability>();
+		ArrayList<String> times = new ArrayList<String>();
+
+		for (int i = 0; i < 10; i++) {
+			Date now = new Date();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+					"yyyy-MM-dd'T'HH:mm:ssZ");
+			String time = simpleDateFormat.format(now);
+
+			times.add(time);
+
+			MonitoringWebserviceAvailability a = null;
+			if (i != 5) {
+				a = new MonitoringWebserviceAvailability(
+						MonitoringWebserviceAvailabilityState.Available, now);
+			} else {
+				a = new MonitoringWebserviceAvailability(
+						MonitoringWebserviceAvailabilityState.Unavailable, now);
+			}
+
+			availabilities.add(a);
+
+			try {
+				this.repositoryHandler.updateAvailabilityState(wsURL1,
+						a.getState(), time);
+				System.out.println("added: " + a.getState());
+			} catch (RepositoryException | MalformedQueryException
+					| UpdateExecutionException | IOException e) {
+				fail();
+			}
+		}
+
+		// TODO: Write test with several different timeframe delimiters
+		ArrayList<MonitoringWebserviceAvailability> returnparams = null;
+
+		try {
+			returnparams = this.repositoryHandler
+					.getAllAvailabilityStatesInTimeframe(wsURL1);
+		} catch (MonitoringNoDataStoredException e) {
+			fail();
+		}
+
+		System.out.println("Return avail: " + returnparams);
+
+		assertNotNull(returnparams);
+
+		for (int i = 0; i < 10; i++) {
+
+			MonitoringWebserviceAvailability c = returnparams.get(9 - i);
+			assertTrue(c.getTime().compareTo(times.get(i)) == 0);
+			assertTrue(c.getState().compareTo(availabilities.get(i).getState()) == 0);
+		}
+	}
+
+	@Test
+	public void testGetAllInvocationsInstancesInTimeframe() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testUpdateInvocationInstanceState() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testGetInvocationInstance() {
+		fail("Not yet implemented"); // TODO
 	}
 
 }

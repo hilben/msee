@@ -47,7 +47,7 @@ public class MonitoringOntology {
 	public static final String hasCurrentInvocationState = "hasCurrentInvocationState";
 
 	public static final String hasQoSParameter = "hasQoSParameter";
-	public static final String hasCurrentQoSParameter = "hasQoSParameter";
+	public static final String hasCurrentQoSParameter = "hasCurrentQoSParameter";
 
 	public static final String hasAvailabilityState = "hasAvailabilityState";
 	public static final String hasCurrentAvailabilityState = "hasCurrentAvailabilityState";

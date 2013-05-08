@@ -22,6 +22,8 @@ public class MonitoringWebserviceAvailability {
 		this.time = format.parse(time);
 	}
 	
+
+
 	public MonitoringWebserviceAvailabilityState getState() {
 		return state;
 	}

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
+import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
@@ -99,7 +101,8 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueryBuilder.removeMonitoredWebserviceAndData(url);
+		String query = MonitoringQueryBuilder
+				.removeMonitoredWebserviceAndData(url);
 
 		this.serviceRepository.performSPARQLUpdate(query);
 
@@ -116,8 +119,9 @@ public class MonitoringRepositoryHandler {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
-		String query = MonitoringQueryBuilder.setInvocationInstanceState(webService,
-				invocationInstanceID, invocationStateID, statename, time);
+		String query = MonitoringQueryBuilder.setInvocationInstanceState(
+				webService, invocationInstanceID, invocationStateID, statename,
+				time);
 
 		this.serviceRepository.performSPARQLUpdate(query);
 
@@ -226,7 +230,8 @@ public class MonitoringRepositoryHandler {
 
 	public QoSParameter getCurrentQoSParameter(URL url, QoSType qosparamtype)
 			throws IOException, RepositoryException, MalformedQueryException,
-			UpdateExecutionException, ParseException, MonitoringNoDataStoredException {
+			UpdateExecutionException, ParseException,
+			MonitoringNoDataStoredException {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
@@ -275,13 +280,115 @@ public class MonitoringRepositoryHandler {
 		m.open();
 
 		String id = UUID.randomUUID().toString();
-		String query = MonitoringQueryBuilder.updateAvailabilityState(webService,
-				id, time, state.toString());
+		String query = MonitoringQueryBuilder.updateAvailabilityState(
+				webService, id, time, state.toString());
 
 		this.serviceRepository.performSPARQLUpdate(query);
 
 		LOGGER.debug("QUERY: " + query);
 		m.close();
+	}
+
+	public ArrayList<QoSParameter> getAllQoSParameterInTimeframe(
+			URL webService, QoSType type)
+			throws MonitoringNoDataStoredException, ParseException, IOException {
+		return this.getAllQoSParameterInTimeframe(webService, type, null, null);
+	}
+
+	public ArrayList<QoSParameter> getAllQoSParameterInTimeframe(
+			URL webService, QoSType type, String begin, String end)
+			throws MonitoringNoDataStoredException, ParseException, IOException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		ArrayList<QoSParameter> returnParameter = new ArrayList<QoSParameter>();
+
+		String query = MonitoringQueryBuilder.getAllQoSParametersInTimeframe(
+				webService, type, begin, end);
+
+		LOGGER.debug("QUERY: " + query);
+		System.out.println(query);
+
+		QueryResultTable t = m.sparqlSelect(query);
+
+		LOGGER.debug("result vars: " + t.getVariables());
+
+		ClosableIterator<QueryRow> res = t.iterator();
+
+		String time = null;
+		String value = null;
+
+		while (res.hasNext()) {
+			QueryRow qr = res.next();
+			time = qr.getLiteralValue("time");
+			value = qr.getLiteralValue("value").toString();
+			QoSParameter p = new QoSParameter(type, value, time);
+			returnParameter.add(p);
+		}
+
+		LOGGER.debug("QUERY: " + query);
+
+		m.close();
+
+		return returnParameter;
+	}
+
+	public ArrayList<MonitoringWebserviceAvailability> getAllAvailabilityStatesInTimeframe(
+			URL webService)
+			throws MonitoringNoDataStoredException, IOException, ParseException {
+		return this.getAllAvailabilityStatesInTimeframe(webService, null,
+				null);
+	}
+
+	public ArrayList<MonitoringWebserviceAvailability> getAllAvailabilityStatesInTimeframe(
+			URL webService, String begin, String end)
+			throws MonitoringNoDataStoredException, IOException, ParseException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		ArrayList<MonitoringWebserviceAvailability> returnParameter = new ArrayList<MonitoringWebserviceAvailability>();
+
+		String query = MonitoringQueryBuilder.getAllAvailabilityStates(
+				webService, begin, end);
+
+		LOGGER.debug("QUERY: " + query);
+		System.out.println(query);
+
+		QueryResultTable t = m.sparqlSelect(query);
+
+		LOGGER.debug("result vars: " + t.getVariables());
+
+		ClosableIterator<QueryRow> res = t.iterator();
+
+		String time = null;
+		String state = null;
+
+		while (res.hasNext()) {
+			QueryRow qr = res.next();
+			time = qr.getLiteralValue("time");
+			state = qr.getLiteralValue("state").toString();
+			MonitoringWebserviceAvailability p = new MonitoringWebserviceAvailability(
+					state, time);
+			returnParameter.add(p);
+		}
+
+		LOGGER.debug("QUERY: " + query);
+
+		m.close();
+
+		return returnParameter;
+	}
+
+	public ArrayList<MonitoringInvocationInstance> getAllInvocationsInstancesInTimeframe(
+			URL webService, QoSType type)
+			throws MonitoringNoDataStoredException {
+		return this.getAllInvocationsInstancesInTimeframe(webService, type);
+	}
+
+	public ArrayList<MonitoringInvocationInstance> getAllInvocationsInstancesInTimeframe(
+			URL webService, QoSType type, String begin, String end)
+			throws MonitoringNoDataStoredException {
+		throw new MonitoringNoDataStoredException("Not implemendet!");
 	}
 
 	public MonitoringWebserviceAvailability getAvailability(URL webService)
