@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<description xmlns="http://www.w3.org/ns/wsdl"
+	targetNamespace="http://greath.example.com/2004/wsdl/resSvc" xmlns:tns="http://greath.example.com/2004/wsdl/resSvc"
+	xmlns:ghns="http://greath.example.com/2004/schemas/resSvc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+	xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:sawsdl="http://www.w3.org/ns/sawsdl"
+	xmlns:msee="http://msee.sti2.at/properties#">
+
+	<types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://greath.example.com/2004/schemas/resSvc"
+			xmlns="http://greath.example.com/2004/schemas/resSvc">
+
+			<xs:element name="checkAvailability" type="tCheckAvailability"
+				sawsdl:loweringSchemaMapping="http://sesa.sti2.at/services/xslt/example-lowering.xslt" />
+			<xs:complexType name="tCheckAvailability">
+				<xs:sequence>
+					<xs:element name="checkInDate" type="xs:date"
+						sawsdl:modelReference="http://example.org/indesit#checkInDate" />
+					<xs:element name="checkOutDate" type="xs:date"
+						sawsdl:modelReference="http://example.org/indesit#checkOutDate" />
+					<xs:element name="roomType" type="xs:string"
+						sawsdl:modelReference="http://example.org/indesit#roomType" />
+				</xs:sequence>
+			</xs:complexType>
+
+			<xs:element name="checkAvailabilityResponse" type="xs:double"
+				sawsdl:liftingSchemaMapping="http://sesa.sti2.at/services/xslt/example-lifting.xslt"
+				sawsdl:modelReference="http://example.org/indesit#checkAvailabilityResponse" />
+
+			<xs:element name="invalidDataError" type="xs:string"
+				sawsdl:liftingSchemaMapping="http://sesa.sti2.at/services/xslt/example-lifting.xslt"
+				sawsdl:modelReference="http://example.org/indesit#error" />
+
+		</xs:schema>
+	</types>
+
+	<interface name="indesitInterface">
+
+		<fault name="invalidDataFault" element="ghns:invalidDataError" />
+
+		<operation name="opCheckAvailability" pattern="http://www.w3.org/ns/wsdl/in-out">
+			<input messageLabel="In" element="ghns:checkAvailability" />
+			<output messageLabel="Out" element="ghns:checkAvailabilityResponse" />
+			<outfault ref="tns:invalidDataFault" messageLabel="Out" />
+		</operation>
+	</interface>
+
+	<binding name="indesitSOAPBinding" interface="tns:indesitInterface"
+		type="http://www.w3.org/ns/wsdl/soap" wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+
+		<operation ref="tns:opCheckAvailability"
+			wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response" />
+
+		<fault ref="tns:invalidDataFault" wsoap:code="soap:Sender" />
+	</binding>
+
+	<service name="indesitService" interface="tns:indesitInterface"
+		sawsdl:modelReference="http://msee.sti2.at/categories#BUSINESS http://msee.sti2.at/categories#WEB_APP http://msee.sti2.at/categories#Indesit http://msee.sti2.at/categories#AQ113D69"
+		msee:requirements=" "
+		msee:type=" "
+		msee:icon=" "
+		msee:description=" "
+		msee:access_point=" "
+		msee:name=" ">
+
+		<endpoint name="indesitEndpoint" binding="tns:indesitSOAPBinding"
+			address="http://greath.example.com/2004/indesit" />
+	</service>
+</description>

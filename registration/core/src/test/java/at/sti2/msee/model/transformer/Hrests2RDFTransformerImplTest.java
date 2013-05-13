@@ -37,38 +37,42 @@ public class Hrests2RDFTransformerImplTest {
 	static String generatedRdf = "";
 	static Model msmModel;
 	static Resource serviceResource;
-	
+
 	@BeforeClass
-	public static void setup(){
-		RDF2Go.register(new RepositoryModelFactory());		
+	public static void setup() {
+		RDF2Go.register(new RepositoryModelFactory());
 		msmModel = RDF2Go.getModelFactory().createModel();
 		msmModel.open();
 	}
-	
-	@Test
-	public void test1ToMSM() throws Service2RDFTransformerException, ModelRuntimeException, IOException {
-		
-		URL serviceDescriptionURL = new URL(this.getClass().getResource("/formats/hrests1.html").toString());
 
-		Service2RDFTransformer transformer = Service2RDFTransformerFactory.newInstance(ServiceModelFormat.HRESTS);
+	@Test
+	public void test1ToMSM() throws Service2RDFTransformerException, ModelRuntimeException,
+			IOException {
+
+		URL serviceDescriptionURL = new URL(this.getClass().getResource("/formats/hrests1.html")
+				.toString());
+
+		Service2RDFTransformer transformer = Service2RDFTransformerFactory
+				.newInstance(ServiceModelFormat.HRESTS);
 		Syntax syntax = Syntax.RdfXml;
 
 		transformer.setDefaultSyntax(syntax);
 
-		generatedRdf = transformer.toMSM(serviceDescriptionURL);	
+		generatedRdf = transformer.toMSM(serviceDescriptionURL);
 
 		test2ReadGeneratedRDF();
 	}
-	
+
 	@Test
-	public void test2ReadGeneratedRDF() throws ModelRuntimeException, IOException{
+	public void test2ReadGeneratedRDF() throws ModelRuntimeException, IOException {
 		Syntax syntax = Syntax.RdfXml;
 		StringReader reader = new StringReader(generatedRdf);
 		msmModel.readFrom(reader, syntax);
 	}
-	
-	@Test public void test3CheckService(){
-		TriplePattern pattern = msmModel.createTriplePattern(Variable.ANY, RDF.type , MSM.Service);
+
+	@Test
+	public void test3CheckService() {
+		TriplePattern pattern = msmModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
 		ClosableIterator<Statement> statements = msmModel.findStatements(pattern);
 		assertTrue(statements.hasNext());
 		Statement statement = statements.next();
@@ -76,24 +80,29 @@ public class Hrests2RDFTransformerImplTest {
 		assertTrue(statement.getSubject().toString().contains("http://msee.sti2.at"));
 		assertFalse(statements.hasNext());
 	}
-	
-	@Test public void test4CheckCategory(){
-		TriplePattern pattern = msmModel.createTriplePattern(serviceResource, MSM.modelReference , Variable.ANY);
+
+	@Test
+	public void test4CheckCategory() {
+		TriplePattern pattern = msmModel.createTriplePattern(serviceResource, MSM.modelReference,
+				Variable.ANY);
 		ClosableIterator<Statement> statements = msmModel.findStatements(pattern);
 		assertTrue(statements.hasNext());
 		Statement statement = statements.next();
 		Node categoryResource = statement.getObject();
-		assertTrue(categoryResource.asResource().toString().contains("http://msee.sti2.at/categories#BUSINESS"));
+		assertTrue(categoryResource.asResource().toString()
+				.contains("http://msee.sti2.at/categories#BUSINESS"));
 		assertFalse(statements.hasNext());
 	}
-	
-	@Test public void test5CheckOperation(){
-		TriplePattern pattern = msmModel.createTriplePattern(serviceResource, MSM.hasOperation , Variable.ANY);
+
+	@Test
+	public void test5CheckOperation() {
+		TriplePattern pattern = msmModel.createTriplePattern(serviceResource, MSM.hasOperation,
+				Variable.ANY);
 		ClosableIterator<Statement> statements = msmModel.findStatements(pattern);
 		assertTrue(statements.hasNext());
 		Statement statement = statements.next();
 		Node operationResource = statement.getObject();
-		
+
 		assertTrue(operationResource.asResource().toString().contains("#op1"));
 		assertFalse(statements.hasNext());
 	}
