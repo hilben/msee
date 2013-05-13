@@ -15,7 +15,7 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.monitoring.core.PersistentHandler;
+import at.sti2.msee.monitoring.core.PersistentHandler;
 import at.sti2.ranking.api.data.qos.ranking.IQoSParamsEndpointRankingTable;
 import at.sti2.ranking.api.data.qos.ranking.QoSRankingPreferencesTemplate;
 
