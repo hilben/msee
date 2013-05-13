@@ -57,7 +57,7 @@ public class DiscoveryServiceTest extends TestCase {
 		serviceRepository.init();
 		serviceRepository.clear();
 
-		String serviceDescriptionURL = this.getClass().getResource("/HelloService.sawsdl").toString();	
+		String serviceDescriptionURL = this.getClass().getResource("/services/HelloService.sawsdl").toString();	
 		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
 		registrationService.register(serviceDescriptionURL);
 
