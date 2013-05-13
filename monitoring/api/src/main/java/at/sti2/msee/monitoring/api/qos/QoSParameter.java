@@ -51,6 +51,10 @@ public class QoSParameter {
 	public String getTime() {
 		return QoSParameter.format.format(this.time);
 	}
+	
+	public Date getDate() {
+		return this.time;
+	}
 
 	public void setTime(Date time) {
 		this.time = time;

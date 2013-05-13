@@ -1,0 +1,81 @@
+/**
+ * 
+ */
+package at.sti2.msee.monitoring.core.chart;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * @author Benjamin Hiltpolt
+ * 
+ */
+public class GoogleChartJSONDataTableCreator {
+
+	protected List<GoogleChartColumnDataTableEntry> columns = new ArrayList<GoogleChartColumnDataTableEntry>();
+	protected List<List<String>> rows = new ArrayList<List<String>>();
+
+	public GoogleChartJSONDataTableCreator() {
+	}
+
+	public void addColum(GoogleChartColumnDataTableEntry column) {
+		this.columns.add(column);
+	}
+
+	public void addRow(String... rowentries) {
+
+		ArrayList<String> s = new ArrayList<String>();
+
+		for (String r : rowentries) {
+			s.add(r);
+		}
+
+		this.rows.add(s);
+	}
+
+	public String toJSON() {
+		String ret = "";
+		ret += " { cols:  [";
+
+		Iterator<GoogleChartColumnDataTableEntry> cit = this.columns.iterator();
+		while (cit.hasNext()) {
+			ret += cit.next().toJSON();
+			if (cit.hasNext()) {
+				ret += ",";
+			}
+		}
+
+		ret += "],";
+
+		ret += "rows: [ ";
+
+		Iterator<List<String>> rowsit = rows.iterator();
+		while (rowsit.hasNext()) {
+
+			ret += "{ c: [";
+
+			Iterator<String> rowit = rowsit.next().iterator();
+
+			while (rowit.hasNext()) {
+				ret += " {v:" + rowit.next() + " }";
+				if (rowit.hasNext()) {
+					ret += ",";
+				}
+			}
+
+			ret += "]}";
+
+			if (rowsit.hasNext()) {
+
+				ret += ",";
+			}
+
+		}
+
+		ret += "] } ";
+
+		return ret;
+	}
+
+}

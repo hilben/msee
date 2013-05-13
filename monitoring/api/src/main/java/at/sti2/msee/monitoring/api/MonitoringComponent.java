@@ -1,6 +1,9 @@
 package at.sti2.msee.monitoring.api;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
@@ -71,8 +74,18 @@ public interface MonitoringComponent {
 
 	public QoSParameter getQoSParameter(URL webService, QoSType qostype)
 			throws MonitoringException, MonitoringNoDataStoredException;
+	
+	public List<QoSParameter> getQoSParametersInTimeframe(URL webService, QoSType qostype, Date start, Date end)
+			throws MonitoringException, MonitoringNoDataStoredException;
+	
+	public List<MonitoringWebserviceAvailabilityState> getAvailabilityStatesInTimeframe(URL webService, Date start, Date end)
+			throws MonitoringException, MonitoringNoDataStoredException;
 
+	public List<MonitoringInvocationInstance> getInvocationInstancesInTimeframe(URL webService, Date start, Date end)
+			throws MonitoringException, MonitoringNoDataStoredException;
+	
 	void updateAvailabilityState(URL WebService,
 			MonitoringWebserviceAvailabilityState state) throws MonitoringException;
 	
+
 }
