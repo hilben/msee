@@ -21,7 +21,6 @@ import org.ontoware.rdf2go.model.Statement;
 import org.ontoware.rdf2go.model.node.Node;
 import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
@@ -55,11 +54,6 @@ public class RDF2GODiscoverTest {
 	public static void setup() throws IOException, RepositoryException,
 			ServiceRegistrationException {
 		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
-
-		DiscoveryConfig config = new DiscoveryConfig();
-		config.setResourceLocation("/test.properties");
-		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
-		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
 
@@ -67,11 +61,12 @@ public class RDF2GODiscoverTest {
 
 	@AfterClass
 	public static void teardown() throws RepositoryException {
-		serviceRepository.shutdown();
+		//serviceRepository.shutdown();
 	}
 
 	@After
 	public void clear() {
+		serviceRepository.getModel().close();
 		serviceRepository.clear();
 	}
 
