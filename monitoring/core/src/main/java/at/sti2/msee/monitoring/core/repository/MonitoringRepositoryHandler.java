@@ -47,7 +47,7 @@ public class MonitoringRepositoryHandler {
 	private MonitoringConfig config = null;
 	private static MonitoringRepositoryHandler handler = null;
 
-	public static MonitoringRepositoryHandler getMonitoringRepositoryHandler()
+	public static MonitoringRepositoryHandler getInstance()
 			throws RepositoryException, IOException {
 		if (handler == null) {
 			handler = new MonitoringRepositoryHandler();

@@ -48,7 +48,7 @@ public class MonitoringRepositoryHandlerTest {
 	@Before
 	public void setUp() throws Exception {
 		repositoryHandler = MonitoringRepositoryHandler
-				.getMonitoringRepositoryHandler();
+				.getInstance();
 		wsURL1 = new URL(ws1);
 		wsURL2 = new URL(ws2);
 		wsURL3 = new URL(ws3);

@@ -39,7 +39,7 @@ public class MonitoringComponentImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		component = new MonitoringComponentImpl();
+		component = MonitoringComponentImpl.getInstance();
 		testService1 = new URL(testServiceURL1);
 		testService2 = new URL(testServiceURL2);
 

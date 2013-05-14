@@ -40,7 +40,7 @@ public class GoogleChart {
 
 		MonitoringComponent m = null;
 		try {
-			m = new MonitoringComponentImpl();
+			m = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e) {
 			throw new MonitoringException(e);
 		}
@@ -112,7 +112,7 @@ public class GoogleChart {
 		ArrayList<String> endpoints = new ArrayList<String>();
 		ArrayList<String> qosParamKeys = new ArrayList<String>();
 
-		MonitoringComponent m = new MonitoringComponentImpl();
+		MonitoringComponent m = MonitoringComponentImpl.getInstance();
 
 		String ws1 = "http://www.example.com/chartws1";
 		String ws2 = "http://www.example.com/chartws2";

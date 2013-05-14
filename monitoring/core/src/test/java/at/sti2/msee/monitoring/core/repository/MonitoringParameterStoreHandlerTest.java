@@ -15,6 +15,7 @@ import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
 
+import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
@@ -33,15 +34,15 @@ public class MonitoringParameterStoreHandlerTest {
 	@Before
 	public void setUp() throws Exception {
 		this.webservice = new URL(someService);
-		MonitoringComponentImpl monitoringComponent = new MonitoringComponentImpl();
+		MonitoringComponent monitoringComponent = MonitoringComponentImpl.getInstance();
 		monitoringComponent.clearAllContentOfWebservice(this.webservice);
 	}
 
 	@Test
 	public void testMonitoringParameterStoreHandler() {
-		MonitoringComponentImpl monitoringComponent = mock(MonitoringComponentImpl.class);
+		MonitoringComponent monitoringComponent = mock(MonitoringComponentImpl.class);
 		try {
-			monitoringComponent = new MonitoringComponentImpl();
+			monitoringComponent = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e1) {
 			fail();
 		}
@@ -56,9 +57,9 @@ public class MonitoringParameterStoreHandlerTest {
 
 	@Test
 	public void testAddUnsuccessfulInvocation() {
-		MonitoringComponentImpl monitoringComponent = mock(MonitoringComponentImpl.class);
+		MonitoringComponent monitoringComponent = mock(MonitoringComponentImpl.class);
 		try {
-			monitoringComponent = new MonitoringComponentImpl();
+			monitoringComponent = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e1) {
 			fail();
 		}
@@ -88,9 +89,9 @@ public class MonitoringParameterStoreHandlerTest {
 
 	@Test
 	public void testAddSuccessfulInvocation() {
-		MonitoringComponentImpl monitoringComponent = mock(MonitoringComponentImpl.class);
+		MonitoringComponent monitoringComponent = mock(MonitoringComponentImpl.class);
 		try {
-			monitoringComponent = new MonitoringComponentImpl();
+			monitoringComponent = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e1) {
 			fail();
 		}

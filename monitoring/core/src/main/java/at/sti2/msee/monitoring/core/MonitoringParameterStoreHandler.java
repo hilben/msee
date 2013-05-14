@@ -34,7 +34,7 @@ public class MonitoringParameterStoreHandler {
 		this.monitoringComponent = monitoringComponent;
 
 		this.repositoryHandler = MonitoringRepositoryHandler
-				.getMonitoringRepositoryHandler();
+				.getInstance();
 	}
 
 

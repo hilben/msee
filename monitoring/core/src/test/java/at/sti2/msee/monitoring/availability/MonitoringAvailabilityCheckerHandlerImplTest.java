@@ -27,7 +27,7 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.monitoringComponent = new MonitoringComponentImpl();
+		this.monitoringComponent = MonitoringComponentImpl.getInstance();
 		this.handler = new MonitoringAvailabilityCheckerHandlerImpl(
 				this.monitoringComponent);
 		this.testWebService1url = new URL(testWebService1);

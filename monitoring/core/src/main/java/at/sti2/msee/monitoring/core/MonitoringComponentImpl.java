@@ -53,18 +53,27 @@ import at.sti2.msee.monitoring.core.repository.MonitoringRepositoryHandler;
 public class MonitoringComponentImpl implements MonitoringComponent {
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
+	
+	private static MonitoringComponentImpl monitoringComponent = null;
 
 	private MonitoringParameterStoreHandler parameterStorageHandler;
 	private MonitoringRepositoryHandler repositoryHandler;
 	private MonitoringAvailabilityCheckerHandlerImpl availabilityHandler;
 
-	public MonitoringComponentImpl() throws IOException, RepositoryException {
+	private MonitoringComponentImpl() throws IOException, RepositoryException {
 		this.repositoryHandler = MonitoringRepositoryHandler
-				.getMonitoringRepositoryHandler();
+				.getInstance();
 		this.parameterStorageHandler = new MonitoringParameterStoreHandler(this);
 		this.availabilityHandler = new MonitoringAvailabilityCheckerHandlerImpl(this);
 	}
 	
+	public static MonitoringComponent getInstance() throws RepositoryException, IOException {
+		if (monitoringComponent==null) {
+			monitoringComponent = new MonitoringComponentImpl();
+		}
+		
+		return monitoringComponent;
+	}
 
 	@Override
 	public boolean isMonitoredWebService(URL webService)
