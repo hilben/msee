@@ -3,8 +3,9 @@ package at.sti2.msee.monitoring.core;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,107 +20,139 @@ import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.core.repository.MonitoringRepositoryHandler;
 
-//TODO: move to core packages
 public class MonitoringParameterStoreHandler {
 
-	private MonitoringComponent monitoringComponent;
 	private MonitoringRepositoryHandler repositoryHandler;
 
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
-	public MonitoringParameterStoreHandler(
-			MonitoringComponent monitoringComponent)
-			throws RepositoryException, IOException {
-		this.monitoringComponent = monitoringComponent;
+	private List<QoSParameter> qosParamsForCommit = null;
+	
+	private double successfullRequests = 0;
 
-		this.repositoryHandler = MonitoringRepositoryHandler
-				.getInstance();
+	private MonitoringComponent monitoringComponent;
+
+	public MonitoringParameterStoreHandler() throws RepositoryException,
+			IOException {
+
+		this.repositoryHandler = MonitoringRepositoryHandler.getInstance();
+
+		this.qosParamsForCommit = new ArrayList<QoSParameter>();
+	}
+	
+	
+	private void prepareQoSParamterForCommit(QoSParameter qosParam) {
+		QoSParameter copyOfparam = new QoSParameter(qosParam.getType(), qosParam.getValue(), qosParam.getDate());
+		this.qosParamsForCommit.add(copyOfparam);		
 	}
 
+	public void addUnsuccessfulInvocation(URL webService)
+			throws RepositoryException, MalformedQueryException,
+			UpdateExecutionException, MonitoringException, ParseException,
+			IOException {
+		this.qosParamsForCommit.clear();
+		this.monitoringComponent = MonitoringComponentImpl.getInstance();
 
-	public void addUnsuccessfulInvocation(URL webService) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
-		//increase successful requests
+		// increase successful requests
 		QoSParameter requestSuccessful = new QoSParameter(
 				QoSType.RequestFailed, "1", new Date());
 		this.addTotalParameterValue(webService, requestSuccessful);
-		
-		//increase total requests
-		QoSParameter requestTotal = new QoSParameter(
-				QoSType.RequestTotal, "1", new Date());
+
+		// increase total requests
+		QoSParameter requestTotal = new QoSParameter(QoSType.RequestTotal, "1",
+				new Date());
 		this.addTotalParameterValue(webService, requestTotal);
+
+		this.updateRepository(webService);
 	}
 
-	
+	private void updateRepository(URL webservice) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException {
+		this.repositoryHandler.addQoSParametersForEndpoint(webservice,
+				this.qosParamsForCommit);
+	}
+
 	public void addSuccessfulInvocation(URL webService,
 			double payloadSizeResponse, double payloadSizeRequest,
-			double responseTime) throws RepositoryException, MalformedQueryException, UpdateExecutionException, IOException, MonitoringException, ParseException {
+			double responseTime) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException,
+			MonitoringException, ParseException {
 
-		//increase successful requests
+		this.monitoringComponent = MonitoringComponentImpl.getInstance();
+		this.qosParamsForCommit.clear();
+
+		// increase successful requests
 		QoSParameter requestSuccessful = new QoSParameter(
 				QoSType.RequestSuccessful, "1", new Date());
-		this.addTotalParameterValue(webService, requestSuccessful);
 		
-		//increase total requests
-		QoSParameter requestTotal = new QoSParameter(
-				QoSType.RequestTotal, "1", new Date());
+		successfullRequests = this.addTotalParameterValue(webService,
+				requestSuccessful);
+
+		// increase total requests
+		QoSParameter requestTotal = new QoSParameter(QoSType.RequestTotal, "1",
+				new Date());
 		this.addTotalParameterValue(webService, requestTotal);
-		
-		//PayloadSizeRequest
+
+		// PayloadSizeRequest
 		QoSParameter playoadSizeRequestParameter = new QoSParameter(
 				QoSType.PayloadSizeRequest, String.valueOf(payloadSizeRequest),
 				new Date());
-		this.repositoryHandler.addQoSParameter(webService, UUID.randomUUID().toString(),
-				playoadSizeRequestParameter);
-		
+
+		this.prepareQoSParamterForCommit(playoadSizeRequestParameter);
+
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestAverage);
 		this.addAverageParameterValue(webService, playoadSizeRequestParameter);
-		
+
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestTotal);
 		this.addTotalParameterValue(webService, playoadSizeRequestParameter);
-		
+
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestMinimum);
 		this.addMinimumParameterValue(webService, playoadSizeRequestParameter);
-		
+
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestMaximum);
 		this.addMaximumParameterValue(webService, playoadSizeRequestParameter);
-		
-		//PayloadSizeResponse
+
+		// PayloadSizeResponse
 		QoSParameter playloadSizeResponseParameter = new QoSParameter(
 				QoSType.PayloadSizeResponse,
 				String.valueOf(payloadSizeResponse), new Date());
-		this.repositoryHandler.addQoSParameter(webService,UUID.randomUUID().toString(),
-				playloadSizeResponseParameter);
-		
-		playloadSizeResponseParameter.setType(QoSType.PayloadSizeResponseAverage);
+
+		this.prepareQoSParamterForCommit(playloadSizeResponseParameter);
+
+		playloadSizeResponseParameter
+				.setType(QoSType.PayloadSizeResponseAverage);
 		this.addAverageParameterValue(webService, playloadSizeResponseParameter);
-		
+
 		playloadSizeResponseParameter.setType(QoSType.PayloadSizeResponseTotal);
 		this.addTotalParameterValue(webService, playloadSizeResponseParameter);
-		
-		playloadSizeResponseParameter.setType(QoSType.PayloadSizeResponseMinimum);
+
+		playloadSizeResponseParameter
+				.setType(QoSType.PayloadSizeResponseMinimum);
 		this.addMinimumParameterValue(webService, playloadSizeResponseParameter);
-		
-		playloadSizeResponseParameter.setType(QoSType.PayloadSizeResponseMaximum);
+
+		playloadSizeResponseParameter
+				.setType(QoSType.PayloadSizeResponseMaximum);
 		this.addMaximumParameterValue(webService, playloadSizeResponseParameter);
-		
-		//ResponseTime
+
+		// ResponseTime
 		QoSParameter responseTimeParameter = new QoSParameter(
 				QoSType.ResponseTime, String.valueOf(responseTime), new Date());
-		this.repositoryHandler.addQoSParameter(webService, UUID.randomUUID().toString(),
-				responseTimeParameter);
-		
+		this.prepareQoSParamterForCommit(responseTimeParameter);
+
 		responseTimeParameter.setType(QoSType.ResponseTimeAverage);
 		this.addAverageParameterValue(webService, responseTimeParameter);
-		
+
 		responseTimeParameter.setType(QoSType.ResponseTimeTotal);
 		this.addTotalParameterValue(webService, responseTimeParameter);
-		
+
 		responseTimeParameter.setType(QoSType.ResponseTimeMinimum);
 		this.addMinimumParameterValue(webService, responseTimeParameter);
-		
+
 		responseTimeParameter.setType(QoSType.ResponseTimeMaximum);
 		this.addMaximumParameterValue(webService, responseTimeParameter);
+
+		this.updateRepository(webService);
 	}
 
 	private void addAverageParameterValue(URL webservice, QoSParameter parameter)
@@ -136,32 +169,19 @@ public class MonitoringParameterStoreHandler {
 		}
 		double oldAverageValue = Double.parseDouble(oldAverageValueStr);
 
-		String totalSuccessfullRequestsStr;
-		try {
-			totalSuccessfullRequestsStr = this.monitoringComponent
-					.getQoSParameter(webservice, QoSType.RequestSuccessful)
-					.getValue();
-		} catch (MonitoringNoDataStoredException e) {
-			totalSuccessfullRequestsStr = "0";
-		}
-		double totalSuccessfullRequests = Double
-				.parseDouble(totalSuccessfullRequestsStr);
-
 		double newCurrentValue = Double.parseDouble(parameter.getValue());
 
 		double newAverageValue = ((oldAverageValue
-				* (totalSuccessfullRequests - 1) + newCurrentValue) / totalSuccessfullRequests);
+				* (this.successfullRequests - 1) + newCurrentValue) / this.successfullRequests);
 
 		QoSParameter newAverageParameter = new QoSParameter(
 				parameter.getType(), String.valueOf(newAverageValue),
 				parameter.getTime());
-		String id = UUID.randomUUID().toString();
 
-		this.repositoryHandler.addQoSParameter(webservice, id,
-				newAverageParameter);
+		this.prepareQoSParamterForCommit(newAverageParameter);
 	}
 
-	private void addTotalParameterValue(URL webservice, QoSParameter parameter)
+	private double addTotalParameterValue(URL webservice, QoSParameter parameter)
 			throws MonitoringException, ParseException, RepositoryException,
 			MalformedQueryException, UpdateExecutionException, IOException {
 
@@ -181,10 +201,10 @@ public class MonitoringParameterStoreHandler {
 
 		QoSParameter newTotalParameter = new QoSParameter(parameter.getType(),
 				String.valueOf(newTotalValue), parameter.getTime());
-		String id = UUID.randomUUID().toString();
 
-		this.repositoryHandler.addQoSParameter(webservice, id,
-				newTotalParameter);
+		this.prepareQoSParamterForCommit(newTotalParameter);
+
+		return newTotalValue;
 
 	}
 
@@ -213,10 +233,7 @@ public class MonitoringParameterStoreHandler {
 
 		}
 
-		String id = UUID.randomUUID().toString();
-
-		this.repositoryHandler.addQoSParameter(webservice, id,
-				newMinimumParameter);
+		this.prepareQoSParamterForCommit(newMinimumParameter);
 	}
 
 	private void addMaximumParameterValue(URL webservice, QoSParameter parameter)
@@ -245,10 +262,7 @@ public class MonitoringParameterStoreHandler {
 
 		}
 
-		String id = UUID.randomUUID().toString();
-
-		this.repositoryHandler.addQoSParameter(webservice, id,
-				newMaximumParameter);
+		this.prepareQoSParamterForCommit(newMaximumParameter);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -229,6 +230,30 @@ public class MonitoringRepositoryHandler {
 		m.close();
 	}
 
+	/**
+	 * @param url
+	 * @param qosparam
+	 * @throws UpdateExecutionException
+	 * @throws MalformedQueryException
+	 * @throws RepositoryException
+	 * @throws IOException
+	 */
+	public void addQoSParametersForEndpoint(URL url,
+			List<QoSParameter> qosparams) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException {
+		Model m = this.serviceRepository.getModel();
+		m.open();
+
+		String query = MonitoringQueryBuilder.addQoSParams(url, qosparams);
+		System.out.println(query);
+		this.serviceRepository.performSPARQLUpdate(query);
+
+		LOGGER.debug("ADDED " + qosparams.size() + " new qos params");
+		System.out.println("ADDED " + qosparams.size() + " new qos params");
+
+		m.close();
+	}
+
 	public QoSParameter getCurrentQoSParameter(URL url, QoSType qosparamtype)
 			throws IOException, RepositoryException, MalformedQueryException,
 			UpdateExecutionException, ParseException,
@@ -333,10 +358,9 @@ public class MonitoringRepositoryHandler {
 	}
 
 	public ArrayList<MonitoringWebserviceAvailability> getAllAvailabilityStatesInTimeframe(
-			URL webService)
-			throws MonitoringNoDataStoredException, IOException, ParseException {
-		return this.getAllAvailabilityStatesInTimeframe(webService, null,
-				null);
+			URL webService) throws MonitoringNoDataStoredException,
+			IOException, ParseException {
+		return this.getAllAvailabilityStatesInTimeframe(webService, null, null);
 	}
 
 	public ArrayList<MonitoringWebserviceAvailability> getAllAvailabilityStatesInTimeframe(

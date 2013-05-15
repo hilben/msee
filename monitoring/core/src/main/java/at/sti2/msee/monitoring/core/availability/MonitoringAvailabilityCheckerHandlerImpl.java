@@ -30,11 +30,20 @@ public class MonitoringAvailabilityCheckerHandlerImpl implements
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
 
-	public MonitoringAvailabilityCheckerHandlerImpl(
-			MonitoringComponent monitoringComponent) {
+	private static MonitoringAvailabilityCheckerHandlerImpl availChecker = null;
+	
+	private MonitoringAvailabilityCheckerHandlerImpl() throws RepositoryException, IOException {
 		this.executor = Executors.newCachedThreadPool();
 		this.checkedEndpoints = Collections.synchronizedList(new ArrayList<URL>());
-		this.monitoringComponent = monitoringComponent;
+		this.monitoringComponent = MonitoringComponentImpl.getInstance();
+	}
+	
+	public static MonitoringAvailabilityCheckerHandlerImpl getInstance() throws RepositoryException, IOException {
+		if (availChecker==null) {
+			availChecker = new MonitoringAvailabilityCheckerHandlerImpl();
+		}
+		
+		return availChecker;
 	}
 
 	@Override

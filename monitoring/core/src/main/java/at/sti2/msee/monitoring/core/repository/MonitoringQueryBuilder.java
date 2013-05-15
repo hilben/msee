@@ -2,6 +2,8 @@ package at.sti2.msee.monitoring.core.repository;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.UUID;
 
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
@@ -384,6 +386,47 @@ public class MonitoringQueryBuilder {
 		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
 
 		return queryString.toString();
+	}
+
+	public static String addQoSParams(URL url, List<QoSParameter> qosparams) throws IOException {
+		String ns = MonitoringOntology.getMonitoringOntology().NS;
+		
+		String completeQuery ="";
+		for (QoSParameter qosparam : qosparams) {
+		String query = new String("\nWITH ?webservice\n"
+				+ "DELETE {?webservice  ?hascurqos  ?curparamid }    \n"
+				+ "WHERE { ?curparamid ?hastype ?qostype}; \n"
+				+ "INSERT DATA\n" + "{ " + "GRAPH ?webservice {"
+				+ "?webservice  ?hascurqos  ?qosparamid  . \n"
+				+ "?webservice ?hasqos ?qosparamid  . \n"
+				+ "?qosparamid ?hasvalue ?qosvalue  . \n"
+				+ "?qosparamid ?hastime ?qostime. \n"
+				+ "?qosparamid ?hastype ?qostype" + " } };");
+
+		ParameterizedSparqlString queryString = new ParameterizedSparqlString(
+				query);
+
+		queryString.setIri("?webservice", url);
+		queryString.setIri("?qosparamid", ns + UUID.randomUUID());
+		queryString.setLiteral("?qosvalue", qosparam.getValue());
+		queryString.setLiteral("?qostime", qosparam.getTime()+xsddatetime);
+		queryString.setIri("?qostype", ns + qosparam.getType().toString());
+
+		queryString.setIri("?hascurqos", ns
+				+ MonitoringOntology.hasCurrentQoSParameter);
+		queryString.setIri("?hasqos", ns + MonitoringOntology.hasQoSParameter);
+		queryString.setIri("?hastype", ns + MonitoringOntology.hasQoSType);
+		queryString.setIri("?hasvalue", ns + MonitoringOntology.hasQoSValue);
+		queryString.setIri("?hastime", ns + MonitoringOntology.hasDateTime);
+		
+		
+		completeQuery += queryString;
+		}
+		
+		ParameterizedSparqlString finalQuery = new ParameterizedSparqlString(completeQuery);
+		MonitoringQueryBuilder.setNSPrefix(finalQuery);
+		
+		return finalQuery.toString();
 	}
 
 }

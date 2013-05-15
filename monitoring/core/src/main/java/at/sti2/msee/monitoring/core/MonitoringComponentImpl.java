@@ -58,13 +58,12 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 
 	private MonitoringParameterStoreHandler parameterStorageHandler;
 	private MonitoringRepositoryHandler repositoryHandler;
-	private MonitoringAvailabilityCheckerHandlerImpl availabilityHandler;
 
 	private MonitoringComponentImpl() throws IOException, RepositoryException {
 		this.repositoryHandler = MonitoringRepositoryHandler
 				.getInstance();
-		this.parameterStorageHandler = new MonitoringParameterStoreHandler(this);
-		this.availabilityHandler = new MonitoringAvailabilityCheckerHandlerImpl(this);
+		this.parameterStorageHandler = new MonitoringParameterStoreHandler();
+
 	}
 	
 	public static MonitoringComponent getInstance() throws RepositoryException, IOException {
@@ -151,7 +150,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					true);
-			this.availabilityHandler.addEndpoint(webService);
+			MonitoringAvailabilityCheckerHandlerImpl.getInstance().addEndpoint(webService);
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
 			LOGGER.error("Error enabling Monitoring " + e.getLocalizedMessage());
@@ -164,7 +163,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					false);
-			this.availabilityHandler.removeEndpoint(webService);
+			MonitoringAvailabilityCheckerHandlerImpl.getInstance().removeEndpoint(webService);
 			
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
@@ -288,7 +287,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		return "MonitoringComponentImpl [LOGGER=" + LOGGER
 				+ ", parameterStorageHandler=" + parameterStorageHandler
 				+ ", repositoryHandler=" + repositoryHandler
-				+ ", availabilityHandler=" + availabilityHandler + "]";
+				+ "]";
 	}
 
 

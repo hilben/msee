@@ -1,6 +1,8 @@
 package at.sti2.msee.monitoring.availability;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
 
@@ -8,10 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.availability.MonitoringAvailabilityCheckerHandler;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 import at.sti2.msee.monitoring.core.availability.MonitoringAvailabilityCheckerHandlerImpl;
 
 public class MonitoringAvailabilityCheckerHandlerImplTest {
@@ -23,13 +23,10 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 	private String testWebService2 = new String("http://www.test.com/test2");
 	private URL testWebService2url = null;
 
-	private MonitoringComponent monitoringComponent;
 
 	@Before
 	public void setUp() throws Exception {
-		this.monitoringComponent = MonitoringComponentImpl.getInstance();
-		this.handler = new MonitoringAvailabilityCheckerHandlerImpl(
-				this.monitoringComponent);
+		this.handler = MonitoringAvailabilityCheckerHandlerImpl.getInstance();
 		this.testWebService1url = new URL(testWebService1);
 		this.testWebService2url = new URL(testWebService2);
 	}

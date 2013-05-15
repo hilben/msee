@@ -8,11 +8,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.ontoware.aifbcommons.collection.ClosableIterator;
@@ -46,12 +48,19 @@ public class MonitoringRepositoryHandlerTest {
 	URL wsURL3 = null;
 
 	@Before
-	public void setUp() throws Exception {
-		repositoryHandler = MonitoringRepositoryHandler
-				.getInstance();
-		wsURL1 = new URL(ws1);
-		wsURL2 = new URL(ws2);
-		wsURL3 = new URL(ws3);
+	public void setUp() {
+		try {
+			repositoryHandler = MonitoringRepositoryHandler.getInstance();
+
+			wsURL1 = new URL(ws1);
+			wsURL2 = new URL(ws2);
+			wsURL3 = new URL(ws3);
+
+			this.repositoryHandler.clearAllContentForWebservice(wsURL1);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e1) {
+			fail();
+		}
 	}
 
 	@Test
@@ -96,6 +105,10 @@ public class MonitoringRepositoryHandlerTest {
 	@Test
 	public void testClearAllContentForWebservice() throws RepositoryException,
 			MalformedQueryException, UpdateExecutionException, IOException {
+
+		this.repositoryHandler.addQoSParameter(wsURL1, "someuudi",
+				new QoSParameter(QoSType.AvailableTime, "asdf", new Date()));
+
 		Model m1full = repositoryHandler.getServiceRepository().getModel();
 		m1full.open();
 		QueryResultTable t1full = m1full.sparqlSelect(MonitoringQueryBuilder
@@ -216,12 +229,6 @@ public class MonitoringRepositoryHandlerTest {
 
 	@Test
 	public void testGetAllQoSParameterInTimeframe() {
-		try {
-			this.repositoryHandler.clearAllContentForWebservice(wsURL1);
-		} catch (RepositoryException | MalformedQueryException
-				| UpdateExecutionException | IOException e1) {
-			fail();
-		}
 
 		ArrayList<QoSParameter> qosparams = new ArrayList<QoSParameter>();
 		ArrayList<String> times = new ArrayList<String>();
@@ -277,12 +284,6 @@ public class MonitoringRepositoryHandlerTest {
 	@Test
 	public void testGetAllAvailabilityStatesInTimeframe() throws IOException,
 			ParseException {
-		try {
-			this.repositoryHandler.clearAllContentForWebservice(wsURL1);
-		} catch (RepositoryException | MalformedQueryException
-				| UpdateExecutionException | IOException e1) {
-			fail();
-		}
 
 		ArrayList<MonitoringWebserviceAvailability> availabilities = new ArrayList<MonitoringWebserviceAvailability>();
 		ArrayList<String> times = new ArrayList<String>();
@@ -351,6 +352,60 @@ public class MonitoringRepositoryHandlerTest {
 	@Ignore
 	public void testGetInvocationInstance() {
 		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public void testAddQoSParameterForEndpoint() {
+		List<QoSParameter> qosparams = new ArrayList<QoSParameter>();
+
+		Date now = new Date();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ssZ");
+		String time = simpleDateFormat.format(now);
+
+		try {
+			qosparams
+					.add(new QoSParameter(QoSType.AvailableTime, "1231", time));
+			qosparams
+					.add(new QoSParameter(QoSType.MonitoredTime, "1232", time));
+			qosparams.add(new QoSParameter(QoSType.PayloadSizeResponseMinimum,
+					"1233", time));
+		} catch (ParseException e1) {
+			fail();
+		}
+
+		try {
+			this.repositoryHandler.addQoSParametersForEndpoint(wsURL1,
+					qosparams);
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException e) {
+			fail();
+		}
+
+		try {
+			QoSParameter q1 = this.repositoryHandler.getCurrentQoSParameter(
+					wsURL1, QoSType.AvailableTime);
+
+			QoSParameter q2 = this.repositoryHandler.getCurrentQoSParameter(
+					wsURL1, QoSType.MonitoredTime);
+
+			QoSParameter q3 = this.repositoryHandler.getCurrentQoSParameter(
+					wsURL1, QoSType.PayloadSizeResponseMinimum);
+
+			assertTrue(q1.getType() == QoSType.AvailableTime);
+			assertTrue(q1.getTime().compareTo(time) == 0);
+
+			assertTrue(q2.getType() == QoSType.MonitoredTime);
+			assertTrue(q2.getTime().compareTo(time) == 0);
+
+			assertTrue(q3.getType() == QoSType.PayloadSizeResponseMinimum);
+			assertTrue(q3.getTime().compareTo(time) == 0);
+
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException | ParseException
+				| MonitoringNoDataStoredException e) {
+			fail();
+		}
 	}
 
 }
