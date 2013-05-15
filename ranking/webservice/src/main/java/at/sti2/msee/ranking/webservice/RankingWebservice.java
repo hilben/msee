@@ -5,8 +5,8 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
-import at.sti2.ranking.api.ws.IRankingWebService;
-import at.sti2.ranking.core.ranking.QoSRankingEngine;
+import at.sti2.msee.ranking.core.QoSRankingEngine;
+import at.sti2.msee.ranking.webservice.IRankingWebService;
 
 public class RankingWebservice implements IRankingWebService {
 

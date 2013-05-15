@@ -39,7 +39,6 @@ import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
-import at.sti2.msee.monitoring.core.MonitoringInvocationInstanceImpl;
 
 /**
  * @author Benjamin Hiltpolt
@@ -54,7 +53,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 
 	public ServiceInvocationImpl() {
 		try {
-			this.monitoring = new MonitoringComponentImpl();
+			this.monitoring = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e) {
 			logger.error("Invocation could not initialize the MonitoringComponent");
 			this.monitoring = null;
