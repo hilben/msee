@@ -40,7 +40,7 @@ public class MonitoringAvailabilityCheckerImpl implements
 		this.monitoringComponent = monitoringComponent;
 
 		this.monitoringComponent.updateAvailabilityState(this.url,
-				MonitoringWebserviceAvailabilityState.NotChecked);
+				MonitoringWebserviceAvailabilityState.NotChecked,INTERVALL_SECONDS);
 	}
 
 	@Override
@@ -49,24 +49,24 @@ public class MonitoringAvailabilityCheckerImpl implements
 			while (this.handler.isCheckingEndpoint(this.url)) {
 				if (this.isAdressIsAvailable(url)) {
 					this.monitoringComponent.updateAvailabilityState(this.url,
-							MonitoringWebserviceAvailabilityState.Available);
+							MonitoringWebserviceAvailabilityState.Available,INTERVALL_SECONDS);
 
 				} else {
 					this.monitoringComponent.updateAvailabilityState(this.url,
-							MonitoringWebserviceAvailabilityState.Unavailable);
+							MonitoringWebserviceAvailabilityState.Unavailable,INTERVALL_SECONDS);
 
 				}
 				
 				Thread.sleep(INTERVALL_SECONDS*1000);
 			}
 			this.monitoringComponent.updateAvailabilityState(this.url,
-					MonitoringWebserviceAvailabilityState.NotChecked);
+					MonitoringWebserviceAvailabilityState.NotChecked,INTERVALL_SECONDS);
 			
 		} catch (MonitoringException | InterruptedException e) {
 			try {
 				LOGGER.error("Error updating availability of webservice ", e);
 				this.monitoringComponent.updateAvailabilityState(url,
-						MonitoringWebserviceAvailabilityState.NotChecked);
+						MonitoringWebserviceAvailabilityState.NotChecked,INTERVALL_SECONDS);
 			} catch (MonitoringException e1) {
 				LOGGER.error("Error checking availability of webservice ", e);
 			}

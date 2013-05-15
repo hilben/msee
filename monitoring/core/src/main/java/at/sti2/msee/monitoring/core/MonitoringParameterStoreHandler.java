@@ -14,6 +14,7 @@ import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.monitoring.api.MonitoringComponent;
+import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
@@ -28,12 +29,12 @@ public class MonitoringParameterStoreHandler {
 			.getName());
 
 	private List<QoSParameter> qosParamsForCommit = null;
-	
+
 	private double successfullRequests = 0;
 
 	private MonitoringComponent monitoringComponent;
 
-	public MonitoringParameterStoreHandler() throws RepositoryException,
+	private MonitoringParameterStoreHandler() throws RepositoryException,
 			IOException {
 
 		this.repositoryHandler = MonitoringRepositoryHandler.getInstance();
@@ -41,13 +42,50 @@ public class MonitoringParameterStoreHandler {
 		this.qosParamsForCommit = new ArrayList<QoSParameter>();
 	}
 	
+
+	public static void updateMonitoredTime(URL webService,
+			MonitoringWebserviceAvailabilityState state, double monitoredTime) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
+		new MonitoringParameterStoreHandler().doUpdateMonitoredTime(webService, state, monitoredTime);
+	}
 	
-	private void prepareQoSParamterForCommit(QoSParameter qosParam) {
-		QoSParameter copyOfparam = new QoSParameter(qosParam.getType(), qosParam.getValue(), qosParam.getDate());
-		this.qosParamsForCommit.add(copyOfparam);		
+	public static void addUnsuccessfulInvocation(URL webService) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
+		new MonitoringParameterStoreHandler().doAddUnsuccessfulInvocation(webService);
+	}
+	
+	public static void addSuccessfulInvocation(URL webService,
+			double payloadSizeResponse, double payloadSizeRequest,
+			double responseTime) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException,
+			MonitoringException, ParseException {
+		new MonitoringParameterStoreHandler().doAddSuccessfulInvocation(webService, payloadSizeResponse, payloadSizeRequest, responseTime);
 	}
 
-	public void addUnsuccessfulInvocation(URL webService)
+	private void doUpdateMonitoredTime(URL webService,
+			MonitoringWebserviceAvailabilityState state, double monitoredTime)
+			throws RepositoryException, MalformedQueryException,
+			UpdateExecutionException, MonitoringException, ParseException,
+			IOException {
+		this.qosParamsForCommit.clear();
+		this.monitoringComponent = MonitoringComponentImpl.getInstance();
+
+		QoSParameter q = new QoSParameter(QoSType.MonitoredTime,
+				String.valueOf(monitoredTime), new Date());
+		this.addTotalParameterValue(webService, q);
+
+		if (state == MonitoringWebserviceAvailabilityState.Available) {
+			QoSParameter avail = new QoSParameter(QoSType.AvailableTime,
+					String.valueOf(monitoredTime), new Date());
+			this.addTotalParameterValue(webService, avail);
+		} else {
+			QoSParameter unavail = new QoSParameter(QoSType.UnavailableTime,
+					String.valueOf(monitoredTime), new Date());
+			this.addTotalParameterValue(webService, unavail);
+		}
+
+		this.updateRepository(webService);
+	}
+
+	private void doAddUnsuccessfulInvocation(URL webService)
 			throws RepositoryException, MalformedQueryException,
 			UpdateExecutionException, MonitoringException, ParseException,
 			IOException {
@@ -67,13 +105,7 @@ public class MonitoringParameterStoreHandler {
 		this.updateRepository(webService);
 	}
 
-	private void updateRepository(URL webservice) throws RepositoryException,
-			MalformedQueryException, UpdateExecutionException, IOException {
-		this.repositoryHandler.addQoSParametersForEndpoint(webservice,
-				this.qosParamsForCommit);
-	}
-
-	public void addSuccessfulInvocation(URL webService,
+	private void doAddSuccessfulInvocation(URL webService,
 			double payloadSizeResponse, double payloadSizeRequest,
 			double responseTime) throws RepositoryException,
 			MalformedQueryException, UpdateExecutionException, IOException,
@@ -85,7 +117,7 @@ public class MonitoringParameterStoreHandler {
 		// increase successful requests
 		QoSParameter requestSuccessful = new QoSParameter(
 				QoSType.RequestSuccessful, "1", new Date());
-		
+
 		successfullRequests = this.addTotalParameterValue(webService,
 				requestSuccessful);
 
@@ -263,6 +295,19 @@ public class MonitoringParameterStoreHandler {
 		}
 
 		this.prepareQoSParamterForCommit(newMaximumParameter);
+	}
+
+	private void updateRepository(URL webservice) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException {
+		this.repositoryHandler.addQoSParametersForEndpoint(webservice,
+				this.qosParamsForCommit);
+	}
+	
+
+	private void prepareQoSParamterForCommit(QoSParameter qosParam) {
+		QoSParameter copyOfparam = new QoSParameter(qosParam.getType(),
+				qosParam.getValue(), qosParam.getDate());
+		this.qosParamsForCommit.add(copyOfparam);
 	}
 
 }

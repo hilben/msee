@@ -158,7 +158,7 @@ public interface MonitoringComponent {
 	 * @throws MonitoringException
 	 */
 	void updateAvailabilityState(URL WebService,
-			MonitoringWebserviceAvailabilityState state)
+			MonitoringWebserviceAvailabilityState state, double monitoredTimeMinutes)
 			throws MonitoringException;
 
 }

@@ -245,11 +245,9 @@ public class MonitoringRepositoryHandler {
 		m.open();
 
 		String query = MonitoringQueryBuilder.addQoSParams(url, qosparams);
-		System.out.println(query);
 		this.serviceRepository.performSPARQLUpdate(query);
 
 		LOGGER.debug("ADDED " + qosparams.size() + " new qos params");
-		System.out.println("ADDED " + qosparams.size() + " new qos params");
 
 		m.close();
 	}

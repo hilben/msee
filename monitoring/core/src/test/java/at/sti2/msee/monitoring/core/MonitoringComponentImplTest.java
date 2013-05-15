@@ -141,12 +141,20 @@ public class MonitoringComponentImplTest {
 
 	@Test
 	public void testUpdateAvailabilityState() {
-		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.NotChecked;
-		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.NotChecked;
+		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.Available;
+		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.Unavailable;
 		try {
-			component.updateAvailabilityState(testService1, state1);
-			component.updateAvailabilityState(testService1, state2);
-		} catch (MonitoringException e) {
+			component.updateAvailabilityState(testService1, state1, 1234);
+			component.updateAvailabilityState(testService1, state2, 4321);
+
+			assertTrue("5555.0".compareTo(component.getQoSParameter(
+					testService1, QoSType.MonitoredTime).getValue())==0);
+			assertTrue("1234.0".compareTo(component.getQoSParameter(
+					testService1, QoSType.AvailableTime).getValue())==0);
+			assertTrue("4321.0".compareTo(component.getQoSParameter(
+					testService1, QoSType.UnavailableTime).getValue())==0);
+			
+		} catch (MonitoringException | MonitoringNoDataStoredException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -159,11 +167,11 @@ public class MonitoringComponentImplTest {
 		MonitoringWebserviceAvailabilityState state3 = MonitoringWebserviceAvailabilityState.Available;
 
 		try {
-			component.updateAvailabilityState(testService1, state1);
-			component.updateAvailabilityState(testService1, state2);
-			component.updateAvailabilityState(testService1, state3);
+			component.updateAvailabilityState(testService1, state1, 1);
+			component.updateAvailabilityState(testService1, state2, 1);
+			component.updateAvailabilityState(testService1, state3, 1);
 
-			component.updateAvailabilityState(testService2, state2);
+			component.updateAvailabilityState(testService2, state2, 1);
 
 			assertTrue(component.getAvailability(testService1).getState() == state3);
 			assertTrue(component.getAvailability(testService2).getState() == state2);
@@ -278,8 +286,8 @@ public class MonitoringComponentImplTest {
 		try {
 			component.addSuccessfulInvocationData(testService1, 101, 102, 103);
 
-//			QoSParameter payRespo = component.getQoSParameter(testService1,
-//					QoSType.PayloadSizeResponse);
+			QoSParameter payRespo = component.getQoSParameter(testService1,
+					QoSType.PayloadSizeResponse);
 			QoSParameter payReq = component.getQoSParameter(testService1,
 					QoSType.PayloadSizeRequest);
 			QoSParameter respTime = component.getQoSParameter(testService1,
@@ -288,14 +296,14 @@ public class MonitoringComponentImplTest {
 			QoSParameter respTimeAve = component.getQoSParameter(testService1,
 					QoSType.ResponseTimeAverage);
 
-//			assertTrue(payRespo.getValue().compareTo("101.0") == 0);
-//			assertTrue(payReq.getValue().compareTo("102.0") == 0);
-//			assertTrue(respTime.getValue().compareTo("103.0") == 0);
-//
-//			assertTrue(payRespo.getType() == QoSType.PayloadSizeResponse);
-//			assertTrue(payReq.getType() == QoSType.PayloadSizeRequest);
-//			assertTrue(respTime.getType() == QoSType.ResponseTime);
-//			assertTrue(respTimeAve.getType() == QoSType.ResponseTimeAverage);
+			assertTrue(payRespo.getValue().compareTo("101.0") == 0);
+			assertTrue(payReq.getValue().compareTo("102.0") == 0);
+			assertTrue(respTime.getValue().compareTo("103.0") == 0);
+
+			assertTrue(payRespo.getType() == QoSType.PayloadSizeResponse);
+			assertTrue(payReq.getType() == QoSType.PayloadSizeRequest);
+			assertTrue(respTime.getType() == QoSType.ResponseTime);
+			assertTrue(respTimeAve.getType() == QoSType.ResponseTimeAverage);
 
 		} catch (MonitoringException | MonitoringNoDataStoredException e) {
 			e.printStackTrace();

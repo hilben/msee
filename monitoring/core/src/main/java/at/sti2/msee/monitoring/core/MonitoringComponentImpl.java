@@ -53,24 +53,22 @@ import at.sti2.msee.monitoring.core.repository.MonitoringRepositoryHandler;
 public class MonitoringComponentImpl implements MonitoringComponent {
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
-	
+
 	private static MonitoringComponentImpl monitoringComponent = null;
 
-	private MonitoringParameterStoreHandler parameterStorageHandler;
 	private MonitoringRepositoryHandler repositoryHandler;
 
 	private MonitoringComponentImpl() throws IOException, RepositoryException {
-		this.repositoryHandler = MonitoringRepositoryHandler
-				.getInstance();
-		this.parameterStorageHandler = new MonitoringParameterStoreHandler();
+		this.repositoryHandler = MonitoringRepositoryHandler.getInstance();
 
 	}
-	
-	public static MonitoringComponent getInstance() throws RepositoryException, IOException {
-		if (monitoringComponent==null) {
+
+	public synchronized static MonitoringComponent getInstance()
+			throws RepositoryException, IOException {
+		if (monitoringComponent == null) {
 			monitoringComponent = new MonitoringComponentImpl();
 		}
-		
+
 		return monitoringComponent;
 	}
 
@@ -150,7 +148,8 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					true);
-			MonitoringAvailabilityCheckerHandlerImpl.getInstance().addEndpoint(webService);
+			MonitoringAvailabilityCheckerHandlerImpl.getInstance().addEndpoint(
+					webService);
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
 			LOGGER.error("Error enabling Monitoring " + e.getLocalizedMessage());
@@ -163,8 +162,9 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.enableMonitoringForWebservice(webService,
 					false);
-			MonitoringAvailabilityCheckerHandlerImpl.getInstance().removeEndpoint(webService);
-			
+			MonitoringAvailabilityCheckerHandlerImpl.getInstance()
+					.removeEndpoint(webService);
+
 		} catch (IOException | RepositoryException | MalformedQueryException
 				| UpdateExecutionException e) {
 			LOGGER.error("Error enabling Monitoring " + e.getLocalizedMessage());
@@ -174,7 +174,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 
 	@Override
 	public void updateAvailabilityState(URL webService,
-			MonitoringWebserviceAvailabilityState state)
+			MonitoringWebserviceAvailabilityState state, double monitoredTime)
 			throws MonitoringException {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
@@ -184,7 +184,11 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			this.repositoryHandler.updateAvailabilityState(webService, state,
 					time);
-		} catch (RepositoryException | MalformedQueryException
+
+			MonitoringParameterStoreHandler.updateMonitoredTime(webService, state,
+					monitoredTime);
+
+		} catch (RepositoryException | ParseException | MalformedQueryException
 				| UpdateExecutionException | IOException e) {
 			LOGGER.error("Error updating AvailabilityState"
 					+ e.getLocalizedMessage());
@@ -236,7 +240,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 			double responseTime) throws MonitoringException {
 
 		try {
-			this.parameterStorageHandler.addSuccessfulInvocation(webService,
+			MonitoringParameterStoreHandler.addSuccessfulInvocation(webService,
 					payloadSizeResponse, payloadSizeRequest, responseTime);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | ParseException e) {
@@ -252,7 +256,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 	public void addUnsuccessfullInvocationData(URL webService)
 			throws MonitoringException {
 		try {
-			this.parameterStorageHandler.addUnsuccessfulInvocation(webService);
+			MonitoringParameterStoreHandler.addUnsuccessfulInvocation(webService);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | ParseException e) {
 
@@ -270,7 +274,7 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		try {
 			ret = this.repositoryHandler.getCurrentQoSParameter(webService,
 					qostype);
-		LOGGER.debug("Get: " + qostype + " for " + webService);
+			LOGGER.debug("Get: " + qostype + " for " + webService);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | ParseException e) {
 			LOGGER.error("Error loading QoSParameter: "
@@ -281,27 +285,23 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 		return ret;
 	}
 
-
 	@Override
 	public String toString() {
 		return "MonitoringComponentImpl [LOGGER=" + LOGGER
-				+ ", parameterStorageHandler=" + parameterStorageHandler
-				+ ", repositoryHandler=" + repositoryHandler
-				+ "]";
+				+ ", repositoryHandler=" + repositoryHandler + "]";
 	}
-
 
 	@Override
 	public List<QoSParameter> getQoSParametersInTimeframe(URL webService,
 			QoSType qostype, Date start, Date end) throws MonitoringException,
 			MonitoringNoDataStoredException {
 		try {
-			return this.repositoryHandler.getAllQoSParameterInTimeframe(webService, qostype);
+			return this.repositoryHandler.getAllQoSParameterInTimeframe(
+					webService, qostype);
 		} catch (ParseException | IOException e) {
 			throw new MonitoringException(e);
 		}
 	}
-
 
 	@Override
 	public List<MonitoringWebserviceAvailabilityState> getAvailabilityStatesInTimeframe(
@@ -309,7 +309,6 @@ public class MonitoringComponentImpl implements MonitoringComponent {
 			MonitoringNoDataStoredException {
 		throw new MonitoringException("not implemented");
 	}
-
 
 	@Override
 	public List<MonitoringInvocationInstance> getInvocationInstancesInTimeframe(
