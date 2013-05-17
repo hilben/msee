@@ -3,7 +3,6 @@ package com.example.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.Hotel;
 
 public class PersistanceHotels {
 	private static int currentID = 1;
@@ -15,6 +14,7 @@ public class PersistanceHotels {
 			String hotelID = getNewHotelID();
 			Hotel h = new Hotel();
 			h.setId(hotelID);
+			h.setName("The standard name of Hotel" + hotelID);
 			hotels.put(hotelID, h);
 		}
 	}
