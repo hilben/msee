@@ -49,14 +49,14 @@ public class MonitoringAvailabilityCheckerImplTest {
 					isOnlineURL, mockedHandler, monitoringComponent);
 			checker.toString();
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		try {
 			verify(monitoringComponent).updateAvailabilityState(isOnlineURL,
 					MonitoringWebserviceAvailabilityState.NotChecked,MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 	}
@@ -74,7 +74,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 			checker = new MonitoringAvailabilityCheckerImpl(isOnlineURL,
 					mockedHandler, monitoringComponent);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS = 5;
@@ -86,7 +86,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 		try {
 			Thread.sleep(2500);
 		} catch (InterruptedException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		try {
@@ -100,7 +100,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 					isOnlineURL,
 					MonitoringWebserviceAvailabilityState.Unavailable,MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 		
 		reset(mockedHandler);
@@ -110,7 +110,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 		try {
 			Thread.sleep(3500);
 		} catch (InterruptedException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		try {
@@ -122,11 +122,11 @@ public class MonitoringAvailabilityCheckerImplTest {
 					MonitoringWebserviceAvailabilityState.Unavailable,MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS);
 
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		if (m.getState() != Thread.State.TERMINATED) {
-			fail();
+			fail("State not equals terminated");
 		}
 
 	}
@@ -147,7 +147,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 			checker = new MonitoringAvailabilityCheckerImpl(notOnlineURL,
 					mockedHandler, monitoringComponent);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS = 5;
@@ -159,7 +159,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 		try {
 			Thread.sleep(2500);
 		} catch (InterruptedException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		try {
@@ -173,7 +173,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 			verify(monitoringComponent).updateAvailabilityState(notOnlineURL,
 					MonitoringWebserviceAvailabilityState.Unavailable,MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 		reset(mockedHandler);
 		assertTrue(m.isAlive());
@@ -182,7 +182,7 @@ public class MonitoringAvailabilityCheckerImplTest {
 		try {
 			Thread.sleep(3500);
 		} catch (InterruptedException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		try {
@@ -194,11 +194,11 @@ public class MonitoringAvailabilityCheckerImplTest {
 					MonitoringWebserviceAvailabilityState.Available,MonitoringAvailabilityCheckerImpl.INTERVALL_SECONDS);
 
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		if (m.getState() != Thread.State.TERMINATED) {
-			fail();
+			fail("State not equals terminated");
 		}
 	}
 
