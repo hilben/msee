@@ -26,5 +26,11 @@
 			<groupId>at.sti2.msee.delivery</groupId>
 			<artifactId>monitoring.core</artifactId>
 		</dependency>
+		<!-- sti maven repo -->
+		<dependency>
+			<groupId>eu.soa4all</groupId>
+			<artifactId>validation</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>
