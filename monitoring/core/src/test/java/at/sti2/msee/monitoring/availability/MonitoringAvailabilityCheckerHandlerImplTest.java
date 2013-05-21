@@ -36,7 +36,7 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 		try {
 			this.handler.addEndpoint(testWebService1url);
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 
 		assertTrue(this.handler.isCheckingEndpoint(testWebService1url));
@@ -66,7 +66,7 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 			assertTrue(this.handler.isCheckingEndpoint(testWebService2url));
 			assertFalse(this.handler.isCheckingEndpoint(testWebService1url));
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 
@@ -83,7 +83,7 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 			assertTrue(this.handler.getCheckedEndpoints().size() == 2);
 
 		} catch (MonitoringException e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 	
