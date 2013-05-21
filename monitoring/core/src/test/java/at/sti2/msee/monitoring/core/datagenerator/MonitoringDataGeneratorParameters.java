@@ -1,6 +1,7 @@
 package at.sti2.msee.monitoring.core.datagenerator;
 
 import java.net.URL;
+import java.util.Date;
 
 public class MonitoringDataGeneratorParameters {
 	long invocationCount;
@@ -12,11 +13,13 @@ public class MonitoringDataGeneratorParameters {
 	long minResponseTime;
 	long maxResponseTime;
 	double failRate;
+	Date startDate;
+	long timeMinutes;
 
 	public MonitoringDataGeneratorParameters(URL ws, long invocationCount,
 			long minPayloadSizeResponse, long maxPayloadSizeResponse,
 			long minPayloadSizeRequest, long maxPayloadSizeRequest,
-			long minResponseTime, long maxResponseTime, double failRate) {
+			long minResponseTime, long maxResponseTime, double failRate, Date startDate, long time) {
 
 		super();
 		this.ws = ws;
@@ -28,6 +31,8 @@ public class MonitoringDataGeneratorParameters {
 		this.minResponseTime = minResponseTime;
 		this.maxResponseTime = maxResponseTime;
 		this.failRate = failRate;
+		this.startDate = startDate;
+		this.timeMinutes = time;
 	}
 
 	public static void main(String[] args) {

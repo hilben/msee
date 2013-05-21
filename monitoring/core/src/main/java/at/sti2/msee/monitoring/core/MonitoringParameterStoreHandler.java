@@ -33,20 +33,43 @@ public class MonitoringParameterStoreHandler {
 	private double successfullRequests = 0;
 
 	private MonitoringComponent monitoringComponent;
+	
+	private Date time;
 
+	
+	private MonitoringParameterStoreHandler(Date time) throws RepositoryException, IOException {
+		this();
+		this.time = time;
+	}
 	private MonitoringParameterStoreHandler() throws RepositoryException,
 			IOException {
 
 		this.repositoryHandler = MonitoringRepositoryHandler.getInstance();
 
 		this.qosParamsForCommit = new ArrayList<QoSParameter>();
+		
+		this.time = new Date();
 	}
 	
-
+	
 	public static void updateMonitoredTime(URL webService,
 			MonitoringWebserviceAvailabilityState state, double monitoredTime) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
 		new MonitoringParameterStoreHandler().doUpdateMonitoredTime(webService, state, monitoredTime);
 	}
+	
+	
+	public static void addUnsuccessfulInvocation(URL webService, Date time) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
+		new MonitoringParameterStoreHandler(time).doAddUnsuccessfulInvocation(webService);
+	}
+	
+	public static void addSuccessfulInvocation(URL webService,
+			double payloadSizeResponse, double payloadSizeRequest,
+			double responseTime, Date time) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException,
+			MonitoringException, ParseException {
+		new MonitoringParameterStoreHandler(time).doAddSuccessfulInvocation(webService, payloadSizeResponse, payloadSizeRequest, responseTime);
+	}
+	
 	
 	public static void addUnsuccessfulInvocation(URL webService) throws RepositoryException, MalformedQueryException, UpdateExecutionException, MonitoringException, ParseException, IOException {
 		new MonitoringParameterStoreHandler().doAddUnsuccessfulInvocation(webService);
@@ -69,16 +92,16 @@ public class MonitoringParameterStoreHandler {
 		this.monitoringComponent = MonitoringComponentImpl.getInstance();
 
 		QoSParameter q = new QoSParameter(QoSType.MonitoredTime,
-				String.valueOf(monitoredTime), new Date());
+				String.valueOf(monitoredTime), this.time);
 		this.addTotalParameterValue(webService, q);
 
 		if (state == MonitoringWebserviceAvailabilityState.Available) {
 			QoSParameter avail = new QoSParameter(QoSType.AvailableTime,
-					String.valueOf(monitoredTime), new Date());
+					String.valueOf(monitoredTime), this.time);
 			this.addTotalParameterValue(webService, avail);
 		} else {
 			QoSParameter unavail = new QoSParameter(QoSType.UnavailableTime,
-					String.valueOf(monitoredTime), new Date());
+					String.valueOf(monitoredTime), this.time);
 			this.addTotalParameterValue(webService, unavail);
 		}
 
@@ -94,12 +117,12 @@ public class MonitoringParameterStoreHandler {
 
 		// increase successful requests
 		QoSParameter requestSuccessful = new QoSParameter(
-				QoSType.RequestFailed, "1", new Date());
+				QoSType.RequestFailed, "1", this.time);
 		this.addTotalParameterValue(webService, requestSuccessful);
 
 		// increase total requests
 		QoSParameter requestTotal = new QoSParameter(QoSType.RequestTotal, "1",
-				new Date());
+				this.time);
 		this.addTotalParameterValue(webService, requestTotal);
 
 		this.updateRepository(webService);
@@ -111,28 +134,30 @@ public class MonitoringParameterStoreHandler {
 			MalformedQueryException, UpdateExecutionException, IOException,
 			MonitoringException, ParseException {
 
+		
 		this.monitoringComponent = MonitoringComponentImpl.getInstance();
-		this.qosParamsForCommit.clear();
 
 		// increase successful requests
 		QoSParameter requestSuccessful = new QoSParameter(
-				QoSType.RequestSuccessful, "1", new Date());
+				QoSType.RequestSuccessful, "1", this.time);
 
 		successfullRequests = this.addTotalParameterValue(webService,
 				requestSuccessful);
-
+		
 		// increase total requests
 		QoSParameter requestTotal = new QoSParameter(QoSType.RequestTotal, "1",
-				new Date());
+				this.time );
 		this.addTotalParameterValue(webService, requestTotal);
-
+	
 		// PayloadSizeRequest
 		QoSParameter playoadSizeRequestParameter = new QoSParameter(
 				QoSType.PayloadSizeRequest, String.valueOf(payloadSizeRequest),
-				new Date());
+				this.time );
 
-		this.prepareQoSParamterForCommit(playoadSizeRequestParameter);
-
+		
+		
+		this.prepareQoSParamterForCommit(playoadSizeRequestParameter);		
+		
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestAverage);
 		this.addAverageParameterValue(webService, playoadSizeRequestParameter);
 
@@ -143,12 +168,12 @@ public class MonitoringParameterStoreHandler {
 		this.addMinimumParameterValue(webService, playoadSizeRequestParameter);
 
 		playoadSizeRequestParameter.setType(QoSType.PayloadSizeRequestMaximum);
-		this.addMaximumParameterValue(webService, playoadSizeRequestParameter);
-
+		this.addMaximumParameterValue(webService, playoadSizeRequestParameter);		
+		
 		// PayloadSizeResponse
 		QoSParameter playloadSizeResponseParameter = new QoSParameter(
 				QoSType.PayloadSizeResponse,
-				String.valueOf(payloadSizeResponse), new Date());
+				String.valueOf(payloadSizeResponse), this.time );
 
 		this.prepareQoSParamterForCommit(playloadSizeResponseParameter);
 
@@ -167,9 +192,10 @@ public class MonitoringParameterStoreHandler {
 				.setType(QoSType.PayloadSizeResponseMaximum);
 		this.addMaximumParameterValue(webService, playloadSizeResponseParameter);
 
+		
 		// ResponseTime
 		QoSParameter responseTimeParameter = new QoSParameter(
-				QoSType.ResponseTime, String.valueOf(responseTime), new Date());
+				QoSType.ResponseTime, String.valueOf(responseTime), this.time );
 		this.prepareQoSParamterForCommit(responseTimeParameter);
 
 		responseTimeParameter.setType(QoSType.ResponseTimeAverage);
@@ -185,6 +211,7 @@ public class MonitoringParameterStoreHandler {
 		this.addMaximumParameterValue(webService, responseTimeParameter);
 
 		this.updateRepository(webService);
+		
 	}
 
 	private void addAverageParameterValue(URL webservice, QoSParameter parameter)
@@ -300,7 +327,7 @@ public class MonitoringParameterStoreHandler {
 	private void updateRepository(URL webservice) throws RepositoryException,
 			MalformedQueryException, UpdateExecutionException, IOException {
 		this.repositoryHandler.addQoSParametersForEndpoint(webservice,
-				this.qosParamsForCommit);
+				this.qosParamsForCommit,this.time);
 	}
 	
 
