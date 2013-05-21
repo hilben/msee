@@ -85,6 +85,11 @@ public class DiscoveryQueryBuilder {
 		query = query.replace("%categories%", categories);
 		return query;
 	}
+	
+	public String getDiscoverCategoriesAndServices() {
+		LOGGER.debug("Create query for discover");
+		return readFile("/sparql/discover-category-and-services-sparql.txt");
+	}
 
 	@Deprecated
 	public String getLookupQuery(URI _namespace, String _operationName) {

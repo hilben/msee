@@ -18,6 +18,7 @@ package at.sti2.msee.discovery.core;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -26,6 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -66,7 +68,7 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 	
 	@AfterClass
 	public void tearDown() throws Exception {
-		serviceRepository.clear();
+		//serviceRepository.clear();
 		serviceRepository.shutdown();
 	}
 
@@ -121,6 +123,15 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 			assertFalse(expectedCategory.equals("http://msee.sti2.at/categories#WRONGbusiness"));
 		}
 		assertTrue(categories.length==2);
+	}
+	
+	
+	
+	@Test
+	public void testDiscoverServices(){
+		String[] categories = {"http://msee.sti2.at/categories#business"};
+		Set<DiscoveredServiceHrests> tree = ((DiscoveryServiceImpl)discoveryService).discoverServices(categories);
+		System.out.println(tree);
 	}
 
 }
