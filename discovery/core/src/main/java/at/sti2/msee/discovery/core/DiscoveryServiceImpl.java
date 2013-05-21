@@ -266,6 +266,50 @@ public class DiscoveryServiceImpl implements Discovery {
 		return returnSet;
 	}
 
+	/**
+	 * Splits up the given SPARQL query result into the helper maps.
+	 * 
+	 * @param tableOfQueryResult
+	 * @param helperServiceMap
+	 * @param helperOperationMap
+	 */
+	private void createHelperMaps(ClosableIterator<QueryRow> tableOfQueryResult,
+			Map<String, List<String>> helperServiceMap, Map<String, List<String>> helperOperationMap) {
+		while (tableOfQueryResult.hasNext()) {
+			QueryRow row = tableOfQueryResult.next();
+			String category = row.getValue("category").toString();
+
+			// get current category
+			List<String> serviceList = helperServiceMap.get(category);
+			String service = row.getValue("serviceID").toString();
+			if (serviceList == null) {
+				serviceList = new ArrayList<String>();
+			}
+			if (!serviceList.contains(service)) {
+				serviceList.add(service);
+			}
+			helperServiceMap.put(category, serviceList);
+
+			List<String> operationList = helperOperationMap.get(service);
+			String operation = row.getValue("operation").toString();
+			if (operationList == null) {
+				operationList = new ArrayList<String>();
+			}
+			if (!operationList.contains(operation)) {
+				operationList.add(operation);
+			}
+			helperOperationMap.put(service, operationList);
+		}
+	}
+
+	/**
+	 * Creates the final tree of categories, services, operations from the given
+	 * helper maps.
+	 * 
+	 * @param helperServiceMap
+	 * @param helperOperationMap
+	 * @return
+	 */
 	private Set<DiscoveredCategory> buildTreeFromHelperMaps(
 			Map<String, List<String>> helperServiceMap, Map<String, List<String>> helperOperationMap) {
 		Set<DiscoveredCategory> returnSet = new HashSet<DiscoveredCategory>();
@@ -294,35 +338,14 @@ public class DiscoveryServiceImpl implements Discovery {
 		return returnSet;
 	}
 
-	private void createHelperMaps(ClosableIterator<QueryRow> results,
-			Map<String, List<String>> helperServiceMap, Map<String, List<String>> helperOperationMap) {
-		while (results.hasNext()) {
-			QueryRow row = results.next();
-			String category = row.getValue("category").toString();
-
-			// get current category
-			List<String> serviceList = helperServiceMap.get(category);
-			String service = row.getValue("serviceID").toString();
-			if (serviceList == null) {
-				serviceList = new ArrayList<String>();
-			}
-			if (!serviceList.contains(service)) {
-				serviceList.add(service);
-			}
-			helperServiceMap.put(category, serviceList);
-
-			List<String> operationList = helperOperationMap.get(service);
-			String operation = row.getValue("operation").toString();
-			if (operationList == null) {
-				operationList = new ArrayList<String>();
-			}
-			if (!operationList.contains(operation)) {
-				operationList.add(operation);
-			}
-			helperOperationMap.put(service, operationList);
-		}
-	}
-
+	/**
+	 * Returns the {@link DiscoveredCategory} if found in the set of
+	 * {@link DiscoveredCategory} otherwise <code>null</code>.
+	 * 
+	 * @param category
+	 * @param categorySet
+	 * @return
+	 */
 	private DiscoveredCategory getCategoryFromSet(DiscoveredCategory category,
 			Set<DiscoveredCategory> categorySet) {
 		Iterator<DiscoveredCategory> cit = categorySet.iterator();
@@ -335,6 +358,7 @@ public class DiscoveryServiceImpl implements Discovery {
 		return null;
 	}
 
+	@Deprecated
 	public Set<DiscoveredServiceHrests> discoverServices(String[] categoryList) {
 		Set<DiscoveredServiceHrests> returnSet = new HashSet<DiscoveredServiceHrests>();
 		LOGGER.debug("Starting discover()");
