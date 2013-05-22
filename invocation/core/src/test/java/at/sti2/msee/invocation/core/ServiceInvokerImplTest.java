@@ -59,7 +59,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-			invoker.invoke(new URL(endpoint), "", soapMessage);
+			invoker.invokeSOAP(new URL(endpoint), soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
 			fail();
 		}
@@ -93,7 +93,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-			invoker.invoke(new URL(endpoint), "", soapMessage);
+			invoker.invokeSOAP(new URL(endpoint), soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
 			fail();
 		}
@@ -129,7 +129,7 @@ public class ServiceInvokerImplTest extends TestCase {
 		try {
 			try {
 				invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-				invoker.invoke(new URL(endpoint), "", soapMessage);
+				invoker.invokeSOAP(new URL(endpoint), soapMessage);
 			} catch (MalformedURLException | MonitoringException e) {
 				fail();
 			}

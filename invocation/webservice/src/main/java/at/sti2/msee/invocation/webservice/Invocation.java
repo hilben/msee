@@ -19,8 +19,7 @@ public interface Invocation extends ServiceInvocation {
 
 	@Override
 	@WebMethod
-	public String invoke(@WebParam(name = "serviceID") URL serviceID,
-			@WebParam(name = "operationName") String operationName,
+	public String invokeSOAP(@WebParam(name = "serviceID") URL serviceID,
 			@WebParam(name = "inputData") String inputData)
 			throws ServiceInvokerException;
 }

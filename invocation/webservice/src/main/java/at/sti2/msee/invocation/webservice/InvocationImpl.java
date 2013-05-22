@@ -13,10 +13,17 @@ public class InvocationImpl implements Invocation {
 	private ServiceInvocationImpl invoker = new ServiceInvocationImpl();
 
 	@Override
-	public String invoke(URL serviceID, String operationName,
+	public String invokeSOAP(URL serviceID,
 			String inputData) throws ServiceInvokerException {
 
-		return invoker.invoke(serviceID, operationName, inputData);
+		return invoker.invokeSOAP(serviceID, inputData);
+	}
+
+	@Override
+	public String invokeREST(URL serviceID, String operationName, String method)
+			throws ServiceInvokerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
