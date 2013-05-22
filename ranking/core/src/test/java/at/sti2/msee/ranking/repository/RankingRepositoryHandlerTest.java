@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.net.URL;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import at.sti2.msee.ranking.api.exception.RankingException;
@@ -22,6 +23,7 @@ public class RankingRepositoryHandlerTest {
 	private URL ws1;
 	private URL ws2;
 
+	@Ignore
 	@Before
 	public void setUp() throws Exception {
 		this.handler = RankingRepositoryHandler.getInstance();
@@ -33,6 +35,7 @@ public class RankingRepositoryHandlerTest {
 		this.ws2 = new URL(ws2str);
 	}
 
+	@Ignore
 	@Test
 	public void testSetAndGetRulesForWebservice() {
 

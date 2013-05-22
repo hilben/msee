@@ -16,28 +16,16 @@
 
 package at.sti2.msee.ranking.core;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
-import org.openrdf.repository.RepositoryException;
 
-import at.sti2.msee.monitoring.api.MonitoringComponent;
-import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
-import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 import at.sti2.msee.ranking.api.QoSRankingPreferencesTemplate;
 import at.sti2.msee.ranking.api.exception.RankingException;
-import at.sti2.msee.ranking.core.QoSParamsEndpointRankingTable;
-import at.sti2.msee.ranking.core.QoSRankingEngine;
 
 /**
  * @author Benjamin Hiltpolt
@@ -90,6 +78,7 @@ public class QoSRankingTest extends TestCase {
 			try {
 				table.retrieveQoSParamValues();
 			} catch (RankingException e) {
+				logger.error(e);
 				fail();
 			}
 			
