@@ -75,27 +75,26 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws SAXException
 	 * @throws AxisFault
 	 */
-	public String invoke(URL webserviceURL, String operationName,
-			String inputData) throws ServiceInvokerException {
+	@Override
+	public String invokeSOAP(URL webserviceURL,
+			String soapMessage) throws ServiceInvokerException {
 
 		//Setup monitoring data and prepare stuff
-		long requestMessageSize = inputData.getBytes().length;
+		long requestMessageSize = soapMessage.getBytes().length;
 		long startTime = System.currentTimeMillis();
 		MonitoringInvocationInstance invocationinstance = initMonitoring(webserviceURL);
 
 		String results = "";
 		URL endpoint = webserviceURL;
-		String soapFile = inputData;
+		String soapFile = soapMessage;
 
 		Service service = new Service();
 		Call call;
 
 		logger.debug("Invoking " + webserviceURL);
 		logger.debug("Using SOAP-Message " + soapFile);
-		logger.debug("Operation: " + operationName);
 
 		try {
-
 			//check if monitored
 			if (invocationinstance != null) {
 				invocationinstance.setState(MonitoringInvocationState.Started);
@@ -169,6 +168,13 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 
 	public void setMonitoring(MonitoringComponent monitoring) {
 		this.monitoring = monitoring;
+	}
+
+	@Override
+	public String invokeREST(URL serviceID, String operationName, String method)
+			throws ServiceInvokerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

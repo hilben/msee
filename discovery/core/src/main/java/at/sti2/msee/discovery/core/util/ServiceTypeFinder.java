@@ -18,11 +18,11 @@ public class ServiceTypeFinder {
 							.iterator().next();
 					rest.getMethod();
 				} catch (ClassCastException e) {
-					return ServiceType.OTHER;
+					return ServiceType.OTHERORUNKNOWN;
 				}
 				return ServiceType.REST;
 			}
 		}
-		return ServiceType.OTHER;
+		return ServiceType.OTHERORUNKNOWN;
 	}
 }

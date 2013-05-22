@@ -63,7 +63,7 @@ public class ServiceTypeFinderTest {
 		Set<DiscoveredService> services = category.getServiceSet();
 		Iterator<DiscoveredService> its = services.iterator();
 		while (its.hasNext()) {
-			assertEquals(ServiceType.OTHER, ServiceTypeFinder.getType(its.next()));
+			assertEquals(ServiceType.OTHERORUNKNOWN, ServiceTypeFinder.getType(its.next()));
 		}
 	}
 
