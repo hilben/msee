@@ -94,6 +94,7 @@ public class MainService {
 	}
 
 	@POST
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public String postHotel(@FormParam("hotel") String hotelAsJson) {
 		LOGGER.info(this.getClass() + " got invoked");
 

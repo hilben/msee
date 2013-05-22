@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import javax.ws.rs.core.Response.Status;
@@ -45,6 +46,8 @@ public class RESTfulTestCases {
 
 	@BeforeClass
 	public static void testServer() throws Exception {
+		LogManager.getLogManager().reset(); // to have silent JERSEY logging
+
 		String webappDirLocation = "src/test/resources/";
 
 		webPort = System.getenv("PORT");
@@ -169,7 +172,7 @@ public class RESTfulTestCases {
 
 	@Test
 	public void testPUTupdate() throws MalformedURLException, IOException {
-		String url = baseUrl ;
+		String url = baseUrl;
 		String id = "1";
 		String path = String.format("/%s", URLEncoder.encode(id, charset));
 
@@ -200,7 +203,7 @@ public class RESTfulTestCases {
 
 	@Test
 	public void testPUTcreate() throws MalformedURLException, IOException {
-		String url = baseUrl ;
+		String url = baseUrl;
 		String id = "11111111111";
 		String path = String.format("/%s", URLEncoder.encode(id, charset));
 
@@ -232,7 +235,7 @@ public class RESTfulTestCases {
 	@Test
 	public void testDELETE() throws MalformedURLException, IOException {
 		int initialCount = getHotelCount();
-		String url = baseUrl ;
+		String url = baseUrl;
 		String id = "1";
 		String path = String.format("/%s", URLEncoder.encode(id, charset));
 
@@ -256,7 +259,7 @@ public class RESTfulTestCases {
 	@Test
 	public void testDELETEnotFound() throws MalformedURLException, IOException {
 		int initialCount = getHotelCount();
-		String url = baseUrl ;
+		String url = baseUrl;
 		String id = "11111111111111112";
 		String path = String.format("/%s", URLEncoder.encode(id, charset));
 
