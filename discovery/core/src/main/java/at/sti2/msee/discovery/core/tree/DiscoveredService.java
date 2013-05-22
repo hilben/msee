@@ -8,4 +8,6 @@ public interface DiscoveredService {
 	public void setName(String name);
 
 	public Set<DiscoveredOperation> getOperationSet();
+
+	public void addDiscoveredOperation(DiscoveredOperation operation1);
 }
