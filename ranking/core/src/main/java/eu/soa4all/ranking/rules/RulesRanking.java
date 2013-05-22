@@ -47,7 +47,7 @@ import org.wsmo.factory.LogicalExpressionFactory;
 import org.wsmo.factory.WsmoFactory;
 import org.wsmo.wsml.ParserException;
 
-import eu.soa4all.ranking.RankingException;
+import at.sti2.msee.ranking.api.exception.RankingException;
 import eu.soa4all.ranking.descriptions.RankingPreference;
 import eu.soa4all.ranking.framework.RankingEngine;
 import eu.soa4all.ranking.util.Constants;

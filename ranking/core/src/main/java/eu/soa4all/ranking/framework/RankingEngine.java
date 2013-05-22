@@ -18,8 +18,8 @@ package eu.soa4all.ranking.framework;
 
 import java.util.Set;
 
+import at.sti2.msee.ranking.api.exception.RankingException;
 import eu.soa4all.ranking.RankingEngineInterface;
-import eu.soa4all.ranking.RankingException;
 import eu.soa4all.validation.RPC.Service;
 
 

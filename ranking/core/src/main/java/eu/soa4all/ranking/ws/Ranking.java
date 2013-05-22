@@ -21,7 +21,7 @@ import java.io.ByteArrayInputStream;
 import org.ontoware.rdf2go.model.Syntax;
 import org.wsmo.common.exception.InvalidModelException;
 
-import eu.soa4all.ranking.RankingException;
+import at.sti2.msee.ranking.api.exception.RankingException;
 import eu.soa4all.ranking.rules.RulesRanking;
 import eu.soa4all.ranking.util.HTTPReader;
 import eu.soa4all.ranking.wsmolite.WSMOLiteRDFReader;

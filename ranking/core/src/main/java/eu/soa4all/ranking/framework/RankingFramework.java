@@ -41,9 +41,9 @@ import org.wsmo.service.WebService;
 import org.wsmo.wsml.Parser;
 import org.wsmo.wsml.ParserException;
 
+import at.sti2.msee.ranking.api.exception.RankingException;
 import eu.soa4all.ranking.Ranking;
 import eu.soa4all.ranking.RankingEngineInterface;
-import eu.soa4all.ranking.RankingException;
 import eu.soa4all.ranking.util.Constants;
 import eu.soa4all.ranking.util.DefaultLocator;
 import eu.soa4all.validation.RPC.Service;

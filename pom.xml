@@ -65,7 +65,10 @@
 		<management.ws.port>${default.port}</management.ws.port>
 
 		<!-- Ranking properties -->
+		<ranking.triplestore.endpoint>${default.sesame.endpoint}</ranking.triplestore.endpoint>
+		<ranking.triplestore.reposid>ranking</ranking.triplestore.reposid>
 		<ranking.ws.port>${default.port}</ranking.ws.port>
+		
 	</properties>
 
 	<build>

@@ -30,6 +30,7 @@ public class PreferencesExtractorTest extends TestCase{
 	public void testPreferencesExtractorTest()  {
 		// Loading service template
 		ServiceTemplate template = new ServiceTemplate();
+		PreferencesExtractor pe = null;
 		
 		logger.info("Loading service template");
 		ClassLoader l = getClass().getClassLoader();
@@ -40,7 +41,7 @@ public class PreferencesExtractorTest extends TestCase{
 		}
 	
 		logger.info("extract nfps");
-		PreferencesExtractor pe = new PreferencesExtractor(template);
+		pe = new PreferencesExtractor(template);
 		try {
 			pe.process();
 		} catch (Exception e) {
@@ -55,34 +56,29 @@ public class PreferencesExtractorTest extends TestCase{
 		logger.info(pe.getOrderingValue());
 		
 		
-		logger.info("Load stShipping.rdf.n3");
-		ServiceTemplate shippingtemplate = new ServiceTemplate();
-		try {
-			shippingtemplate.readFrom(new FileInputStream(l.getResource("stShipping.rdf.n3").getFile()), Syntax.Ntriples);
-		} catch (FileNotFoundException e) {
-			logger.error(e.getCause());
-		}
+//		logger.info("Load stShipping.rdf.n3");
+//		ServiceTemplate shippingtemplate = new ServiceTemplate();
+//		try {
+//			shippingtemplate.readFrom(new FileInputStream(l.getResource("stShipping.rdf.n3").getFile()), Syntax.Ntriples);
+//		} catch (FileNotFoundException e) {
+//			logger.error(e.getCause());
+//		}
+//		
+//		logger.info("extract nfps");
+//	    pe = new PreferencesExtractor(shippingtemplate);
+//		try {
+//			pe.process();
+//		} catch (Exception e) {
+//			logger.error(e.getCause());
+//		}
+//		
+//		logger.info("NFPs:");
+//		logger.info(pe.getNfps().keySet());
+//		logger.info(pe.getNfps().entrySet());
+//		
+//		logger.info("Ordering value:");
+//		logger.info(pe.getOrderingValue());
 		
-		logger.info("extract nfps");
-	    pe = new PreferencesExtractor(shippingtemplate);
-		try {
-			pe.process();
-		} catch (Exception e) {
-			logger.error(e.getCause());
-		}
-		
-		logger.info("NFPs:");
-		logger.info(pe.getNfps().keySet());
-		logger.info(pe.getNfps().entrySet());
-		
-		logger.info("Ordering value:");
-		logger.info(pe.getOrderingValue());
-		
-	}
-	
-	public static void main (String args[]) {
-		
-
 	}
 
 }
