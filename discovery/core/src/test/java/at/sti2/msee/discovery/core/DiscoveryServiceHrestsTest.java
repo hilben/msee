@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
@@ -52,8 +53,8 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 		//Comment these 4 lines to force a in-memory repository
 		DiscoveryConfig config = new DiscoveryConfig();
 		config.setResourceLocation(resourceLocation);	
-		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
-		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
+		//serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
+		//serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
 	
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
@@ -68,8 +69,8 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 	
 	@AfterClass
 	public void tearDown() throws Exception {
-		//serviceRepository.clear();
-		serviceRepository.shutdown();
+		serviceRepository.clear();
+		//serviceRepository.shutdown();
 	}
 
 	@Test
@@ -128,10 +129,10 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 	
 	
 	@Test
+	@Deprecated
 	public void testDiscoverServices(){
 		String[] categories = {"http://msee.sti2.at/categories#business"};
 		Set<DiscoveredServiceHrests> tree = ((DiscoveryServiceImpl)discoveryService).discoverServices(categories);
-		System.out.println(tree);
 	}
 
 }
