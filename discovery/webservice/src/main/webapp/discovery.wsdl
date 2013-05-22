@@ -123,7 +123,11 @@
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
+<<<<<<< HEAD
     <wsdl2:binding name="discoveryHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+=======
+    <wsdl2:binding name="discoverySoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+>>>>>>> 01c867f1c83af93a48a20dc64e00c20de59660c8
         <wsdl2:fault ref="tns:DiscoveryException"/>
         <wsdl2:operation ref="tns:getIServeModel" whttp:location="getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>
@@ -138,7 +142,11 @@
             <wsdl2:outfault ref="tns:DiscoveryException"/>
         </wsdl2:operation>
     </wsdl2:binding>
+<<<<<<< HEAD
     <wsdl2:binding name="discoverySoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+=======
+    <wsdl2:binding name="discoverySoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+>>>>>>> 01c867f1c83af93a48a20dc64e00c20de59660c8
         <wsdl2:fault ref="tns:DiscoveryException"/>
         <wsdl2:operation ref="tns:getIServeModel" wsoap:action="urn:getIServeModel">
             <wsdl2:outfault ref="tns:DiscoveryException"/>

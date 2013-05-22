@@ -2,6 +2,8 @@ package at.sti2.msee.registration.core;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -68,9 +70,11 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 
 	private ServiceModelFormat getServiceDescriptionFormat(URL descriptionURL)
 			throws ServiceRegistrationException {
-		ServiceModelFormat format = ServiceModelFormatDetector.detect(descriptionURL);
-		if (format == ServiceModelFormat.UNKNOWN)
+		ServiceModelFormatDetector detector = new ServiceModelFormatDetector();
+		ServiceModelFormat format = detector.detect(descriptionURL);
+		if (format == ServiceModelFormat.UNKNOWN){
 			throw new ServiceRegistrationException("Service format not recognized");
+		}
 		return format;
 	}	
 

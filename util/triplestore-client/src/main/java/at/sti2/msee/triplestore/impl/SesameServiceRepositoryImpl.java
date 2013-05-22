@@ -21,7 +21,6 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.memory.MemoryStore;
 
 import at.sti2.msee.triplestore.ServiceRepository;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
@@ -45,7 +44,7 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		RDF2Go.register(new RepositoryModelFactory());
 
 		if (configuration.getServerEndpoint() == null)
-			this.repository = new SailRepository(new MemoryStore());
+			this.repository = new SailRepository(new MSEEMemoryStore());
 		else {
 			this.repository = new HTTPRepository(
 					configuration.getServerEndpoint(),

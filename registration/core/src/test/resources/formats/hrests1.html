@@ -1,0 +1,28 @@
+<div class="service" id="svc">
+	<p>
+		Description of the <span class="label"> ACME Hotels </span> service:
+	</p>
+	<p>
+		<span class="label">ACME Hotels</span> is a <a rel="model"
+			href="http://msee.sti2.at/categories#BUSINESS"> hotel reservation</a>
+		service.
+	</p>
+
+	<div class="operation" id="op1">
+		<p>
+			The operation
+			<code class="label"> getHotelDetails </code>
+			is invoked using the method <span class="method">GET</span> at
+			<code class="address"> http://example.com/h/{id} </code>
+			, with <span class="input">the ID of the particular hotel
+				replacing the parameter <code>id</code>.
+			</span> It returns <span class="output">the hotel details in an <code>
+					ex:hotelInformation </code> document.
+			</span> <span class="input">A particular hotel ID replaces the param
+				<a rel="model" href="onto.owl#Hotel"><code>id</code></a>(<a
+				rel="lowering" href="hotelID.xslt">lowering</a>).
+			</span>.
+		</p>
+	</div>
+
+</div>

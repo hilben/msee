@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
@@ -40,7 +41,7 @@ import at.sti2.msee.triplestore.ServiceRepositoryFactory;
  * 
 
  */
-public class DiscoveryServiceTest extends TestCase {
+public class DiscoveryServiceHrestsTest extends TestCase {
 	private String resourceLocation = "/default.properties";
 	private static Discovery discoveryService;
 	private static ServiceRepository serviceRepository;
@@ -52,14 +53,14 @@ public class DiscoveryServiceTest extends TestCase {
 		//Comment these 4 lines to force a in-memory repository
 		DiscoveryConfig config = new DiscoveryConfig();
 		config.setResourceLocation(resourceLocation);	
-		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
-		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
+		//serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
+		//serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
 	
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
 		serviceRepository.clear();
 
-		String serviceDescriptionURL = this.getClass().getResource("/services/HelloService.sawsdl").toString();	
+		String serviceDescriptionURL = this.getClass().getResource("/services/hrests1.html").toString();	
 		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
 		registrationService.register(serviceDescriptionURL);
 
@@ -69,7 +70,7 @@ public class DiscoveryServiceTest extends TestCase {
 	@AfterClass
 	public void tearDown() throws Exception {
 		serviceRepository.clear();
-		serviceRepository.shutdown();
+		//serviceRepository.shutdown();
 	}
 
 	@Test
@@ -77,16 +78,13 @@ public class DiscoveryServiceTest extends TestCase {
 		final String[] categoryList = new String[1];
 		categoryList[0] = "http://msee.sti2.at/categories#business";
 		String result = discoveryService.discover(categoryList);
-		assertTrue("Result is empty", result.length() > 0);
-		assertContains(result, "wsdl.service(helloService)");
-		assertContains(result, "wsdl.service(helloService)/Hello");
-		assertContains(result, "wsdl.service(helloService)/Hello/output/Out");
-		assertContains(result, "wsdl.service(helloService)/Hello/input/In");
 		
-		assertNotContains(result, "wsdl.service(someService)");
-		assertNotContains(result, "wsdl.service(someService)/Hello");
-		assertNotContains(result, "wsdl.service(someService)/Hello/output/Out");
-		assertNotContains(result, "wsdl.service(someService)/Hello/input/In");
+		assertTrue("Result is empty", result.length() > 0);
+		assertContains(result, "#svc");
+		assertContains(result, "#op1");
+		assertContains(result, "http://msee.sti2.at/categories#business");
+		
+		assertNotContains(result, "wsdl.service");
 	}
 
 	private void assertContains(String haystack, String needle) {
@@ -115,8 +113,7 @@ public class DiscoveryServiceTest extends TestCase {
 	
 	@Test
 	public void testGetServiceCategoriesTwoElements() throws IOException, ServiceRegistrationException  {
-		// add a second wsdl
-		String serviceDescriptionURL = this.getClass().getResource("/HelloServiceWith2Categories.sawsdl").toString();	
+		String serviceDescriptionURL = this.getClass().getResource("/services/hrests1With2Categories.html").toString();	
 		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
 		registrationService.register(serviceDescriptionURL);
 		
@@ -124,19 +121,18 @@ public class DiscoveryServiceTest extends TestCase {
 		String[] categories = ((DiscoveryServiceImpl)discoveryService).getServiceCategories();
 		for(String expectedCategory : expectedCategories){
 			assertContains(Arrays.toString(categories), expectedCategory);
+			assertFalse(expectedCategory.equals("http://msee.sti2.at/categories#WRONGbusiness"));
 		}
 		assertTrue(categories.length==2);
 	}
-
+	
+	
+	
 	@Test
+	@Deprecated
 	public void testDiscoverServices(){
 		String[] categories = {"http://msee.sti2.at/categories#business"};
 		Set<DiscoveredServiceHrests> tree = ((DiscoveryServiceImpl)discoveryService).discoverServices(categories);
-	}
-	
-	@Test
-	public void testDiscoverCategoryAndService(){
-		((DiscoveryServiceImpl)discoveryService).discoverCategoryAndService();
 	}
 
 }

@@ -1,0 +1,14 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sawsdl: <http://www.w3.org/ns/sawsdl#> 
+PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> 
+PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+PREFIX msee: <http://msee.sti2.at/properties#> 
+PREFIX hr: <http://www.wsmo.org/ns/hrests#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT * WHERE { 
+	?serviceID rdf:type msm:Service . 
+	?serviceID msm:hasOperation ?operation .
+	?serviceID sawsdl:modelReference ?category .
+	?operation a msm:Operation .
+}

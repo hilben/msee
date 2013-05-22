@@ -28,8 +28,8 @@ import org.openrdf.rio.UnsupportedRDFormatException;
 public class DiscoveryQueryBuilderTest {
 
 	DiscoveryQueryBuilder discoveryQueryBuilder = new DiscoveryQueryBuilder();
-	private final static Logger LOGGER = LogManager
-			.getLogger(DiscoveryQueryBuilderTest.class.getName());
+	private final static Logger LOGGER = LogManager.getLogger(DiscoveryQueryBuilderTest.class
+			.getName());
 
 	@BeforeClass
 	public static void setup() {
@@ -37,25 +37,79 @@ public class DiscoveryQueryBuilderTest {
 	}
 
 	@Test
-	public void testGetDiscoverQuery2Args() throws URISyntaxException,
-			FileNotFoundException, IOException, QueryEvaluationException,
-			RepositoryException, MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
+	public void testGetDiscoverQuery2Args() throws URISyntaxException, FileNotFoundException,
+			IOException, QueryEvaluationException, RepositoryException, MalformedQueryException,
+			RDFHandlerException, UnsupportedRDFormatException {
 		String expected = replaceNewline(readFile("/getDiscoverQuery2ArgsTestResult"));
 		String[] categoryList = new String[1];
 		String query = null;
 
-		//pass
+		// pass
 		categoryList[0] = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
 		query = discoveryQueryBuilder.getDiscoverQuery2Args(categoryList);
 		assertEquals(replaceNewline(query), expected);
-		
-		//fail
+
+		// fail
 		categoryList[0] = "http://msee.sti2.at/categories#FAIL";
 		query = discoveryQueryBuilder.getDiscoverQuery2Args(categoryList);
 		assertNotEquals(replaceNewline(query), expected);
 	}
-	
+
+	@Test
+	public void testGetDiscoverServicesArrayOneElement() throws IOException {
+		String expected = replaceNewline(readFile("/getDiscoverServicesArrayOneElement"));
+		String[] categoryList = new String[1];
+		String query = null;
+
+		// pass
+		categoryList[0] = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
+		query = discoveryQueryBuilder.getDiscoverServices(categoryList);
+		assertEquals(replaceNewline(query), expected);
+
+		// fail
+		categoryList[0] = "http://msee.sti2.at/categories#FAIL";
+		query = discoveryQueryBuilder.getDiscoverServices(categoryList);
+		assertNotEquals(replaceNewline(query), expected);
+	}
+
+	@Test
+	public void testGetDiscoverServices() throws IOException {
+		String expected = replaceNewline(readFile("/getDiscoverServicesArrayOneElement"));
+		String query = null;
+
+		// pass
+		String category = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
+		query = discoveryQueryBuilder.getDiscoverServices(category);
+		assertEquals(replaceNewline(query), expected);
+
+		// fail
+		category = "http://msee.sti2.at/categories#FAIL";
+		query = discoveryQueryBuilder.getDiscoverServices(category);
+		assertNotEquals(replaceNewline(query), expected);
+		category = null;
+		query = discoveryQueryBuilder.getDiscoverServices(category);
+		assertNotEquals(replaceNewline(query), expected);
+	}
+
+	@Test
+	public void testGetDiscoverServicesArrayMoreElements() throws IOException {
+		String expected = replaceNewline(readFile("/getDiscoverServicesArrayMoreElements"));
+		String[] categoryList = new String[2];
+		String query = null;
+
+		// pass
+		categoryList[0] = "http://msee.sti2.at/categories#REST_WEB_SERVICE";
+		categoryList[1] = "http://msee.sti2.at/categories#INDESIT_SERVICE";
+		query = discoveryQueryBuilder.getDiscoverServices(categoryList);
+		assertEquals(replaceNewline(query), expected);
+
+		// fail
+		categoryList[0] = "http://msee.sti2.at/categories#FAIL1";
+		categoryList[1] = "http://msee.sti2.at/categories#FAIL2";
+		query = discoveryQueryBuilder.getDiscoverServices(categoryList);
+		assertNotEquals(replaceNewline(query), expected);
+	}
+
 	@Test
 	public void testGetAllCategoriesQuery() throws IOException {
 		String query = discoveryQueryBuilder.getAllCategoriesQuery();
@@ -65,29 +119,23 @@ public class DiscoveryQueryBuilderTest {
 
 	@Test
 	@Deprecated
-	public void testGetDiscoverQuery4Args() throws URISyntaxException,
-			FileNotFoundException, IOException, QueryEvaluationException,
-			RepositoryException, MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
+	public void testGetDiscoverQuery4Args() throws URISyntaxException, FileNotFoundException,
+			IOException, QueryEvaluationException, RepositoryException, MalformedQueryException,
+			RDFHandlerException, UnsupportedRDFormatException {
 		List<URI> categoryList = new ArrayList<URI>();
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
+		categoryList.add(new URI("http://www.sti2.at/MSEE/ServiceCategories#BUSINESS"));
 		List<URI> inputList = new ArrayList<URI>();
-		inputList
-				.add(new URI("http://www.sti2.at/MSEE/ServiceCategories#INPUT"));
+		inputList.add(new URI("http://www.sti2.at/MSEE/ServiceCategories#INPUT"));
 		List<URI> outputList = new ArrayList<URI>();
-		outputList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#OUTPUT"));
-		String query = discoveryQueryBuilder.getDiscoverQuery4Args(
-				categoryList, inputList, outputList);
+		outputList.add(new URI("http://www.sti2.at/MSEE/ServiceCategories#OUTPUT"));
+		String query = discoveryQueryBuilder.getDiscoverQuery4Args(categoryList, inputList,
+				outputList);
 		String expected = readFile("/getDiscoverQuery4ArgsTestResult");
 		Assert.assertEquals(query, expected);
 
 		// add a second category
-		categoryList.add(new URI(
-				"http://www.sti2.at/MSEE/ServiceCategories#MARITIM"));
-		query = discoveryQueryBuilder.getDiscoverQuery4Args(categoryList,
-				inputList, outputList);
+		categoryList.add(new URI("http://www.sti2.at/MSEE/ServiceCategories#MARITIM"));
+		query = discoveryQueryBuilder.getDiscoverQuery4Args(categoryList, inputList, outputList);
 		String expected2 = replaceNewline(readFile("/getDiscoverQuery4ArgsTestResult-secondCategory"));
 		Assert.assertEquals(replaceNewline(query), expected2);
 	}
@@ -98,18 +146,16 @@ public class DiscoveryQueryBuilderTest {
 		URI namespace = new URI("http://www.sti2.at/MSEE/");
 		String operationName = "getData";
 
-		String query = discoveryQueryBuilder.getLookupQuery(namespace,
-				operationName);
+		String query = discoveryQueryBuilder.getLookupQuery(namespace, operationName);
 		String expected = replaceNewline(readFile("/getLookupQueryTestResult"));
 		Assert.assertEquals(replaceNewline(query), expected);
 	}
 
 	@Test
 	@Deprecated
-	public void testGetIServeModelQuery() throws URISyntaxException,
-			IOException, QueryEvaluationException, RepositoryException,
-			MalformedQueryException, RDFHandlerException,
-			UnsupportedRDFormatException {
+	public void testGetIServeModelQuery() throws URISyntaxException, IOException,
+			QueryEvaluationException, RepositoryException, MalformedQueryException,
+			RDFHandlerException, UnsupportedRDFormatException {
 		String serviceID = "http://www.theserviceid.com#id";
 
 		String query = discoveryQueryBuilder.getIServeModelQuery(serviceID);
@@ -135,8 +181,7 @@ public class DiscoveryQueryBuilderTest {
 	// }
 
 	private static String readFile(String path) throws IOException {
-		Scanner sc = new Scanner(
-				DiscoveryQueryBuilderTest.class.getResourceAsStream(path));
+		Scanner sc = new Scanner(DiscoveryQueryBuilderTest.class.getResourceAsStream(path));
 		String text = sc.useDelimiter("\\A").next();
 		sc.close();
 		return text;

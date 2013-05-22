@@ -94,6 +94,25 @@ public class ServiceRegistrationImplTest{
 		assertEquals(2,this.getNumberOfServices(contextURI));
 	}
 	
+	@Test
+	public void testRegisterHrests() throws ServiceRegistrationException, RepositoryException {
+		String contextURI = null;
+		assertEquals(0, this.getNumberOfServices(contextURI));
+
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+
+		String serviceDescriptionURL = this.getClass().getResource("/formats/hrests1.html").toString();		
+		String serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+		assertNotNull(serviceURI);
+
+		serviceDescriptionURL = this.getClass().getResource("/formats/hrests1.html").toString();		
+		serviceURI = registration.registerInContext(serviceDescriptionURL, contextURI);
+		assertNotNull(serviceURI);
+		
+		//Service is in repository
+		assertEquals(2,this.getNumberOfServices(contextURI));
+	}
+	
 //	@Test
 //	public void testRegisterIndesitM18Services() throws ServiceRegistrationException
 //	{

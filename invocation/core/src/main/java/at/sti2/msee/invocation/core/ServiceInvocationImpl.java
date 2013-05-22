@@ -149,8 +149,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 		try {
 			if (monitoring.isMonitoredWebService(webserviceURL)) {
-				System.out
-						.println("Loading a invocationinstance into the invoker");
+				logger.debug("Loading a invocationinstance into the invoker");
 				MonitoringInvocationInstance invocationinstance = monitoring
 						.createInvocationInstance(webserviceURL);
 				invocationinstance
