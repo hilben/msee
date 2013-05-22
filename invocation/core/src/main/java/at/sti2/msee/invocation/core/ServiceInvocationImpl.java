@@ -32,14 +32,13 @@ import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
-import at.sti2.monitoring.core.MonitoringComponentImpl;
-import at.sti2.monitoring.core.MonitoringInvocationInstanceImpl;
 import at.sti2.msee.invocation.api.ServiceInvocation;
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
+import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 
 /**
  * @author Benjamin Hiltpolt
@@ -54,7 +53,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 
 	public ServiceInvocationImpl() {
 		try {
-			this.monitoring = new MonitoringComponentImpl();
+			this.monitoring = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e) {
 			logger.error("Invocation could not initialize the MonitoringComponent");
 			this.monitoring = null;

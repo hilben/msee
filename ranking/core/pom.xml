@@ -15,7 +15,6 @@
 		<version>m17.1-SNAPSHOT</version>
 	</parent>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
@@ -33,50 +32,6 @@
 			<version>${project.parent.version}</version>
 			<artifactId>monitoring.core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>${project.parent.groupId}</groupId>
-			<version>${project.parent.version}</version>
-			<artifactId>util.triplestore.client</artifactId>
-		</dependency>
-
-
-
-
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- axis -->
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-kernel</artifactId>
-			<version>1.6.2</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.geronimo.specs</groupId>
-					<artifactId>geronimo-activation_1.1_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.ws.commons.schema</groupId>
-					<artifactId>XmlSchema</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-transport-local</artifactId>
-			<version>1.6.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-transport-http</artifactId>
-			<version>1.6.2</version>
-		</dependency>
-
 
 	</dependencies>
 

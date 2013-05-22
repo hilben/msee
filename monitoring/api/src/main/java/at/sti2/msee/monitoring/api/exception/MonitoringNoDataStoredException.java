@@ -1,5 +1,9 @@
 package at.sti2.msee.monitoring.api.exception;
 
+/**
+ * @author benni
+ *
+ */
 public class MonitoringNoDataStoredException extends Exception {
 
 	/**

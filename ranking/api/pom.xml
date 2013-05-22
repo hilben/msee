@@ -26,9 +26,5 @@
 			<groupId>at.sti2.msee.delivery</groupId>
 			<artifactId>monitoring.core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>at.sti2.msee.delivery</groupId>
-			<artifactId>util.triplestore.client</artifactId>
-		</dependency>
 	</dependencies>
 </project>
