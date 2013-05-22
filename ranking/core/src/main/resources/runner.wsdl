@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="runner" targetNamespace="http://www.example.org/runner/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/runner/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:documentation>
+		NOTE!
+		This Webservice is modelled after a real modell example postal service we
+		took the
+		main information from the ups postal service [www.ups.com]
+	</wsdl:documentation>
+	<wsdl:types>
+		<xs:schema xmlns="http://www.example.org/runner/"
+			elementFormDefault="qualified" targetNamespace="http://www.example.org/runner/">
+			<xs:element name="OrderCollectionResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="collectionTime" type="xs:dateTime"></xs:element>
+						<xs:element name="price" type="xs:decimal">
+							<xs:annotation>
+								<xs:documentation>
+									for europe:
+									$50 basic charge (1 lb)
+									for every next 1 lb. +$5.75
+
+									for asia:
+									$60 basic charge (1 lb)
+									for every next 1 lb. +$8.50
+
+									for us:
+									$15 basic charge (1 lb)
+									for every next 1 lb. +$0.50
+
+									for south america:
+									$65,75 basic charge (1 lb)
+									for every next 1 lb. +$12
+
+									for africa:
+									$96,75 basic charge (1 lb)
+									for every next 1 lb. +$13,50
+                </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OrderCollectionRequest">
+				<xs:annotation>
+					<xs:documentation>
+						Provide the following information in order to make a pickup request.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="from" type="ContactInformation"></xs:element>
+						<xs:element name="to" type="ContactInformation"></xs:element>
+						<xs:element name="packageWeight" type="xs:nonNegativeInteger">
+							<xs:annotation>
+								<xs:documentation>
+									If your package has a large size-to-weight ratio, you may need to
+									consider your package's dimensional weight. As packageWeight
+									you need
+									always to use the maximum value of its actual and its dimensional
+									weight. Dimensional Weight = (L*W*H)/166 [where L = length, W=
+									width,
+									and H=height] L*W*H yields an amount in cubic inches and is
+									rounded up
+									to the nearest pound. We have a package weight limit of 70lbs.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="collectionTime" type="TimeInterval" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="TimeInterval">
+				<xs:annotation>
+					<xs:documentation>
+						Scheduling Information Select a date and time you would like your package(s)
+						picked up. The present time and pickup time must be at least 1
+						hour apart.
+          </xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="start" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>
+								Collection can be order maximum 5 working days in advance
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="end" type="xs:dateTime" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ContactInformation">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string"></xs:element>
+					<xs:element name="Title" type="xs:string" minOccurs="0"></xs:element>
+					<xs:element name="StreetAddress" type="xs:string"></xs:element>
+					<xs:element name="City" type="xs:string"></xs:element>
+					<xs:element name="StateProvinceCounty" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>required in (US/Canada/Ireland)
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="PostalCode" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>
+								required except in the following countries: Bahamas, Chile, Costa
+								Rica,Dominican Republic,Guatemala,Hong Kong,Ireland
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Country" type="CountryList"></xs:element>
+					<xs:element name="Telephone" type="xs:string"></xs:element>
+					<xs:element name="EMail" type="xs:string"></xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="CountryList">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Argentina"></xs:enumeration>
+					<xs:enumeration value="Australia"></xs:enumeration>
+					<xs:enumeration value="Austria"></xs:enumeration>
+					<xs:enumeration value="Bahamas"></xs:enumeration>
+					<xs:enumeration value="Belgium"></xs:enumeration>
+					<xs:enumeration value="Brazil"></xs:enumeration>
+					<xs:enumeration value="Canada"></xs:enumeration>
+					<xs:enumeration value="Chile"></xs:enumeration>
+					<xs:enumeration value="China"></xs:enumeration>
+					<xs:enumeration value="Costa Rica"></xs:enumeration>
+					<xs:enumeration value="Czech Republic"></xs:enumeration>
+					<xs:enumeration value="Denmark"></xs:enumeration>
+					<xs:enumeration value="Dominican Republic"></xs:enumeration>
+					<xs:enumeration value="Finland"></xs:enumeration>
+					<xs:enumeration value="France"></xs:enumeration>
+					<xs:enumeration value="Germany"></xs:enumeration>
+					<xs:enumeration value="Greece"></xs:enumeration>
+					<xs:enumeration value="Guatemala"></xs:enumeration>
+					<xs:enumeration value="Hong Kong"></xs:enumeration>
+					<xs:enumeration value="Hungary"></xs:enumeration>
+					<xs:enumeration value="India"></xs:enumeration>
+					<xs:enumeration value="Indonesia"></xs:enumeration>
+					<xs:enumeration value="Ireland"></xs:enumeration>
+					<xs:enumeration value="Israel"></xs:enumeration>
+					<xs:enumeration value="Italy"></xs:enumeration>
+					<xs:enumeration value="Japan"></xs:enumeration>
+					<xs:enumeration value="Malaysia"></xs:enumeration>
+					<xs:enumeration value="Mexico"></xs:enumeration>
+					<xs:enumeration value="Namibia" />
+					<xs:enumeration value="Nigeria" />
+					<xs:enumeration value="Netherlands"></xs:enumeration>
+					<xs:enumeration value="New Zealand"></xs:enumeration>
+					<xs:enumeration value="Norway"></xs:enumeration>
+					<xs:enumeration value="Panama"></xs:enumeration>
+					<xs:enumeration value="Philippines"></xs:enumeration>
+					<xs:enumeration value="Poland"></xs:enumeration>
+					<xs:enumeration value="Portugal"></xs:enumeration>
+					<xs:enumeration value="Puerto Rico"></xs:enumeration>
+					<xs:enumeration value="Russia"></xs:enumeration>
+					<xs:enumeration value="Singapore"></xs:enumeration>
+					<xs:enumeration value="South Korea"></xs:enumeration>
+					<xs:enumeration value="Spain"></xs:enumeration>
+					<xs:enumeration value="Sweden"></xs:enumeration>
+					<xs:enumeration value="Switzerland"></xs:enumeration>
+					<xs:enumeration value="Taiwan"></xs:enumeration>
+					<xs:enumeration value="Thailand"></xs:enumeration>
+					<xs:enumeration value="Tunisia"></xs:enumeration>
+					<xs:enumeration value="Turkey"></xs:enumeration>
+					<xs:enumeration value="United Kingdom"></xs:enumeration>
+					<xs:enumeration value="United States"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+			<!-- Fault elements -->
+			<xs:element name="InvalidOrder">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fault" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="InvalidOrderFault">
+		<wsdl:part element="tns:InvalidOrder" name="InvalidOrderFault" />
+	</wsdl:message>
+	<wsdl:message name="OrderCollectionResponse">
+		<wsdl:part element="tns:OrderCollectionResponse" name="OrderCollectionResponse" />
+	</wsdl:message>
+	<wsdl:message name="OrderCollectionRequest">
+		<wsdl:part element="tns:OrderCollectionRequest" name="OrderCollectionRequest" />
+	</wsdl:message>
+	<wsdl:portType name="OrderSystem">
+		<wsdl:operation name="OrderCollection">
+			<wsdl:documentation>
+				With more than 2,000 daily flights to over 200 countries and
+				territories,
+				time-definite delivery options, up-to-the-minute tracking, and expertise in
+				customs clearance regulations, runners makes international shipping
+				easier than
+				ever.
+      </wsdl:documentation>
+			<wsdl:input message="tns:OrderCollectionRequest" />
+			<wsdl:output message="tns:OrderCollectionResponse" />
+			<wsdl:fault name="InvalidOrder" message="tns:InvalidOrderFault"></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RunnerOrderSOAP" type="tns:OrderSystem">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="OrderCollection">
+			<soap:operation soapAction="OrderCollection" />
+			<wsdl:input>
+				<soap:body parts="OrderCollectionRequest" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="OrderCollectionResponse" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvalidOrder">
+				<soap:fault name="InvalidOrder" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="runner"
+		sawsdl:modelReference="http://www.example.org/runner.wsdl#Obligation 
+                          http://www.example.org/runner.wsdl#PriceAndDiscounts
+                          http://www.example.org/runner.wsdl#DeliveryTime
+                          http://www.example.org/runner.wsdl#Rewards">
+		<wsdl:port binding="tns:RunnerOrderSOAP" name="RunnerOrderSOAP">
+			<soap:address location="http://sws-challenge.org/shipper/v2/runner" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

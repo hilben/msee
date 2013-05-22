@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,10 +26,9 @@ import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
-import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
-import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
+import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.core.MonitoringInvocationInstanceImpl;
 import at.sti2.msee.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -239,17 +238,31 @@ public class MonitoringRepositoryHandler {
 	 * @throws IOException
 	 */
 	public void addQoSParametersForEndpoint(URL url,
-			List<QoSParameter> qosparams) throws RepositoryException,
+			List<QoSParameter> qosparams,Date time) throws RepositoryException,
 			MalformedQueryException, UpdateExecutionException, IOException {
 		Model m = this.serviceRepository.getModel();
 		m.open();
 
 		String query = MonitoringQueryBuilder.addQoSParams(url, qosparams);
-		this.serviceRepository.performSPARQLUpdate(query);
 
+		this.serviceRepository.performSPARQLUpdate(query);
 		LOGGER.debug("ADDED " + qosparams.size() + " new qos params");
 
 		m.close();
+	}
+	
+	/**
+	 * @param url
+	 * @param qosparam
+	 * @throws UpdateExecutionException
+	 * @throws MalformedQueryException
+	 * @throws RepositoryException
+	 * @throws IOException
+	 */
+	public void addQoSParametersForEndpoint(URL url,
+			List<QoSParameter> qosparams) throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException {
+		this.addQoSParametersForEndpoint(url, qosparams, null);
 	}
 
 	public QoSParameter getCurrentQoSParameter(URL url, QoSType qosparamtype)

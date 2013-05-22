@@ -1,0 +1,13 @@
+<http://www.example.com/Gumble#GubleOrder> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sws-ranking/Shipment.wsml#ShipmentOrderRequest> .
+<http://www.example.com/Gumble#GubleOrder> <http://sws-ranking/Shipment.wsml#paymentMethod> <http://www.wsmo.org/ontologies/nfp/paymentNFPOntology#CashInstrument> .
+<http://www.example.com/Gumble#GubleOrder> <http://sws-ranking/Shipment.wsml#packageToSend> <http://www.example.com/Gumble#GumblePackage> .
+
+<http://www.example.com/Gumble#GumblePackage> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://sws-ranking/Shipment.wsml#Package> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#length> "10"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#width> "2"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#height> "3"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#weight> "10"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#declaredValue> "150"^^<http://www.w3.org/2001/XMLSchema#float> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#containesItemsOfType> <http://sws-ranking/Shipment.wsml#Glassware> .
+<http://www.example.com/Gumble#GumblePackage> <http://sws-ranking/Shipment.wsml#packageStatus> <http://sws-ranking/Shipment.wsml#packageLost> .
+

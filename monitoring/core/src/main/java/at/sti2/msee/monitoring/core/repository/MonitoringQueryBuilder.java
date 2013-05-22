@@ -2,15 +2,14 @@ package at.sti2.msee.monitoring.core.repository;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
-import com.hp.hpl.jena.vocabulary.XSD;
 
 public class MonitoringQueryBuilder {
 
@@ -387,7 +386,7 @@ public class MonitoringQueryBuilder {
 
 		return queryString.toString();
 	}
-
+	
 	public static String addQoSParams(URL url, List<QoSParameter> qosparams) throws IOException {
 		String ns = MonitoringOntology.getMonitoringOntology().NS;
 		
@@ -421,6 +420,7 @@ public class MonitoringQueryBuilder {
 		
 		
 		completeQuery += queryString;
+		
 		}
 		
 		ParameterizedSparqlString finalQuery = new ParameterizedSparqlString(completeQuery);

@@ -151,10 +151,13 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 	 */
 	public void performSPARQLUpdate(String updateQuery) throws RepositoryException, MalformedQueryException, UpdateExecutionException {
 		RepositoryConnection c = this.repository.getConnection();
+		c.setAutoCommit(false);
+		
 		Update update = c.prepareUpdate(QueryLanguage.SPARQL, updateQuery);
 		
 		update.execute();
 		
+		c.commit();
 		c.close();
 	
 	}

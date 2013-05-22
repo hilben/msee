@@ -194,7 +194,7 @@ public class MonitoringComponentImplTest {
 			fail();
 		}
 	}
-
+	
 	@Test
 	public void testAddInvocationData() {
 		try {
@@ -315,13 +315,21 @@ public class MonitoringComponentImplTest {
 	@Test
 	public void testAddSuccessfullInvocationData() {
 
+		long timeStart = System.currentTimeMillis();
+		long timeDuration = 0;
+		
 		try {
 			component.clearAllContentOfWebservice(testService1);
 			component.addSuccessfulInvocationData(testService1, 1, 2, 3);
+			timeDuration = System.currentTimeMillis() - timeStart;
+			
 		} catch (MonitoringException e) {
 			e.printStackTrace();
 			fail();
 		}
+		
+		LOGGER.debug("Add successfull invocation in " + timeDuration + " ms");
+		System.out.println("Add successfull invocation in " + timeDuration + " ms");
 	}
 
 }

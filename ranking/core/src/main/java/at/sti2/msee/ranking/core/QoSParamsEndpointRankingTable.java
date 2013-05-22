@@ -3,7 +3,6 @@
  */
 package at.sti2.msee.ranking.core;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.monitoring.api.MonitoringComponent;
