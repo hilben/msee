@@ -78,6 +78,7 @@ public class MonitoringAvailabilityCheckerImpl implements
 	private boolean isAdressIsAvailable(URL url) {
 
 		HttpURLConnection httpUrlConn = null;
+		boolean isAvailable = false;
 
 		try {
 			httpUrlConn = (HttpURLConnection) url.openConnection();
@@ -87,6 +88,7 @@ public class MonitoringAvailabilityCheckerImpl implements
 			// Set timeouts in milliseconds
 			httpUrlConn.setConnectTimeout(TIMEOUT_MS);
 			httpUrlConn.setReadTimeout(TIMEOUT_MS);
+			httpUrlConn.connect();
 
 
 			LOGGER.info("Response Code: "
@@ -94,16 +96,15 @@ public class MonitoringAvailabilityCheckerImpl implements
 			LOGGER.info("Response Message: "
 					+ httpUrlConn.getResponseMessage());
 			
-			boolean isAvailable = (httpUrlConn.getResponseCode() == HttpURLConnection.HTTP_OK);
+			isAvailable = (httpUrlConn.getResponseCode() == HttpURLConnection.HTTP_OK);
 			
 			httpUrlConn.disconnect();
-			
-			return isAvailable;
 		} catch (IOException e) {
-			
-			httpUrlConn.disconnect();
-			return false;
+			LOGGER.error(e);
+		} finally {
+			httpUrlConn.disconnect();			
 		}
+		return isAvailable;
 	}
 	
 }
