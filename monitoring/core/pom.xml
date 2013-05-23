@@ -37,7 +37,7 @@
 
 		<dependency>
 			<groupId>javax.xml</groupId>
-			<artifactId>jaxrpc</artifactId>
+			<artifactId>jaxrpc-api</artifactId>
 		</dependency>
 
 		<dependency>

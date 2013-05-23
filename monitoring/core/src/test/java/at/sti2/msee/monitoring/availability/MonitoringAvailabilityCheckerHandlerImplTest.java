@@ -80,7 +80,8 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 			this.handler.addEndpoint(testWebService1url);
 			this.handler.addEndpoint(testWebService2url);
 
-			assertTrue(this.handler.getCheckedEndpoints().size() == 2);
+			int currentSize = this.handler.getCheckedEndpoints().size();
+			assertTrue(currentSize + " not 2", currentSize == 2);
 
 		} catch (MonitoringException e) {
 			fail(e.getMessage());
