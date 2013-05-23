@@ -106,6 +106,7 @@ public class ServiceInvokerImplRestTest {
 	
 	@Test
 	public void testPOST() throws ServiceInvokerException, MalformedURLException {
+		int count = getHotelCount();
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/";
 		String method = "POST";
@@ -113,6 +114,7 @@ public class ServiceInvokerImplRestTest {
 		Hotel newHotel = new Hotel();
 		parameters.put("hotel", gson.toJson(newHotel));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
-		Assert.assertThat(result, is("{\"id\":\"11\"}"));
+		assertThat(result, is("{\"id\":\"11\"}"));
+		assertThat(count, is(equalTo(getHotelCount()-1)));
 	}
 }

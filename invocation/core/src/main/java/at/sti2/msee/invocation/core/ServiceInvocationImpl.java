@@ -36,7 +36,11 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
+import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import at.sti2.msee.invocation.api.ServiceInvocation;
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
@@ -44,6 +48,7 @@ import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
+import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 
 /**
  * @author Benjamin Hiltpolt
@@ -56,12 +61,11 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	private MonitoringComponent monitoring = null;
 
 	public ServiceInvocationImpl() {
-		// try {
-		// this.monitoring = MonitoringComponentImpl.getInstance();
-		// } catch (RepositoryException | IOException e) {
-		// logger.error("Invocation could not initialize the MonitoringComponent");
-		// this.monitoring = null;
-		// }
+		try {
+			this.monitoring = MonitoringComponentImpl.getInstance();
+		} catch (RepositoryException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -173,6 +177,12 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	@Override
 	public String invokeREST(final URL serviceID, String address, final String method,
 			final Map<String, String> parameters) throws ServiceInvokerException {
+		// monitoring
+		long startTime = System.currentTimeMillis();
+		MonitoringInvocationInstance invocationinstance = initMonitoring(serviceID);
+		long requestMessageSize = getParameterSize(parameters);
+		
+		// REST
 		final String charset = "UTF-8";
 		NameValuePair[] data = new NameValuePair[parameters.size()];
 		int i = 0;
@@ -192,6 +202,17 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		HttpClient client = new HttpClient();
 		String output = "";
 
+		
+		// check if monitored
+		if (invocationinstance != null) {
+			try {
+				invocationinstance.setState(MonitoringInvocationState.Started);
+				logger.debug("Monitoring is activated");
+			} catch (MonitoringException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		switch (method.toLowerCase()) {
 		case "get":
 			GetMethod getHandler = new GetMethod(address);
@@ -227,7 +248,33 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		default:
 			throw new ServiceInvokerException("method not supported");
 		}
+		
+		if (invocationinstance != null) {
+			try {
+				invocationinstance.setState(MonitoringInvocationState.Completed);
+				long responseMessageSize = output.getBytes().length;
+				long time = System.currentTimeMillis() - startTime;
+
+				invocationinstance.sendSuccessfulInvocation(responseMessageSize,
+						requestMessageSize, time);
+
+				logger.debug("Performed monitoring. Invocation took: " + time + " ms");
+			} catch (MonitoringException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 		return output;
+	}
+
+	private long getParameterSize(Map<String, String> parameters) {
+		long size = 0;
+		for(Entry<String, String> entrySet : parameters.entrySet()){
+			size += entrySet.getValue().length();
+		}
+		return size;
 	}
 
 	private static String convertStreamToString(java.io.InputStream is) {
