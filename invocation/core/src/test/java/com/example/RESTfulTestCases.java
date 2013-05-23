@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,7 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.hamcrest.Matcher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -140,8 +143,7 @@ public class RESTfulTestCases {
 		String details = gson.fromJson(output, String.class);
 
 		String expected = "Further hotel details for Hotel" + id + ".";
-		assertEquals(expected, details);
-
+		assertThat(expected, is(details));
 		method.releaseConnection();
 	}
 

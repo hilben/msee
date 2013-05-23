@@ -18,16 +18,21 @@ package at.sti2.msee.invocation.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
@@ -46,8 +51,7 @@ import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
  *         TODO: Documentation
  */
 public class ServiceInvocationImpl implements ServiceInvocation {
-	protected static Logger logger = Logger
-			.getLogger(ServiceInvocationImpl.class);
+	protected static Logger logger = Logger.getLogger(ServiceInvocationImpl.class);
 
 	private MonitoringComponent monitoring = null;
 
@@ -76,10 +80,9 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws AxisFault
 	 */
 	@Override
-	public String invokeSOAP(URL webserviceURL,
-			String soapMessage) throws ServiceInvokerException {
+	public String invokeSOAP(URL webserviceURL, String soapMessage) throws ServiceInvokerException {
 
-		//Setup monitoring data and prepare stuff
+		// Setup monitoring data and prepare stuff
 		long requestMessageSize = soapMessage.getBytes().length;
 		long startTime = System.currentTimeMillis();
 		MonitoringInvocationInstance invocationinstance = initMonitoring(webserviceURL);
@@ -95,11 +98,11 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		logger.debug("Using SOAP-Message " + soapFile);
 
 		try {
-			//check if monitored
+			// check if monitored
 			if (invocationinstance != null) {
 				invocationinstance.setState(MonitoringInvocationState.Started);
 				logger.debug("Monitoring is activated");
-			} 
+			}
 
 			call = (Call) service.createCall();
 			call.setTargetEndpointAddress(endpoint);
@@ -113,20 +116,18 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			logger.debug("Obtainer results" + results);
 
 			if (invocationinstance != null) {
-				invocationinstance
-						.setState(MonitoringInvocationState.Completed);
+				invocationinstance.setState(MonitoringInvocationState.Completed);
 				long responseMessageSize = results.getBytes().length;
 				long time = System.currentTimeMillis() - startTime;
 
-				invocationinstance.sendSuccessfulInvocation(
-						responseMessageSize, requestMessageSize, time);
+				invocationinstance.sendSuccessfulInvocation(responseMessageSize,
+						requestMessageSize, time);
 
-				logger.debug("Performed monitoring. Invocation took: " + time
-						+ " ms");
+				logger.debug("Performed monitoring. Invocation took: " + time + " ms");
 			}
 
-		} catch (ServiceException | SAXException | AxisFault
-				| UnsupportedEncodingException | MonitoringException e) {
+		} catch (ServiceException | SAXException | AxisFault | UnsupportedEncodingException
+				| MonitoringException e) {
 			logger.error(e);
 			if (invocationinstance != null) {
 				try {
@@ -151,8 +152,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				logger.debug("Loading a invocationinstance into the invoker");
 				MonitoringInvocationInstance invocationinstance = monitoring
 						.createInvocationInstance(webserviceURL);
-				invocationinstance
-						.setState(MonitoringInvocationState.Instantiated);
+				invocationinstance.setState(MonitoringInvocationState.Instantiated);
 				return invocationinstance;
 			}
 		} catch (MonitoringException e) {
@@ -171,10 +171,54 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	}
 
 	@Override
-	public String invokeREST(URL serviceID, String operationName, String method)
-			throws ServiceInvokerException {
-		// TODO Auto-generated method stub
-		return null;
+	public String invokeREST(final URL serviceID, String address, final String method,
+			final Map<String, String> parameters) throws ServiceInvokerException {
+		final String charset = "UTF-8";
+		for (Entry<String, String> parameterSet : parameters.entrySet()) {
+			try {
+				address = address.replace("{" + parameterSet.getKey() + "}",
+						URLEncoder.encode(parameterSet.getValue(), charset));
+			} catch (UnsupportedEncodingException e) {
+				throw new ServiceInvokerException(e);
+			}
+		}
+		logger.info("Invocation of: " + address);
+
+		HttpClient client = new HttpClient();
+		String output = "";
+
+		switch (method.toLowerCase()) {
+		case "get":
+			GetMethod getHandler = new GetMethod(address);
+
+			InputStream response = new ByteArrayInputStream("".getBytes());
+			try {
+				client.executeMethod(getHandler);
+				response = getHandler.getResponseBodyAsStream();
+			} catch (IOException e) {
+				throw new ServiceInvokerException(e);
+			}
+			output = convertStreamToString(response);
+			break;
+		case "post":
+
+			break;
+		case "put":
+
+			break;
+		case "delete":
+
+			break;
+		}
+		return output;
+	}
+
+	private static String convertStreamToString(java.io.InputStream is) {
+		java.util.Scanner s = new java.util.Scanner(is);
+		s.useDelimiter("\\A");
+		String retval = s.hasNext() ? s.next() : "";
+		s.close();
+		return retval;
 	}
 
 }
