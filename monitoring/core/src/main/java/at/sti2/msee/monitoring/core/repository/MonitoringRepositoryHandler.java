@@ -291,6 +291,7 @@ public class MonitoringRepositoryHandler {
 		if (res.hasNext()) {
 			QueryRow qr = res.next();
 			time = qr.getLiteralValue("time");
+			time = time.substring(0, time.indexOf("^^"));
 			value = qr.getLiteralValue("value").toString();
 		}
 
@@ -356,6 +357,7 @@ public class MonitoringRepositoryHandler {
 		while (res.hasNext()) {
 			QueryRow qr = res.next();
 			time = qr.getLiteralValue("time");
+			time = time.substring(0, time.indexOf("^^"));
 			value = qr.getLiteralValue("value").toString();
 			QoSParameter p = new QoSParameter(type, value, time);
 			returnParameter.add(p);
@@ -399,6 +401,7 @@ public class MonitoringRepositoryHandler {
 		while (res.hasNext()) {
 			QueryRow qr = res.next();
 			time = qr.getLiteralValue("time");
+			time = time.substring(0, time.indexOf("^^"));
 			state = qr.getLiteralValue("state").toString();
 			MonitoringWebserviceAvailability p = new MonitoringWebserviceAvailability(
 					state, time);
@@ -448,6 +451,7 @@ public class MonitoringRepositoryHandler {
 		if (res.hasNext()) {
 			QueryRow qr = res.next();
 			time = qr.getLiteralValue("time");
+			time = time.substring(0, time.indexOf("^^"));
 			state = qr.getLiteralValue("state").toString();
 		}
 

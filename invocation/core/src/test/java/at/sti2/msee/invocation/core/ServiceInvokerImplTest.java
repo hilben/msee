@@ -1,10 +1,13 @@
 package at.sti2.msee.invocation.core;
 
+import static org.junit.Assert.fail;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import junit.framework.TestCase;
@@ -40,8 +43,7 @@ public class ServiceInvokerImplTest extends TestCase {
 			fis = new FileInputStream(ServiceInvokerImplTest.class.getResource(
 					soapFile).getFile());
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		String soapMessage = "";
 
@@ -54,14 +56,14 @@ public class ServiceInvokerImplTest extends TestCase {
 		try {
 			fis.close();
 		} catch (IOException e) {
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
 			invoker.invokeSOAP(new URL(endpoint), soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -74,8 +76,8 @@ public class ServiceInvokerImplTest extends TestCase {
 		try {
 			fis = new FileInputStream(ServiceInvokerImplTest.class.getResource(
 					soapFile).getFile());
-		} catch (FileNotFoundException e2) {
-			fail();
+		} catch (FileNotFoundException e) {
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		String soapMessage = "";
 
@@ -87,15 +89,15 @@ public class ServiceInvokerImplTest extends TestCase {
 		s.close();
 		try {
 			fis.close();
-		} catch (IOException e1) {
-			fail();
+		} catch (IOException e) {
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
 			invoker.invokeSOAP(new URL(endpoint), soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -108,8 +110,8 @@ public class ServiceInvokerImplTest extends TestCase {
 		try {
 			fis = new FileInputStream(ServiceInvokerImplTest.class.getResource(
 					soapFile).getFile());
-		} catch (FileNotFoundException e1) {
-			fail();
+		} catch (FileNotFoundException e) {
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		String soapMessage = "";
 
@@ -121,8 +123,8 @@ public class ServiceInvokerImplTest extends TestCase {
 		s.close();
 		try {
 			fis.close();
-		} catch (IOException e1) {
-			fail();
+		} catch (IOException e) {
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 
 		boolean fails = false;
@@ -131,7 +133,7 @@ public class ServiceInvokerImplTest extends TestCase {
 				invoker.getMonitoring().enableMonitoring(new URL(endpoint));
 				invoker.invokeSOAP(new URL(endpoint), soapMessage);
 			} catch (MalformedURLException | MonitoringException e) {
-				fail();
+				fail(Arrays.toString(e.getStackTrace()));
 			}
 		} catch (ServiceInvokerException e) {
 			fails = true;
