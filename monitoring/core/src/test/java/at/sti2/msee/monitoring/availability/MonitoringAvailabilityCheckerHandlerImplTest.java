@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.net.URL;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,6 +28,10 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 	@Before
 	public void setUp() throws Exception {
 		this.handler = MonitoringAvailabilityCheckerHandlerImpl.getInstance();
+		List<URL> endpoints = this.handler.getCheckedEndpoints();
+		for(URL endpoint : endpoints){
+			this.handler.removeEndpoint(endpoint);
+		}
 		this.testWebService1url = new URL(testWebService1);
 		this.testWebService2url = new URL(testWebService2);
 	}
