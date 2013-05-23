@@ -33,8 +33,9 @@ import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
-import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
 import at.sti2.msee.invocation.api.ServiceInvocation;
@@ -43,7 +44,6 @@ import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
-import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 
 /**
  * @author Benjamin Hiltpolt
@@ -56,12 +56,12 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	private MonitoringComponent monitoring = null;
 
 	public ServiceInvocationImpl() {
-		try {
-			this.monitoring = MonitoringComponentImpl.getInstance();
-		} catch (RepositoryException | IOException e) {
-			logger.error("Invocation could not initialize the MonitoringComponent");
-			this.monitoring = null;
-		}
+		// try {
+		// this.monitoring = MonitoringComponentImpl.getInstance();
+		// } catch (RepositoryException | IOException e) {
+		// logger.error("Invocation could not initialize the MonitoringComponent");
+		// this.monitoring = null;
+		// }
 	}
 
 	/**
@@ -174,6 +174,8 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	public String invokeREST(final URL serviceID, String address, final String method,
 			final Map<String, String> parameters) throws ServiceInvokerException {
 		final String charset = "UTF-8";
+		NameValuePair[] data = new NameValuePair[parameters.size()];
+		int i = 0;
 		for (Entry<String, String> parameterSet : parameters.entrySet()) {
 			try {
 				address = address.replace("{" + parameterSet.getKey() + "}",
@@ -181,6 +183,9 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			} catch (UnsupportedEncodingException e) {
 				throw new ServiceInvokerException(e);
 			}
+			NameValuePair tmpPair = new NameValuePair(parameterSet.getKey(),
+					parameterSet.getValue());
+			data[i++] = tmpPair;
 		}
 		logger.info("Invocation of: " + address);
 
@@ -191,24 +196,36 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		case "get":
 			GetMethod getHandler = new GetMethod(address);
 
-			InputStream response = new ByteArrayInputStream("".getBytes());
+			InputStream getResponse = new ByteArrayInputStream("".getBytes());
 			try {
 				client.executeMethod(getHandler);
-				response = getHandler.getResponseBodyAsStream();
+				getResponse = getHandler.getResponseBodyAsStream();
 			} catch (IOException e) {
 				throw new ServiceInvokerException(e);
 			}
-			output = convertStreamToString(response);
+			output = convertStreamToString(getResponse);
+			getHandler.releaseConnection();
 			break;
 		case "post":
+			PostMethod postHandler = new PostMethod(address);
 
+			InputStream postResponse = new ByteArrayInputStream("".getBytes());
+			try {
+				postHandler.setRequestBody(data);
+				client.executeMethod(postHandler);
+				postResponse = postHandler.getResponseBodyAsStream();
+			} catch (IOException e) {
+				throw new ServiceInvokerException(e);
+			}
+			output = convertStreamToString(postResponse);
+			postHandler.releaseConnection();
 			break;
-		case "put":
-
-			break;
-		case "delete":
-
-			break;
+		// case "put":
+		// break;
+		// case "delete":
+		// break;
+		default:
+			throw new ServiceInvokerException("method not supported");
 		}
 		return output;
 	}
