@@ -234,6 +234,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				getResponse = getHandler.getResponseBodyAsStream();
 				output = convertStreamToString(getResponse);
 			} catch (IOException e) {
+				monitorFailedService(invocationinstance);
 				throw new ServiceInvokerException(e);
 			} finally {
 				getHandler.releaseConnection();
@@ -249,6 +250,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				postResponse = postHandler.getResponseBodyAsStream();
 				output = convertStreamToString(postResponse);
 			} catch (IOException e) {
+				monitorFailedService(invocationinstance);
 				throw new ServiceInvokerException(e);
 			} finally {
 			postHandler.releaseConnection();
@@ -264,6 +266,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				putResponse = putHandler.getResponseBodyAsStream();
 				output = convertStreamToString(putResponse);
 			} catch (IOException e) {
+				monitorFailedService(invocationinstance);
 				throw new ServiceInvokerException(e);
 			} finally {
 				putHandler.releaseConnection();
@@ -277,6 +280,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				deleteResponse = deleteHandler.getResponseBodyAsStream();
 				output = convertStreamToString(deleteResponse);
 			} catch (IOException e) {
+				monitorFailedService(invocationinstance);
 				throw new ServiceInvokerException(e);
 			} finally {
 				deleteHandler.releaseConnection();
