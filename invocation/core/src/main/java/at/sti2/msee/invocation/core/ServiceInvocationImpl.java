@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.xml.rpc.ServiceException;
 
 import org.apache.axis.AxisFault;
@@ -32,15 +33,15 @@ import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PutMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import at.sti2.msee.invocation.api.ServiceInvocation;
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
@@ -102,11 +103,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		logger.debug("Using SOAP-Message " + soapFile);
 
 		try {
-			// check if monitored
-			if (invocationinstance != null) {
-				invocationinstance.setState(MonitoringInvocationState.Started);
-				logger.debug("Monitoring is activated");
-			}
+			startMonitoring(invocationinstance);
 
 			call = (Call) service.createCall();
 			call.setTargetEndpointAddress(endpoint);
@@ -133,17 +130,31 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		} catch (ServiceException | SAXException | AxisFault | UnsupportedEncodingException
 				| MonitoringException e) {
 			logger.error(e);
-			if (invocationinstance != null) {
-				try {
-					invocationinstance.sendUnsuccessfulInvocation();
-				} catch (MonitoringException e1) {
-					throw new ServiceInvokerException(e1);
-				}
-			}
+			monitorFailedService(invocationinstance);
 			throw new ServiceInvokerException(e);
 		}
 
 		return results;
+	}
+
+	private void monitorFailedService(MonitoringInvocationInstance invocationinstance)
+			throws ServiceInvokerException {
+		if (invocationinstance != null) {
+			try {
+				invocationinstance.sendUnsuccessfulInvocation();
+			} catch (MonitoringException e1) {
+				throw new ServiceInvokerException(e1);
+			}
+		}
+	}
+
+	private void startMonitoring(MonitoringInvocationInstance invocationinstance)
+			throws MonitoringException {
+		// check if monitored
+		if (invocationinstance != null) {
+			invocationinstance.setState(MonitoringInvocationState.Started);
+			logger.debug("Monitoring is activated");
+		}
 	}
 
 	private MonitoringInvocationInstance initMonitoring(URL webserviceURL) {
@@ -174,6 +185,11 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		this.monitoring = monitoring;
 	}
 
+	public String invokeREST(final URL serviceID, String address, final String method,
+			final Map<String, String> parameters, String putData) throws ServiceInvokerException {
+		return null; // TODO: implement for PUT
+	}
+
 	@Override
 	public String invokeREST(final URL serviceID, String address, final String method,
 			final Map<String, String> parameters) throws ServiceInvokerException {
@@ -181,7 +197,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		long startTime = System.currentTimeMillis();
 		MonitoringInvocationInstance invocationinstance = initMonitoring(serviceID);
 		long requestMessageSize = getParameterSize(parameters);
-		
+
 		// REST
 		final String charset = "UTF-8";
 		NameValuePair[] data = new NameValuePair[parameters.size()];
@@ -202,30 +218,26 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		HttpClient client = new HttpClient();
 		String output = "";
 
-		
-		// check if monitored
-		if (invocationinstance != null) {
-			try {
-				invocationinstance.setState(MonitoringInvocationState.Started);
-				logger.debug("Monitoring is activated");
-			} catch (MonitoringException e) {
-				e.printStackTrace();
-			}
+		try {
+			startMonitoring(invocationinstance);
+		} catch (MonitoringException e) {
+			logger.error(e);
 		}
-		
+
 		switch (method.toLowerCase()) {
 		case "get":
 			GetMethod getHandler = new GetMethod(address);
 
 			InputStream getResponse = new ByteArrayInputStream("".getBytes());
 			try {
-				client.executeMethod(getHandler);
+				checkStatus(client.executeMethod(getHandler));
 				getResponse = getHandler.getResponseBodyAsStream();
+				output = convertStreamToString(getResponse);
 			} catch (IOException e) {
 				throw new ServiceInvokerException(e);
+			} finally {
+				getHandler.releaseConnection();
 			}
-			output = convertStreamToString(getResponse);
-			getHandler.releaseConnection();
 			break;
 		case "post":
 			PostMethod postHandler = new PostMethod(address);
@@ -233,22 +245,47 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			InputStream postResponse = new ByteArrayInputStream("".getBytes());
 			try {
 				postHandler.setRequestBody(data);
-				client.executeMethod(postHandler);
+				checkStatus(client.executeMethod(postHandler));
 				postResponse = postHandler.getResponseBodyAsStream();
+				output = convertStreamToString(postResponse);
 			} catch (IOException e) {
 				throw new ServiceInvokerException(e);
-			}
-			output = convertStreamToString(postResponse);
+			} finally {
 			postHandler.releaseConnection();
+			}
 			break;
-		// case "put":
-		// break;
-		// case "delete":
-		// break;
+		case "put":
+			PutMethod putHandler = new PutMethod(address);
+			InputStream putResponse = new ByteArrayInputStream("".getBytes());
+			try {
+				putHandler.setRequestEntity(new StringRequestEntity(parameters.get("data"),
+						"application/json", charset));
+				checkStatus(client.executeMethod(putHandler));
+				putResponse = putHandler.getResponseBodyAsStream();
+				output = convertStreamToString(putResponse);
+			} catch (IOException e) {
+				throw new ServiceInvokerException(e);
+			} finally {
+				putHandler.releaseConnection();
+			}
+			break;
+		case "delete":
+			DeleteMethod deleteHandler = new DeleteMethod(address);
+			InputStream deleteResponse = new ByteArrayInputStream("".getBytes());
+			try {
+				client.executeMethod(deleteHandler);
+				deleteResponse = deleteHandler.getResponseBodyAsStream();
+				output = convertStreamToString(deleteResponse);
+			} catch (IOException e) {
+				throw new ServiceInvokerException(e);
+			} finally {
+				deleteHandler.releaseConnection();
+			}
+			break;
 		default:
 			throw new ServiceInvokerException("method not supported");
 		}
-		
+
 		if (invocationinstance != null) {
 			try {
 				invocationinstance.setState(MonitoringInvocationState.Completed);
@@ -263,15 +300,20 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
+
 		return output;
+	}
+
+	private int checkStatus(int status) throws ServiceInvokerException {
+		if (status < 200 || status > 299) {
+			throw new ServiceInvokerException("Invocation failed with status " + status);
+		}
+		return status;
 	}
 
 	private long getParameterSize(Map<String, String> parameters) {
 		long size = 0;
-		for(Entry<String, String> entrySet : parameters.entrySet()){
+		for (Entry<String, String> entrySet : parameters.entrySet()) {
 			size += entrySet.getValue().length();
 		}
 		return size;
