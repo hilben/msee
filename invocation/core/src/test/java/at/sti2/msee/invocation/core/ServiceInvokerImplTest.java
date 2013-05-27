@@ -1,7 +1,5 @@
 package at.sti2.msee.invocation.core;
 
-import static org.junit.Assert.fail;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

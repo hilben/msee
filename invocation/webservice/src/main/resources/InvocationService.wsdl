@@ -22,6 +22,20 @@
       <xs:element minOccurs="0" name="arg0" type="xs:anyURI"/>
       <xs:element minOccurs="0" name="arg1" type="xs:string"/>
       <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+      <xs:element name="arg3">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="key" type="xs:string"/>
+                  <xs:element minOccurs="0" name="value" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="invokeRESTResponse">
