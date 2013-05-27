@@ -4,13 +4,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,8 +56,7 @@ public class MonitoringComponentImplTest {
 			component.clearAllContentOfWebservice(testService1);
 			component.clearAllContentOfWebservice(testService2);
 		} catch (MonitoringException | RepositoryException | IOException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -64,8 +66,7 @@ public class MonitoringComponentImplTest {
 			component.enableMonitoring(testService1);
 			assertTrue(component.isMonitoredWebService(testService1));
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -78,8 +79,7 @@ public class MonitoringComponentImplTest {
 			component.getQoSParameter(testService2, QoSType.RequestTotal);
 
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		} catch (MonitoringNoDataStoredException e) {
 			catchNoDataException = true;
 		}
@@ -123,8 +123,7 @@ public class MonitoringComponentImplTest {
 			assertNotNull(i);
 
 		} catch (MonitoringException | MalformedURLException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -134,8 +133,7 @@ public class MonitoringComponentImplTest {
 			component.disableMonitoring(testService1);
 			assertFalse(component.isMonitoredWebService(testService1));
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -144,19 +142,18 @@ public class MonitoringComponentImplTest {
 		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.Available;
 		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.Unavailable;
 		try {
-			component.updateAvailabilityState(testService1, state1, 1234);
-			component.updateAvailabilityState(testService1, state2, 4321);
+			component.updateAvailabilityState(testService1, state1, 1234.0);
+			component.updateAvailabilityState(testService1, state2, 4321.0);
 
 			assertTrue("5555.0".compareTo(component.getQoSParameter(
 					testService1, QoSType.MonitoredTime).getValue())==0);
-			assertTrue("1234.0".compareTo(component.getQoSParameter(
-					testService1, QoSType.AvailableTime).getValue())==0);
+			String availableTime = component.getQoSParameter(testService1, QoSType.AvailableTime).getValue();
+			Assert.assertThat(availableTime, is("1234.0"));
 			assertTrue("4321.0".compareTo(component.getQoSParameter(
 					testService1, QoSType.UnavailableTime).getValue())==0);
 			
 		} catch (MonitoringException | MonitoringNoDataStoredException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -179,8 +176,7 @@ public class MonitoringComponentImplTest {
 			assertFalse(component.getAvailability(testService2).getState() == state1);
 
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -190,18 +186,17 @@ public class MonitoringComponentImplTest {
 			component.clearAllContentOfWebservice(testService1);
 			assertFalse(component.isMonitoredWebService(testService1));
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 	
 	@Test
 	public void testAddInvocationData() {
 		try {
-			component.addSuccessfulInvocationData(testService1, -100, 100, 100);
-			component.addSuccessfulInvocationData(testService1, 50, 100, 100);
-			component.addSuccessfulInvocationData(testService1, 33, 100, 100);
-			component.addSuccessfulInvocationData(testService1, -9.7, 100, 100);
+			component.addSuccessfulInvocationData(testService1, -100.0, 100.0, 100.0);
+			component.addSuccessfulInvocationData(testService1, 50.0, 100.0, 100.0);
+			component.addSuccessfulInvocationData(testService1, 33.0, 100.0, 100.0);
+			component.addSuccessfulInvocationData(testService1, -9.7, 100.0, 100.0);
 
 			assertTrue(extractDoubleFromParameter(component.getQoSParameter(
 					testService1, QoSType.RequestSuccessful)) == 4.0);
@@ -270,8 +265,7 @@ public class MonitoringComponentImplTest {
 					testService1, QoSType.RequestFailed)) == 4.0);
 
 		} catch (MonitoringException | MonitoringNoDataStoredException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 	}
 
@@ -306,8 +300,7 @@ public class MonitoringComponentImplTest {
 			assertTrue(respTimeAve.getType() == QoSType.ResponseTimeAverage);
 
 		} catch (MonitoringException | MonitoringNoDataStoredException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 
 	}
@@ -324,12 +317,11 @@ public class MonitoringComponentImplTest {
 			timeDuration = System.currentTimeMillis() - timeStart;
 			
 		} catch (MonitoringException e) {
-			e.printStackTrace();
-			fail();
+			fail(Arrays.toString(e.getStackTrace()));
 		}
 		
 		LOGGER.debug("Add successfull invocation in " + timeDuration + " ms");
-		System.out.println("Add successfull invocation in " + timeDuration + " ms");
+		//System.out.println("Add successfull invocation in " + timeDuration + " ms");
 	}
 
 }

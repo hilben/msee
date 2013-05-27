@@ -3,10 +3,13 @@ package at.sti2.msee.monitoring.availability;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.net.URL;
+import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +30,10 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 	@Before
 	public void setUp() throws Exception {
 		this.handler = MonitoringAvailabilityCheckerHandlerImpl.getInstance();
+		List<URL> endpoints = this.handler.getCheckedEndpoints();
+		for(URL endpoint : endpoints){
+			this.handler.removeEndpoint(endpoint);
+		}
 		this.testWebService1url = new URL(testWebService1);
 		this.testWebService2url = new URL(testWebService2);
 	}
@@ -73,6 +80,8 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 	@Test
 	public void testGetCheckedEndpoints() {
 		try {
+			int currentSize = this.handler.getCheckedEndpoints().size();
+			Assert.assertThat(currentSize, is(0));
 			this.handler.addEndpoint(testWebService1url);
 
 			this.handler.addEndpoint(testWebService2url);
@@ -80,7 +89,8 @@ public class MonitoringAvailabilityCheckerHandlerImplTest {
 			this.handler.addEndpoint(testWebService1url);
 			this.handler.addEndpoint(testWebService2url);
 
-			assertTrue(this.handler.getCheckedEndpoints().size() == 2);
+			currentSize = this.handler.getCheckedEndpoints().size();
+			assertTrue(currentSize + " not 2", currentSize == 2);
 
 		} catch (MonitoringException e) {
 			fail(e.getMessage());
