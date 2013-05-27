@@ -38,6 +38,7 @@ public class RankingConfig {
 
 	private String triplestoreEndpoint;
 	private String triplestoreReposid;
+	private String instancePrefix;
 
 	public static RankingConfig getConfig() throws IOException {
 		if (instance == null) {
@@ -56,16 +57,21 @@ public class RankingConfig {
 				.getProperty("ranking.triplestore.endpoint");
 		this.triplestoreReposid = this.prop
 				.getProperty("ranking.triplestore.reposid");
+		this.instancePrefix = this.prop.getProperty("ranking.instance.prefixuri");
 
 		LOGGER.debug("Loaded ranking configuration: " + this);
 
 		if (this.triplestoreReposid == null) {
-			throw new IOException("repository not available in config file");
+			throw new IOException("repository not available in ranking config file");
 		}
 
 		if (this.triplestoreEndpoint == null) {
 			throw new IOException(
-					"triplestoreEndpoint not available in config file");
+					"triplestoreEndpoint not available in ranking config file");
+		}
+		if (this.instancePrefix == null) {
+			throw new IOException(
+					"triplestoreEndpoint not available in ranking config file");
 		}
 	}
 
@@ -81,6 +87,10 @@ public class RankingConfig {
 	public String toString() {
 		return "Config [prop=" + prop + ", triplestoreEndpoint="
 				+ triplestoreEndpoint + ", triplestoreReposid="
-				+ triplestoreReposid + "]";
+				+ triplestoreReposid + ", ranking.instance.prefixuri= "+instancePrefix+" ]";
+	}
+
+	public String getInstancePrefix() {
+		return this.instancePrefix;
 	}
 }

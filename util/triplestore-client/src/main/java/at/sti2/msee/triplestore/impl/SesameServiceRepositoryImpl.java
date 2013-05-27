@@ -154,7 +154,7 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		c.setAutoCommit(false);
 		
 		Update update = c.prepareUpdate(QueryLanguage.SPARQL, updateQuery);
-		
+	
 		update.execute();
 		
 		c.commit();

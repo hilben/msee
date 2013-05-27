@@ -132,7 +132,7 @@ public class RulesRanking extends RankingEngine {
 			for (Service s : rez)
 				result += s.resource + "\n";
 		}
-		return result;
+		return "RESULT"+result;
 	}
 
 	public String[] rankServices() throws RankingException {
@@ -222,13 +222,6 @@ public class RulesRanking extends RankingEngine {
 						if (iriNfp.getLocalName().equalsIgnoreCase(
 								wsmoFactory.createIRI(a.resource.toString())
 										.getLocalName())) {
-
-							// System.err.println("Create IRI for " +
-							// webservice.SERVICE);
-							// System.err.println("Create IRI for " +
-							// webservice.getNonFunctionalParameters());
-							// System.err.println("Create IRI for " +
-							// a.getPredicate().toString());
 
 							iriNFPFunction = wsmoFactory.createIRI(a
 									.getPredicate().toString());

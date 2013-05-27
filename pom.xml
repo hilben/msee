@@ -67,6 +67,7 @@
 		<!-- Ranking properties -->
 		<ranking.triplestore.endpoint>${default.sesame.endpoint}</ranking.triplestore.endpoint>
 		<ranking.triplestore.reposid>ranking</ranking.triplestore.reposid>
+		<ranking.instance.prefixuri>http://sti2.at/ranking/instances#</ranking.instance.prefixuri>
 		<ranking.ws.port>${default.port}</ranking.ws.port>
 		
 	</properties>

@@ -105,4 +105,3 @@
 	     ?package[_\"http://sws-ranking/Shipment.wsml#declaredValue\" hasValue ?value, _\"http://sws-ranking/Shipment.wsml#weight\" hasValue ?weight] and
 	     ?rewardPoints = (?weight * 2)."^^<http://www.wsmo.org/wsml/wsml-syntax#AxiomLiteral> .
 <http://www.example.org/racer.wsdl#Rewards> <http://www.wsmo.org/ontologies/nfp/preferenceOntology#predicate> <http://www.example.org/racer.wsdl#computeRewards> .
-

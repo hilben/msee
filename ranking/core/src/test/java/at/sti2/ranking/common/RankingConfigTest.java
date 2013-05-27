@@ -12,23 +12,29 @@ public class RankingConfigTest {
 
 	private final Logger LOGGER = LogManager.getLogger(this.getClass()
 			.getName());
-	
+
 	private RankingConfig config;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.config = RankingConfig.getConfig();
 	}
 
-
 	@Test
 	public void testGetTriplestoreEndpoint() {
-		assertTrue(this.config.getTriplestoreEndpoint().compareTo("http://sesa.sti2.at:8080/openrdf-sesame")==0);
+		assertTrue(this.config.getTriplestoreEndpoint().compareTo(
+				"http://sesa.sti2.at:8080/openrdf-sesame") == 0);
 	}
 
 	@Test
 	public void testGetTriplestoreReposID() {
-		assertTrue(this.config.getTriplestoreReposID().compareTo("ranking")==0);
+		assertTrue(this.config.getTriplestoreReposID().compareTo("ranking") == 0);
+	}
+
+	@Test
+	public void testGetPrefixInstance() {
+		assertTrue(this.config.getInstancePrefix().compareTo(
+				"http://sti2.at/ranking/instances#") == 0);
 	}
 
 }
