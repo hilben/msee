@@ -19,12 +19,14 @@ import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
+import org.ontoware.rdf2go.model.TriplePattern;
+import org.ontoware.rdf2go.model.node.Variable;
+import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.vocabulary.RDF;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
@@ -448,15 +450,9 @@ public class DiscoveryServiceImpl implements Discovery {
 	public int countServices() {
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
-		String query = "select ?s WHERE {?s <" + RDF.TYPE + "> <" + MSM.SERVICE + "> }";
-		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
-		int counter = 0;
-		ClosableIterator<QueryRow> it = resultTable.iterator();
-		while (it.hasNext()) {
-			it.next();
-			counter++;
-		}
+		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type , MSM.Service);
+		int count = (int) rdfModel.countStatements(pattern);
 		rdfModel.close();
-		return counter;
+		return count;
 	}
 }
