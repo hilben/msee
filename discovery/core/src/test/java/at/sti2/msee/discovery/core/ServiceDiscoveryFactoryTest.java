@@ -1,3 +1,4 @@
+package at.sti2.msee.discovery.core;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
