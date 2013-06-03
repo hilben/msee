@@ -4,30 +4,84 @@ PREFIX sawsdl: <http://www.w3.org/ns/sawsdl#>
 PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> 
 PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
 PREFIX msee: <http://msee.sti2.at/properties#> 
+PREFIX hr: <http://www.wsmo.org/ns/hrests#> 
+
+# v1.0
+
 CONSTRUCT {
 	?serviceID rdf:type msm:Service .
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
 	
+	?operation a msm:Operation ;
+		msm:hasOutput ?outputMessageContent ;
+		msm:hasInput ?inputMessageContent ;
+		sawsdl:modelReference ?operationRef ;
+		hr:hasMethod ?operationmethod ;
+		hr:hasAddress ?operationaddress. 
 	
-	?operation a msm:Operation .
-	?operation msm:hasOutput ?outputMessageContent .
-	?operation msm:hasInput ?inputMessageContent .
+	?outputMessageContent rdfs:label ?outputMessageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchemaOut ;
+		sawsdl:liftingSchemaMapping ?liftingSchemaOut ;
+		sawsdl:modelReference ?outputRef .
+
+	?inputMessageContent rdfs:label ?inputMessageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchemaIn ;
+		sawsdl:liftingSchemaMapping ?liftingSchemaIn ;
+		sawsdl:modelReference ?inputRef .
 		
-	?outputMessageContent a msm:MessageContent .
-	?inputMessageContent a msm:MessageContent .
 
 
 } WHERE { 
 	?serviceID rdf:type msm:Service . 
-{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .} 
+	{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .} 
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
 	
+	# operation
 	?operation a msm:Operation .
 	?operation msm:hasOutput ?outputMessageContent .
-	?operation msm:hasOutput/a msm:MessageContent .
 	?operation msm:hasInput ?inputMessageContent .
-	?operation msm:hasInput/a msm:MessageContent .
+	OPTIONAL{
+		?operation sawsdl:modelReference ?operationRef .
+	}
+	OPTIONAL{
+		?operation hr:hasMethod ?operationmethod.
+		?operation hr:hasAddress ?operationaddress.
+	}
+	
+	OPTIONAL{
+		# output
+		?outputMessageContent a msm:MessageContent .
+		OPTIONAL{
+			?outputMessageContent rdfs:label ?outputMessageContentLabel .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:loweringSchemaMapping ?loweringSchemaOut .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:liftingSchemaMapping ?liftingSchemaOut .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:modelReference ?outputRef .
+		}
+	}
+
+	OPTIONAL{
+		# input
+		?inputMessageContent a msm:MessageContent .
+		OPTIONAL{
+			?inputMessageContent rdfs:label ?inputMessageContentLabel .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:loweringSchemaMapping ?loweringSchemaIn .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:liftingSchemaMapping ?liftingSchemaIn .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:modelReference ?inputRef .
+		}
+	}
 
 }
