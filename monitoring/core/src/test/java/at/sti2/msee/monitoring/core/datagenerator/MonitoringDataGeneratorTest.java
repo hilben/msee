@@ -51,18 +51,7 @@ public class MonitoringDataGeneratorTest {
 							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
 					{ new MonitoringDataGeneratorParameters(
 							new URL(
-									"http://msee.sti2.at/services/bd3662fe-f088-4792-af7e-40b4d3da9ac1"),
-							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
-							new Date(), 10000) },
-					{ new MonitoringDataGeneratorParameters(
-							new URL( 
-									"http://msee.sti2.at/services/59af0553-0da4-4f6d-9c05-365d3bffc993"),
-							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
-							new Date(), 10000) },
-
-					{ new MonitoringDataGeneratorParameters(
-							new URL(
-									"http://msee.sti2.at/services/2fd9e82e-e583-45a4-8a34-2d9b6c632be4#wsdl.service(helloService)/Hello"),
+									"http://msee.sti2.at/services/d5c4ff6a-8733-4714-a605-eb8f9d1f252a"),
 							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
 							new Date(), 10000) }
 
@@ -84,7 +73,5 @@ public class MonitoringDataGeneratorTest {
 			fail();
 		}
 	}
-
-	
 
 }

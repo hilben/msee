@@ -28,7 +28,7 @@
         <soap:fault name="ServiceRegistrationException" use="literal"/>
       </fault>
     </operation>
-    <operation name="registerInContext">
+    <operation name="deregister">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -40,7 +40,7 @@
         <soap:fault name="ServiceRegistrationException" use="literal"/>
       </fault>
     </operation>
-    <operation name="deregister">
+    <operation name="registerInContext">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

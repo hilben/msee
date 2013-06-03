@@ -65,11 +65,7 @@ class MonitoringsController < ApplicationController
 
   def getQoSParamKeysRanking
     #soap call to the server
-    client = Savon::Client.new(@@monitoring_url)
-    responseclient = client.request :ns2, :getQoSParamKeys
-    data = responseclient.to_hash.first
-
-    @qosParamKeys = data[1][:return]
+    @qosParamKeys = QoSType.values
     logger.info "Received : #{@qosParamKeys}"
 
     render :partial => "monitorings/qosparamsranking"
