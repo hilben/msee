@@ -68,7 +68,7 @@ public class DiscoveryServiceTest extends TestCase {
 	
 	@AfterClass
 	public void tearDown() throws Exception {
-		serviceRepository.clear();
+//		serviceRepository.clear();
 		serviceRepository.shutdown();
 	}
 

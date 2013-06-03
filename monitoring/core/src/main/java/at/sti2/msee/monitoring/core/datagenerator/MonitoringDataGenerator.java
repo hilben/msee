@@ -3,6 +3,8 @@ package at.sti2.msee.monitoring.core.datagenerator;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import org.openrdf.query.MalformedQueryException;
@@ -47,15 +49,24 @@ public class MonitoringDataGenerator {
 		this.startDate = gen.startDate;
 		this.timeMinutes = gen.timeMinutes;
 	}
+	
+	public void generateData(boolean deletePreviousData) throws RepositoryException, MalformedQueryException, UpdateExecutionException, IOException, MonitoringException, ParseException {
 
-	public void createDataTest() throws RepositoryException, MalformedQueryException, UpdateExecutionException, IOException, MonitoringException, ParseException {
-		MonitoringComponent m = MonitoringComponentImpl.getInstance();
-
-		for (int i = 0; i < this.invocationCount; i++) {
-
+		if (deletePreviousData) {
+			MonitoringComponentImpl.getInstance().clearAllContentOfWebservice(this.ws);
+		}
+		
+		ArrayList<Date> rndDates = new ArrayList<Date>();
+		for (int i =0; i < this.invocationCount;i++) {
 			// Create a random date within the range
 			long dtime = (long) (Math.random() * (this.timeMinutes * 1000 * 60));
-			Date rndDate = new Date(this.startDate.getTime() + dtime);
+			Date rndDate = new Date(this.startDate.getTime() + dtime);	
+			rndDates.add(rndDate);
+		}
+		
+		Collections.sort(rndDates);
+		
+		for (int i = 0; i < this.invocationCount; i++) {
 
 			if (Math.random() > this.failRate) {
 
@@ -68,15 +79,20 @@ public class MonitoringDataGenerator {
 
 				MonitoringParameterStoreHandler.addSuccessfulInvocation(
 						this.ws, payloadSizeResponse, payloadSizeRequest,
-						responseTime, rndDate);
-
+						responseTime, rndDates.get(i));
 			} else {
 
 				MonitoringParameterStoreHandler.addUnsuccessfulInvocation(
-						this.ws, rndDate);
-
+						this.ws, rndDates.get(i));
 			}
 		}
+	}
+
+	public void generateData() throws RepositoryException,
+			MalformedQueryException, UpdateExecutionException, IOException,
+			MonitoringException, ParseException {
+		
+		this.generateData(false);
 	}
 
 	public URL getWs() {

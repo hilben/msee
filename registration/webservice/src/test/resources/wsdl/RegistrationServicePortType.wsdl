@@ -21,17 +21,17 @@
   <message name="updateResponse">
     <part name="parameters" element="tns:updateResponse"/>
   </message>
-  <message name="deregister">
-    <part name="parameters" element="tns:deregister"/>
-  </message>
-  <message name="deregisterResponse">
-    <part name="parameters" element="tns:deregisterResponse"/>
-  </message>
   <message name="registerInContext">
     <part name="parameters" element="tns:registerInContext"/>
   </message>
   <message name="registerInContextResponse">
     <part name="parameters" element="tns:registerInContextResponse"/>
+  </message>
+  <message name="deregister">
+    <part name="parameters" element="tns:deregister"/>
+  </message>
+  <message name="deregisterResponse">
+    <part name="parameters" element="tns:deregisterResponse"/>
   </message>
   <portType name="RegistrationServicePortType">
     <operation name="register">
@@ -44,15 +44,15 @@
       <output ns5:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/updateResponse" message="tns:updateResponse" xmlns:ns5="http://www.w3.org/2007/05/addressing/metadata"/>
       <fault message="tns:ServiceRegistrationException" name="ServiceRegistrationException" ns6:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/update/Fault/ServiceRegistrationException" xmlns:ns6="http://www.w3.org/2007/05/addressing/metadata"/>
     </operation>
-    <operation name="deregister">
-      <input ns7:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregisterRequest" message="tns:deregister" xmlns:ns7="http://www.w3.org/2007/05/addressing/metadata"/>
-      <output ns8:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregisterResponse" message="tns:deregisterResponse" xmlns:ns8="http://www.w3.org/2007/05/addressing/metadata"/>
-      <fault message="tns:ServiceRegistrationException" name="ServiceRegistrationException" ns9:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregister/Fault/ServiceRegistrationException" xmlns:ns9="http://www.w3.org/2007/05/addressing/metadata"/>
-    </operation>
     <operation name="registerInContext">
-      <input ns10:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContextRequest" message="tns:registerInContext" xmlns:ns10="http://www.w3.org/2007/05/addressing/metadata"/>
-      <output ns11:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContextResponse" message="tns:registerInContextResponse" xmlns:ns11="http://www.w3.org/2007/05/addressing/metadata"/>
-      <fault message="tns:ServiceRegistrationException" name="ServiceRegistrationException" ns12:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContext/Fault/ServiceRegistrationException" xmlns:ns12="http://www.w3.org/2007/05/addressing/metadata"/>
+      <input ns7:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContextRequest" message="tns:registerInContext" xmlns:ns7="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns8:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContextResponse" message="tns:registerInContextResponse" xmlns:ns8="http://www.w3.org/2007/05/addressing/metadata"/>
+      <fault message="tns:ServiceRegistrationException" name="ServiceRegistrationException" ns9:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/registerInContext/Fault/ServiceRegistrationException" xmlns:ns9="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="deregister">
+      <input ns10:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregisterRequest" message="tns:deregister" xmlns:ns10="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns11:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregisterResponse" message="tns:deregisterResponse" xmlns:ns11="http://www.w3.org/2007/05/addressing/metadata"/>
+      <fault message="tns:ServiceRegistrationException" name="ServiceRegistrationException" ns12:Action="http://msee.sti2.at/delivery/registration/RegistrationServicePortType/deregister/Fault/ServiceRegistrationException" xmlns:ns12="http://www.w3.org/2007/05/addressing/metadata"/>
     </operation>
   </portType>
 </definitions>

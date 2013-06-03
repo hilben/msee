@@ -11,7 +11,8 @@
     <% end %>
 
     <% if @currentEndpoint.to_s.length>10 && @currentParameters.to_s.length>3 then %>
-    <script type="text/javascript" src="http://sesa.sti2.at:8080/monitoring-json-webservice/monitoringjson?endpoint=<%= @currentEndpoint +""+ @querystring %>"></script>
+    <script type="text/javascript" src="/monitorings/getGoogleGraphData/<%=@currentParameters.to_s+"/"+@currentEndpoint %>">
+    </script>
     <% else %>
     <p>
         No chart data to display

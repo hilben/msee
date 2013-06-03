@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 @RunWith(value = Parameterized.class)
 public class MonitoringDataGeneratorTest {
 
-private MonitoringDataGenerator generator;
+	private MonitoringDataGenerator generator;
 
 	public MonitoringDataGeneratorTest(MonitoringDataGeneratorParameters gen) {
 		this.generator = new MonitoringDataGenerator(gen);
@@ -45,25 +45,39 @@ private MonitoringDataGenerator generator;
 			data = new Object[][] {
 					{ new MonitoringDataGeneratorParameters(new URL(
 							"http://www.example.com/testdataws1"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(),
-							10000) },
+							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
 					{ new MonitoringDataGeneratorParameters(new URL(
 							"http://www.example.com/testdataws2"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(),
-							10000) } };
+							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
+					{ new MonitoringDataGeneratorParameters(
+							new URL(
+									"http://msee.sti2.at/services/bd3662fe-f088-4792-af7e-40b4d3da9ac1"),
+							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
+							new Date(), 10000) },
+					{ new MonitoringDataGeneratorParameters(
+							new URL( 
+									"http://msee.sti2.at/services/59af0553-0da4-4f6d-9c05-365d3bffc993"),
+							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
+							new Date(), 10000) },
+
+					{ new MonitoringDataGeneratorParameters(
+							new URL(
+									"http://msee.sti2.at/services/2fd9e82e-e583-45a4-8a34-2d9b6c632be4#wsdl.service(helloService)/Hello"),
+							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
+							new Date(), 10000) }
+
+			};
 		} catch (MalformedURLException e) {
 			fail();
 		}
 		return Arrays.asList(data);
 	}
 
-
-
 	@Test
 	public void createDataTest() {
-		
+
 		try {
-			this.generator.createDataTest();
+			this.generator.generateData(true);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | MonitoringException
 				| ParseException e) {
@@ -71,15 +85,6 @@ private MonitoringDataGenerator generator;
 		}
 	}
 
-	public static void main(String args[]) {
-
-		Date d = new Date();
-		long dtime = 1000;
-		for (int i = 0; i < 100; i++) {
-			long z = (long)(Math.random()*(dtime*1000*60));
-			Date x = new Date(d.getTime() + z);
-			System.out.println(x);
-		}
-	}
+	
 
 }

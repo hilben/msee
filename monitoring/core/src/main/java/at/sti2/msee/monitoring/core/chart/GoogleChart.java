@@ -38,6 +38,11 @@ public class GoogleChart {
 	public String asJson(List<String> endpoints, List<String> qosParamKeys)
 			throws MonitoringException {
 
+		
+		if (endpoints.size()<1||qosParamKeys.size()<1) {
+			throw new MonitoringException("There are either no endpoints or no Parameters specified");
+		}
+		
 		MonitoringComponent m = null;
 		try {
 			m = MonitoringComponentImpl.getInstance();
@@ -83,11 +88,12 @@ public class GoogleChart {
 
 					String row[] = new String[qosParamKeys.size() + 1];
 
-					row[0] = "\"" + p.getTime() + "\"";
+					row[0] = "new Date('" + p.getTime() + "')";
 					// row[0] = "\"" + p.getTime() + "\"";
 					for (int i = 1; i < row.length; i++) {
 						row[i] = "null";
 					}
+					
 					row[countQoSParams] = p.getValue();
 					j.addRow(row);
 				}
@@ -115,8 +121,8 @@ public class GoogleChart {
 		MonitoringComponent m = MonitoringComponentImpl.getInstance();
 
 		String ws1 = "http://www.example.com/chartws1";
-		String ws2 = "http://www.example.com/chartws2";
-		String ws3 = "http://www.example.com/chartws3";
+//		String ws2 = "http://www.example.com/chartws2";
+//		String ws3 = "http://msee.sti2.at/services/2fd9e82e-e583-45a4-8a34-2d9b6c632be4#wsdl.service(helloService)/Hello";
 
 		// for (int i = 0; i < 3; i++) {
 		// m.addSuccessfulInvocationData(new URL(ws1), Math.random() * 1000,
@@ -127,12 +133,13 @@ public class GoogleChart {
 		// Math.random() * 1000, Math.random() * 1000);
 		// }
 
+
 		endpoints.add(ws1);
-		endpoints.add(ws2);
-		endpoints.add(ws3);
+//		endpoints.add(ws2);
+//		endpoints.add(ws3);
 		qosParamKeys.add("ResponseTime");
-		qosParamKeys.add("PayloadSizeResponse");
-		qosParamKeys.add("PayloadSizeRequest");
+//		qosParamKeys.add("PayloadSizeResponse");
+//		qosParamKeys.add("PayloadSizeRequest");
 		// qosParamKeys.add("AvailableTime");
 		System.out.println(new GoogleChart().asJson(endpoints, qosParamKeys));
 		System.out.println("Done in " + (System.currentTimeMillis() - time));

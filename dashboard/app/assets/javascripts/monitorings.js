@@ -181,6 +181,7 @@ function drawLineChart(jsondata) {
         height : 600,
     });
 
+    document.getElementById('statustext').textContent = "Finished graph";
 }
 
 /*
