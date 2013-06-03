@@ -36,7 +36,8 @@ public class QoSParamsEndpointRankingTable implements
 			.getLogger(QoSParamsEndpointRankingTable.class);
 
 	private String endpointName;
-	private Map<String, Float> propIdentifiersOrderingValues = new HashMap<String, Float>();
+	private Map<String, Float> qosPropertyValues = new HashMap<String, Float>();
+	private Map<String, Float> nfpPropertyValues = new HashMap<String, Float>();
 
 	/**
 	 * 
@@ -50,7 +51,7 @@ public class QoSParamsEndpointRankingTable implements
 		this.endpointName = endpointName;
 
 		for (String s : template.getQoSParams()) {
-			this.propIdentifiersOrderingValues.put(s, new Float(Float.NaN));
+			this.qosPropertyValues.put(s, new Float(Float.NaN));
 		}
 	}
 
@@ -63,7 +64,7 @@ public class QoSParamsEndpointRankingTable implements
 	 */
 	@Override
 	public Float getRankingValueForProperty(String property) {
-		return this.propIdentifiersOrderingValues.get(property);
+		return this.qosPropertyValues.get(property);
 	}
 
 	/*
@@ -76,8 +77,8 @@ public class QoSParamsEndpointRankingTable implements
 	@Override
 	public void setRankingValueForProperty(String property, Float value)
 			throws RankingException {
-		if (this.propIdentifiersOrderingValues.containsKey(property)) {
-			this.propIdentifiersOrderingValues.put(property, value);
+		if (this.qosPropertyValues.containsKey(property)) {
+			this.qosPropertyValues.put(property, value);
 		} else {
 			throw new RankingException();
 		}
@@ -123,7 +124,7 @@ public class QoSParamsEndpointRankingTable implements
 	 * @return
 	 */
 	private Set<String> getQoSParams() {
-		return this.propIdentifiersOrderingValues.keySet();
+		return this.qosPropertyValues.keySet();
 	}
 
 	/*
@@ -134,8 +135,15 @@ public class QoSParamsEndpointRankingTable implements
 	@Override
 	public float getSummedUpValues() {
 		float retVal = 0;
-		for (String s : this.propIdentifiersOrderingValues.keySet()) {
-			retVal += this.propIdentifiersOrderingValues.get(s);
+		for (String s : this.qosPropertyValues.keySet()) {
+			retVal += this.qosPropertyValues.get(s);
+		}
+
+		if (this.nfpPropertyValues != null) {
+
+			for (String s : this.nfpPropertyValues.keySet()) {
+				retVal += this.nfpPropertyValues.get(s);
+			}
 		}
 
 		return retVal;
@@ -154,10 +162,19 @@ public class QoSParamsEndpointRankingTable implements
 
 		ret += this.endpointName + "\n";
 
-		for (String s : this.propIdentifiersOrderingValues.keySet()) {
+		for (String s : this.qosPropertyValues.keySet()) {
 			ret += s + ": " + this.getRankingValueForProperty(s)
 					+ System.getProperty("line.separator");
 		}
+		
+		if (this.nfpPropertyValues != null) {
+
+			for (String s : this.nfpPropertyValues.keySet()) {
+				ret += s + ": " + this.nfpPropertyValues.get(s)
+						+ System.getProperty("line.separator");
+			}
+		}
+
 		ret += "\n";
 
 		ret += "Summed up: " + this.getSummedUpValues()
@@ -191,6 +208,14 @@ public class QoSParamsEndpointRankingTable implements
 		}
 
 		return 0;
+	}
+
+	public Map<String, Float> getNfpPropertyValues() {
+		return nfpPropertyValues;
+	}
+
+	public void setNfpPropertyValues(Map<String, Float> nfpPropertyValues) {
+		this.nfpPropertyValues = nfpPropertyValues;
 	}
 
 	/*

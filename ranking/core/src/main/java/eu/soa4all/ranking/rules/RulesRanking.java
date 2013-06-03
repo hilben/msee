@@ -16,6 +16,8 @@
 
 package eu.soa4all.ranking.rules;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,6 +75,10 @@ public class RulesRanking extends RankingEngine {
 
 	protected static Logger logger = Logger.getLogger(RulesRanking.class);
 
+	
+	private Map<Service, URL> serviceIdentifier = new HashMap<Service, URL>();
+	private Map<URL, Map<String, Float>> wsNormalizedPropertyScore = new HashMap<URL, Map<String, Float>>();
+
 	private WsmoFactory wsmoFactory;
 
 	private LogicalExpressionFactory leFactory;
@@ -98,7 +104,8 @@ public class RulesRanking extends RankingEngine {
 
 	public RulesRanking() {
 		wsmoFactory = Factory.createWsmoFactory(new HashMap<String, Object>());
-		leFactory = Factory.createLogicalExpressionFactory(new HashMap<String, Object>());
+		leFactory = Factory
+				.createLogicalExpressionFactory(new HashMap<String, Object>());
 
 		Factory.getLocatorManager().addLocator(new DefaultLocator());
 
@@ -132,7 +139,7 @@ public class RulesRanking extends RankingEngine {
 			for (Service s : rez)
 				result += s.resource + "\n";
 		}
-		return "RESULT"+result;
+		return "RESULT" + result;
 	}
 
 	public String[] rankServices() throws RankingException {
@@ -158,6 +165,7 @@ public class RulesRanking extends RankingEngine {
 
 	public List<Service> rank(Set<Service> webServices, ServiceTemplate template)
 			throws RankingException {
+
 		SortedMap<Float, Set<Service>> result = new TreeMap<Float, Set<Service>>();
 		List<Service> resultList = new ArrayList<Service>();
 
@@ -202,7 +210,6 @@ public class RulesRanking extends RankingEngine {
 		// preferences
 		for (IRI iriNfp : m.keySet()) {
 			SortedMap<Float, Set<Service>> map = new TreeMap<Float, Set<Service>>();
-			// System.out.println("!!!!!!!!!!!DEBUG:"+iriNfp.getLocalName());
 			map = new TreeMap<Float, Set<Service>>();
 
 			// for each service
@@ -217,6 +224,7 @@ public class RulesRanking extends RankingEngine {
 					Iterator<Annotation> it = webservice
 							.getNonFunctionalParameters();
 					while (it.hasNext()) {
+
 						RuleBasedRankingNonFunctionalParameter a = (RuleBasedRankingNonFunctionalParameter) it
 								.next();
 						if (iriNfp.getLocalName().equalsIgnoreCase(
@@ -260,6 +268,11 @@ public class RulesRanking extends RankingEngine {
 								hs.add(webservice);
 								map.put(f, hs);
 
+							} else {
+								System.out.println("NAN: NFP "
+										+ iriNfp.getLocalName() + " value = "
+										+ f.toString() + " for "
+										+ webservice.resource);
 							}
 						}
 
@@ -271,10 +284,13 @@ public class RulesRanking extends RankingEngine {
 			all.put(new Integer(irisNFPs.indexOf(iriNfp)), map);
 		}
 
+		// TODO: rewrite the code from here
+		// Result:
 		// normalize the values - for each NFP, the corresponding values for
 		// each service is first divided by the highest value of that NFP
 		// for one of the services and multiply afterwards with the importance
 		// value
+
 		for (IRI nfpKey : irisNFPs) {
 			SortedMap<Float, Set<Service>> mapScores = new TreeMap<Float, Set<Service>>();
 			SortedMap<Float, Set<Service>> mapNfp = all.get(irisNFPs
@@ -294,6 +310,7 @@ public class RulesRanking extends RankingEngine {
 							+ " normalized value = " + newValue + " for "
 							+ w.resource);
 					System.out.print("\n\n");
+
 				}
 
 				newValue = m.get(nfpKey).getImportance().floatValue()
@@ -304,6 +321,18 @@ public class RulesRanking extends RankingEngine {
 							+ " normalized value = " + newValue + " for "
 							+ w.resource);
 					System.out.print("\n\n");
+					
+					URL wsURL = this.serviceIdentifier.get(w);
+		
+					if (wsNormalizedPropertyScore.containsKey(wsURL)) {
+						wsNormalizedPropertyScore.get(wsURL).put(
+								nfpKey.getLocalName(), newValue);
+					} else {
+						HashMap<String, Float> map = new HashMap<String, Float>();
+						map.put(nfpKey.getLocalName(), newValue);
+						wsNormalizedPropertyScore.put(wsURL, map);
+					}
+
 				}
 
 				mapScores.put(new Float(newValue), ws);
@@ -423,7 +452,7 @@ public class RulesRanking extends RankingEngine {
 			float value = 0;
 			int count = 0;
 			while (it.hasNext()) {
-				Map<Variable, Term> m =  it.next();
+				Map<Variable, Term> m = it.next();
 				Set<Variable> v = m.keySet();
 				Iterator<Variable> itv = v.iterator();
 				while (itv.hasNext()) {
@@ -454,9 +483,15 @@ public class RulesRanking extends RankingEngine {
 		System.out.println("------------------------------------\n\n");
 	}
 
+	public void addService(Service service, URL serviceIdentifier) throws RankingException {
+		services.add(service);
+		this.serviceIdentifier.put(service, serviceIdentifier);
+	}
+	
 	public void addService(Service service) throws RankingException {
 		services.add(service);
 	}
+
 
 	public void setServiceTemplate(ServiceTemplate template) {
 		this.template = template;
@@ -481,6 +516,10 @@ public class RulesRanking extends RankingEngine {
 
 	public ServiceTemplate getServiceTemplate() {
 		return template;
+	}
+
+	public Map<URL, Map<String, Float>> getWsNormalizedPropertyScore() {
+		return wsNormalizedPropertyScore;
 	}
 
 }

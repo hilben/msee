@@ -16,14 +16,25 @@
 
 package at.sti2.msee.ranking.core;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.UpdateExecutionException;
+import org.openrdf.repository.RepositoryException;
 
+import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
+import at.sti2.msee.monitoring.core.datagenerator.MonitoringDataGenerator;
+import at.sti2.msee.monitoring.core.datagenerator.MonitoringDataGeneratorParameters;
 import at.sti2.msee.ranking.api.QoSRankingPreferencesTemplate;
 import at.sti2.msee.ranking.api.exception.RankingException;
 
@@ -35,38 +46,59 @@ public class QoSRankingTest extends TestCase {
 
 	protected static Logger logger = Logger.getLogger(QoSRankingTest.class);
 
-	//TODO: hardcoded endpoints
-	public static String URL[] = {
-			"http://www.example.com/testdataws1",
-			"http://www.example.com/testdataws2"};
+	// TODO: hardcoded endpoints
+	public static String URL[] = { "http://www.example.com/testdataws1",
+			"http://www.example.com/testdataws2" };
 
-	
-	
 	@Test
 	public void testQoSRanking() {
-		
+
 		logger.info("Testing the QoS Ranking ");
+		java.net.URL ws1 = null;
+		java.net.URL ws2 = null;
+		
+		try {
+			 ws1 = new java.net.URL(URL[0]);
+			ws2 = new java.net.URL(URL[1]);
+		} catch (MalformedURLException e1) {
+			fail();
+		}
+
+		logger.info("Generating test data");
+		MonitoringDataGeneratorParameters params1 = new MonitoringDataGeneratorParameters(
+				ws1, 3, 50, 1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000);
+		MonitoringDataGeneratorParameters params2 = new MonitoringDataGeneratorParameters(
+				ws2, 3, 50, 1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000);
+		MonitoringDataGenerator g1 = new MonitoringDataGenerator(params1);
+		MonitoringDataGenerator g2 = new MonitoringDataGenerator(params2);
+		try {
+			g1.createDataTest();
+			g2.createDataTest();
+		} catch (RepositoryException | MalformedQueryException
+				| UpdateExecutionException | IOException | MonitoringException
+				| ParseException e1) {
+			fail();
+		}
 		
 		// Set up the ranked QoSParams and fill the corresponding tables
 		QoSRankingPreferencesTemplate qosRankingTemplate = new QoSRankingPreferencesTemplate();
 
 		// Create random preferences for testing purposes
-//		for (QoSType q : QoSType.values()) {
-//			qosRankingTemplate.addPropertyAndImportance(q.name(),
-//					(float) (Math.random() + 0.1));
-//		}
+		// for (QoSType q : QoSType.values()) {
+		// qosRankingTemplate.addPropertyAndImportance(q.name(),
+		// (float) (Math.random() + 0.1));
+		// }
 
-		 // Set up preferences for the QoSParams
-		 qosRankingTemplate.addPropertyAndImportance(QoSType.PayloadSizeRequestMaximum.name(),
-		 1.0f);
-		 qosRankingTemplate.addPropertyAndImportance(QoSType.PayloadSizeResponseMinimum.name(),
-		 2.0f);
-		 qosRankingTemplate.addPropertyAndImportance(QoSType.RequestSuccessful.name(),
-		 -5.0f);
+		// Set up preferences for the QoSParams
+		qosRankingTemplate.addPropertyAndImportance(
+				QoSType.PayloadSizeRequestAverage.name(), 1.0f);
+		qosRankingTemplate.addPropertyAndImportance(
+				QoSType.PayloadSizeResponseAverage.name(), 1.0f);
+		qosRankingTemplate.addPropertyAndImportance(
+				QoSType.ResponseTimeAverage.name(), -1.0f);
 
 		// Create a list with QosOrderingValueTables for all the endpoints
 		ArrayList<QoSParamsEndpointRankingTable> endpointQoSParamsRankingTable = new ArrayList<QoSParamsEndpointRankingTable>();
-
 
 		// Download all the QoS Params of the template
 		for (String endpoint : URL) {
@@ -81,7 +113,7 @@ public class QoSRankingTest extends TestCase {
 				logger.error(e);
 				fail();
 			}
-			
+
 			logger.info(table);
 
 			endpointQoSParamsRankingTable.add(table);
@@ -103,5 +135,4 @@ public class QoSRankingTest extends TestCase {
 		}
 
 	}
-
 }

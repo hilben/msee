@@ -1,11 +1,13 @@
 require 'java'
 
-#java_import Java::at.sti2.ngsee.monitoring.webservice.ManagementWebService
-#java_import Java::at.sti2.ngsee.monitoring.webservice.EventStreamWebService
-#java_import Java::at.sti2.ngsee.monitoring.webservice.ProxyWebService
-#java_import Java::at.sti2.wsmf.core.common.MonitoringConfig
-#java_import Java::at.sti2.wsmf.core.PersistentHandler
-#java_import Java::at.sti2.msee.registration.core.common.RegistrationConfig
+java_import Java::at.sti2.msee.discovery.core.DiscoveryServiceImpl
+java_import Java::at.sti2.msee.discovery.api.webservice.Discovery
+java_import Java::at.sti2.msee.discovery.api.webservice.DiscoveryException
+java_import Java::at.sti2.msee.discovery.core.ServiceDiscoveryFactory
+java_import Java::at.sti2.msee.discovery.core.common.ServiceDiscoveryConfiguration
+java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
+java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
+
 # Retrieve a JSON Resource
 class MonitoringsController < ApplicationController
 
@@ -25,7 +27,24 @@ class MonitoringsController < ApplicationController
   @serviceCatalogeEntries
 
   def index
-    #WSDL File HARDCODED!!!
+
+
+    #obtain the categories
+    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+    repositoryId = "sesaRepo"
+
+    repositoryConfiguration = ServiceRepositoryConfiguration.new
+    repositoryConfiguration.setRepositoryID(repositoryId)
+    repositoryConfiguration.setServerEndpoint(serverEndpoint)
+
+    serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
+
+    a = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
+    
+    logger.info "#{a.getServiceCategories.length}"
+    for s in a.getServiceCategories
+          logger.info "Cats: #{s}"
+    end
 
 
     # getCategoriesAndEndpoints()
