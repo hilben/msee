@@ -38,7 +38,6 @@ import at.sti2.msee.triplestore.ServiceRepositoryFactory;
  * @author Benjamin Hiltpolt
  * @author Christian Mayr
  * 
-
  */
 public class DiscoveryServiceTest extends TestCase {
 	private String resourceLocation = "/default.properties";
@@ -137,6 +136,12 @@ public class DiscoveryServiceTest extends TestCase {
 	@Test
 	public void testDiscoverCategoryAndService(){
 		((DiscoveryServiceImpl)discoveryService).discoverCategoryAndService();
+	}
+	
+	@Test
+	public void testCountServices() {
+		int count = ((DiscoveryServiceImpl) discoveryService).countServices();
+		assertTrue(count > 0);
 	}
 
 }

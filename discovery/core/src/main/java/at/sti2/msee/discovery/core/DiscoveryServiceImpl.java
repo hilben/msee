@@ -24,10 +24,13 @@ import org.openrdf.model.URI;
 import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.model.vocabulary.RDF;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
+
+import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
 
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
@@ -439,4 +442,21 @@ public class DiscoveryServiceImpl implements Discovery {
 		return serviceRepository;
 	}
 
+	/**
+	 * Returns the number of registered services.
+	 */
+	public int countServices() {
+		Model rdfModel = serviceRepository.getModel();
+		rdfModel.open();
+		String query = "select ?s WHERE {?s <" + RDF.TYPE + "> <" + MSM.SERVICE + "> }";
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
+		int counter = 0;
+		ClosableIterator<QueryRow> it = resultTable.iterator();
+		while (it.hasNext()) {
+			it.next();
+			counter++;
+		}
+		rdfModel.close();
+		return counter;
+	}
 }
