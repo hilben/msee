@@ -99,7 +99,7 @@ public class RulesRankingTest extends TestCase {
 					RulesRankingTest.class.getResource(s), 3, 10, 15, 5, 15,
 					20, 100, 0.05, new Date(), 1000);
 			MonitoringDataGenerator gen = new MonitoringDataGenerator(p);
-			gen.createDataTest();
+			gen.generateData(true);
 		}
 
 		// Set up the ranked QoSParams and fill the corresponding tables

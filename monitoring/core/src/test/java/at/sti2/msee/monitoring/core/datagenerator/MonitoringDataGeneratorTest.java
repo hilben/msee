@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 @RunWith(value = Parameterized.class)
 public class MonitoringDataGeneratorTest {
 
-private MonitoringDataGenerator generator;
+	private MonitoringDataGenerator generator;
 
 	public MonitoringDataGeneratorTest(MonitoringDataGeneratorParameters gen) {
 		this.generator = new MonitoringDataGenerator(gen);
@@ -45,40 +45,32 @@ private MonitoringDataGenerator generator;
 			data = new Object[][] {
 					{ new MonitoringDataGeneratorParameters(new URL(
 							"http://www.example.com/testdataws1"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(),
-							10000) },
+							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
 					{ new MonitoringDataGeneratorParameters(new URL(
 							"http://www.example.com/testdataws2"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(),
-							10000) } };
+							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
+					{ new MonitoringDataGeneratorParameters(
+							new URL(
+									"http://msee.sti2.at/services/d5c4ff6a-8733-4714-a605-eb8f9d1f252a"),
+							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
+							new Date(), 10000) }
+
+			};
 		} catch (MalformedURLException e) {
 			fail();
 		}
 		return Arrays.asList(data);
 	}
 
-
-
 	@Test
 	public void createDataTest() {
-		
+
 		try {
-			this.generator.createDataTest();
+			this.generator.generateData(true);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | MonitoringException
 				| ParseException e) {
 			fail();
-		}
-	}
-
-	public static void main(String args[]) {
-
-		Date d = new Date();
-		long dtime = 1000;
-		for (int i = 0; i < 100; i++) {
-			long z = (long)(Math.random()*(dtime*1000*60));
-			Date x = new Date(d.getTime() + z);
-			System.out.println(x);
 		}
 	}
 

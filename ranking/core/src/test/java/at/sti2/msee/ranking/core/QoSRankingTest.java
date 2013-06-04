@@ -72,8 +72,8 @@ public class QoSRankingTest extends TestCase {
 		MonitoringDataGenerator g1 = new MonitoringDataGenerator(params1);
 		MonitoringDataGenerator g2 = new MonitoringDataGenerator(params2);
 		try {
-			g1.createDataTest();
-			g2.createDataTest();
+			g1.generateData(true);
+			g2.generateData(true);
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | MonitoringException
 				| ParseException e1) {

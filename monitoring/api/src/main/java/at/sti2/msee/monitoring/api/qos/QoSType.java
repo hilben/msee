@@ -34,6 +34,7 @@ public enum QoSType {
 	}
 
 	public String getUnit() {
+	
 		return this.unit;
 	}
 }

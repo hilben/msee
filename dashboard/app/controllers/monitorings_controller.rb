@@ -8,17 +8,15 @@ java_import Java::at.sti2.msee.discovery.core.common.ServiceDiscoveryConfigurati
 java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
 java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
 
+
+
+java_import Java::at.sti2.msee.monitoring.api.qos.QoSType
+java_import Java::at.sti2.msee.monitoring.core.chart.GoogleChart
+java_import Java::at.sti2.msee.monitoring.core.MonitoringComponentImpl
+
+
 # Retrieve a JSON Resource
 class MonitoringsController < ApplicationController
-
-  @@ranking_url = "http://sesa.sti2.at:8080/ranking-webservice/services/ranking?wsdl"
-  @@monitoring_url = "http://sesa.sti2.at:8080/monitoring-webservice/management?wsdl"
-
-
-  #@@ranking_url = "http://localhost:9196/ranking-webservice/services/ranking?wsdl"
-  #@@monitoring_url = "http://localhost:9197/monitoring-webservice/services/management?wsdl"
-
-
   @categories_endpoints
   @currentEndpoint
   @currentParameters
@@ -27,26 +25,6 @@ class MonitoringsController < ApplicationController
   @serviceCatalogeEntries
 
   def index
-
-
-    #obtain the categories
-    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "sesaRepo"
-
-    repositoryConfiguration = ServiceRepositoryConfiguration.new
-    repositoryConfiguration.setRepositoryID(repositoryId)
-    repositoryConfiguration.setServerEndpoint(serverEndpoint)
-
-    serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
-
-    a = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
-    
-    logger.info "#{a.getServiceCategories.length}"
-    for s in a.getServiceCategories
-          logger.info "Cats: #{s}"
-    end
-
-
     # getCategoriesAndEndpoints()
 
     respond_to do |format|
@@ -69,53 +47,29 @@ class MonitoringsController < ApplicationController
     logger.info "Received Parameter: #{params[:url]}"
     logger.info "Received Parameter: #{params[:qos]}"
 
-
-   # @b = PersistentHandler.
-    @a = RegistrationConfig.new
-    @a = @a.toString()
-    logger.info "Config for Registration #{@a}"
-
-
-    # render :id
     @currentEndpoint = "http://"+params[:url]
     @currentParameters = params[:qos]
 
-
     logger.info "Received Parameter: #{@currentEndpoint}"
     logger.info "Received Parameter: #{@currentParameters}"
-
 
     render :partial => "monitorings/endpointdetails"
   end
 
   def getQoSParamKeys
-
-    #soap call to the server
-    # #TODO: hardcoded
-    client = Savon::Client.new(@@monitoring_url)
-    responseclient = client.request :ns2, :getQoSParamKeys
-    data = responseclient.to_hash.first
-
-    @qosParamKeys = data[1][:return]
+    @qosParamKeys = QoSType.values
     logger.info "Received : #{@qosParamKeys}"
-
     render :partial => "monitorings/selectedqosparams"
   end
 
+
   def getQoSParamKeysRanking
-
     #soap call to the server
-    client = Savon::Client.new(@@monitoring_url)
-    responseclient = client.request :ns2, :getQoSParamKeys
-    data = responseclient.to_hash.first
-
-    @qosParamKeys = data[1][:return]
+    @qosParamKeys = QoSType.values
     logger.info "Received : #{@qosParamKeys}"
 
     render :partial => "monitorings/qosparamsranking"
   end
-
-
 
   def getRankedEndpoints
     @errors = "no erros"
@@ -133,7 +87,6 @@ class MonitoringsController < ApplicationController
       x.to_s["x"]="."
       x = x.to_f
     end
-
 
     q = @qos
     v = @values
@@ -177,55 +130,63 @@ class MonitoringsController < ApplicationController
   #Json call for lazy loading of category/service tree
   def getSubcategoriesAndServices
 
+    #obtain the categories
+    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+    repositoryId = "msee-test"
+
+    repositoryConfiguration = ServiceRepositoryConfiguration.new
+    repositoryConfiguration.setRepositoryID(repositoryId)
+    repositoryConfiguration.setServerEndpoint(serverEndpoint)
+
+    serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
+
+    serviceTree = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
+
+    logger.info "DIS #{serviceTree.discoverCategoryAndService}"
+    logger.info "LENGTH #{serviceTree.getServiceCategories.length}"
+    for s in serviceTree.discoverCategoryAndService
+      logger.info "Cats: #{s}"
+    end
+
     #array storing nodes for the json return
     nodes = Array.new
 
-    #soap call to the server
-    #TODO: hardcoded
-    client = Savon::Client.new(@@monitoring_url)
-    #TODO: arg0 should be renamed see soap service in backend
-    #responseclient = client.request :ns2, :getSubcategoriesAndServices, arg0: params[:category]
+    serviceTree.discoverCategoryAndService.each do |entry|
 
-    # responseclient = client.request :ns2, :getQoSRankedEndpoints, arg0: @qos, arg1: @values, arg2: @endpoints
-    responseclient = client.request :ns2, :getSubcategoriesAndServices do
-      soap.body = {
-        "arg0" => params[:category],
-      }
-    end
-
-    if responseclient.success?
-
-      data = responseclient.to_hash.first
-      responseArray = Array.new
-
-      if data[1][:return].is_a? String
-        responseArray.push(data[1][:return])
-      else
-        responseArray = data[1][:return]
-      end
-
-      if !responseArray.nil?
-
-        responseArray.each do |entry|
-
-          node = Hash.new
-          node[:title] = entry
-          node[:key] = entry
-
-          if !entry.to_s.match(/^http:/)
-            node[:isFolder] = true
-            node[:isLazy] = true
-          end
-          nodes.push(node)
-
-        end
-      end
-    else
       node = Hash.new
-      node[:title] = "Error retrieving categories"
-      node[:key] = "Error"
+      node[:title] = entry.getName
+      node[:key] = entry.getName
+
+      node[:isFolder] = true
+      node[:isLazy] = false
+      childrenNodes = Array.new
+
+      entry.getServiceSet.each do |service|
+        children = Hash.new
+        children[:title] = service.getName
+        children[:key] = service.getName
+        children[:isFolder] = true
+
+        operationNodes = Array.new
+
+        service.getOperationSet.each do |operation|
+          operationNode = Hash.new
+          operationNode[:title] = operation.getName
+          operationNode[:key] = operation.getName
+          operationNode[:isFolder] = false
+          operationNodes.push(operationNode)
+        end
+
+        children[:children] = operationNodes
+
+        childrenNodes.push(children)
+      end
+
+      node[:children] = childrenNodes
       nodes.push(node)
+
     end
+
 
     logger.info("Json : #{nodes}")
 
@@ -234,13 +195,43 @@ class MonitoringsController < ApplicationController
     end
   end
 
-  # The lookup method call
-  private
 
-  Savon.configure do |config|
-    config.logger = Rails.logger  # using the Rails logger
+  def getGoogleGraphData
+    begin
+      chart = GoogleChart.new
+
+      @qos = params[:qos]
+      @url = params[:url]
+
+      @url = "http://" + @url[6,@url.length]
+
+      logger.info "getGoogleGraphData Received Parameter: #{@qos}"
+      logger.info "getGoogleGraphData Received Parameter: #{@url}"
+
+      listEndpoints = Java::JavaUtil::ArrayList.new
+      listEndpoints << @url
+
+      listParameters = Java::JavaUtil::ArrayList.new
+      listParameters << @qos
+
+      logger.info "getGoogleGraphData listEndpoints: #{listEndpoints}"
+      logger.info "getGoogleGraphData listParameters: #{listParameters}"
+
+      jsonData = chart.asJson(listEndpoints,listParameters)
+
+      jsonData = "ajaxCallSucceed("+jsonData+")"
+
+      logger.info "JSON DATA: #{jsonData}"
+
+    rescue => e
+      @error = "getGoogleGraphData failed, through exception: " + e.to_s
+      jsonData = @error
+    end
+
+    respond_to do |format|
+      format.js  {render :json => jsonData}
+    end
   end
-
 
 
 end
