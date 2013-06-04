@@ -6,36 +6,77 @@ PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#>
 PREFIX msee: <http://msee.sti2.at/properties#> 
 PREFIX hr: <http://www.wsmo.org/ns/hrests#> 
 
-# v1.0
+# v1.2
 
 CONSTRUCT {
-	?serviceID rdf:type msm:Service .
-	?serviceID msm:hasOperation ?operation .
-	?serviceID sawsdl:modelReference ?category .
+	?serviceID 
+		rdf:type msm:Service ;
+		rdfs:label ?ServiceLabel ;
+		msm:hasOperation ?operation ;
+		sawsdl:modelReference ?category .
 	
-	?serviceID msee:name ?serviceName ; 
+	?serviceID 
+		msee:name ?serviceName ; 
 		msee:decription ?serviceDescription ; 
 		msee:requirements ?serviceRequirements ; 
 		msee:access_point ?serviceAccessPoint ; 
 		msee:type ?serviceType ; 
 		msee:icon ?serviceIcon . 
 	
-	?operation a msm:Operation ;
+	?operation
+		a msm:Operation ;
+		rdfs:label ?OperationLabel ;
 		msm:hasOutput ?outputMessageContent ;
+		msm:hasOutputFault ?outputFault ;
 		msm:hasInput ?inputMessageContent ;
+		msm:hasInputFault ?inputFault ;
 		sawsdl:modelReference ?operationRef ;
 		hr:hasMethod ?operationmethod ;
 		hr:hasAddress ?operationaddress. 
 	
-	?outputMessageContent rdfs:label ?outputMessageContentLabel ;
+	?outputMessageContent
+		a msm:MessageContent ;
+		rdfs:label ?outputMessageContentLabel ;
 		sawsdl:loweringSchemaMapping ?loweringSchemaOut ;
 		sawsdl:liftingSchemaMapping ?liftingSchemaOut ;
-		sawsdl:modelReference ?outputRef .
+		sawsdl:modelReference ?outputRef ;
+		msm:hasPart ?outputPart ;
+		msm:hasPartTransitive ?outputPartTransitive .
+			?outputPart a msm:MessagePart .
+			?outputPartTransitive a msm:MessagePart .
 
-	?inputMessageContent rdfs:label ?inputMessageContentLabel ;
+	?inputMessageContent
+		a msm:MessageContent ;
+		rdfs:label ?inputMessageContentLabel ;
 		sawsdl:loweringSchemaMapping ?loweringSchemaIn ;
 		sawsdl:liftingSchemaMapping ?liftingSchemaIn ;
-		sawsdl:modelReference ?inputRef .
+		sawsdl:modelReference ?inputRef ;
+		msm:hasPart ?inputPart ;
+		msm:hasPartTransitive ?inputPartTransitive .
+			?inputPart a msm:MessagePart .
+			?inputPartTransitive a msm:MessagePart .
+			
+	?outputFault
+		a msm:MessageContent ;
+		rdfs:label ?outputMessageContentLabelF ;
+		sawsdl:loweringSchemaMapping ?loweringSchemaOutF ;
+		sawsdl:liftingSchemaMapping ?liftingSchemaOutF ;
+		sawsdl:modelReference ?outputRefF ;
+		msm:hasPart ?outputPartF ;
+		msm:hasPartTransitive ?outputPartTransitiveF .
+			?outputPartF a msm:MessagePart .
+			?outputPartTransitiveF a msm:MessagePart .
+
+	?inputFault
+		a msm:MessageContent ;
+		rdfs:label ?inputMessageContentLabelF ;
+		sawsdl:loweringSchemaMapping ?loweringSchemaInF ;
+		sawsdl:liftingSchemaMapping ?liftingSchemaInF ;
+		sawsdl:modelReference ?inputRefF ;
+		msm:hasPart ?inputPartF ;
+		msm:hasPartTransitive ?inputPartTransitiveF .
+			?inputPartF a msm:MessagePart .
+			?inputPartTransitiveF a msm:MessagePart .
 		
 
 
@@ -44,21 +85,29 @@ CONSTRUCT {
 	{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .} 
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
+	OPTIONAL{
+		?serviceID rdfs:label ?ServiceLabel .
+	}
 	
 	# operation
 	?operation a msm:Operation .
-	?operation msm:hasOutput ?outputMessageContent .
-	?operation msm:hasInput ?inputMessageContent .
+
+	OPTIONAL{
+		?operation rdfs:label ?OperationLabel .
+	}
 	OPTIONAL{
 		?operation sawsdl:modelReference ?operationRef .
 	}
+	
+	# HRESTS
 	OPTIONAL{
-		?operation hr:hasMethod ?operationmethod.
+		?operation hr:hasMethod  ?operationmethod.
 		?operation hr:hasAddress ?operationaddress.
 	}
 	
 	OPTIONAL{
 		# output
+		?operation msm:hasOutput ?outputMessageContent .
 		?outputMessageContent a msm:MessageContent .
 		OPTIONAL{
 			?outputMessageContent rdfs:label ?outputMessageContentLabel .
@@ -72,10 +121,18 @@ CONSTRUCT {
 		OPTIONAL{
 			?outputMessageContent sawsdl:modelReference ?outputRef .
 		}
+		# wsdl
+		OPTIONAL{
+			?outputMessageContent msm:hasPart ?outputPart .
+		}
+		OPTIONAL{
+			?outputMessageContent msm:hasPartTransitive ?outputPartTransitive .
+		}
 	}
 
 	OPTIONAL{
 		# input
+		?operation msm:hasInput ?inputMessageContent .
 		?inputMessageContent a msm:MessageContent .
 		OPTIONAL{
 			?inputMessageContent rdfs:label ?inputMessageContentLabel .
@@ -88,6 +145,65 @@ CONSTRUCT {
 		}
 		OPTIONAL{
 			?inputMessageContent sawsdl:modelReference ?inputRef .
+		}
+		# wsdl
+		OPTIONAL{
+			?inputMessageContent msm:hasPart ?inputPart .
+		}
+		OPTIONAL{
+			?inputMessageContent msm:hasPartTransitive ?inputPartTransitive .
+		}
+	}
+	
+	
+	# fault in and out   for WSDL
+	OPTIONAL{
+		# output
+		?operation msm:hasOutputFault ?outputFault .
+		?outputFault a msm:MessageContent .
+		OPTIONAL{
+			?outputFault rdfs:label ?outputMessageContentLabelF .
+		}
+		OPTIONAL{
+			?outputFault sawsdl:loweringSchemaMapping ?loweringSchemaOutF .
+		}
+		OPTIONAL{
+			?outputFault sawsdl:liftingSchemaMapping ?liftingSchemaOutF .
+		}
+		OPTIONAL{
+			?outputFault sawsdl:modelReference ?outputRefF .
+		}
+		# wsdl
+		OPTIONAL{
+			?outputFault msm:hasPart ?outputPartF .
+		}
+		OPTIONAL{
+			?outputFault msm:hasPartTransitive ?outputPartTransitiveF .
+		}
+	}
+
+	OPTIONAL{
+		# input
+		?operation msm:hasInputFault ?inputFault .
+		?inputFault a msm:MessageContent .
+		OPTIONAL{
+			?inputFault rdfs:label ?inputMessageContentLabelF .
+		}
+		OPTIONAL{
+			?inputFault sawsdl:loweringSchemaMapping ?loweringSchemaInF .
+		}
+		OPTIONAL{
+			?inputFault sawsdl:liftingSchemaMapping ?liftingSchemaInF .
+		}
+		OPTIONAL{
+			?inputFault sawsdl:modelReference ?inputRefF .
+		}
+		# wsdl
+		OPTIONAL{
+			?inputFault msm:hasPart ?inputPartF .
+		}
+		OPTIONAL{
+			?inputFault msm:hasPartTransitive ?inputPartTransitiveF .
 		}
 	}
 	

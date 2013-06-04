@@ -1,0 +1,155 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX sawsdl: <http://www.w3.org/ns/sawsdl#> 
+PREFIX msm: <http://cms-wg.sti2.org/ns/minimal-service-model#> 
+PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#> 
+PREFIX msee: <http://msee.sti2.at/properties#> 
+PREFIX hr: <http://www.wsmo.org/ns/hrests#> 
+
+# v1.0
+
+CONSTRUCT {
+	?serviceID 
+		rdf:type msm:Service ;
+		rdfs:label ?ServiceLabel ;
+		msm:hasOperation ?operation ;
+		sawsdl:modelReference ?category .
+	
+	?serviceID 
+		msee:name ?serviceName ; 
+		msee:decription ?serviceDescription ; 
+		msee:requirements ?serviceRequirements ; 
+		msee:access_point ?serviceAccessPoint ; 
+		msee:type ?serviceType ; 
+		msee:icon ?serviceIcon . 
+	
+	?operation
+		a msm:Operation ;
+		rdfs:label ?OperationLabel ;
+		msm:hasOutput ?messageContentOut ;
+		msm:hasInput ?messageContentIn ;
+		msm:hasOutputFault ?messageContentOutFault ;
+		msm:hasInputFault ?messageContentInFault ;
+		sawsdl:modelReference ?operationRef ;
+		hr:hasMethod ?operationmethod ;
+		hr:hasAddress ?operationaddress. 
+	
+	?messageContentIn
+		a msm:MessageContent ;
+		rdfs:label ?messageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchema ;
+		sawsdl:liftingSchemaMapping ?liftingSchema ;
+		sawsdl:modelReference ?modelRef ;
+		msm:hasPart ?messagePart ;
+		msm:hasPartTransitive ?messagePartTransitive .
+			?messagePart a msm:MessagePart .
+			?messagePartTransitive a msm:MessagePart .
+			
+	?messageContentInFault
+		a msm:MessageContent ;
+		rdfs:label ?messageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchema ;
+		sawsdl:liftingSchemaMapping ?liftingSchema ;
+		sawsdl:modelReference ?modelRef ;
+		msm:hasPart ?messagePart ;
+		msm:hasPartTransitive ?messagePartTransitive .
+			?messagePart a msm:MessagePart .
+			?messagePartTransitive a msm:MessagePart .
+			
+	?messageContentOut
+		a msm:MessageContent ;
+		rdfs:label ?messageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchema ;
+		sawsdl:liftingSchemaMapping ?liftingSchema ;
+		sawsdl:modelReference ?modelRef ;
+		msm:hasPart ?messagePart ;
+		msm:hasPartTransitive ?messagePartTransitive .
+			?messagePart a msm:MessagePart .
+			?messagePartTransitive a msm:MessagePart .
+			
+	?messageContentOutFault
+		a msm:MessageContent ;
+		rdfs:label ?messageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchema ;
+		sawsdl:liftingSchemaMapping ?liftingSchema ;
+		sawsdl:modelReference ?modelRef ;
+		msm:hasPart ?messagePart ;
+		msm:hasPartTransitive ?messagePartTransitive .
+			?messagePart a msm:MessagePart .
+			?messagePartTransitive a msm:MessagePart .
+
+
+} WHERE { 
+	?serviceID rdf:type msm:Service . 
+	%categories% 
+	?serviceID msm:hasOperation ?operation .
+	?serviceID sawsdl:modelReference ?category .
+	OPTIONAL{
+		?serviceID rdfs:label ?ServiceLabel .
+	}
+	
+	# operation
+	?operation a msm:Operation .
+	
+	OPTIONAL{
+		?operation msm:hasOutput ?messageContentOut .
+		?operation msm:hasInput ?messageContentIn .
+		?operation msm:hasOutputFault ?messageContentOutFault .
+		?operation msm:hasInputFault ?messageContentInFault .
+	}
+
+	OPTIONAL{
+		?operation rdfs:label ?OperationLabel .
+	}
+	OPTIONAL{
+		?operation sawsdl:modelReference ?operationRef .
+	}
+	OPTIONAL{
+		?operation hr:hasMethod  ?operationmethod.
+		?operation hr:hasAddress ?operationaddress.
+	}
+	
+	OPTIONAL{
+		# message content for input, output, input vault, and output vault
+		?messageContentIn a msm:MessageContent .
+		?messageContentOut a msm:MessageContent .
+		?messageContentInFault a msm:MessageContent .
+		?messageContentOutFault a msm:MessageContent .
+		
+		OPTIONAL{
+			?messageContentIn rdfs:label ?messageContentLabel .
+			?messageContentOut rdfs:label ?messageContentLabel .
+			?messageContentInFault rdfs:label ?messageContentLabel .
+			?messageContentOutFault rdfs:label ?messageContentLabel .
+		}
+		OPTIONAL{
+			?messageContent sawsdl:loweringSchemaMapping ?loweringSchema .
+		}
+		OPTIONAL{
+			?messageContent sawsdl:liftingSchemaMapping ?liftingSchema .
+		}
+		OPTIONAL{
+			?messageContent sawsdl:modelReference ?modelRef .
+		}
+		# wsdl
+		OPTIONAL{
+			?messageContent msm:hasPart ?messagePart .
+		}
+		OPTIONAL{
+			?messageContent msm:hasPartTransitive ?messagePartTransitive .
+		}
+	}
+
+
+	
+	
+	OPTIONAL {
+		?serviceID msee:name ?serviceName . 
+		?serviceID msee:decription ?serviceDescription . 
+		?serviceID msee:requirements ?serviceRequirements . 
+		?serviceID msee:access_point ?serviceAccessPoint . 
+		?serviceID msee:type ?serviceType . 
+		?serviceID msee:icon ?serviceIcon . 
+	} 
+
+}

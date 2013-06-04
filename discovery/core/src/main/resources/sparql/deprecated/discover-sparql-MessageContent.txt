@@ -1,0 +1,10 @@
+	?inputMessageContent
+		a msm:MessageContent ;
+		rdfs:label ?inputMessageContentLabel ;
+		sawsdl:loweringSchemaMapping ?loweringSchemaIn ;
+		sawsdl:liftingSchemaMapping ?liftingSchemaIn ;
+		sawsdl:modelReference ?inputRef ;
+		msm:hasPart ?inputPart ;
+		msm:hasPartTransitive ?inputPartTransitive .
+			?inputPart a msm:MessagePart .
+			?inputPartTransitive a msm:MessagePart .
