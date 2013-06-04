@@ -11,4 +11,25 @@ SELECT * WHERE {
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
 	?operation a msm:Operation .
+	
+	OPTIONAL{
+		?operation msm:hasInput ?operationInput .
+	}
+	OPTIONAL{
+		?operation msm:hasInputFault ?operationInputFault .
+	}
+	OPTIONAL{
+		?operation msm:hasOutput ?operationOutput .
+	}
+	OPTIONAL{
+		?operation msm:hasOutputFault ?operationOutputFault .
+	}
+	
+	# HRESTS
+	OPTIONAL{
+		?operation msm:hasAddress ?operationAddress .
+	}
+	OPTIONAL{
+		?operation msm:hasMethod ?operationMethod .
+	}
 }

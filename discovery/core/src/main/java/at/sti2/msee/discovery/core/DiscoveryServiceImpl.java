@@ -20,6 +20,7 @@ import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
 import org.ontoware.rdf2go.model.TriplePattern;
+import org.ontoware.rdf2go.model.node.Node;
 import org.ontoware.rdf2go.model.node.Variable;
 import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.model.Resource;
@@ -295,6 +296,7 @@ public class DiscoveryServiceImpl implements Discovery {
 			}
 			helperServiceMap.put(category, serviceList);
 
+			// get operations
 			List<String> operationList = helperOperationMap.get(service);
 			String operation = row.getValue("operation").toString();
 			if (operationList == null) {
@@ -304,7 +306,40 @@ public class DiscoveryServiceImpl implements Discovery {
 				operationList.add(operation);
 			}
 			helperOperationMap.put(service, operationList);
+
+			fillAdditionalOperationHelperMaps(row, operation, helperInputMap, "operationInput");
+			fillAdditionalOperationHelperMaps(row, operation, helperOutputMap, "operationOutput");
+			fillAdditionalOperationHelperMaps(row, operation, helperInputVaultMap,
+					"operationInputVault");
+			fillAdditionalOperationHelperMaps(row, operation, helperOutputVaultMap,
+					"operationOutputVault");
+			fillAdditionalOperationHelperMaps(row, operation, helperAddressMap, "operationAddress");
+			fillAdditionalOperationHelperMaps(row, operation, helperMethodMap, "operationMethod");
 		}
+	}
+
+	private Map<String, List<String>> helperInputMap = new HashMap<String, List<String>>();
+	private Map<String, List<String>> helperOutputMap = new HashMap<String, List<String>>();
+	private Map<String, List<String>> helperInputVaultMap = new HashMap<String, List<String>>();
+	private Map<String, List<String>> helperOutputVaultMap = new HashMap<String, List<String>>();
+	private Map<String, List<String>> helperAddressMap = new HashMap<String, List<String>>();
+	private Map<String, List<String>> helperMethodMap = new HashMap<String, List<String>>();
+
+	private void fillAdditionalOperationHelperMaps(QueryRow row, String operation,
+			Map<String, List<String>> helperMap, String variableName) {
+		List<String> additionalList = helperMap.get(operation);
+		if (additionalList == null) {
+			additionalList = new ArrayList<String>();
+		}
+		Node variableNode = row.getValue(variableName);
+		if (variableNode != null) {
+			String operationInput = variableNode.toString();
+			if (!additionalList.contains(operationInput)) {
+				additionalList.add(operationInput);
+			}
+
+		}
+		helperMap.put(operation, additionalList);
 	}
 
 	/**
@@ -332,8 +367,23 @@ public class DiscoveryServiceImpl implements Discovery {
 				DiscoveredService service = new DiscoveredServiceBase(serv);
 				// add operations
 				for (String oper : helperOperationMap.get(serv)) {
-					DiscoveredOperation operation = new DiscoveredOperationBase(oper);
+					System.out.println(oper);
+
+					DiscoveredOperationBase operation = new DiscoveredOperationBase(oper);
 					((DiscoveredServiceBase) service).addDiscoveredOperation(operation);
+					for(String input : helperInputMap.get(oper)){
+						operation.addInput(input);
+					}
+					for(String output : helperOutputMap.get(oper)){
+						operation.addOutput(output);
+					}
+					for(String inputVault : helperInputVaultMap.get(oper)){
+						operation.addInputVault(inputVault);
+					}
+					for(String outputVault : helperOutputVaultMap.get(oper)){
+						operation.addOutputVault(outputVault);
+					}
+					
 				}
 				category.addDiscoveredService(service);
 			}
@@ -450,7 +500,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	public int countServices() {
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
-		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type , MSM.Service);
+		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
 		int count = (int) rdfModel.countStatements(pattern);
 		rdfModel.close();
 		return count;
