@@ -27,6 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
@@ -71,6 +72,17 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 	public void tearDown() throws Exception {
 		serviceRepository.clear();
 		//serviceRepository.shutdown();
+	}
+	
+	@Test
+	public void testSawsdl() throws ServiceRegistrationException, DiscoveryException {
+		String serviceDescriptionURL = this.getClass().getResource("/services/HelloService.sawsdl").toString();	
+		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
+		registrationService.register(serviceDescriptionURL);
+		final String[] categoryList = new String[1];
+		categoryList[0] = "http://msee.sti2.at/categories#business";
+		String result = discoveryService.discover(categoryList);
+		System.out.println(result);
 	}
 
 	@Test

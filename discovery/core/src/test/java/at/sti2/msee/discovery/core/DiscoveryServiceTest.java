@@ -51,8 +51,8 @@ public class DiscoveryServiceTest extends TestCase {
 		//Comment these 4 lines to force a in-memory repository
 		DiscoveryConfig config = new DiscoveryConfig();
 		config.setResourceLocation(resourceLocation);	
-		serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
-		serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
+		//serviceRepositoryConfiguration.setRepositoryID(config.getSesameRepositoryID());
+		//serviceRepositoryConfiguration.setServerEndpoint(config.getSesameEndpoint());
 	
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();

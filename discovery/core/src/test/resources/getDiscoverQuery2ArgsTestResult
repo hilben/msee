@@ -13,6 +13,13 @@ CONSTRUCT {
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
 	
+	?serviceID msee:name ?serviceName ; 
+		msee:decription ?serviceDescription ; 
+		msee:requirements ?serviceRequirements ; 
+		msee:access_point ?serviceAccessPoint ; 
+		msee:type ?serviceType ; 
+		msee:icon ?serviceIcon . 
+	
 	?operation a msm:Operation ;
 		msm:hasOutput ?outputMessageContent ;
 		msm:hasInput ?inputMessageContent ;
@@ -83,5 +90,15 @@ CONSTRUCT {
 			?inputMessageContent sawsdl:modelReference ?inputRef .
 		}
 	}
+	
+	
+	OPTIONAL {
+		?serviceID msee:name ?serviceName . 
+		?serviceID msee:decription ?serviceDescription . 
+		?serviceID msee:requirements ?serviceRequirements . 
+		?serviceID msee:access_point ?serviceAccessPoint . 
+		?serviceID msee:type ?serviceType . 
+		?serviceID msee:icon ?serviceIcon . 
+	} 
 
 }
