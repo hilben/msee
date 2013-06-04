@@ -2,8 +2,6 @@ package at.sti2.msee.registration.core;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -58,7 +56,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 		try 
 		{
 			Service2RDFTransformer transformer = Service2RDFTransformerFactory.newInstance(format);
-			String msmRDF = transformer.toMSM(descriptionURL);		
+			String msmRDF = new MSMChecker(transformer.toMSM(descriptionURL)).check();		
 			
 			String serviceURI = this.serviceRepository.insert(msmRDF, contextURI);
 			return serviceURI;
