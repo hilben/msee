@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +19,6 @@ import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
 import org.ontoware.rdf2go.model.TriplePattern;
-import org.ontoware.rdf2go.model.node.Node;
 import org.ontoware.rdf2go.model.node.Variable;
 import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.model.Resource;
@@ -39,12 +37,8 @@ import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.discovery.core.tree.DiscoveredCategory;
-import at.sti2.msee.discovery.core.tree.DiscoveredCategoryImpl;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
-import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
-import at.sti2.msee.discovery.core.tree.DiscoveredService;
-import at.sti2.msee.discovery.core.tree.DiscoveredServiceBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 import at.sti2.msee.triplestore.ServiceRepository;
 
@@ -253,164 +247,22 @@ public class DiscoveryServiceImpl implements Discovery {
 	// -service2.1
 	// --operation2.1.1
 	public Set<DiscoveredCategory> discoverCategoryAndService() {
-		// each category has a list of services
-		Map<String, List<String>> helperServiceMap = new HashMap<String, List<String>>();
-		// each service has a list of operations
-		Map<String, List<String>> helperOperationMap = new HashMap<String, List<String>>();
-
 		String queryString = new DiscoveryQueryBuilder().getDiscoverCategoriesAndServices();
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
 		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(queryString);
 		ClosableIterator<QueryRow> results = resultTable.iterator();
 
-		createHelperMaps(results, helperServiceMap, helperOperationMap);
-		Set<DiscoveredCategory> returnSet = buildTreeFromHelperMaps(helperServiceMap,
-				helperOperationMap);
+		DiscoveryTreeBuilder treeBuilder = new DiscoveryTreeBuilder(results);
+		Set<DiscoveredCategory> returnSet = new HashSet<DiscoveredCategory>();
+		try {
+			returnSet=treeBuilder.buildTree();
+		} catch (DiscoveryException e) {
+			LOGGER.catching(e);
+		}
 
 		rdfModel.close();
 		return returnSet;
-	}
-
-	/**
-	 * Splits up the given SPARQL query result into the helper maps.
-	 * 
-	 * @param tableOfQueryResult
-	 * @param helperServiceMap
-	 * @param helperOperationMap
-	 */
-	private void createHelperMaps(ClosableIterator<QueryRow> tableOfQueryResult,
-			Map<String, List<String>> helperServiceMap, Map<String, List<String>> helperOperationMap) {
-		while (tableOfQueryResult.hasNext()) {
-			QueryRow row = tableOfQueryResult.next();
-			String category = row.getValue("category").toString();
-
-			// get current category
-			List<String> serviceList = helperServiceMap.get(category);
-			String service = row.getValue("serviceID").toString();
-			if (serviceList == null) {
-				serviceList = new ArrayList<String>();
-			}
-			if (!serviceList.contains(service)) {
-				serviceList.add(service);
-			}
-			helperServiceMap.put(category, serviceList);
-
-			// get operations
-			List<String> operationList = helperOperationMap.get(service);
-			String operation = row.getValue("operation").toString();
-			if (operationList == null) {
-				operationList = new ArrayList<String>();
-			}
-			if (!operationList.contains(operation)) {
-				operationList.add(operation);
-			}
-			helperOperationMap.put(service, operationList);
-
-			fillAdditionalOperationHelperMaps(row, operation, helperInputMap, "operationInput");
-			fillAdditionalOperationHelperMaps(row, operation, helperOutputMap, "operationOutput");
-			fillAdditionalOperationHelperMaps(row, operation, helperInputVaultMap,
-					"operationInputVault");
-			fillAdditionalOperationHelperMaps(row, operation, helperOutputVaultMap,
-					"operationOutputVault");
-			fillAdditionalOperationHelperMaps(row, operation, helperAddressMap, "operationAddress");
-			fillAdditionalOperationHelperMaps(row, operation, helperMethodMap, "operationMethod");
-		}
-	}
-
-	private Map<String, List<String>> helperInputMap = new HashMap<String, List<String>>();
-	private Map<String, List<String>> helperOutputMap = new HashMap<String, List<String>>();
-	private Map<String, List<String>> helperInputVaultMap = new HashMap<String, List<String>>();
-	private Map<String, List<String>> helperOutputVaultMap = new HashMap<String, List<String>>();
-	private Map<String, List<String>> helperAddressMap = new HashMap<String, List<String>>();
-	private Map<String, List<String>> helperMethodMap = new HashMap<String, List<String>>();
-
-	private void fillAdditionalOperationHelperMaps(QueryRow row, String operation,
-			Map<String, List<String>> helperMap, String variableName) {
-		List<String> additionalList = helperMap.get(operation);
-		if (additionalList == null) {
-			additionalList = new ArrayList<String>();
-		}
-		Node variableNode = row.getValue(variableName);
-		if (variableNode != null) {
-			String operationInput = variableNode.toString();
-			if (!additionalList.contains(operationInput)) {
-				additionalList.add(operationInput);
-			}
-
-		}
-		helperMap.put(operation, additionalList);
-	}
-
-	/**
-	 * Creates the final tree of categories, services, operations from the given
-	 * helper maps.
-	 * 
-	 * @param helperServiceMap
-	 * @param helperOperationMap
-	 * @return
-	 */
-	private Set<DiscoveredCategory> buildTreeFromHelperMaps(
-			Map<String, List<String>> helperServiceMap, Map<String, List<String>> helperOperationMap) {
-		Set<DiscoveredCategory> returnSet = new HashSet<DiscoveredCategory>();
-		Object[] categories = helperServiceMap.keySet().toArray();
-		for (Object cate : categories) {
-			String cat = (String) cate;
-
-			DiscoveredCategoryImpl category = new DiscoveredCategoryImpl(cat);
-			DiscoveredCategory storedCategory = getCategoryFromSet(category, returnSet);
-			if (storedCategory != null) {
-				category = (DiscoveredCategoryImpl) storedCategory;
-			}
-			// add services
-			for (String serv : helperServiceMap.get(cat)) {
-				DiscoveredService service = new DiscoveredServiceBase(serv);
-				// add operations
-				for (String oper : helperOperationMap.get(serv)) {
-					System.out.println(oper);
-
-					DiscoveredOperationBase operation = new DiscoveredOperationBase(oper);
-					((DiscoveredServiceBase) service).addDiscoveredOperation(operation);
-					for(String input : helperInputMap.get(oper)){
-						operation.addInput(input);
-					}
-					for(String output : helperOutputMap.get(oper)){
-						operation.addOutput(output);
-					}
-					for(String inputVault : helperInputVaultMap.get(oper)){
-						operation.addInputVault(inputVault);
-					}
-					for(String outputVault : helperOutputVaultMap.get(oper)){
-						operation.addOutputVault(outputVault);
-					}
-					
-				}
-				category.addDiscoveredService(service);
-			}
-
-			returnSet.add(category);
-		}
-		return returnSet;
-	}
-
-	/**
-	 * Returns the {@link DiscoveredCategory} if found in the set of
-	 * {@link DiscoveredCategory} otherwise <code>null</code>.
-	 * 
-	 * @param category
-	 * @param categorySet
-	 * @return
-	 */
-	private DiscoveredCategory getCategoryFromSet(DiscoveredCategory category,
-			Set<DiscoveredCategory> categorySet) {
-		Iterator<DiscoveredCategory> cit = categorySet.iterator();
-		while (cit.hasNext()) {
-			DiscoveredCategory cat = cit.next();
-			if (cat.equals(category)) {
-				return cat;
-			}
-		}
-		return null;
 	}
 
 	@Deprecated
