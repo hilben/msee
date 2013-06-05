@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>discovery.webservice</artifactId>
 	<packaging>war</packaging>
@@ -69,10 +69,10 @@
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
 
-	    <dependency>
-	          <groupId>org.apache.axis</groupId>
-	          <artifactId>axis</artifactId>
-	    </dependency>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+		</dependency>
 
 		<dependency><!-- for web service tests -->
 			<groupId>org.apache.axis</groupId>
@@ -85,13 +85,24 @@
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-http</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.ws.commons.schema</groupId>
+					<artifactId>XmlSchema</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-local</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-jaxws</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 
+		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
 		</dependency>
@@ -107,31 +118,79 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
+
+
+		<!-- Jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>7.6.0.v20120127</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>7.6.0.v20120127</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-http</artifactId>
+			<version>7.6.0.v20120127</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>7.6.0.v20120127</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jsp-2.1-glassfish</artifactId>
+			<version>2.1.v20100127</version>
+		</dependency>
+		<!-- Jersey -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1-ea</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
 	</dependencies>
 
-	<!--
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.axis2</groupId>
-                <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsdl2code</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>at.sti2.msee.discovery.core</packageName>
-                            <wsdlFile>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</wsdlFile>
-                            <databindingName>xmlbeans</databindingName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    -->
+	<!-- <build> <plugins> <plugin> <groupId>org.apache.axis2</groupId> <artifactId>axis2-wsdl2code-maven-plugin</artifactId> 
+		<version>1.4</version> <executions> <execution> <goals> <goal>wsdl2code</goal> 
+		</goals> <configuration> <packageName>at.sti2.msee.discovery.core</packageName> 
+		<wsdlFile>http://sesa.sti2.at:8080/discovery-webservice/services/discovery?wsdl</wsdlFile> 
+		<databindingName>xmlbeans</databindingName> </configuration> </execution> 
+		</executions> </plugin> </plugins> </build> -->
 
 
 	<build>
@@ -201,7 +260,8 @@
 
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
