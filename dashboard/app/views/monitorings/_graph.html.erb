@@ -3,21 +3,6 @@
 </p>
 <div id="graphtitle"> </div>
 <div id="statustext">
-
-    <% @querystring = "" %>
-    <% for par in @currentParameters.to_s.split(',') do %>
-    <%= par %>
-    <% @querystring = @querystring + "&qosParamKey=" + par %>
-    <% end %>
-
-    <% if @currentEndpoint.to_s.length>10 && @currentParameters.to_s.length>3 then %>
-    <script type="text/javascript" src="/monitorings/getGoogleGraphData/<%=@currentParameters.to_s+"/"+@currentEndpoint %>">
-    </script>
-    <% else %>
-    <p>
-        No chart data to display
-    </p>
-    <% end%>
 </div>
 <div id="table"></div>
 <div id="table2"></div>

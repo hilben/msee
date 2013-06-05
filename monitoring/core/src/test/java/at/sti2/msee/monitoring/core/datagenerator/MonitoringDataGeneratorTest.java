@@ -43,16 +43,16 @@ public class MonitoringDataGeneratorTest {
 		Object[][] data = null;
 		try {
 			data = new Object[][] {
-					{ new MonitoringDataGeneratorParameters(new URL(
-							"http://www.example.com/testdataws1"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
-					{ new MonitoringDataGeneratorParameters(new URL(
-							"http://www.example.com/testdataws2"), 25, 50,
-							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
+//					{ new MonitoringDataGeneratorParameters(new URL(
+//							"http://www.example.com/testdataws1"), 25, 50,
+//							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
+//					{ new MonitoringDataGeneratorParameters(new URL(
+//							"http://www.example.com/testdataws2"), 25, 50,
+//							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
 					{ new MonitoringDataGeneratorParameters(
 							new URL(
-									"http://msee.sti2.at/services/d5c4ff6a-8733-4714-a605-eb8f9d1f252a"),
-							25, 50, 1200, 50, 1200, 100, 1500, 0.05,
+									"http:///msee.sti2.at/services/61a2c8ce-f00c-4eba-bc7e-94e3411f28a1#wsdl.service(helloService)/Hello"),
+							5, 50, 1200, 50, 1200, 100, 1500, 0.05,
 							new Date(), 10000) }
 
 			};

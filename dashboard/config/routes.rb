@@ -18,6 +18,8 @@ SesaWebsite::Application.routes.draw do
 
   match "monitorings/showEndpointDetails/:qos/*url" => "monitorings#showEndpointDetails"
 
+
+  match "monitorings/getGoogleGraphData" => "monitorings#getGoogleGraphData"
   match "monitorings/getGoogleGraphData/:qos/*url" => "monitorings#getGoogleGraphData"
 
   match "monitorings/getRankedEndpoints/:qos/:values/*endpoints" => "monitorings#getRankedEndpoints"

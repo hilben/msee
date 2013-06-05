@@ -20,7 +20,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>discovery.core</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ranking.core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>invocation.core</artifactId>

@@ -30,19 +30,19 @@ SesaWebsite::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   #config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  # Do not compress assets
-  config.assets.compress = false
-
   # Expands the lines which load the assets
-  #config.assets.debug = true
+  
+  config.assets.debug = true #wasnt there
 
   #config.action_controller.relative_url_root = '/msee'
 
+  config.action_controller.perform_caching = false
+
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  config.assets.compress = false
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = true
+  config.assets.compile = true #was false
 
   # Generate digests for assets URLs
   config.assets.digest = true

@@ -196,42 +196,73 @@ class MonitoringsController < ApplicationController
   end
 
 
-  def getGoogleGraphData
+  def getGoogleGraphDataFromBackEnd(qos, url)
     begin
       chart = GoogleChart.new
 
-      @qos = params[:qos]
-      @url = params[:url]
-
-      @url = "http://" + @url[6,@url.length]
-
-      logger.info "getGoogleGraphData Received Parameter: #{@qos}"
-      logger.info "getGoogleGraphData Received Parameter: #{@url}"
+      logger.info "getGoogleGraphData Received Parameter: #{qos}"
+      logger.info "getGoogleGraphData Received Parameter: #{url}"
 
       listEndpoints = Java::JavaUtil::ArrayList.new
-      listEndpoints << @url
+
+      url.each do |endpointUrl|
+        endpointUrl = "http://" + endpointUrl[6,endpointUrl.length]
+        listEndpoints << endpointUrl
+      end
 
       listParameters = Java::JavaUtil::ArrayList.new
-      listParameters << @qos
+
+      qos.each do |qosParameter|
+        listParameters << qosParameter
+      end
 
       logger.info "getGoogleGraphData listEndpoints: #{listEndpoints}"
       logger.info "getGoogleGraphData listParameters: #{listParameters}"
 
+
+
       jsonData = chart.asJson(listEndpoints,listParameters)
 
-      jsonData = "ajaxCallSucceed("+jsonData+")"
-
-      logger.info "JSON DATA: #{jsonData}"
 
     rescue => e
       @error = "getGoogleGraphData failed, through exception: " + e.to_s
       jsonData = @error
     end
 
-    respond_to do |format|
-      format.js  {render :json => jsonData}
-    end
+    return jsonData
   end
 
+  def getGoogleGraphDataByArguments(qos,url)
+    #qos = qos.split(",")
+    url = url.split(",")
+    jsonData = getGoogleGraphDataFromBackEnd(qos, url)
 
+    logger.info "getGoogleGraphDataByArguments #{jsonData}"
+    return jsonData.to_json
+  end
+
+  def getGoogleGraphData
+    @qos = params[:qos]
+    @url = params[:url]
+
+    if (@qos!=nil&&@url!=nil)
+      @qos = params[:qos]
+      @url = @url.split(",")
+
+      jsonData = getGoogleGraphDataFromBackEnd(@qos,@url)
+
+      jsonData = jsonData
+      logger.info "getGoogleGraphData #{jsonData}"
+    else
+      jsonData = "QoS or URLs were nil. Qos: #{@qos} Url: #{@url}"
+    end
+
+    respond_to do |format|
+      format.html {render :json => jsonData}
+      format.json {render :json => jsonData}
+    end
+    #render :json => jsonData
+
+  end
 end
+

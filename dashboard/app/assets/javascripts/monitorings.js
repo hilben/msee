@@ -18,14 +18,13 @@
 
 //= require google/monitoring-jsapi
 
-
-
 var currentSelectedEndpoint;
 var checkedEndpoints;
 var currentSelectedQoSParams;
 
 $(document).ready(function() {
 
+    console.log("LOADED MONITORING.JS");
     currentSelectedQoSParams = ["RequestTotal"];
     //Load and render the qosParamsCheckBoxes
 
@@ -54,11 +53,11 @@ $(document).ready(function() {
 
     });
 
-    $("#startranking").click(function() { 
-        
+    $("#startranking").click(function() {
+
         $('#rankingSetQoSParams').modal('hide');
         $('#rankingResultModal').modal();
-       // $('.rankedendpoints').load('/monitorings/getRankedEndpoints/ResponseTime,PayloadSizeResponse/0x4,7x1/' + checkedEndpoints);
+        // $('.rankedendpoints').load('/monitorings/getRankedEndpoints/ResponseTime,PayloadSizeResponse/0x4,7x1/' + checkedEndpoints);
 
 
         var querystring='';
@@ -68,29 +67,29 @@ $(document).ready(function() {
         $('.star').each(function() {
             if ($(this).attr("value")>=0&&$(this).attr("checked")) {
 
-                
+
                 if (querystring!='') {
                     querystring+=',';
                 }
 
                 querystring = querystring + $(this).attr("name");
-                
+
                 qosParamsCounts+=1;
             }
         });
-        
+
         querystring += "/";
 
         //add values:
         $('.star').each(function() {
             if ($(this).attr("value")>=0&&$(this).attr("checked")) {
-                
+
                 if (qosRatingCounts>0) {
                     querystring+=',';
                 }
 
                 querystring = querystring + $(this).attr("value")+"x0";
-                
+
                 qosRatingCounts+=1;
             }
         });
@@ -99,14 +98,9 @@ $(document).ready(function() {
         if (qosRatingCounts!=qosParamsCounts||qosParamsCounts<1) {
             alert("Error with the Ranking. Did you selected Parameters?" + qosRatingCounts+" "+qosParamsCounts);
         } else {
-        $('.rankedendpoints').load('/monitorings/getRankedEndpoints/'+querystring+'/' + checkedEndpoints);
+            $('.rankedendpoints').load('/monitorings/getRankedEndpoints/'+querystring+'/' + checkedEndpoints);
         }
-    });    
-
-
-
-
-       
+    });
 
     $('#accordion').collapse().height('auto');
 
@@ -116,7 +110,7 @@ $(document).ready(function() {
         selectMode : 2,
 
         title : "Lazy loading tree",
-        autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
+    autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 
         initAjax : {
             url : "/monitorings/getSubcategoriesAndServices/root",
@@ -127,94 +121,118 @@ $(document).ready(function() {
         onQuerySelect : function(select, node) {
             if (node.data.isFolder)
                 return false;
-        },
+            },
 
-        onSelect : function(select, node) {
-            checkedEndpoints = $.map(node.tree.getSelectedNodes(), function(node) {
-                return node.data.key;
-            });
-            console.log("You checked " + checkedEndpoints);
-        },
+            onSelect : function(select, node) {
+                checkedEndpoints = $.map(node.tree.getSelectedNodes(), function(node) {
+                    return node.data.key;
+                });
+                console.log("You checked " + checkedEndpoints);
+            },
 
-        onActivate : function(node) {
-            console.log("You activated " + node);
-            document.getElementById('statustext').textContent = "Loading monitoring data...";
-            currentSelectedEndpoint = node.data.title;
-            $('.endpointdetails').load('/monitorings/showEndpointDetails/' + currentSelectedQoSParams + '/' + node.data.title.replace("http://", ""));
+            onActivate : function(node) {
+                console.log("You activated " + node);
+                document.getElementById('statustext').textContent = "Loading monitoring data...";
+                currentSelectedEndpoint = node.data.title;
+                console.log("BBBBBBBBBB");
 
-        },
+                updateGraph();
 
-        onLazyRead : function(node) {
-            node.appendAjax({
-                url : "/monitorings/getSubcategoriesAndServices/" + node.data.title,
-                data : {
-//                    key: node.data.key,
-                    mode : "funnyMode",
+            },
+
+            onLazyRead : function(node) {
+                node.appendAjax({
+                    url : "/monitorings/getSubcategoriesAndServices/" + node.data.title,
+                    data : {
+                        mode : "funnyMode",
+                    }
+                });
+
+            }
+        });
+
+    });
+
+
+    function updateGraph() {
+        //$('.endpointdetails').load('/monitorings/showEndpointDetails/' + currentSelectedQoSParams + '/' + node.data.title.replace("http://", ""));
+        $('#table').empty();
+
+        $.ajax({
+            type: 'POST',
+            url: '/monitorings/getGoogleGraphData',
+            data: {
+                'qos': currentSelectedQoSParams,
+                'url': currentSelectedEndpoint
+            },
+
+            success:  function(data) {
+                console.log("call success!");
+
+                console.log("not parsed: " + data);
+
+                eval("var a = " + data + ";")
+
+                console.log("Parsed: " + a);
+
+                console.log("Load qos Params:");
+                console.log(currentSelectedQoSParams);
+
+                console.log("Finished...");
+
+                if (data.indexOf("Date") >= 0) {// check if at least 1 date element is inside
+
+                    document.getElementById('statustext').textContent = "Drawing graph";
+                    console.log("Loading Graph:");
+                    drawLineChart(a);
+                } else {
+                    document.getElementById('statustext').textContent = "No monitoring data available ";
                 }
-            });
 
-        }
-    });
-
-});
-
-google.load('visualization', '1.0', {
-    packages : ['corechart', 'table', 'controls']
-});
-
-function drawLineChart(jsondata) {
-
-    var JSONObject = jsondata;
-
-    // Create and populate the data table.
-    var data = new google.visualization.DataTable(JSONObject);
-
-    var formatter = new google.visualization.DateFormat({
-        formatType : 'short'
-    });
-    formatter.format(data, 0);
-    // newgraphtest(data);
-
-    // Create and draw the visualization.
-    visualization = new google.visualization.LineChart(document.getElementById('table')).draw(data, {
-        width : 800,
-        height : 600,
-    });
-
-    document.getElementById('statustext').textContent = "Finished graph";
-}
-
-/*
- * Sets and updates the current selected QoSParams for the monitoring graph component
- */
-function setCurrentSelectedQoSParams() {
-    var values = $('input:checkbox:checked.qoscheckbox').map(function() {
-        return this.id;
-    }).get();
-    console.log(values);
-    currentSelectedQoSParams = values;
-    $('.endpointdetails').load('/monitorings/showEndpointDetails/' + currentSelectedQoSParams + '/' + currentSelectedEndpoint.replace("http://", ""));
-}
-
-function ajaxCallSucceed(json) {
-    console.log("call success!");
-
-    var a = eval(json);
-
-    console.log("Eval: " + a);
-
-    console.log("Load qos Params:");
-    console.log(currentSelectedQoSParams);
-
-    console.log("Finished...");
-
-    if (a.rows.length > 0) {
-
-        document.getElementById('statustext').textContent = "Drawing graph";
-        console.log("Loading Graph:");
-        drawLineChart(a);
-    } else {
-        document.getElementById('statustext').textContent = "No monitoring data available ";
+            },
+            error: function(xhr, error){
+                console.debug(xhr); 
+                console.debug(error);
+            }
+        });
     }
-}
+
+    google.load('visualization', '1.0', {
+        packages : ['corechart', 'table', 'controls']
+    });
+
+    function drawLineChart(jsondata) {
+
+        var JSONObject = jsondata;
+
+        console.log("JSONObject: " + JSONObject);
+        var data = new google.visualization.DataTable(JSONObject);
+
+        var formatter = new google.visualization.DateFormat({
+            formatType : 'short'
+        });
+        formatter.format(data, 0);
+
+        // Create and draw the visualization.
+        visualization = new google.visualization.LineChart(document.getElementById('table')).draw(data, {
+            width : 1400,
+            height : 800,
+        });
+
+
+        document.getElementById('statustext').textContent = "Finished graph";
+    }
+
+    /*
+    * Sets and updates the current selected QoSParams for the monitoring graph component
+    */
+    function setCurrentSelectedQoSParams() {
+        var values = $('input:checkbox:checked.qoscheckbox').map(function() {
+            return this.id;
+        }).get();
+        console.log(values);
+        currentSelectedQoSParams = values;
+
+        updateGraph();
+    }
 
