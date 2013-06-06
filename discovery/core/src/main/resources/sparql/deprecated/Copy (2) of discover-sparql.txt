@@ -6,7 +6,7 @@ PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#>
 PREFIX msee: <http://msee.sti2.at/properties#> 
 PREFIX hr: <http://www.wsmo.org/ns/hrests#> 
 
-# v1.2
+# v1.0
 
 CONSTRUCT {
 	?serviceID 
@@ -27,9 +27,9 @@ CONSTRUCT {
 		a msm:Operation ;
 		rdfs:label ?OperationLabel ;
 		msm:hasOutput ?outputMessageContent ;
-		msm:hasOutputFault ?outputFault ;
+		#  msm:hasOutputFault ?outputFault ;
 		msm:hasInput ?inputMessageContent ;
-		msm:hasInputFault ?inputFault ;
+		#  msm:hasInputFault ?inputFault ;
 		sawsdl:modelReference ?operationRef ;
 		hr:hasMethod ?operationmethod ;
 		hr:hasAddress ?operationaddress. 
@@ -42,6 +42,7 @@ CONSTRUCT {
 		sawsdl:modelReference ?outputRef ;
 		msm:hasPart ?outputPart ;
 		msm:hasPartTransitive ?outputPartTransitive .
+		
 			?outputPart a msm:MessagePart .
 			?outputPartTransitive a msm:MessagePart .
 
@@ -53,30 +54,9 @@ CONSTRUCT {
 		sawsdl:modelReference ?inputRef ;
 		msm:hasPart ?inputPart ;
 		msm:hasPartTransitive ?inputPartTransitive .
+		
 			?inputPart a msm:MessagePart .
 			?inputPartTransitive a msm:MessagePart .
-			
-	?outputFault
-		a msm:MessageContent ;
-		rdfs:label ?outputMessageContentLabelF ;
-		sawsdl:loweringSchemaMapping ?loweringSchemaOutF ;
-		sawsdl:liftingSchemaMapping ?liftingSchemaOutF ;
-		sawsdl:modelReference ?outputRefF ;
-		msm:hasPart ?outputPartF ;
-		msm:hasPartTransitive ?outputPartTransitiveF .
-			?outputPartF a msm:MessagePart .
-			?outputPartTransitiveF a msm:MessagePart .
-
-	?inputFault
-		a msm:MessageContent ;
-		rdfs:label ?inputMessageContentLabelF ;
-		sawsdl:loweringSchemaMapping ?loweringSchemaInF ;
-		sawsdl:liftingSchemaMapping ?liftingSchemaInF ;
-		sawsdl:modelReference ?inputRefF ;
-		msm:hasPart ?inputPartF ;
-		msm:hasPartTransitive ?inputPartTransitiveF .
-			?inputPartF a msm:MessagePart .
-			?inputPartTransitiveF a msm:MessagePart .
 		
 
 
@@ -91,15 +71,14 @@ CONSTRUCT {
 	
 	# operation
 	?operation a msm:Operation .
-
+	?operation msm:hasOutput ?outputMessageContent .
+	?operation msm:hasInput ?inputMessageContent .
 	OPTIONAL{
 		?operation rdfs:label ?OperationLabel .
 	}
 	OPTIONAL{
 		?operation sawsdl:modelReference ?operationRef .
 	}
-	
-	# HRESTS
 	OPTIONAL{
 		?operation hr:hasMethod  ?operationmethod.
 		?operation hr:hasAddress ?operationaddress.
@@ -107,7 +86,6 @@ CONSTRUCT {
 	
 	OPTIONAL{
 		# output
-		?operation msm:hasOutput ?outputMessageContent .
 		?outputMessageContent a msm:MessageContent .
 		OPTIONAL{
 			?outputMessageContent rdfs:label ?outputMessageContentLabel .
@@ -132,7 +110,6 @@ CONSTRUCT {
 
 	OPTIONAL{
 		# input
-		?operation msm:hasInput ?inputMessageContent .
 		?inputMessageContent a msm:MessageContent .
 		OPTIONAL{
 			?inputMessageContent rdfs:label ?inputMessageContentLabel .
@@ -152,58 +129,6 @@ CONSTRUCT {
 		}
 		OPTIONAL{
 			?inputMessageContent msm:hasPartTransitive ?inputPartTransitive .
-		}
-	}
-	
-	
-	# fault in and out   for WSDL
-	OPTIONAL{
-		# output
-		?operation msm:hasOutputFault ?outputFault .
-		?outputFault a msm:MessageContent .
-		OPTIONAL{
-			?outputFault rdfs:label ?outputMessageContentLabelF .
-		}
-		OPTIONAL{
-			?outputFault sawsdl:loweringSchemaMapping ?loweringSchemaOutF .
-		}
-		OPTIONAL{
-			?outputFault sawsdl:liftingSchemaMapping ?liftingSchemaOutF .
-		}
-		OPTIONAL{
-			?outputFault sawsdl:modelReference ?outputRefF .
-		}
-		# wsdl
-		OPTIONAL{
-			?outputFault msm:hasPart ?outputPartF .
-		}
-		OPTIONAL{
-			?outputFault msm:hasPartTransitive ?outputPartTransitiveF .
-		}
-	}
-
-	OPTIONAL{
-		# input
-		?operation msm:hasInputFault ?inputFault .
-		?inputFault a msm:MessageContent .
-		OPTIONAL{
-			?inputFault rdfs:label ?inputMessageContentLabelF .
-		}
-		OPTIONAL{
-			?inputFault sawsdl:loweringSchemaMapping ?loweringSchemaInF .
-		}
-		OPTIONAL{
-			?inputFault sawsdl:liftingSchemaMapping ?liftingSchemaInF .
-		}
-		OPTIONAL{
-			?inputFault sawsdl:modelReference ?inputRefF .
-		}
-		# wsdl
-		OPTIONAL{
-			?inputFault msm:hasPart ?inputPartF .
-		}
-		OPTIONAL{
-			?inputFault msm:hasPartTransitive ?inputPartTransitiveF .
 		}
 	}
 	

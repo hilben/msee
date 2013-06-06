@@ -6,24 +6,62 @@ PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#>
 PREFIX msee: <http://msee.sti2.at/properties#> 
 PREFIX hr: <http://www.wsmo.org/ns/hrests#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# v1.0
+
 SELECT * WHERE { 
 	?serviceID rdf:type msm:Service . 
-{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .
+	{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .
 } UNION {
 		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#INDESIT_SERVICE> .
 } UNION {
 } 
 	?serviceID msm:hasOperation ?operation .
-
+	?serviceID sawsdl:modelReference ?category .
 	
+	# operation
 	?operation a msm:Operation .
 	?operation msm:hasOutput ?outputMessageContent .
-	?operation msm:hasOutput/a msm:MessageContent .
 	?operation msm:hasInput ?inputMessageContent .
-	?operation msm:hasInput/a msm:MessageContent .
+	OPTIONAL{
+		?operation sawsdl:modelReference ?operationRef .
+	}
+	OPTIONAL{
+		?operation hr:hasMethod ?operationmethod.
+		?operation hr:hasAddress ?operationaddress.
+	}
 	
-	OPTIONAL {
-		?operation hr:hasMethod ?method .
-		?operation hr:hasAddress ?address .
+	OPTIONAL{
+		# output
+		?outputMessageContent a msm:MessageContent .
+		OPTIONAL{
+			?outputMessageContent rdfs:label ?outputMessageContentLabel .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:loweringSchemaMapping ?loweringSchemaOut .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:liftingSchemaMapping ?liftingSchemaOut .
+		}
+		OPTIONAL{
+			?outputMessageContent sawsdl:modelReference ?outputRef .
+		}
+	}
+
+	OPTIONAL{
+		# input
+		?inputMessageContent a msm:MessageContent .
+		OPTIONAL{
+			?inputMessageContent rdfs:label ?inputMessageContentLabel .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:loweringSchemaMapping ?loweringSchemaIn .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:liftingSchemaMapping ?liftingSchemaIn .
+		}
+		OPTIONAL{
+			?inputMessageContent sawsdl:modelReference ?inputRef .
+		}
 	}
 }

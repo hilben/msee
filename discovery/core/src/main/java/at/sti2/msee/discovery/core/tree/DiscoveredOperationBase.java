@@ -7,6 +7,10 @@ public class DiscoveredOperationBase implements DiscoveredOperation {
 	private String name;
 	private Set<String> inputSet = new HashSet<String>();
 	private Set<String> outputSet = new HashSet<String>();
+	private Set<String> inputVaultSet = new HashSet<String>();
+	private Set<String> outputVaultSet = new HashSet<String>();
+	private Set<String> addressSet = new HashSet<String>();
+	private Set<String> methodSet = new HashSet<String>();
 
 	public DiscoveredOperationBase() {
 		this(new String());
@@ -30,6 +34,22 @@ public class DiscoveredOperationBase implements DiscoveredOperation {
 
 	public void addOutput(String output) {
 		outputSet.add(output);
+	}
+
+	public void addInputVault(String inputVault) {
+		this.inputVaultSet.add(inputVault);
+	}
+
+	public void addOutputVault(String outputVault) {
+		this.outputVaultSet.add(outputVault);
+	}
+
+	public void addAddress(String address) {
+		this.addressSet.add(address);
+	}
+
+	public void addMethod(String method) {
+		this.methodSet.add(method);
 	}
 
 	public Set<String> getInputSet() {

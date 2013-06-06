@@ -59,15 +59,7 @@ public class WebServiceDiscoveryImpl implements Discovery {
 		String repositoryId = configuration.getSesameReposID();
 		String serverEndpoint = configuration.getSesameEndpoint();
 
-		ServiceDiscoveryConfiguration discoveryConfiguration = new ServiceDiscoveryConfiguration();
-
-		ServiceRepositoryConfiguration repositoryConfiguration = new ServiceRepositoryConfiguration();
-		repositoryConfiguration.setRepositoryID(repositoryId);
-		repositoryConfiguration.setServerEndpoint(serverEndpoint);
-		discoveryConfiguration.setRepositoryConfiguration(repositoryConfiguration);
-
-		discoveryDelegate = ServiceDiscoveryFactory
-				.createDiscoveryService(discoveryConfiguration);
+		discoveryDelegate = ServiceDiscoveryFactory.createDiscoveryService(serverEndpoint, repositoryId);
 	}
 	
 	@SuppressWarnings("unused")
