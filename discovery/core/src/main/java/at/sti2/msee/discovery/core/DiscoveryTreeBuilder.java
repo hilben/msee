@@ -66,6 +66,9 @@ public class DiscoveryTreeBuilder {
 	private Map<String, List<String>> helperAddressMap = new HashMap<String, List<String>>();
 	private Map<String, List<String>> helperMethodMap = new HashMap<String, List<String>>();
 
+	private Map<String, String> helperServiceEndpoint = new HashMap<String, String>();
+	private Map<String, String> helperServiceNamespace = new HashMap<String, String>();
+
 	public DiscoveryTreeBuilder(ClosableIterator<QueryRow> queryRows) {
 		this.queryRows = queryRows;
 	}
@@ -101,6 +104,13 @@ public class DiscoveryTreeBuilder {
 			// add services
 			for (String serv : helperServiceMap.get(cat)) {
 				DiscoveredService service = new DiscoveredServiceBase(serv);
+				if (helperServiceEndpoint.containsKey(serv)) {
+					service.setEndpoint(helperServiceEndpoint.get(serv));
+				}
+				if (helperServiceNamespace.containsKey(serv)) {
+					service.setNameSpace(helperServiceNamespace.get(serv));
+				}
+
 				// add operations
 				for (String oper : helperOperationMap.get(serv)) {
 					DiscoveredOperationBase operation = new DiscoveredOperationBase(oper);
@@ -151,6 +161,22 @@ public class DiscoveryTreeBuilder {
 				serviceList.add(service);
 			}
 			helperServiceMap.put(category, serviceList);
+
+			// get endpoint address for WSDL service
+			if (row.getValue("endpoint") != null) {
+				String endpoint = row.getValue("endpoint").toString();
+				if (endpoint != null) {
+					helperServiceEndpoint.put(service, endpoint);
+				}
+			}
+
+			// get namespace of service
+			if (row.getValue("namespace") != null) {
+				String namespace = row.getValue("namespace").toString();
+				if (namespace != null) {
+					helperServiceNamespace.put(service, namespace);
+				}
+			}
 
 			// get operations
 			List<String> operationList = helperOperationMap.get(service);

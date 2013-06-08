@@ -90,4 +90,8 @@ public final class ServiceDiscoveryFactory {
 				.newInstance(serviceDiscoveryConfiguration.getRepositoryConfiguration());
 		return new DiscoveryServiceImpl(serviceRepository);
 	}
+
+	public static Discovery createDiscoveryService(ServiceRepository serviceRepository) {
+		return new DiscoveryServiceImpl(serviceRepository);
+	}
 }

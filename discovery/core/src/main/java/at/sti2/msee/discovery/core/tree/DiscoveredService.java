@@ -9,5 +9,13 @@ public interface DiscoveredService {
 
 	public Set<DiscoveredOperation> getOperationSet();
 
-	public void addDiscoveredOperation(DiscoveredOperation operation1);
+	public void addDiscoveredOperation(DiscoveredOperation operation);
+
+	public String getEndpoint();
+
+	public void setEndpoint(String endpoint);
+
+	public String getNameSpace();
+
+	void setNameSpace(String namespace);
 }

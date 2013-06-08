@@ -16,6 +16,7 @@
  */
 package at.sti2.msee.invocation.core;
 
+import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,15 +24,25 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.rpc.ServiceException;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
+import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
+import org.apache.axis2.Constants;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -40,9 +51,17 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.Syntax;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
+import at.sti2.msee.discovery.core.DiscoveryServiceImpl;
+import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
+import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
+import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
+import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.invocation.api.ServiceInvocation;
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
@@ -50,6 +69,7 @@ import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
+import at.sti2.msee.triplestore.ServiceRepository;
 
 /**
  * @author Benjamin Hiltpolt
@@ -60,6 +80,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	protected static Logger logger = Logger.getLogger(ServiceInvocationImpl.class);
 
 	private MonitoringComponent monitoring = null;
+	private ServiceRepository serviceRepository = null;
 
 	public ServiceInvocationImpl() {
 		try {
@@ -67,6 +88,11 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		} catch (RepositoryException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ServiceInvocationImpl(ServiceRepository serviceRepository) {
+		// this();
+		this.serviceRepository = serviceRepository;
 	}
 
 	/**
@@ -253,7 +279,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				monitorFailedService(invocationinstance);
 				throw new ServiceInvokerException(e);
 			} finally {
-			postHandler.releaseConnection();
+				postHandler.releaseConnection();
 			}
 			break;
 		case "put":
@@ -329,6 +355,103 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		String retval = s.hasNext() ? s.next() : "";
 		s.close();
 		return retval;
+	}
+
+	@Override
+	public String invoke(URL serviceID, String operation, String inputData)
+			throws ServiceInvokerException {
+		if (serviceRepository == null)
+			throw new ServiceInvokerException("Repository not set by constructor");
+
+		DiscoveryServiceImpl discovery = (DiscoveryServiceImpl) ServiceDiscoveryFactory
+				.createDiscoveryService(serviceRepository);
+		String endpoint = null;
+		String namespace = null;
+		try {
+			DiscoveredService service = discovery.discoverService(serviceID.toString());
+			endpoint = service.getEndpoint();
+			namespace = service.getNameSpace();
+			DiscoveredOperationBase discoveredOperation = null;
+			Iterator<DiscoveredOperation> ito = service.getOperationSet().iterator();
+			while (ito.hasNext()) {
+				DiscoveredOperation op = ito.next();
+				if (op.getName().endsWith(operation)) { // TODO check
+					discoveredOperation = (DiscoveredOperationBase) op;
+					break;
+				}
+			}
+			if (discoveredOperation == null) {
+				throw new ServiceInvokerException("Operation " + operation + " not found in "
+						+ serviceID);
+			}
+		} catch (DiscoveryException e) {
+			e.printStackTrace();
+		}
+		// Model model = serviceRepository.getModel().open();
+		// System.out.println(model.serialize(Syntax.RdfXml));
+
+		XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(inputData.getBytes()));
+		Map<String, String> map = (Map<String, String>) decoder.readObject();
+		decoder.close();
+
+		String result = invokeNewSOAP(endpoint, operation, map, namespace);
+		return result;
+	}
+
+	private String invokeNewSOAP(String endpoint, String operation,
+			Map<String, String> inputVariableMap, String namespace) {
+		logger.debug("Invoking " + endpoint);
+		logger.debug("Using Variables " + inputVariableMap);
+		System.out.println(inputVariableMap);
+		String results = "";
+
+		// Service service = new Service();
+		// Call call;
+		//
+		// try {
+		// call = (Call) service.createCall();
+		// call.setTargetEndpointAddress(endpoint);
+		//
+		// ByteArrayInputStream soapMessageStream = new ByteArrayInputStream(
+		// message.getBytes("UTF-8"));
+		//
+		// SOAPEnvelope env = new SOAPEnvelope(soapMessageStream);
+		//
+		// results = call.invoke(env).toString();
+		// } catch (SAXException | UnsupportedEncodingException |
+		// ServiceException | AxisFault e) {
+		// e.printStackTrace();
+		// }
+
+		EndpointReference targetEPR = new EndpointReference(endpoint);
+		OMFactory fac = OMAbstractFactory.getOMFactory();
+		OMNamespace omNs = fac.createOMNamespace(namespace, "theNamespace");
+		OMElement method = fac.createOMElement(operation, omNs);
+		for (Entry<String, String> entry : inputVariableMap.entrySet()) {
+			OMElement value = fac.createOMElement(entry.getKey(), omNs);
+			value.addChild(fac.createOMText(value, entry.getValue()));
+			method.addChild(value);
+		}
+
+		try {
+			OMElement payload = method;
+			Options options = new Options();
+			options.setTo(targetEPR);
+
+			options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
+
+			ServiceClient sender = new ServiceClient();
+			sender.setOptions(options);
+			OMElement result = sender.sendReceive(payload);
+
+			String response = result.getFirstElement().getText();
+			results = response;
+
+		} catch (org.apache.axis2.AxisFault e) {
+			e.printStackTrace();
+		}
+
+		return results;
 	}
 
 }

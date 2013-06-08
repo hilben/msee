@@ -32,13 +32,13 @@ import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
 
 import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
-
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.discovery.core.tree.DiscoveredCategory;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 import at.sti2.msee.triplestore.ServiceRepository;
 
@@ -256,13 +256,56 @@ public class DiscoveryServiceImpl implements Discovery {
 		DiscoveryTreeBuilder treeBuilder = new DiscoveryTreeBuilder(results);
 		Set<DiscoveredCategory> returnSet = new HashSet<DiscoveredCategory>();
 		try {
-			returnSet=treeBuilder.buildTree();
+			returnSet = treeBuilder.buildTree();
 		} catch (DiscoveryException e) {
 			LOGGER.catching(e);
 		}
 
 		rdfModel.close();
 		return returnSet;
+	}
+
+	/**
+	 * This method discovers the related and stored information on the service
+	 * based on the given service ID.
+	 * 
+	 * @param serviceID
+	 * @return {@link DiscoveredService}
+	 * @throws DiscoveryException
+	 */
+	public DiscoveredService discoverService(String serviceID) throws DiscoveryException {
+		String queryString = new DiscoveryQueryBuilder().getDiscoverServiceOnServiceID(serviceID);
+		Model rdfModel = serviceRepository.getModel();
+		rdfModel.open();
+
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(queryString);
+		ClosableIterator<QueryRow> results = resultTable.iterator();
+
+		DiscoveryTreeBuilder treeBuilder = new DiscoveryTreeBuilder(results);
+		// -> reuse of existing method that returns category set
+		// -> but in this case it only returns one category with one
+		// -> service or NULL
+		Set<DiscoveredCategory> categorySet = new HashSet<DiscoveredCategory>();
+		try {
+			categorySet = treeBuilder.buildTree();
+		} catch (DiscoveryException e) {
+			LOGGER.catching(e);
+			throw new DiscoveryException(e);
+		}
+
+		rdfModel.close();
+		DiscoveredService service = null;
+		if (categorySet.iterator().hasNext()) {
+			DiscoveredCategory category = categorySet.iterator().next();
+			if (category.getServiceSet().iterator().hasNext()) {
+				service = category.getServiceSet().iterator().next();
+			} else {
+				throw new DiscoveryException("Service not found");
+			}
+		} else {
+			throw new DiscoveryException("Service with ID: " + serviceID + " not found");
+		}
+		return service;
 	}
 
 	@Deprecated

@@ -26,7 +26,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
+import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
@@ -43,6 +45,8 @@ public class DiscoveryServiceTest extends TestCase {
 	private String resourceLocation = "/default.properties";
 	private static Discovery discoveryService;
 	private static ServiceRepository serviceRepository;
+	
+	private String registeredServiceID = null;
 
 	@BeforeClass
 	public void setUp() throws Exception {
@@ -60,7 +64,7 @@ public class DiscoveryServiceTest extends TestCase {
 
 		String serviceDescriptionURL = this.getClass().getResource("/services/HelloService.sawsdl").toString();	
 		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
-		registrationService.register(serviceDescriptionURL);
+		registeredServiceID = registrationService.register(serviceDescriptionURL);
 
 		discoveryService = new DiscoveryServiceImpl(serviceRepository);
 	}
@@ -142,6 +146,12 @@ public class DiscoveryServiceTest extends TestCase {
 	public void testCountServices() {
 		int count = ((DiscoveryServiceImpl) discoveryService).countServices();
 		assertTrue(count > 0);
+	}
+	
+	@Test
+	public void testGetServiceOnServiceID() throws DiscoveryException{
+		DiscoveredService service = ((DiscoveryServiceImpl) discoveryService).discoverService(registeredServiceID);
+		assertTrue(service.getName().equals(registeredServiceID));
 	}
 
 }

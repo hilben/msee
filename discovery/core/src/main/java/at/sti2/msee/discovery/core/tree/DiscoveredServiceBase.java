@@ -5,6 +5,8 @@ import java.util.Set;
 
 public class DiscoveredServiceBase implements DiscoveredService {
 	private String name;
+	private String endpoint;
+	private String namespace;
 	private Set<DiscoveredOperation> operationSet = new HashSet<DiscoveredOperation>();
 
 	public DiscoveredServiceBase() {
@@ -59,10 +61,29 @@ public class DiscoveredServiceBase implements DiscoveredService {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "\tService (" + getName() + ")\n"
-				+ getOperationSet();
+		return "\tService (" + getName() + ")\n" + getOperationSet();
+	}
+
+	@Override
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	@Override
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	@Override
+	public String getNameSpace() {
+		return namespace;
+	}
+
+	@Override
+	public void setNameSpace(String namespace) {
+		this.namespace = namespace;
 	}
 }

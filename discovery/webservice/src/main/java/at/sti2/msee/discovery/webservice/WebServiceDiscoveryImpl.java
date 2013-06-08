@@ -22,7 +22,13 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.wsdl.extensions.soap12.SOAP12Binding;
+import javax.xml.ws.BindingType;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openrdf.rio.UnsupportedRDFormatException;
@@ -30,12 +36,11 @@ import org.openrdf.rio.UnsupportedRDFormatException;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
-import at.sti2.msee.discovery.core.common.ServiceDiscoveryConfiguration;
-import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 
 /**
  * @author Alex Oberhauser
  */
+@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
 @WebService(serviceName="discovery",  targetNamespace = "http://sesa.sti2.at/services/")
 public class WebServiceDiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(WebServiceDiscoveryImpl.class.getName());
@@ -75,7 +80,8 @@ public class WebServiceDiscoveryImpl implements Discovery {
 	/* (non-Javadoc)
 	 * @see at.sti2.msee.discovery.api.webservice.Discovery#discover(java.lang.String[])
 	 */
-	public String discover(String[] categoryList) throws DiscoveryException {
+	@WebMethod(operationName = "discover")
+	public String discover(@WebParam(name="categoryList") String[] categoryList) throws DiscoveryException {
 		LOGGER.debug("Method discover invoked with category list of size "
 				+ categoryList.length);
 		try {

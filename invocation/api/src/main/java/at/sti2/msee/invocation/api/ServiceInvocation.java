@@ -12,4 +12,7 @@ public interface ServiceInvocation {
 
 	String invokeREST(URL serviceID, String address, String method, Map<String, String> parameters)
 			throws ServiceInvokerException;
+	
+	public String invoke(URL serviceID, String operation, String inputData)
+			throws ServiceInvokerException;
 }

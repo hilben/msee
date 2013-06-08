@@ -85,10 +85,17 @@ public class DiscoveryQueryBuilder {
 		query = query.replace("%categories%", categories);
 		return query;
 	}
-	
+
 	public String getDiscoverCategoriesAndServices() {
 		LOGGER.debug("Create query for discover");
 		return readFile("/sparql/discover-category-and-services-sparql.txt");
+	}
+
+	public String getDiscoverServiceOnServiceID(String serviceID) {
+		LOGGER.debug("Create query for discover for serviceID");
+		String query = readFile("/sparql/discover-service-on-serviceID-sparql.txt");
+		query = query.replace("%THESERVICEID%", serviceID);
+		return query;
 	}
 
 	@Deprecated

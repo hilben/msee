@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.jws.WebService;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.invocation.core.ServiceInvocationImpl;
 
@@ -21,8 +23,13 @@ public class InvocationImpl implements Invocation {
 	@Override
 	public String invokeREST(URL serviceID, String address, String method,
 			Map<String, String> parameters) throws ServiceInvokerException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public String invoke(URL serviceID, String operation, String inputData)
+			throws ServiceInvokerException {
+		throw new NotImplementedException();
 	}
 
 }

@@ -26,6 +26,7 @@
 		<cxf.version>2.4.1</cxf.version>
 		<saxon.version>8.7</saxon.version>
 		<axis.version>1.5.4</axis.version>
+		<axis2.version>1.6.2</axis2.version>
 		<openrdf-sesame.version>2.6.5</openrdf-sesame.version>
 
 		<!-- Default properties -->
@@ -264,6 +265,11 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>ranking.core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>util.triplestore.client</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -408,22 +414,37 @@
 			<dependency>
 				<groupId>org.apache.axis2</groupId>
 				<artifactId>axis2-kernel</artifactId>
-				<version>1.6.1</version>
+				<version>${axis2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.axis2</groupId>
 				<artifactId>axis2</artifactId>
-				<version>1.6.1</version>
+				<version>${axis2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.axis2</groupId>
 				<artifactId>axis2-transport-http</artifactId>
-				<version>1.6.1</version>
+				<version>${axis2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.axis2</groupId>
 				<artifactId>axis2-transport-local</artifactId>
-				<version>1.6.1</version>
+				<version>${axis2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-jaxws</artifactId>
+				<version>${axis2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-api</artifactId>
+				<version>1.2.14</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-impl</artifactId>
+				<version>1.2.14</version>
 			</dependency>
 			<dependency>
 				<groupId>org.semweb4j</groupId>

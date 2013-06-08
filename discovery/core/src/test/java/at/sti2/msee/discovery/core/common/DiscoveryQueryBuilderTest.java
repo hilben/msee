@@ -116,6 +116,14 @@ public class DiscoveryQueryBuilderTest {
 		String expected = replaceNewline(readFile("/getAllCategoriesQuery"));
 		Assert.assertEquals(replaceNewline(query), expected);
 	}
+	
+	@Test
+	public void testGetServiceOnServiceIdQuery() throws IOException {
+		String serviceID = "http://msee.sti2.at/0123456789#svc";
+		String query = discoveryQueryBuilder.getDiscoverServiceOnServiceID(serviceID);
+		String expected = replaceNewline(readFile("/getServiceOnServiceID"));
+		Assert.assertEquals(replaceNewline(query), expected);
+	}
 
 	@Test
 	@Deprecated
