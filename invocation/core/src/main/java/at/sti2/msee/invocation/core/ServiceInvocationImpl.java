@@ -26,7 +26,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 import javax.xml.rpc.ServiceException;
@@ -50,6 +49,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
+import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.Syntax;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
@@ -263,6 +264,8 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 
 			InputStream postResponse = new ByteArrayInputStream("".getBytes());
 			try {
+				postHandler.setQueryString(data); // TODO check: are both
+													// needed?
 				postHandler.setRequestBody(data);
 				checkStatus(client.executeMethod(postHandler));
 				postResponse = postHandler.getResponseBodyAsStream();
@@ -392,16 +395,14 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		@SuppressWarnings("unchecked")
 		Map<String, String> parameterMap = (Map<String, String>) decoder.readObject();
 		decoder.close();
-		if (endpoint != null) {
+		if (endpoint != null && discoveredOperation.getMethod() == null) {
 			return invokeNewSOAP(endpoint, operation, parameterMap, namespace);
 		}
 
 		// not WSDL SOAP call - REST or Other
-		String address = null;
-		try {
-			address = discoveredOperation.getAddress();
+		String address = discoveredOperation.getAddress();
+		if (address.contains("^^")) {
 			address = address.substring(0, address.indexOf("^^"));
-		} catch (NoSuchElementException e) {
 		}
 		if (address != null) {
 			return invokeREST(serviceID, address, discoveredOperation.getMethod(), parameterMap);

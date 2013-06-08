@@ -1,0 +1,40 @@
+<wsdl:description xmlns:wsdl="http://www.w3.org/ns/wsdl"
+	targetNamespace="http://www.example.org/hotel/wsdl" xmlns:tns="http://www.example.org/hotel/wsdl"
+	xmlns:whttp="http://www.w3.org/ns/wsdl/http" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sawsdl="http://www.w3.org/ns/sawsdl">
+
+	<wsdl:types>
+		<xs:element name="id" type="xs:string" />
+		<xs:element name="hotelname" type="xs:string" />
+	</wsdl:types>
+
+
+	<wsdl:interface name="HotelAppInterface"
+		sawsdl:modelReference="http://msee.sti2.at/categories#business">
+		<wsdl:operation name="getHotelName" pattern="http://www.w3.org/ns/wsdl/in-out"
+			style="http://www.w3.org/ns/wsdl/style/iri" wsdlx:safe="true">
+			<wsdl:documentation>
+				This operation returns the name of the hotel.
+			</wsdl:documentation>
+			<wsdl:input element="tns:id" />
+			<wsdl:output element="tns:hotelname" />
+		</wsdl:operation>
+	</wsdl:interface>
+
+	<wsdl:binding name="HotelAppHTTPBinding" type="http://www.w3.org/ns/wsdl/http"
+		interface="tns:HotelAppInterface">
+		<wsdl:documentation>
+			The RESTful HTTP binding for the hotel app.
+		</wsdl:documentation>
+		<wsdl:operation ref="tns:getHotelName" whttp:method="POST" />
+	</wsdl:binding>
+
+	<wsdl:service name="hotelapp2" interface="tns:HotelAppInterface">
+		<wsdl:documentation>
+			The hotel application.
+		</wsdl:documentation>
+		<wsdl:endpoint name="HotelAppHTTPEndpoint" binding="tns:HotelAppHTTPBinding"
+			address="http://msee-hrests1-resttest.herokuapp.com/wsdl/hotel/">
+		</wsdl:endpoint>
+	</wsdl:service>
+</wsdl:description>

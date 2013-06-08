@@ -51,13 +51,21 @@ public class DiscoveredOperationBase implements DiscoveredOperation {
 	public void addMethod(String method) {
 		this.methodSet.add(method);
 	}
-	
-	public String getAddress(){
-		return this.addressSet.iterator().next();
+
+	public String getAddress() {
+		if (this.addressSet.iterator().hasNext()) {
+			return this.addressSet.iterator().next();
+		} else {
+			return null;
+		}
 	}
-	
-	public String getMethod(){
-		return this.methodSet.iterator().next();
+
+	public String getMethod() {
+		if (this.methodSet.iterator().hasNext()) {
+			return this.methodSet.iterator().next();
+		} else {
+			return null;
+		}
 	}
 
 	public Set<String> getInputSet() {

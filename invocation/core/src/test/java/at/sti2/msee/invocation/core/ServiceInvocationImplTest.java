@@ -27,6 +27,7 @@ public class ServiceInvocationImplTest {
 	private static ServiceInvocationImpl invocation = null;
 	private static String registeredServiceID1 = null;
 	private static String registeredServiceID2 = null;
+	private static String registeredServiceID3 = null;
 	private static ServiceRepository serviceRepository;
 
 	@BeforeClass
@@ -51,6 +52,10 @@ public class ServiceInvocationImplTest {
 		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
 				"/services/MavenAxis2WebService.wsdl").toString();
 		registeredServiceID2 = registrationService.register(serviceDescriptionURL);
+
+		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
+				"/services/hotelapp.wsdl").toString();
+		registeredServiceID3 = registrationService.register(serviceDescriptionURL);
 
 	}
 
@@ -94,6 +99,24 @@ public class ServiceInvocationImplTest {
 		encoder.close();
 		String inputVariables = new String(output.toByteArray());
 		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
+		Assert.assertEquals("Result is: " + result, expected, result);
+	}
+
+	@Test
+	public final void testInvokeRESTfulInWSDLFormat() throws MalformedURLException,
+			ServiceInvokerException {
+		String id = "4";
+		String expected = "Hotel Name" + id;
+		String operation = "getHotelName";
+		Map<String, String> inputVariablesMap = new HashMap<String, String>();
+		inputVariablesMap.put("id", id);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		XMLEncoder encoder = new XMLEncoder(output);
+		encoder.writeObject(inputVariablesMap);
+		encoder.flush();
+		encoder.close();
+		String inputVariables = new String(output.toByteArray());
+		String result = invocation.invoke(new URL(registeredServiceID3), operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 

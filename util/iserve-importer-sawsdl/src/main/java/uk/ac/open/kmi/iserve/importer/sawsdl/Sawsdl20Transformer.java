@@ -31,6 +31,7 @@ import org.apache.woden.WSDLSource;
 import org.apache.woden.schema.Schema;
 import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.enumeration.Direction;
+import org.apache.woden.wsdl20.xml.BindingOperationElement;
 import org.apache.woden.wsdl20.xml.DescriptionElement;
 import org.apache.woden.wsdl20.xml.EndpointElement;
 import org.apache.woden.wsdl20.xml.InterfaceElement;
@@ -39,6 +40,7 @@ import org.apache.woden.wsdl20.xml.InterfaceMessageReferenceElement;
 import org.apache.woden.wsdl20.xml.InterfaceOperationElement;
 import org.apache.woden.wsdl20.xml.ServiceElement;
 import org.apache.woden.wsdl20.xml.TypesElement;
+import org.apache.woden.xml.XMLAttr;
 import org.apache.ws.commons.schema.XmlSchema;
 import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.model.Model;
@@ -51,6 +53,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import uk.ac.open.kmi.iserve.commons.vocabulary.HR;
 import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
 import uk.ac.open.kmi.iserve.commons.vocabulary.WSDL;
 import uk.ac.open.kmi.iserve.importer.sawsdl.schema.SchemaMap;
@@ -66,6 +69,8 @@ public class Sawsdl20Transformer {
 	private DocumentBuilder builder;
 
 	private Syntax defaultSyntax = Syntax.RdfXml;
+	private String method = null;
+	private String endpoint = null;
 
 	public Sawsdl20Transformer() throws ParserConfigurationException {
 		schemaParser = new SchemaParser();
@@ -137,8 +142,26 @@ public class Sawsdl20Transformer {
 
 			EndpointElement[] endpoints = serviceElement.getEndpointElements();
 			String endpointName = endpoints[0].getAddress().toString();
-			String endpoint = endpointName.substring(0, endpointName.lastIndexOf("."));
+			if (endpointName.contains("Soap12Endpoint") || endpointName.contains("Soap11Endpoint")) {
+				endpoint = endpointName.substring(0, endpointName.lastIndexOf("."));
+			} else {
+				endpoint = endpointName;
+			}
 			String serviceNS = serviceElement.getName().getNamespaceURI();
+
+			// rest in wsdl format - get binding
+			try {
+				BindingOperationElement bindingOperation = endpoints[0].getBindingElement()
+						.getBindingOperationElements()[0];
+				for (XMLAttr attr : bindingOperation.getExtensionAttributes()) {
+					if (attr.getAttributeType().toString()
+							.equals("{http://www.w3.org/ns/wsdl/http}method")) {
+						method = (String) attr.getContent();
+					}
+				}
+
+			} catch (Exception e) {
+			}
 
 			InterfaceElement intfElement = serviceElement.getInterfaceElement();
 			if (intfElement != null && serviceElement != null && serviceElement.getName() != null) {
@@ -170,6 +193,13 @@ public class Sawsdl20Transformer {
 			URI operationUri = tempModel.createURI(serviceUri.toString() + "/"
 					+ operationElement.getName().getLocalPart());
 			tempModel.addStatement(operationUri, RDF.type, MSM.Operation);
+
+			// REST
+			if (method != null) {
+				tempModel.addStatement(operationUri, HR.hasMethod, method);
+				tempModel.addStatement(operationUri, HR.hasAddress, endpoint);
+			}
+
 			tempModel.addStatement(serviceUri, MSM.hasOperation, operationUri);
 			ModelReferenceExtractor.extractModelReferences(operationElement, tempModel,
 					operationUri);

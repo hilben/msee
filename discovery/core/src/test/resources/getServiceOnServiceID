@@ -16,10 +16,10 @@ SELECT * WHERE {
 		?serviceID wsdl:endpoint _:e .
 		_:e wsdl:address ?endpoint .
 	}
-	
+
 	OPTIONAL{
 		?serviceID wsdl:namespace ?namespace .
-	}
+	}	
 	
 	OPTIONAL{
 		?operation msm:hasInput ?operationInput .
@@ -36,10 +36,10 @@ SELECT * WHERE {
 	
 	# HRESTS
 	OPTIONAL{
-		?operation msm:hasAddress ?operationAddress .
+		?operation hr:hasAddress ?operationAddress .
 	}
 	OPTIONAL{
-		?operation msm:hasMethod ?operationMethod .
+		?operation hr:hasMethod ?operationMethod .
 	}
 	
 	#FILTER regex(?serviceID, "^http://msee.sti2.at/0123456789#svc")
