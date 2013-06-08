@@ -1,19 +1,13 @@
 package at.sti2.msee.invocation.core;
 
 import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,7 +25,8 @@ import at.sti2.msee.triplestore.ServiceRepositoryFactory;
 
 public class ServiceInvocationImplTest {
 	private static ServiceInvocationImpl invocation = null;
-	private static String registeredServiceID = null;
+	private static String registeredServiceID1 = null;
+	private static String registeredServiceID2 = null;
 	private static ServiceRepository serviceRepository;
 
 	@BeforeClass
@@ -49,14 +44,13 @@ public class ServiceInvocationImplTest {
 
 		// register some stuff
 		String serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
-				"/services/hrests1.html").toString();
+				"/services/hotelapp.html").toString();
 		ServiceRegistrationImpl registrationService = new ServiceRegistrationImpl(serviceRepository);
-		// registeredServiceID =
-		// registrationService.register(serviceDescriptionURL);
+		registeredServiceID1 = registrationService.register(serviceDescriptionURL);
 
 		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
-				"/services/discovery.wsdl").toString();
-		registeredServiceID = registrationService.register(serviceDescriptionURL);
+				"/services/MavenAxis2WebService.wsdl").toString();
+		registeredServiceID2 = registrationService.register(serviceDescriptionURL);
 
 	}
 
@@ -70,45 +64,37 @@ public class ServiceInvocationImplTest {
 	}
 
 	@Test
-	public final void testInvoke() throws MalformedURLException, ServiceInvokerException {
+	public final void testInvokeREST() throws MalformedURLException, ServiceInvokerException {
+		String id = "2";
+		String expected = "Hotel Name" + id;
+		String operation = "getHotelName";
 		Map<String, String> inputVariablesMap = new HashMap<String, String>();
-		inputVariablesMap.put("categoryList", Arrays.toString(new String[]{"http://msee.sti2.at/categories#business"}));
+		inputVariablesMap.put("id", id);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		XMLEncoder encoder = new XMLEncoder(output);
 		encoder.writeObject(inputVariablesMap);
 		encoder.flush();
 		encoder.close();
 		String inputVariables = new String(output.toByteArray());
-		String result = invocation.invoke(new URL(registeredServiceID), "discover", inputVariables);
-		System.out.println(result);
-
-		// PostMethod postHandler = new
-		// PostMethod("http://192.168.65.147:8080/at.sti2.msee.delivery.discovery.webservice-m17.1-SNAPSHOT/services/discovery");
-		// InputStream postResponse = new ByteArrayInputStream("".getBytes());
-		// try {
-		// postHandler.setRequestBody("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:msee=\"http://sesa.sti2.at/services/\" ><soapenv:Header/>"
-		// + "<soapenv:Body><msee:discover><categoryList>"
-		// + "http://msee.sti2.at/categories#business"
-		// + "</categoryList></msee:discover></soapenv:Body>"
-		// + "</soapenv:Envelope>");
-		// HttpClient client = new HttpClient();
-		// client.executeMethod(postHandler);
-		// postResponse = postHandler.getResponseBodyAsStream();
-		// String output = convertStreamToString(postResponse);
-		// System.out.println(output);
-		// } catch (IOException e) {
-		// throw new ServiceInvokerException(e);
-		// } finally {
-		// postHandler.releaseConnection();
-		// }
+		String result = invocation.invoke(new URL(registeredServiceID1), operation, inputVariables);
+		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
-	// private static String convertStreamToString(java.io.InputStream is) {
-	// java.util.Scanner s = new java.util.Scanner(is);
-	// s.useDelimiter("\\A");
-	// String retval = s.hasNext() ? s.next() : "";
-	// s.close();
-	// return retval;
-	// }
+	@Test
+	public final void testInvokeWSDL() throws MalformedURLException, ServiceInvokerException {
+		String message = "Hello!";
+		String expected = "Service is up and available, message: " + message;
+		String operation = "ping";
+		Map<String, String> inputVariablesMap = new HashMap<String, String>();
+		inputVariablesMap.put("text", message);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		XMLEncoder encoder = new XMLEncoder(output);
+		encoder.writeObject(inputVariablesMap);
+		encoder.flush();
+		encoder.close();
+		String inputVariables = new String(output.toByteArray());
+		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
+		Assert.assertEquals("Result is: " + result, expected, result);
+	}
 
 }

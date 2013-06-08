@@ -294,18 +294,27 @@ public class DiscoveryServiceImpl implements Discovery {
 		}
 
 		rdfModel.close();
-		DiscoveredService service = null;
-		if (categorySet.iterator().hasNext()) {
-			DiscoveredCategory category = categorySet.iterator().next();
-			if (category.getServiceSet().iterator().hasNext()) {
-				service = category.getServiceSet().iterator().next();
-			} else {
-				throw new DiscoveryException("Service not found");
+
+		Iterator<DiscoveredCategory> itc = categorySet.iterator();
+		if (itc.hasNext()) {
+			while (itc.hasNext()) {
+				DiscoveredCategory category = itc.next();
+				Iterator<DiscoveredService> its = category.getServiceSet().iterator();
+				if (its.hasNext()) {
+					while (its.hasNext()) {
+						DiscoveredService service = its.next();
+						if (service.getName().equals(serviceID)) {
+							return service;
+						}
+					}
+				} else {
+					throw new DiscoveryException("Service not found");
+				}
 			}
 		} else {
 			throw new DiscoveryException("Service with ID: " + serviceID + " not found");
 		}
-		return service;
+		return null;
 	}
 
 	@Deprecated

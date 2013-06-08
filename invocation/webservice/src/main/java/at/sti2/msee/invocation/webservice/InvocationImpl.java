@@ -1,7 +1,6 @@
 package at.sti2.msee.invocation.webservice;
 
 import java.net.URL;
-import java.util.Map;
 
 import javax.jws.WebService;
 
@@ -18,12 +17,6 @@ public class InvocationImpl implements Invocation {
 	@Override
 	public String invokeSOAP(URL serviceID, String inputData) throws ServiceInvokerException {
 		return invoker.invokeSOAP(serviceID, inputData);
-	}
-
-	@Override
-	public String invokeREST(URL serviceID, String address, String method,
-			Map<String, String> parameters) throws ServiceInvokerException {
-		throw new NotImplementedException();
 	}
 
 	@Override

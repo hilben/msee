@@ -36,10 +36,10 @@ SELECT * WHERE {
 	
 	# HRESTS
 	OPTIONAL{
-		?operation msm:hasAddress ?operationAddress .
+		?operation hr:hasAddress ?operationAddress .
 	}
 	OPTIONAL{
-		?operation msm:hasMethod ?operationMethod .
+		?operation hr:hasMethod ?operationMethod .
 	}
 	
 	#FILTER regex(?serviceID, "^%THESERVICEID%")

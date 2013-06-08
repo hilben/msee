@@ -1,0 +1,74 @@
+<wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl"
+	xmlns:sawsdl="http://www.w3.org/ns/sawsdl" xmlns:ns1="http://org.apache.axis2/xsd"
+	xmlns:ns="http://webservice.MavenAxis2WebService/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+	xmlns:tns="http://webservice.MavenAxis2WebService/" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+	targetNamespace="http://webservice.MavenAxis2WebService/">
+	<wsdl2:documentation>MavenAxis2WebService</wsdl2:documentation>
+	<wsdl2:types>
+		<xs:schema attributeFormDefault="qualified"
+			elementFormDefault="qualified" targetNamespace="http://webservice.MavenAxis2WebService/">
+			<xs:element name="ping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="text" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="pingResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return" nillable="true"
+							type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl2:types>
+	<wsdl2:interface name="ServiceInterface"
+		sawsdl:modelReference="http://msee.sti2.at/categories#business">
+		<wsdl2:operation name="ping"
+			style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="text #in return #return "
+			pattern="http://www.w3.org/ns/wsdl/in-out">
+			<wsdl2:input element="ns:ping" wsaw:Action="urn:ping" />
+			<wsdl2:output element="ns:pingResponse" wsaw:Action="urn:pingResponse" />
+		</wsdl2:operation>
+	</wsdl2:interface>
+	<wsdl2:binding name="MavenAxis2WebServiceSoap12Binding"
+		interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap"
+		wsoap:version="1.2">
+		<wsdl2:operation ref="tns:ping" wsoap:action="urn:ping">
+			<wsdl2:input />
+			<wsdl2:output />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:binding name="MavenAxis2WebServiceHttpBinding"
+		interface="tns:ServiceInterface" whttp:methodDefault="POST"
+		type="http://www.w3.org/ns/wsdl/http">
+		<wsdl2:operation ref="tns:ping" whttp:location="ping">
+			<wsdl2:input />
+			<wsdl2:output />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:binding name="MavenAxis2WebServiceSoap11Binding"
+		interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap"
+		wsoap:version="1.1">
+		<wsdl2:operation ref="tns:ping" wsoap:action="urn:ping">
+			<wsdl2:input />
+			<wsdl2:output />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:service name="MavenAxis2WebService" interface="tns:ServiceInterface">
+		<wsdl2:endpoint name="MavenAxis2WebServiceHttpSoap12Endpoint"
+			binding="tns:MavenAxis2WebServiceSoap12Binding"
+			address="http://msee.sti2.at:8080/MavenAxis2WS-1.0.0-SNAPSHOT/services/MavenAxis2WebService.MavenAxis2WebServiceHttpSoap12Endpoint/" />
+		<wsdl2:endpoint name="MavenAxis2WebServiceHttpSoap11Endpoint"
+			binding="tns:MavenAxis2WebServiceSoap11Binding"
+			address="http://msee.sti2.at:8080/MavenAxis2WS-1.0.0-SNAPSHOT/services/MavenAxis2WebService.MavenAxis2WebServiceHttpSoap11Endpoint/" />
+		<wsdl2:endpoint name="MavenAxis2WebServiceHttpEndpoint"
+			binding="tns:MavenAxis2WebServiceHttpBinding"
+			address="http://msee.sti2.at:8080/MavenAxis2WS-1.0.0-SNAPSHOT/services/MavenAxis2WebService.MavenAxis2WebServiceHttpEndpoint/" />
+	</wsdl2:service>
+</wsdl2:description>

@@ -130,6 +130,13 @@ public class DiscoveryTreeBuilder {
 						operation.addOutputVault(outputVault);
 					}
 
+					// HRESTS
+					for (String address : helperAddressMap.get(oper)) {
+						operation.addAddress(address);
+					}
+					for (String method : helperMethodMap.get(oper)) {
+						operation.addMethod(method);
+					}
 				}
 				category.addDiscoveredService(service);
 			}

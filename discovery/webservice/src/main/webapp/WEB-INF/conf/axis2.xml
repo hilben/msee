@@ -125,6 +125,8 @@
 
     <!-- Following parameter will set the host name for the epr-->
     <!--<parameter name="hostname" locked="true">myhost.com</parameter>-->
+	<parameter name="hostname" locked="true">msee.sti2.at</parameter>
+
 
     <!-- If you have a front end host which exposes this webservice using a different public URL  -->
     <!-- use this parameter to override autodetected url -->
@@ -135,7 +137,7 @@
     <!--policies etc.. to AxisService, it doesn't appear in the WSDL. By setting the following property-->
     <!--to true, you can create the AxisService using the generated WSDL and remove the need for a-->
     <!--WSDL generator. When ?wsdl is called, WSDL is generated in the normal way.-->
-    <parameter name="useGeneratedWSDLinJAXWS">false</parameter>
+    <parameter name="useGeneratedWSDLinJAXWS">true</parameter>
 
     <!--    The way of adding listener to the system-->
     <!--    <listener class="org.apache.axis2.ObserverIMPL">-->

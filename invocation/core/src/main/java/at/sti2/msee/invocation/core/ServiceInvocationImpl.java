@@ -24,9 +24,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Map.Entry;
 
 import javax.xml.rpc.ServiceException;
@@ -42,7 +42,6 @@ import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.Constants;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -51,8 +50,6 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
-import org.ontoware.rdf2go.model.Model;
-import org.ontoware.rdf2go.model.Syntax;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
@@ -91,7 +88,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	}
 
 	public ServiceInvocationImpl(ServiceRepository serviceRepository) {
-		// this();
+		this();
 		this.serviceRepository = serviceRepository;
 	}
 
@@ -111,6 +108,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws AxisFault
 	 */
 	@Override
+	@Deprecated
 	public String invokeSOAP(URL webserviceURL, String soapMessage) throws ServiceInvokerException {
 
 		// Setup monitoring data and prepare stuff
@@ -211,13 +209,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		this.monitoring = monitoring;
 	}
 
-	public String invokeREST(final URL serviceID, String address, final String method,
-			final Map<String, String> parameters, String putData) throws ServiceInvokerException {
-		return null; // TODO: implement for PUT
-	}
-
-	@Override
-	public String invokeREST(final URL serviceID, String address, final String method,
+	protected String invokeREST(final URL serviceID, String address, final String method,
 			final Map<String, String> parameters) throws ServiceInvokerException {
 		// monitoring
 		long startTime = System.currentTimeMillis();
@@ -367,12 +359,18 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 				.createDiscoveryService(serviceRepository);
 		String endpoint = null;
 		String namespace = null;
+		DiscoveredOperationBase discoveredOperation = null;
+
 		try {
-			DiscoveredService service = discovery.discoverService(serviceID.toString());
-			endpoint = service.getEndpoint();
-			namespace = service.getNameSpace();
-			DiscoveredOperationBase discoveredOperation = null;
-			Iterator<DiscoveredOperation> ito = service.getOperationSet().iterator();
+			DiscoveredService discoveredService = discovery.discoverService(serviceID.toString());
+			if (discoveredService == null) {
+				throw new ServiceInvokerException("Service \"" + serviceID
+						+ "\" was not found or is invalid");
+			}
+			endpoint = discoveredService.getEndpoint();
+			namespace = discoveredService.getNameSpace();
+
+			Iterator<DiscoveredOperation> ito = discoveredService.getOperationSet().iterator();
 			while (ito.hasNext()) {
 				DiscoveredOperation op = ito.next();
 				if (op.getName().endsWith(operation)) { // TODO check
@@ -382,7 +380,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			}
 			if (discoveredOperation == null) {
 				throw new ServiceInvokerException("Operation " + operation + " not found in "
-						+ serviceID);
+						+ serviceID + " of service " + discoveredService.getName());
 			}
 		} catch (DiscoveryException e) {
 			e.printStackTrace();
@@ -391,41 +389,36 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		// System.out.println(model.serialize(Syntax.RdfXml));
 
 		XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(inputData.getBytes()));
-		Map<String, String> map = (Map<String, String>) decoder.readObject();
+		@SuppressWarnings("unchecked")
+		Map<String, String> parameterMap = (Map<String, String>) decoder.readObject();
 		decoder.close();
+		if (endpoint != null) {
+			return invokeNewSOAP(endpoint, operation, parameterMap, namespace);
+		}
 
-		String result = invokeNewSOAP(endpoint, operation, map, namespace);
-		return result;
+		// not WSDL SOAP call - REST or Other
+		String address = null;
+		try {
+			address = discoveredOperation.getAddress();
+			address = address.substring(0, address.indexOf("^^"));
+		} catch (NoSuchElementException e) {
+		}
+		if (address != null) {
+			return invokeREST(serviceID, address, discoveredOperation.getMethod(), parameterMap);
+		}
+		throw new ServiceInvokerException("Service type not supported");
 	}
 
 	private String invokeNewSOAP(String endpoint, String operation,
 			Map<String, String> inputVariableMap, String namespace) {
 		logger.debug("Invoking " + endpoint);
 		logger.debug("Using Variables " + inputVariableMap);
-		System.out.println(inputVariableMap);
-		String results = "";
 
-		// Service service = new Service();
-		// Call call;
-		//
-		// try {
-		// call = (Call) service.createCall();
-		// call.setTargetEndpointAddress(endpoint);
-		//
-		// ByteArrayInputStream soapMessageStream = new ByteArrayInputStream(
-		// message.getBytes("UTF-8"));
-		//
-		// SOAPEnvelope env = new SOAPEnvelope(soapMessageStream);
-		//
-		// results = call.invoke(env).toString();
-		// } catch (SAXException | UnsupportedEncodingException |
-		// ServiceException | AxisFault e) {
-		// e.printStackTrace();
-		// }
+		String results = "";
 
 		EndpointReference targetEPR = new EndpointReference(endpoint);
 		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace omNs = fac.createOMNamespace(namespace, "theNamespace");
+		OMNamespace omNs = fac.createOMNamespace(namespace, "theMSEENamespace");
 		OMElement method = fac.createOMElement(operation, omNs);
 		for (Entry<String, String> entry : inputVariableMap.entrySet()) {
 			OMElement value = fac.createOMElement(entry.getKey(), omNs);
@@ -438,7 +431,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			Options options = new Options();
 			options.setTo(targetEPR);
 
-			options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
+			// options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
 
 			ServiceClient sender = new ServiceClient();
 			sender.setOptions(options);

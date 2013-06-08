@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class DiscoveredServiceBase implements DiscoveredService {
 	private String name;
-	private String endpoint;
-	private String namespace;
+	private String endpoint = null;
+	private String namespace = null;
 	private Set<DiscoveredOperation> operationSet = new HashSet<DiscoveredOperation>();
 
 	public DiscoveredServiceBase() {
