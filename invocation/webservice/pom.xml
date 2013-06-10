@@ -43,6 +43,12 @@
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>invocation.core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.ws.commons.schema</groupId>
+					<artifactId>XmlSchema</artifactId>
+        		</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -51,6 +57,10 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-bundle</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.ws.xmlschema</groupId>
+		    <artifactId>xmlschema-core</artifactId>
 		</dependency>
 		<!-- Even though this is dependency of cxf it must be added explicitly 
 			for jetty (maven problem) -->

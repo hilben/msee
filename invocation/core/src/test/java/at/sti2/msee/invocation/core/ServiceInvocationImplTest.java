@@ -1,15 +1,10 @@
 package at.sti2.msee.invocation.core;
 
-import java.beans.XMLEncoder;
-import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openrdf.repository.RepositoryException;
 
@@ -35,7 +30,7 @@ public class ServiceInvocationImplTest {
 			MalformedURLException {
 
 		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
-		serviceRepositoryConfiguration.setRepositoryID("msee");
+		serviceRepositoryConfiguration.setRepositoryID("msee-test");
 		serviceRepositoryConfiguration.setServerEndpoint("http://msee.sti2.at:8080/openrdf-sesame");
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
@@ -60,12 +55,11 @@ public class ServiceInvocationImplTest {
 	}
 
 	@Test
-	@Ignore
 	public final void testDiscover() throws DiscoveryException {
 		Discovery discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceRepository);
 		String result = discovery
 				.discover(new String[] { "http://msee.sti2.at/categories#business" });
-		System.out.println(result);
+		Assert.assertTrue("Is everything registrated?", result.length() > 1000);
 	}
 
 	@Test
@@ -73,14 +67,7 @@ public class ServiceInvocationImplTest {
 		String id = "2";
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
-		Map<String, String> inputVariablesMap = new HashMap<String, String>();
-		inputVariablesMap.put("id", id);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		XMLEncoder encoder = new XMLEncoder(output);
-		encoder.writeObject(inputVariablesMap);
-		encoder.flush();
-		encoder.close();
-		String inputVariables = new String(output.toByteArray());
+		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
 		String result = invocation.invoke(new URL(registeredServiceID1), operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
@@ -90,14 +77,7 @@ public class ServiceInvocationImplTest {
 		String message = "Hello!";
 		String expected = "Service is up and available, message: " + message;
 		String operation = "ping";
-		Map<String, String> inputVariablesMap = new HashMap<String, String>();
-		inputVariablesMap.put("text", message);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		XMLEncoder encoder = new XMLEncoder(output);
-		encoder.writeObject(inputVariablesMap);
-		encoder.flush();
-		encoder.close();
-		String inputVariables = new String(output.toByteArray());
+		String inputVariables = "<parameters>" + "<text>" + message + "</text>" + "</parameters>";
 		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
@@ -108,14 +88,7 @@ public class ServiceInvocationImplTest {
 		String id = "4";
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
-		Map<String, String> inputVariablesMap = new HashMap<String, String>();
-		inputVariablesMap.put("id", id);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		XMLEncoder encoder = new XMLEncoder(output);
-		encoder.writeObject(inputVariablesMap);
-		encoder.flush();
-		encoder.close();
-		String inputVariables = new String(output.toByteArray());
+		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
 		String result = invocation.invoke(new URL(registeredServiceID3), operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}

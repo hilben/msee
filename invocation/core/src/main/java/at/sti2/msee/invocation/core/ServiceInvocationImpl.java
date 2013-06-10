@@ -16,41 +16,23 @@
  */
 package at.sti2.msee.invocation.core;
 
-import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.xml.rpc.ServiceException;
+import javax.xml.soap.SOAPMessage;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
-import org.apache.axis2.addressing.EndpointReference;
-import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.DeleteMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.log4j.Logger;
-import org.ontoware.rdf2go.model.Model;
-import org.ontoware.rdf2go.model.Syntax;
 import org.openrdf.repository.RepositoryException;
 import org.xml.sax.SAXException;
 
@@ -62,6 +44,9 @@ import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.invocation.api.ServiceInvocation;
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
+import at.sti2.msee.invocation.core.common.InvokerBase;
+import at.sti2.msee.invocation.core.common.InvokerREST;
+import at.sti2.msee.invocation.core.common.InvokerSOAP;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
@@ -70,7 +55,14 @@ import at.sti2.msee.monitoring.core.MonitoringComponentImpl;
 import at.sti2.msee.triplestore.ServiceRepository;
 
 /**
+ * This is the main class of the invocation service. The main functionality of
+ * the invocation service is the invocation of a registered service. The class
+ * inspects the service and calls the different invocation mechanisms, e.g. SOAP
+ * client for WSDL-based services and the {@link HttpClient} for RESTful
+ * services.
+ * 
  * @author Benjamin Hiltpolt
+ * @author Christian Mayr
  * 
  *         TODO: Documentation
  */
@@ -80,7 +72,14 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	private MonitoringComponent monitoring = null;
 	private ServiceRepository serviceRepository = null;
 
-	public ServiceInvocationImpl() {
+	String endpoint = null;
+	String namespace = null;
+	DiscoveredOperationBase discoveredOperation = null;
+
+	/**
+	 * This private constructor initializes the monitoring instance.
+	 */
+	private ServiceInvocationImpl() {
 		try {
 			this.monitoring = MonitoringComponentImpl.getInstance();
 		} catch (RepositoryException | IOException e) {
@@ -88,15 +87,129 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 	}
 
+	/**
+	 * This constructor builds the instance based on the given
+	 * {@link ServiceRepository}.
+	 * 
+	 * @param serviceRepository
+	 */
 	public ServiceInvocationImpl(ServiceRepository serviceRepository) {
 		this();
 		this.serviceRepository = serviceRepository;
 	}
 
 	/**
+	 * Returns the monitoring instance that is connected to the invocation
+	 * service.
+	 */
+	public MonitoringComponent getMonitoring() {
+		return monitoring;
+	}
+
+	/**
+	 * This method takes the given serviceID, operation name, and the input data
+	 * (path or query parameters for RESTful services or {@link SOAPMessage} for
+	 * WSDL based services) and tries to invoke the registered service. The
+	 * {@link ServiceInvokerException} is thrown when the service is unknown or
+	 * not registered, the operation is unknown, or the inputData is not
+	 * well-formed or simply incorrect.
+	 * 
+	 * @param serviceID
+	 * @param operation
+	 * @param inputData
+	 * @return result of the invocation
+	 * @throws ServiceInvokerException
+	 */
+	@Override
+	public String invoke(URL serviceID, String operation, String inputData)
+			throws ServiceInvokerException {
+		if (serviceRepository == null)
+			throw new ServiceInvokerException("Repository not set by constructor");
+
+		prepareDataFromDiscovery(serviceID, operation);
+
+		Map<String, String> parameterMap = new ParameterParser(inputData).parse();
+		if (endpoint != null && discoveredOperation.getMethod() == null) {
+			InvokerSOAP invokerSoap = new InvokerSOAP(monitoring);
+			return invokerSoap.invokeSOAP(endpoint, operation, parameterMap, namespace);
+		}
+
+		// not WSDL SOAP call - REST or Other
+		String address = discoveredOperation.getAddress();
+		if (address.contains("^^")) {
+			address = address.substring(0, address.indexOf("^^"));
+		}
+		if (address != null) {
+			InvokerREST invokerRest = new InvokerREST(monitoring);
+			return invokerRest.invokeREST(serviceID, address, discoveredOperation.getMethod(),
+					parameterMap);
+		}
+		throw new ServiceInvokerException("Service type not supported");
+	}
+
+	/**
+	 * Prepares the given data (serviceID and operation name) for the
+	 * invocation. Herein the endpoint, namespace, and the operation is
+	 * discovered from the triple store.
+	 * 
+	 * @param serviceID
+	 *            - URI of the registrated service
+	 * @param operation
+	 *            - name of the operation
+	 * @throws ServiceInvokerException
+	 */
+	private void prepareDataFromDiscovery(URL serviceID, String operation)
+			throws ServiceInvokerException {
+		DiscoveryServiceImpl discovery = (DiscoveryServiceImpl) ServiceDiscoveryFactory
+				.createDiscoveryService(serviceRepository);
+		try {
+			DiscoveredService discoveredService = discovery.discoverService(serviceID.toString());
+			if (discoveredService == null) {
+				throw new ServiceInvokerException("Service \"" + serviceID
+						+ "\" was not found or is invalid");
+			}
+			endpoint = discoveredService.getEndpoint();
+			namespace = discoveredService.getNameSpace();
+
+			Iterator<DiscoveredOperation> ito = discoveredService.getOperationSet().iterator();
+			while (ito.hasNext()) {
+				DiscoveredOperation op = ito.next();
+				if (op.getName().endsWith(operation)) { // TODO check
+					discoveredOperation = (DiscoveredOperationBase) op;
+					break;
+				}
+			}
+			if (discoveredOperation == null) {
+				throw new ServiceInvokerException("Operation " + operation + " not found in "
+						+ serviceID + " of service " + discoveredService.getName());
+			}
+		} catch (DiscoveryException e) {
+			throw new ServiceInvokerException("Discovery not possible", e);
+		}
+
+	}
+
+	/**
+	 * Returns a list of all registered services
+	 * 
+	 * @return
+	 * @throws ServiceInvokerException
+	 */
+	public List<String> getAllServices() throws ServiceInvokerException {
+		if (serviceRepository == null)
+			throw new ServiceInvokerException("Repository not set by constructor");
+
+		DiscoveryServiceImpl discovery = (DiscoveryServiceImpl) ServiceDiscoveryFactory
+				.createDiscoveryService(serviceRepository);
+		return discovery.getServiceList();
+	}
+
+	/**
 	 * 
 	 * TODO: lowering, lifting TODO: monitoring, TODO: use service IDs not
 	 * endpoints
+	 * 
+	 * Deprecated since June 2013 - Use invoke(URL, String, String) instead.
 	 * 
 	 * @param webserviceURL
 	 * @param operationName
@@ -162,6 +275,10 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		return results;
 	}
 
+	/**
+	 * Deprecated because functionality moved to {@link InvokerBase}.
+	 */
+	@Deprecated
 	private void monitorFailedService(MonitoringInvocationInstance invocationinstance)
 			throws ServiceInvokerException {
 		if (invocationinstance != null) {
@@ -173,6 +290,10 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 	}
 
+	/**
+	 * Deprecated because functionality moved to {@link InvokerBase}.
+	 */
+	@Deprecated
 	private void startMonitoring(MonitoringInvocationInstance invocationinstance)
 			throws MonitoringException {
 		// check if monitored
@@ -182,6 +303,10 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 	}
 
+	/**
+	 * Deprecated because functionality moved to {@link InvokerBase}.
+	 */
+	@Deprecated
 	private MonitoringInvocationInstance initMonitoring(URL webserviceURL) {
 
 		if (this.monitoring == null) {
@@ -200,252 +325,6 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 
 		return null;
-	}
-
-	public MonitoringComponent getMonitoring() {
-		return monitoring;
-	}
-
-	public void setMonitoring(MonitoringComponent monitoring) {
-		this.monitoring = monitoring;
-	}
-
-	protected String invokeREST(final URL serviceID, String address, final String method,
-			final Map<String, String> parameters) throws ServiceInvokerException {
-		// monitoring
-		long startTime = System.currentTimeMillis();
-		MonitoringInvocationInstance invocationinstance = initMonitoring(serviceID);
-		long requestMessageSize = getParameterSize(parameters);
-
-		// REST
-		final String charset = "UTF-8";
-		NameValuePair[] data = new NameValuePair[parameters.size()];
-		int i = 0;
-		for (Entry<String, String> parameterSet : parameters.entrySet()) {
-			try {
-				address = address.replace("{" + parameterSet.getKey() + "}",
-						URLEncoder.encode(parameterSet.getValue(), charset));
-			} catch (UnsupportedEncodingException e) {
-				throw new ServiceInvokerException(e);
-			}
-			NameValuePair tmpPair = new NameValuePair(parameterSet.getKey(),
-					parameterSet.getValue());
-			data[i++] = tmpPair;
-		}
-		logger.info("Invocation of: " + address);
-
-		HttpClient client = new HttpClient();
-		String output = "";
-
-		try {
-			startMonitoring(invocationinstance);
-		} catch (MonitoringException e) {
-			logger.error(e);
-		}
-
-		switch (method.toLowerCase()) {
-		case "get":
-			GetMethod getHandler = new GetMethod(address);
-
-			InputStream getResponse = new ByteArrayInputStream("".getBytes());
-			try {
-				checkStatus(client.executeMethod(getHandler));
-				getResponse = getHandler.getResponseBodyAsStream();
-				output = convertStreamToString(getResponse);
-			} catch (IOException e) {
-				monitorFailedService(invocationinstance);
-				throw new ServiceInvokerException(e);
-			} finally {
-				getHandler.releaseConnection();
-			}
-			break;
-		case "post":
-			PostMethod postHandler = new PostMethod(address);
-
-			InputStream postResponse = new ByteArrayInputStream("".getBytes());
-			try {
-				postHandler.setQueryString(data); // TODO check: are both
-													// needed?
-				postHandler.setRequestBody(data);
-				checkStatus(client.executeMethod(postHandler));
-				postResponse = postHandler.getResponseBodyAsStream();
-				output = convertStreamToString(postResponse);
-			} catch (IOException e) {
-				monitorFailedService(invocationinstance);
-				throw new ServiceInvokerException(e);
-			} finally {
-				postHandler.releaseConnection();
-			}
-			break;
-		case "put":
-			PutMethod putHandler = new PutMethod(address);
-			InputStream putResponse = new ByteArrayInputStream("".getBytes());
-			try {
-				putHandler.setRequestEntity(new StringRequestEntity(parameters.get("data"),
-						"application/json", charset));
-				checkStatus(client.executeMethod(putHandler));
-				putResponse = putHandler.getResponseBodyAsStream();
-				output = convertStreamToString(putResponse);
-			} catch (IOException e) {
-				monitorFailedService(invocationinstance);
-				throw new ServiceInvokerException(e);
-			} finally {
-				putHandler.releaseConnection();
-			}
-			break;
-		case "delete":
-			DeleteMethod deleteHandler = new DeleteMethod(address);
-			InputStream deleteResponse = new ByteArrayInputStream("".getBytes());
-			try {
-				client.executeMethod(deleteHandler);
-				deleteResponse = deleteHandler.getResponseBodyAsStream();
-				output = convertStreamToString(deleteResponse);
-			} catch (IOException e) {
-				monitorFailedService(invocationinstance);
-				throw new ServiceInvokerException(e);
-			} finally {
-				deleteHandler.releaseConnection();
-			}
-			break;
-		default:
-			throw new ServiceInvokerException("method not supported");
-		}
-
-		if (invocationinstance != null) {
-			try {
-				invocationinstance.setState(MonitoringInvocationState.Completed);
-				long responseMessageSize = output.getBytes().length;
-				long time = System.currentTimeMillis() - startTime;
-
-				invocationinstance.sendSuccessfulInvocation(responseMessageSize,
-						requestMessageSize, time);
-
-				logger.debug("Performed monitoring. Invocation took: " + time + " ms");
-			} catch (MonitoringException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return output;
-	}
-
-	private int checkStatus(int status) throws ServiceInvokerException {
-		if (status < 200 || status > 299) {
-			throw new ServiceInvokerException("Invocation failed with status " + status);
-		}
-		return status;
-	}
-
-	private long getParameterSize(Map<String, String> parameters) {
-		long size = 0;
-		for (Entry<String, String> entrySet : parameters.entrySet()) {
-			size += entrySet.getValue().length();
-		}
-		return size;
-	}
-
-	private static String convertStreamToString(java.io.InputStream is) {
-		java.util.Scanner s = new java.util.Scanner(is);
-		s.useDelimiter("\\A");
-		String retval = s.hasNext() ? s.next() : "";
-		s.close();
-		return retval;
-	}
-
-	@Override
-	public String invoke(URL serviceID, String operation, String inputData)
-			throws ServiceInvokerException {
-		if (serviceRepository == null)
-			throw new ServiceInvokerException("Repository not set by constructor");
-
-		DiscoveryServiceImpl discovery = (DiscoveryServiceImpl) ServiceDiscoveryFactory
-				.createDiscoveryService(serviceRepository);
-		String endpoint = null;
-		String namespace = null;
-		DiscoveredOperationBase discoveredOperation = null;
-
-		try {
-			DiscoveredService discoveredService = discovery.discoverService(serviceID.toString());
-			if (discoveredService == null) {
-				throw new ServiceInvokerException("Service \"" + serviceID
-						+ "\" was not found or is invalid");
-			}
-			endpoint = discoveredService.getEndpoint();
-			namespace = discoveredService.getNameSpace();
-
-			Iterator<DiscoveredOperation> ito = discoveredService.getOperationSet().iterator();
-			while (ito.hasNext()) {
-				DiscoveredOperation op = ito.next();
-				if (op.getName().endsWith(operation)) { // TODO check
-					discoveredOperation = (DiscoveredOperationBase) op;
-					break;
-				}
-			}
-			if (discoveredOperation == null) {
-				throw new ServiceInvokerException("Operation " + operation + " not found in "
-						+ serviceID + " of service " + discoveredService.getName());
-			}
-		} catch (DiscoveryException e) {
-			e.printStackTrace();
-		}
-		// Model model = serviceRepository.getModel().open();
-		// System.out.println(model.serialize(Syntax.RdfXml));
-
-		XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(inputData.getBytes()));
-		@SuppressWarnings("unchecked")
-		Map<String, String> parameterMap = (Map<String, String>) decoder.readObject();
-		decoder.close();
-		if (endpoint != null && discoveredOperation.getMethod() == null) {
-			return invokeNewSOAP(endpoint, operation, parameterMap, namespace);
-		}
-
-		// not WSDL SOAP call - REST or Other
-		String address = discoveredOperation.getAddress();
-		if (address.contains("^^")) {
-			address = address.substring(0, address.indexOf("^^"));
-		}
-		if (address != null) {
-			return invokeREST(serviceID, address, discoveredOperation.getMethod(), parameterMap);
-		}
-		throw new ServiceInvokerException("Service type not supported");
-	}
-
-	private String invokeNewSOAP(String endpoint, String operation,
-			Map<String, String> inputVariableMap, String namespace) {
-		logger.debug("Invoking " + endpoint);
-		logger.debug("Using Variables " + inputVariableMap);
-
-		String results = "";
-
-		EndpointReference targetEPR = new EndpointReference(endpoint);
-		OMFactory fac = OMAbstractFactory.getOMFactory();
-		OMNamespace omNs = fac.createOMNamespace(namespace, "theMSEENamespace");
-		OMElement method = fac.createOMElement(operation, omNs);
-		for (Entry<String, String> entry : inputVariableMap.entrySet()) {
-			OMElement value = fac.createOMElement(entry.getKey(), omNs);
-			value.addChild(fac.createOMText(value, entry.getValue()));
-			method.addChild(value);
-		}
-
-		try {
-			OMElement payload = method;
-			Options options = new Options();
-			options.setTo(targetEPR);
-
-			// options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
-
-			ServiceClient sender = new ServiceClient();
-			sender.setOptions(options);
-			OMElement result = sender.sendReceive(payload);
-
-			String response = result.getFirstElement().getText();
-			results = response;
-
-		} catch (org.apache.axis2.AxisFault e) {
-			e.printStackTrace();
-		}
-
-		return results;
 	}
 
 }

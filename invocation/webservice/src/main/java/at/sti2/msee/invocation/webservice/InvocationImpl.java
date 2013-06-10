@@ -4,15 +4,23 @@ import java.net.URL;
 
 import javax.jws.WebService;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.invocation.core.ServiceInvocationImpl;
+import at.sti2.msee.triplestore.ServiceRepository;
+import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
+import at.sti2.msee.triplestore.ServiceRepositoryFactory;
 
 @WebService(targetNamespace = "http://msee.sti2.at/delivery/", endpointInterface = "at.sti2.msee.invocation.webservice.Invocation")
 public class InvocationImpl implements Invocation {
 
-	private ServiceInvocationImpl invoker = new ServiceInvocationImpl();
+	private ServiceInvocationImpl invoker = null;
+
+	public InvocationImpl() {
+		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
+		ServiceRepository serviceRepository = ServiceRepositoryFactory
+				.newInstance(serviceRepositoryConfiguration);
+		invoker = new ServiceInvocationImpl(serviceRepository);
+	}
 
 	@Override
 	public String invokeSOAP(URL serviceID, String inputData) throws ServiceInvokerException {
@@ -22,7 +30,7 @@ public class InvocationImpl implements Invocation {
 	@Override
 	public String invoke(URL serviceID, String operation, String inputData)
 			throws ServiceInvokerException {
-		throw new NotImplementedException();
+		return invoker.invoke(serviceID, operation, inputData);
 	}
 
 }
