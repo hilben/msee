@@ -60,8 +60,6 @@ import eu.soa4all.validation.WSMOLite.Annotation;
  * 
  * 
  * 
- *         TODO: currently work in progress support QoS / Ranking parameters
- *         together
  * 
  * @author benni
  */

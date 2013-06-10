@@ -1,6 +1,6 @@
 = content_for :head_include do
-  = stylesheet_link_tag  "dashboards/invocation", :media => "all"
-  = javascript_include_tag "dashboards/invocation" 
+  = stylesheet_link_tag  "rules", :media => "all"
+  = javascript_include_tag "rules" 
  
 .container
   .div{:id => "error"}
@@ -15,19 +15,17 @@
 
   .hero-unit    
     %div{"align" => "left", "class" => "title"}
-      %h2 Invocaction Dashboard
+      %h2 Rules
 
     .row
       .span12 
         = form_tag do
           = label_tag("Service ID: ") 
           = text_field_tag(:serviceID, @serviceID, :required => "false", :placeholder => "http://example.com/service") 
-          = label_tag("Operation of the Endpoint:") 
-          = text_field_tag(:operation, @operation, :required => "false", :placeholder => "", :content => "not implemented") 
-          = label_tag("SOAP Message:")
-          = text_area_tag(:data, raw(@data), :required => "false", :placeholder => "Enter the SOAP message which is send to the service")       
+          = label_tag("Rule:")
+          = text_area_tag(:data, raw(@data), :required => "false", :placeholder => "Enter the rule which is set for this webservice")       
           .form-actions         
-            = submit_tag("Execute", :class=> "btn btn-primary") 
+            = submit_tag("Set", :class=> "btn btn-primary") 
  
     .accordion{"id" => "accordionGrounding"}
       - if !@output.nil?

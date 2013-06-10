@@ -7,3 +7,10 @@
 *
 *= require star-rating/jquery.rating
 */
+
+.modal{
+	height: 800px;
+    width: 1400px;
+    margin-left: -700px; /* - width/2 */
+    margin-top: -400px;
+}

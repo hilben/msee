@@ -26,8 +26,9 @@ $(document).ready(function() {
 
     console.log("LOADED MONITORING.JS");
     currentSelectedQoSParams = ["RequestTotal"];
-    //Load and render the qosParamsCheckBoxes
 
+
+    //Load and render the qosParamsCheckBoxes
     $('.qosParamsCheckBoxes').load('/monitorings/setSelectedQoSParams', function() {
 
         //Check all current selected checkboxes
@@ -45,11 +46,19 @@ $(document).ready(function() {
 
     $("#invokebutton").click(function () {
         $('#invocationModal').modal();
-    }); 
+        $('input.serviceID').val(currentSelectedEndpoint);
+    });
+
+
+    $("#registrationbutton").click(function () {
+        $('#registrationModal').modal();
+
+        // location.reload();
+    });
+
 
     $("#rankbutton").click(function() {
         // alert("Rank the following endpoints : " + checkedEndpoints);
-
         $('#rankingSetQoSParams').modal();
         $('.rankingrateparams').load('/monitorings/qoSParamsRanking');
         $('.ratetest').load('/monitorings/qoSParamsRanking');
@@ -194,7 +203,7 @@ $(document).ready(function() {
 
             },
             error: function(xhr, error){
-                console.debug(xhr); 
+                console.debug(xhr);
                 console.debug(error);
             }
         });

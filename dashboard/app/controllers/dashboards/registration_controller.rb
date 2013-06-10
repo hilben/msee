@@ -18,27 +18,30 @@ class Dashboards::RegistrationController < ApplicationController
     serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
     repositoryId = "msee-test"
 
+    begin
+      repositoryConfiguration = ServiceRepositoryConfiguration.new
+      repositoryConfiguration.setRepositoryID(repositoryId)
+      repositoryConfiguration.setServerEndpoint(serverEndpoint)
 
-    repositoryConfiguration = ServiceRepositoryConfiguration.new
-    repositoryConfiguration.setRepositoryID(repositoryId)
-    repositoryConfiguration.setServerEndpoint(serverEndpoint)
+      serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
+      serviceRepository.init()
+      writer = ServiceRegistrationImpl.new(serviceRepository);
 
-    serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
-    serviceRepository.init()
-    writer = ServiceRegistrationImpl.new(serviceRepository);
-
-
+    rescue Exception => e
+      logger.debug "#{e.message}"
+      puts "Failed "
+    end
     #writer = RegistrationWSDLToTriplestoreWriter.new
 
     if !input.blank?
       begin
-        s = writer.register(input) 
+        s = writer.register(input)
         puts "Return string : #{s}"
         @notice = s
-      rescue ServiceRegistrationException => e
+      rescue Exception => e
         puts "Failed to register service: #{e.message}"
         @error = "Failed to register service: #{e.message}"
-      end         
+      end
     end
   end
 end

@@ -9,6 +9,15 @@ java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
 java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
 
 
+java_import Java::at.sti2.msee.triplestore.ServiceRepositoryConfiguration
+java_import Java::at.sti2.msee.triplestore.ServiceRepositoryFactory
+java_import Java::at.sti2.msee.triplestore.impl.SesameServiceRepositoryImpl
+java_import Java::at.sti2.msee.registration.api.exception.ServiceRegistrationException
+java_import Java::at.sti2.msee.registration.core.configuration.ServiceRegistrationConfiguration
+java_import Java::at.sti2.msee.registration.core.ServiceRegistrationImpl
+
+
+java_import Java::at.sti2.msee.invocation.core.ServiceInvocationImpl
 
 java_import Java::at.sti2.msee.monitoring.api.qos.QoSType
 java_import Java::at.sti2.msee.monitoring.core.chart.GoogleChart
@@ -26,6 +35,10 @@ class MonitoringsController < ApplicationController
 
   def index
     # getCategoriesAndEndpoints()
+
+    runInvocation()
+    runRegistration()
+    #RegistrationController.index
 
     respond_to do |format|
       format.html # index.html.erb
@@ -263,6 +276,62 @@ class MonitoringsController < ApplicationController
     end
     #render :json => jsonData
 
+  end
+
+  def runInvocation
+    serviceID = params[:serviceID]
+    data = params[:data]
+    operation = params[:operation]
+
+    if !data.blank? and !serviceID.blank?
+      #transform(input, xslt_input, xslt_output)
+      logger.info "data: #{data}"
+      logger.info "operation: #{operation}"
+      logger.info "serviceID: #{serviceID}"
+
+      begin
+        invoker = ServiceInvocationImpl.new
+
+        result = invoker.invoke(serviceID, operation,data)
+        logger.debug "invoker : #{result}"
+
+        @outputmon = result
+        @noticemon = "The invocation was succesfull.";
+
+      rescue => e
+        @errormon = "Invocation Process failed, through exception: " + e.to_s
+      end
+    end
+  end
+
+  def runRegistration
+    input = params[:wsdl_input]
+
+    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+    repositoryId = "msee-test"
+
+
+    repositoryConfiguration = ServiceRepositoryConfiguration.new
+    repositoryConfiguration.setRepositoryID(repositoryId)
+    repositoryConfiguration.setServerEndpoint(serverEndpoint)
+
+    serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
+    serviceRepository.init()
+    writer = ServiceRegistrationImpl.new(serviceRepository);
+
+
+    #writer = RegistrationWSDLToTriplestoreWriter.new
+
+    if !input.blank?
+      begin
+        s = writer.register(input)
+        puts "Return string : #{s}"
+        @noticemon = s
+      rescue ServiceRegistrationException => e
+        puts "Failed to register service: #{e.message}"
+        @errormon = "Failed to register service: #{e.message}"
+      end
+    end
   end
 end
 

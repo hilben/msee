@@ -4,7 +4,24 @@
   = stylesheet_link_tag "star-rating/jquery.rating.css", :media => "all"
   = javascript_include_tag "monitorings" 
 
+
 %div.container-fluid
+  %div.row-fluid
+  %div.span12
+    .div{:id => "error"}
+    -if !@errormon.nil?
+      .alert.alert-block.alert-error
+        %a.close{"data-dismiss" => "alert", "href" => "#" }
+        = @errormon
+    -if !@noticemon.nil?
+      .alert.alert-block.alert-success.fade.in
+        %a.close{"data-dismiss" => "notice", "href" => "#" }
+        = raw @errormon
+    -if !@outputmon.nil?
+      %pre.prettyprint.lang-xml
+      = raw @output
+
+
   %div.row-fluid
     %div.span4
       %div.endpoints
@@ -12,7 +29,7 @@
         = render 'endpoints'
         %div.buttons
           %a.btn{"id" => "rankbutton"} Rank selected
-          %a.btn{"id" => "regnew"} Register
+          %a.btn{"id" => "registrationbutton"} Register
           %a.btn{"id" => "invokebutton"} Invoke
     %div.span8
       %h2 Operation details
@@ -48,4 +65,14 @@
     %p Perform invocation   
     %div.rankinginvocation
     = render :template => "dashboards/invocation/index"
+  .modal-footer
+
+
+#registrationModal.modal.hide.fade{"aria-hidden" => "true", "aria-labelledby" => "Registration", :role => "dialog", :tabindex => "-1"}
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+  .modal-body
+    %p Register new service   
+    %div.rankinginvocation
+    = render :template => "dashboards/registration/index"
   .modal-footer

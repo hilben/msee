@@ -17,6 +17,7 @@
 package at.sti2.msee.ranking.common;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,21 +58,25 @@ public class RankingConfig {
 				.getProperty("ranking.triplestore.endpoint");
 		this.triplestoreReposid = this.prop
 				.getProperty("ranking.triplestore.reposid");
-		this.instancePrefix = this.prop.getProperty("ranking.instance.prefixuri");
+		this.instancePrefix = this.prop
+				.getProperty("ranking.instance.prefixuri");
 
 		LOGGER.debug("Loaded ranking configuration: " + this);
 
+		URL resLocation = RankingConfig.class
+				.getResource("/default.properties");
 		if (this.triplestoreReposid == null) {
-			throw new IOException("repository not available in ranking config file");
+			throw new IOException(
+					"repository not available in ranking config file " + resLocation);
 		}
 
 		if (this.triplestoreEndpoint == null) {
 			throw new IOException(
-					"triplestoreEndpoint not available in ranking config file");
+					"triplestoreEndpoint not available in ranking config file " + resLocation);
 		}
 		if (this.instancePrefix == null) {
 			throw new IOException(
-					"triplestoreEndpoint not available in ranking config file");
+					"triplestoreEndpoint not available in ranking config file " + resLocation);
 		}
 	}
 
@@ -87,7 +92,8 @@ public class RankingConfig {
 	public String toString() {
 		return "Config [prop=" + prop + ", triplestoreEndpoint="
 				+ triplestoreEndpoint + ", triplestoreReposid="
-				+ triplestoreReposid + ", ranking.instance.prefixuri= "+instancePrefix+" ]";
+				+ triplestoreReposid + ", ranking.instance.prefixuri= "
+				+ instancePrefix + " ]";
 	}
 
 	public String getInstancePrefix() {

@@ -40,6 +40,8 @@ SesaWebsite::Application.routes.draw do
   end
 
 
+  match "rules" => "rules#index"
+
   get "services/:id/update", :controller => "services", :action => "update"
   get "services/:id/destroy", :controller => "services", :action => "destroy"
 
