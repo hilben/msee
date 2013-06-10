@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -408,5 +409,24 @@ public class DiscoveryServiceImpl implements Discovery {
 		int count = (int) rdfModel.countStatements(pattern);
 		rdfModel.close();
 		return count;
+	}
+
+	/**
+	 * Returns the list of all service IDs.
+	 */
+	public List<String> getServiceList() {
+		List<String> returnList = new ArrayList<String>();
+		Model rdfModel = serviceRepository.getModel();
+		rdfModel.open();
+		String query = "select * where {?serviceID " + RDF.type + " " + MSM.Service + " . }";
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
+		ClosableIterator<QueryRow> results = resultTable.iterator();
+		while (results.hasNext()) {
+			QueryRow row = results.next();
+			String serviceID = row.getValue("serviceID").toString();
+			returnList.add(serviceID);
+		}
+		rdfModel.close();
+		return returnList;
 	}
 }

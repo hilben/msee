@@ -27,10 +27,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
+import at.sti2.msee.invocation.core.common.InvokerREST;
 
 public class ServiceInvokerImplRestTest {
 	protected final Logger logger = Logger.getLogger(this.getClass());
-	private ServiceInvocationImpl invoker = new ServiceInvocationImpl();
+	private InvokerREST invoker = new InvokerREST(null);
 	private static Server server;
 	private static String webPort = "48080";
 	Gson gson = new Gson();
