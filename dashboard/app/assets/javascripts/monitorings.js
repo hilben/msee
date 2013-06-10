@@ -38,11 +38,14 @@ $(document).ready(function() {
 
             if (jQuery.inArray($(this).attr("id"), currentSelectedQoSParams) >= 0) {
                 $(this).attr("checked", true);
-
             }
 
         })
     });
+
+    $("#invokebutton").click(function () {
+        $('#invocationModal').modal();
+    }); 
 
     $("#rankbutton").click(function() {
         // alert("Rank the following endpoints : " + checkedEndpoints);

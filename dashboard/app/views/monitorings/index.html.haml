@@ -13,7 +13,7 @@
         %div.buttons
           %a.btn{"id" => "rankbutton"} Rank selected
           %a.btn{"id" => "regnew"} Register
-          %a.btn{"class" => "zes"} Invoke
+          %a.btn{"id" => "invokebutton"} Invoke
     %div.span8
       %h2 Operation details
       %div.endpointdetails
@@ -39,4 +39,13 @@
     %p Select QoS Parameters
     %div.rankingrateparams
     %a.btn{"id" => "startranking"} Start Ranking!
+  .modal-footer
+
+#invocationModal.modal.hide.fade{"aria-hidden" => "true", "aria-labelledby" => "Invocation", :role => "dialog", :tabindex => "-1"}
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+  .modal-body
+    %p Perform invocation   
+    %div.rankinginvocation
+    = render :template => "dashboards/invocation/index"
   .modal-footer
