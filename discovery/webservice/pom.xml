@@ -41,6 +41,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>registration.core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -50,6 +51,7 @@
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency><!-- needed for mvn build @see T111 -->
 			<groupId>commons-httpclient</groupId>
@@ -72,12 +74,6 @@
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-transport-http</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.ws.commons.schema</groupId>
-					<artifactId>XmlSchema</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
@@ -111,6 +107,10 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
 		</dependency>
 
 
@@ -175,7 +175,6 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
 		</dependency>
 	</dependencies>
 
