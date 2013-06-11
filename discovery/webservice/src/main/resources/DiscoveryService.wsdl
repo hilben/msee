@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="discovery" targetNamespace="http://msee.sti2.at/services/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://msee.sti2.at/services/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://msee.sti2.at/services/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://msee.sti2.at/services/">
+  <xs:element name="discover" type="tns:discover"/>
+  <xs:element name="discoverAdvanced" type="tns:discoverAdvanced"/>
+  <xs:element name="discoverAdvancedResponse" type="tns:discoverAdvancedResponse"/>
+  <xs:element name="discoverResponse" type="tns:discoverResponse"/>
+  <xs:element name="getIServeModel" type="tns:getIServeModel"/>
+  <xs:element name="getIServeModelResponse" type="tns:getIServeModelResponse"/>
+  <xs:element name="lookup" type="tns:lookup"/>
+  <xs:element name="lookupResponse" type="tns:lookupResponse"/>
+  <xs:complexType name="lookup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="lookupResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="discover">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="categoryList" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="discoverResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getIServeModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getIServeModelResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="discoverAdvanced">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="discoverAdvancedResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DiscoveryException" type="tns:DiscoveryException"/>
+  <xs:complexType name="DiscoveryException">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="lookupResponse">
+    <wsdl:part name="parameters" element="tns:lookupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="discoverAdvancedResponse">
+    <wsdl:part name="parameters" element="tns:discoverAdvancedResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DiscoveryException">
+    <wsdl:part name="DiscoveryException" element="tns:DiscoveryException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIServeModel">
+    <wsdl:part name="parameters" element="tns:getIServeModel">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="lookup">
+    <wsdl:part name="parameters" element="tns:lookup">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="discoverAdvanced">
+    <wsdl:part name="parameters" element="tns:discoverAdvanced">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="discoverResponse">
+    <wsdl:part name="parameters" element="tns:discoverResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="discover">
+    <wsdl:part name="parameters" element="tns:discover">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getIServeModelResponse">
+    <wsdl:part name="parameters" element="tns:getIServeModelResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Discovery">
+    <wsdl:operation name="lookup">
+      <wsdl:input name="lookup" message="tns:lookup">
+    </wsdl:input>
+      <wsdl:output name="lookupResponse" message="tns:lookupResponse">
+    </wsdl:output>
+      <wsdl:fault name="DiscoveryException" message="tns:DiscoveryException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="discover">
+      <wsdl:input name="discover" message="tns:discover">
+    </wsdl:input>
+      <wsdl:output name="discoverResponse" message="tns:discoverResponse">
+    </wsdl:output>
+      <wsdl:fault name="DiscoveryException" message="tns:DiscoveryException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIServeModel">
+      <wsdl:input name="getIServeModel" message="tns:getIServeModel">
+    </wsdl:input>
+      <wsdl:output name="getIServeModelResponse" message="tns:getIServeModelResponse">
+    </wsdl:output>
+      <wsdl:fault name="DiscoveryException" message="tns:DiscoveryException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="discoverAdvanced">
+      <wsdl:input name="discoverAdvanced" message="tns:discoverAdvanced">
+    </wsdl:input>
+      <wsdl:output name="discoverAdvancedResponse" message="tns:discoverAdvancedResponse">
+    </wsdl:output>
+      <wsdl:fault name="DiscoveryException" message="tns:DiscoveryException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="discoverySoapBinding" type="tns:Discovery">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="lookup">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="lookup">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="lookupResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DiscoveryException">
+        <soap:fault name="DiscoveryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="discover">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="discover">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="discoverResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DiscoveryException">
+        <soap:fault name="DiscoveryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="discoverAdvanced">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="discoverAdvanced">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="discoverAdvancedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DiscoveryException">
+        <soap:fault name="DiscoveryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getIServeModel">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getIServeModel">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getIServeModelResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DiscoveryException">
+        <soap:fault name="DiscoveryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="discovery">
+    <wsdl:port name="DiscoveryPort" binding="tns:discoverySoapBinding">
+      <soap:address location="http://localhost:9090/DiscoveryPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

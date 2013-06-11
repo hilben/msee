@@ -3,59 +3,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<!-- Default configuration file for CXF -->
 	<display-name>Discovery Webservice</display-name>
-
-	<mime-mapping>
-		<extension>ico</extension>
-		<mime-type>image/x-icon</mime-type>
-	</mime-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+            classpath:META-INF/cxf/cxf.xml
+            classpath:META-INF/cxf/cxf-servlet.xml
+        </param-value>
+	</context-param>
 	<servlet>
-		<servlet-name>AxisServlet</servlet-name>
-		<servlet-class>org.apache.axis2.transport.http.AxisServlet
-		</servlet-class>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
-		<servlet-name>AxisServlet</servlet-name>
-		<url-pattern>/servlet/AxisServlet</url-pattern>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>AxisServlet</servlet-name>
-		<url-pattern>*.jws</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>AxisServlet</servlet-name>
-		<url-pattern>/services/*</url-pattern>
-	</servlet-mapping>
-	<mime-mapping>
-		<extension>inc</extension>
-		<mime-type>text/plain</mime-type>
-	</mime-mapping>
-
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>/axis2-web/index.jsp</welcome-file>
-	</welcome-file-list>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/axis2-web/Error/error404.jsp</location>
-	</error-page>
-
-	<error-page>
-		<error-code>500</error-code>
-		<location>/axis2-web/Error/error500.jsp</location>
-	</error-page>
-
-
-
-
-
-
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
-
+	
 </web-app>
+

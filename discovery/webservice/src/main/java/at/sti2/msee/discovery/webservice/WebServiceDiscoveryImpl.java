@@ -24,10 +24,7 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.wsdl.extensions.soap12.SOAP12Binding;
-import javax.xml.ws.BindingType;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,8 +37,7 @@ import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
 /**
  * @author Alex Oberhauser
  */
-@BindingType(javax.xml.ws.soap.SOAPBinding.SOAP12HTTP_BINDING)
-@WebService(serviceName="discovery",  targetNamespace = "http://sesa.sti2.at/services/")
+@WebService(serviceName="discovery",  targetNamespace = "http://msee.sti2.at/services/")
 public class WebServiceDiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(WebServiceDiscoveryImpl.class.getName());
 	

@@ -20,7 +20,7 @@ import javax.xml.ws.WebFault;
 import java.lang.Exception;
 import java.lang.Throwable;
 
-@WebFault(faultBean = "at.sti2.msee.discovery.api.webservice.DiscoveryException", targetNamespace="http://sesa.sti2.at/services/")
+@WebFault(faultBean = "at.sti2.msee.discovery.api.webservice.DiscoveryException", targetNamespace="http://msee.sti2.at/services/")
 public class DiscoveryException extends Exception {
 
 	private static final long serialVersionUID = -2289179077479549018L;
