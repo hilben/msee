@@ -297,7 +297,7 @@
 			<dependency>
 				<groupId>wsdl4j</groupId>
 				<artifactId>wsdl4j</artifactId>
-				<version>1.6.2</version>
+				<version>1.6.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.easywsdl</groupId>
@@ -455,7 +455,7 @@
 			<dependency>
 			    <groupId>org.apache.ws.xmlschema</groupId>
 			    <artifactId>xmlschema-core</artifactId>
-			    <version>2.0.3</version>
+			    <version>2.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ws.commons.axiom</groupId>

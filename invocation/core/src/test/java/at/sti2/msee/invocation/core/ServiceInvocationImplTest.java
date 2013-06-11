@@ -24,6 +24,7 @@ public class ServiceInvocationImplTest {
 	private static String registeredServiceID2 = null;
 	private static String registeredServiceID3 = null;
 	private static ServiceRepository serviceRepository;
+	private static String registeredServiceID4 = null;
 
 	@BeforeClass
 	public static void setup() throws RepositoryException, ServiceRegistrationException,
@@ -51,6 +52,10 @@ public class ServiceInvocationImplTest {
 		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
 				"/services/hotelapp.wsdl").toString();
 		registeredServiceID3 = registrationService.register(serviceDescriptionURL);
+		
+		//serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
+		//		"/services/discovery.wsdl").toString();
+		//registeredServiceID4 = registrationService.register(serviceDescriptionURL);
 
 	}
 
