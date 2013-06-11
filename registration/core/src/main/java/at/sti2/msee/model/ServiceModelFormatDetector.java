@@ -54,7 +54,7 @@ public class ServiceModelFormatDetector {
 		this.serviceDescriptionURI = serviceDescriptionURI;
 		return detectInternal();
 	}
-	
+
 	public ServiceModelFormat detect(URL serviceDescriptionURL) {
 		URI uri = null;
 		try {
@@ -91,9 +91,16 @@ public class ServiceModelFormatDetector {
 	 * @return true if file is SAWSDL
 	 */
 	private boolean isSawsdl() {
-		String[] contains = { "http://www.w3.org/ns/wsdl",
-				"http://www.w3.org/ns/sawsdl" };
-		return containsAll(elementSet.toString(), contains);
+		// wsdl 2.0
+		String[] contains = { "http://www.w3.org/ns/wsdl", "http://www.w3.org/ns/sawsdl" };
+		if (containsAll(elementSet.toString(), contains)) {
+			return true;
+		} else {
+			// maybe old wsdl
+			String[] contains2 = { "http://schemas.xmlsoap.org/wsdl/",
+					"http://www.w3.org/ns/sawsdl" };
+			return containsAll(elementSet.toString(), contains2);
+		}
 	}
 
 	/**
@@ -104,8 +111,8 @@ public class ServiceModelFormatDetector {
 	private boolean isHrests() {
 		String[] possibleList = { "div", "code", "span" };
 		String[] invalidList = { "wsdl", "script",
-				"http://cms-wg.sti2.org/ns/minimal-service-model",
-				"http://www.w3.org/ns/wsdl", "http://www.w3.org/ns/sawsdl" };
+				"http://cms-wg.sti2.org/ns/minimal-service-model", "http://www.w3.org/ns/wsdl",
+				"http://www.w3.org/ns/sawsdl" };
 		boolean isHrests = false;
 
 		Iterator<String> ite = elementSet.iterator();
@@ -138,11 +145,9 @@ public class ServiceModelFormatDetector {
 	private InputStream prepareInput(URI serviceDescriptionURL) {
 		String scheme = serviceDescriptionURL.getScheme();
 		InputStream inputStream = null;
-		if (scheme.toLowerCase().equals("http")
-				|| scheme.toLowerCase().equals("https")) {
+		if (scheme.toLowerCase().equals("http") || scheme.toLowerCase().equals("https")) {
 			try {
-				inputStream = (InputStream) serviceDescriptionURL.toURL()
-						.getContent();
+				inputStream = (InputStream) serviceDescriptionURL.toURL().getContent();
 			} catch (MalformedURLException e) {
 				throw new IllegalArgumentException("URL not correct");
 			} catch (IOException e) {
@@ -151,11 +156,9 @@ public class ServiceModelFormatDetector {
 
 		} else if (scheme.toLowerCase().equals("file")) {
 			try {
-				inputStream = new FileInputStream(new File(
-						serviceDescriptionURL));
+				inputStream = new FileInputStream(new File(serviceDescriptionURL));
 			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException(
-						"File name/location not correct");
+				throw new IllegalArgumentException("File name/location not correct");
 			}
 
 		}
