@@ -12,11 +12,11 @@ class RulesController < ApplicationController
 		logger.info "serviceID: #{serviceID}"
 
 		if !data.blank? and !serviceID.blank?
-			#transform(input, xslt_input, xslt_output)
+
 			logger.info "data: #{data}"
 			logger.info "serviceID: #{serviceID}"
 
-			# begin
+			begin
 
 				handler = RankingRepositoryHandler.getInstance
 
@@ -26,13 +26,16 @@ class RulesController < ApplicationController
 				logger.info("data: #{data}");
 
 				handler.setRulesForWebservice(url, data);
-				# a = handler.getRulesForWebservice(url);
 
 				@notice = "The rule was succesfully set.";
 
-			# rescue => e
-			# 	@error = "Setting the rule failed, through exception: " + e
-			# end
+			rescue => e
+				@error = "Setting the rule failed, through exception: " + e
+			end
 		end
+	end
+
+	def getParametersForTemplate
+		
 	end
 end

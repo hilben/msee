@@ -1,0 +1,26 @@
+= content_for :head_include do
+  = stylesheet_link_tag  "monitorings", :media => "all"
+  = javascript_include_tag "monitorings" 
+ 
+.container
+  .hero-unit    
+    %div{"align" => "left", "class" => "title"}
+      %h2 Rules ranking
+
+    .row
+      .span12
+        = render 'qosparamsranking'
+    .row
+      .span12
+        = label_tag("Activate Rules: ") 
+        = check_box_tag 'activate_rules', 'activate'
+    .row
+      .span12 
+        = form_tag do
+          .form-actions         
+          = label_tag("Template: ") 
+          = text_area_tag(:servicetemplate, @servicetemplate, :required => "false", :placeholder => "enter the template ") 
+          = label_tag("Instances:") 
+          = text_area_tag(:serviceinstances, @serviceinstances, :required => "false", :placeholder => "enter the instances")       
+
+              

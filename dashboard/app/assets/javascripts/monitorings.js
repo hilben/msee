@@ -58,10 +58,12 @@ $(document).ready(function() {
 
 
     $("#rankbutton").click(function() {
-        // alert("Rank the following endpoints : " + checkedEndpoints);
+        console.info("Rank the following endpoints : " + checkedEndpoints);
         $('#rankingSetQoSParams').modal();
-        $('.rankingrateparams').load('/monitorings/qoSParamsRanking');
-        $('.ratetest').load('/monitorings/qoSParamsRanking');
+        $('.rankingrateparams').load('/monitorings/qoSParamsRanking', {
+            checkedEndpoints: checkedEndpoints
+        });
+
 
     });
 
@@ -71,47 +73,30 @@ $(document).ready(function() {
         $('#rankingResultModal').modal();
         // $('.rankedendpoints').load('/monitorings/getRankedEndpoints/ResponseTime,PayloadSizeResponse/0x4,7x1/' + checkedEndpoints);
 
+        var paramKeys = [];
+        var paramsValues = [];
 
-        var querystring='';
-        var qosParamsCounts=0;
-        var qosRatingCounts=0;
-        //add endpoints:
+        //add endpoints and values:
         $('.star').each(function() {
             if ($(this).attr("value")>=0&&$(this).attr("checked")) {
-
-
-                if (querystring!='') {
-                    querystring+=',';
-                }
-
-                querystring = querystring + $(this).attr("name");
-
-                qosParamsCounts+=1;
-            }
-        });
-
-        querystring += "/";
-
-        //add values:
-        $('.star').each(function() {
-            if ($(this).attr("value")>=0&&$(this).attr("checked")) {
-
-                if (qosRatingCounts>0) {
-                    querystring+=',';
-                }
-
-                querystring = querystring + $(this).attr("value")+"x0";
-
-                qosRatingCounts+=1;
+                paramKeys.push( $(this).attr("name"));
+                paramsValues.push($(this).attr("value"));
             }
         });
 
 
-        if (qosRatingCounts!=qosParamsCounts||qosParamsCounts<1) {
-            alert("Error with the Ranking. Did you selected Parameters?" + qosRatingCounts+" "+qosParamsCounts);
-        } else {
-            $('.rankedendpoints').load('/monitorings/getRankedEndpoints/'+querystring+'/' + checkedEndpoints);
-        }
+
+        st = $('textarea#servicetemplate').val();
+        inst = $('textarea#serviceinstances').val();
+
+        console.info("st "+st);
+        console.info("inst "+inst);
+
+        $('.rankedendpoints').load('/monitorings/doRanking',{
+            checkedEndpoints: checkedEndpoints,
+            keys: paramKeys,
+        values: paramsValues, servicetemplate: st, serviceinstances: inst});
+
     });
 
     $('#accordion').collapse().height('auto');

@@ -19,6 +19,7 @@ SesaWebsite::Application.routes.draw do
   match "monitorings/showEndpointDetails/:qos/*url" => "monitorings#showEndpointDetails"
 
 
+
   match "monitorings/getGoogleGraphData" => "monitorings#getGoogleGraphData"
   match "monitorings/getGoogleGraphData/:qos/*url" => "monitorings#getGoogleGraphData"
 
@@ -27,6 +28,9 @@ SesaWebsite::Application.routes.draw do
   match "monitorings/setSelectedQoSParams" => "monitorings#getQoSParamKeys"
   
   match "monitorings/qoSParamsRanking" => "monitorings#getQoSParamKeysRanking"
+
+
+  match "monitorings/doRanking" => "monitorings#doRanking"
 
   #Json services
   match "monitorings/getSubcategoriesAndServices/:category" => "monitorings#getSubcategoriesAndServices"
@@ -41,6 +45,7 @@ SesaWebsite::Application.routes.draw do
 
 
   match "rules" => "rules#index"
+  match "monitorings/options" => "monitorings/rulesoptions#index"
 
   get "services/:id/update", :controller => "services", :action => "update"
   get "services/:id/destroy", :controller => "services", :action => "destroy"

@@ -36,7 +36,7 @@ class MonitoringsController < ApplicationController
   def index
     # getCategoriesAndEndpoints()
 
-    runInvocation()
+    #runInvocation()
     runRegistration()
     #RegistrationController.index
 
@@ -79,9 +79,11 @@ class MonitoringsController < ApplicationController
   def getQoSParamKeysRanking
     #soap call to the server
     @qosParamKeys = QoSType.values
+    @checkedEndpoints = params[:checkedEndpoints]
+    logger.info "checkedEndpoints: #{@checkedEndpoints}"
     logger.info "Received : #{@qosParamKeys}"
-
-    render :partial => "monitorings/qosparamsranking"
+    # render :partial => "monitorings/qosparamsranking"
+    render :partial => "monitorings/rulesoptions"
   end
 
   def getRankedEndpoints
@@ -306,32 +308,50 @@ class MonitoringsController < ApplicationController
 
   def runRegistration
     input = params[:wsdl_input]
-
-    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "msee-test"
-
-
-    repositoryConfiguration = ServiceRepositoryConfiguration.new
-    repositoryConfiguration.setRepositoryID(repositoryId)
-    repositoryConfiguration.setServerEndpoint(serverEndpoint)
-
-    serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
-    serviceRepository.init()
-    writer = ServiceRegistrationImpl.new(serviceRepository);
+    begin
+      serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+      repositoryId = "msee-test"
 
 
-    #writer = RegistrationWSDLToTriplestoreWriter.new
+      repositoryConfiguration = ServiceRepositoryConfiguration.new
+      repositoryConfiguration.setRepositoryID(repositoryId)
+      repositoryConfiguration.setServerEndpoint(serverEndpoint)
 
-    if !input.blank?
-      begin
+      serviceRepository = ServiceRepositoryFactory.newInstance(repositoryConfiguration);
+      serviceRepository.init()
+      writer = ServiceRegistrationImpl.new(serviceRepository);
+
+
+      #writer = RegistrationWSDLToTriplestoreWriter.new
+
+      if !input.blank?
         s = writer.register(input)
         puts "Return string : #{s}"
         @noticemon = s
-      rescue ServiceRegistrationException => e
-        puts "Failed to register service: #{e.message}"
-        @errormon = "Failed to register service: #{e.message}"
       end
+    rescue  => e
+      puts "Failed to register service: #{e.message}"
+      @errormon = "Failed to register service: #{e.message}"
     end
+  end
+
+
+  def showRankingOptions
+    @selectedendpoints = params[:selectedendpoints]
+    logger.info "#{@selectedendpoints}"
+
+  end
+
+  def doRanking
+    @selectedendpoints = params[:selectedendpoints]
+    @keys = params[:keys]
+    @values = params[:values]
+    @serviceinstances = params[:serviceinstances]
+    @servicetemplate  = params[:servicetemplates]
+    
+    logger.info "selected: #{@selectedendpoints} keys: #{@keys} values: #{@values} inst: #{@serviceinstances} templ: #{@servicetemplate}"
+
+    render :partial => "monitorings/rankings"
   end
 end
 
