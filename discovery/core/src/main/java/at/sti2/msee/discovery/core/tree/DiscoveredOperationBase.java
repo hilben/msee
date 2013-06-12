@@ -84,6 +84,14 @@ public class DiscoveredOperationBase implements DiscoveredOperation {
 		this.outputSet = outputSet;
 	}
 
+	public Set<String> getInputVaultSet() {
+		return inputVaultSet;
+	}
+
+	public Set<String> getOutputVaultSet() {
+		return outputVaultSet;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

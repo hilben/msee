@@ -194,6 +194,54 @@ public class DiscoveryTreeHandler {
 	}
 
 	/**
+	 * Returns a list of input vaults for a given service ID and a given
+	 * operation name.
+	 * 
+	 * @param serviceID
+	 * @param operation
+	 * @return
+	 * @throws DiscoveryException
+	 */
+	public List<String> getInputVaultList(final String serviceID, final String operationName)
+			throws DiscoveryException {
+		assertTreeNotNull();
+		List<String> inputVaultList = new ArrayList<>();
+		DiscoveredOperationBase operation = (DiscoveredOperationBase) getOperation(serviceID,
+				operationName);
+
+		Iterator<String> iti = operation.getInputVaultSet().iterator();
+		while (iti.hasNext()) {
+			String inputVault = iti.next();
+			inputVaultList.add(inputVault);
+		}
+		return inputVaultList;
+	}
+
+	/**
+	 * Returns a list of output vaults for a given service ID and a given
+	 * operation name.
+	 * 
+	 * @param serviceID
+	 * @param operation
+	 * @return
+	 * @throws DiscoveryException
+	 */
+	public List<String> getOutputVaultList(String serviceID, String operationName)
+			throws DiscoveryException {
+		assertTreeNotNull();
+		List<String> outputVaultList = new ArrayList<>();
+		DiscoveredOperationBase operation = (DiscoveredOperationBase) getOperation(serviceID,
+				operationName);
+
+		Iterator<String> ito = operation.getOutputVaultSet().iterator();
+		while (ito.hasNext()) {
+			String outputVault = ito.next();
+			outputVaultList.add(outputVault);
+		}
+		return outputVaultList;
+	}
+
+	/**
 	 * Checks that the discovered service tree is not null.
 	 * 
 	 * @throws DiscoveryException
