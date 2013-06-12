@@ -1,0 +1,105 @@
+<wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl"
+	xmlns:sawsdl="http://www.w3.org/ns/sawsdl" xmlns:ns1="http://org.apache.axis2/xsd"
+	xmlns:ns="http://webservice.HotelService/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+	xmlns:tns="http://webservice.HotelService/" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+	targetNamespace="http://webservice.HotelService/">
+	<wsdl2:documentation>HotelService</wsdl2:documentation>
+	<wsdl2:types>
+		<xs:schema attributeFormDefault="qualified"
+			elementFormDefault="qualified" targetNamespace="http://webservice.HotelService/">
+			<xs:element name="HotelServiceException">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="HotelServiceException"
+							nillable="true" type="ns:Exception" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Exception">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Message" nillable="true"
+						type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="getHotelAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="hotelID" type="xs:int"
+							sawsdl:modelReference="http://schema.org/Organization#taxID" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getHotelAddressResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return" nillable="true"
+							type="xs:string" sawsdl:modelReference="http://schema.org/Organization#legalName" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl2:types>
+
+
+	<wsdl2:interface name="ServiceInterface"
+		sawsdl:modelReference="http://msee.sti2.at/categories#business">
+		<wsdl2:fault name="HotelServiceException" element="ns:HotelServiceException" />
+		<wsdl2:operation name="getHotelAddress"
+			style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="hotelID #in return #return "
+			pattern="http://www.w3.org/ns/wsdl/in-out">
+			<wsdl2:input element="ns:getHotelAddress" wsaw:Action="urn:getHotelAddress" />
+			<wsdl2:output element="ns:getHotelAddressResponse"
+				wsaw:Action="urn:getHotelAddressResponse" />
+			<wsdl2:outfault ref="tns:HotelServiceException"
+				wsaw:Action="urn:getHotelAddressHotelServiceException" />
+		</wsdl2:operation>
+	</wsdl2:interface>
+	<wsdl2:binding name="HotelServiceSoap12Binding"
+		interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap"
+		wsoap:version="1.2">
+		<wsdl2:fault ref="tns:HotelServiceException" />
+		<wsdl2:operation ref="tns:getHotelAddress"
+			wsoap:action="urn:getHotelAddress">
+			<wsdl2:input />
+			<wsdl2:output />
+			<wsdl2:outfault ref="tns:HotelServiceException" />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:binding name="HotelServiceHttpBinding" interface="tns:ServiceInterface"
+		whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+		<wsdl2:fault ref="tns:HotelServiceException" />
+		<wsdl2:operation ref="tns:getHotelAddress"
+			whttp:location="getHotelAddress">
+			<wsdl2:input />
+			<wsdl2:output />
+			<wsdl2:outfault ref="tns:HotelServiceException" />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:binding name="HotelServiceSoap11Binding"
+		interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap"
+		wsoap:version="1.1">
+		<wsdl2:fault ref="tns:HotelServiceException" />
+		<wsdl2:operation ref="tns:getHotelAddress"
+			wsoap:action="urn:getHotelAddress">
+			<wsdl2:input />
+			<wsdl2:output />
+			<wsdl2:outfault ref="tns:HotelServiceException" />
+		</wsdl2:operation>
+	</wsdl2:binding>
+	<wsdl2:service name="HotelService" interface="tns:ServiceInterface"
+		sawsdl:modelReference="http://msee.sti2.at/categories#business">
+		<wsdl2:endpoint name="HotelServiceHttpSoap12Endpoint"
+			binding="tns:HotelServiceSoap12Binding"
+			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap12Endpoint/" />
+		<wsdl2:endpoint name="HotelServiceHttpSoap11Endpoint"
+			binding="tns:HotelServiceSoap11Binding"
+			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap11Endpoint/" />
+		<wsdl2:endpoint name="HotelServiceHttpEndpoint"
+			binding="tns:HotelServiceHttpBinding"
+			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpEndpoint/" />
+	</wsdl2:service>
+</wsdl2:description>
+
+

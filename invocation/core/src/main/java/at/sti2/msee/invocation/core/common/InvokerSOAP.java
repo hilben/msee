@@ -17,6 +17,13 @@ import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
 
+/**
+ * Instances of this concrete class of the abstract {@link InvokerBase} can
+ * invoke WSDL based services by providing SOAP functionality.
+ * 
+ * @author Christian Mayr
+ * 
+ */
 public class InvokerSOAP extends InvokerBase {
 
 	public InvokerSOAP(MonitoringComponent monitoring) {
@@ -68,7 +75,7 @@ public class InvokerSOAP extends InvokerBase {
 			successfulInvocation(startTime, requestMessageSize, results);
 		} catch (org.apache.axis2.AxisFault | MonitoringException e) {
 			monitorFailedService();
-			throw new ServiceInvokerException(e);
+			throw new ServiceInvokerException(e.getLocalizedMessage());
 		}
 
 		return results;

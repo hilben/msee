@@ -46,16 +46,12 @@ public class ServiceInvocationImplTest {
 		registeredServiceID1 = registrationService.register(serviceDescriptionURL);
 
 		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
-				"/services/MavenAxis2WebService.wsdl").toString();
-		registeredServiceID2 = registrationService.register(serviceDescriptionURL);
-
-		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
 				"/services/hotelapp.wsdl").toString();
 		registeredServiceID3 = registrationService.register(serviceDescriptionURL);
-		
-		//serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
-		//		"/services/discovery.wsdl").toString();
-		//registeredServiceID4 = registrationService.register(serviceDescriptionURL);
+
+		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
+				"/services/hotelwsdl2.0-2013-06-11.wsdl").toString();
+		registeredServiceID2 = registrationService.register(serviceDescriptionURL);
 
 	}
 
@@ -79,10 +75,10 @@ public class ServiceInvocationImplTest {
 
 	@Test
 	public final void testInvokeWSDL() throws MalformedURLException, ServiceInvokerException {
-		String message = "Hello!";
-		String expected = "Service is up and available, message: " + message;
-		String operation = "ping";
-		String inputVariables = "<parameters>" + "<text>" + message + "</text>" + "</parameters>";
+		String hotelID = "1";
+		String expected = "Street Road 312" + hotelID;
+		String operation = "getHotelAddress";
+		String inputVariables = "<parameters>" + "<hotelID>" + hotelID + "</hotelID>" + "</parameters>";
 		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}

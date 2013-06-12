@@ -54,7 +54,7 @@ public class RESTfulTestCases {
 
 		webPort = System.getenv("PORT");
 		if (webPort == null || webPort.isEmpty()) {
-			webPort = "48080";
+			webPort = "48081";
 		}
 
 		server = new Server(Integer.valueOf(webPort));
