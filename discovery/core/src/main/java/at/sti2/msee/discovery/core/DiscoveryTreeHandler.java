@@ -169,6 +169,58 @@ public class DiscoveryTreeHandler {
 		return inputList;
 	}
 
+	public List<String> getInputList(final String operationName) throws DiscoveryException {
+		for (DiscoveredCategory category : getCategoryList()) {
+			for (DiscoveredService service : getServiceList(category.getName())) {
+				for (DiscoveredOperation op : getOperationList(service.getName())) {
+					if (operationName.equals(op.getName())) {
+						return getInputList(service.getName(), operationName);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public List<String> getInputVaultList(final String operationName) throws DiscoveryException {
+		for (DiscoveredCategory category : getCategoryList()) {
+			for (DiscoveredService service : getServiceList(category.getName())) {
+				for (DiscoveredOperation op : getOperationList(service.getName())) {
+					if (operationName.equals(op.getName())) {
+						return getInputVaultList(service.getName(), operationName);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public List<String> getOutputList(final String operationName) throws DiscoveryException {
+		for (DiscoveredCategory category : getCategoryList()) {
+			for (DiscoveredService service : getServiceList(category.getName())) {
+				for (DiscoveredOperation op : getOperationList(service.getName())) {
+					if (operationName.equals(op.getName())) {
+						return getOutputList(service.getName(), operationName);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public List<String> getOutputVaultList(final String operationName) throws DiscoveryException {
+		for (DiscoveredCategory category : getCategoryList()) {
+			for (DiscoveredService service : getServiceList(category.getName())) {
+				for (DiscoveredOperation op : getOperationList(service.getName())) {
+					if (operationName.equals(op.getName())) {
+						return getOutputVaultList(service.getName(), operationName);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Returns a list of outputs for a given service ID and a given operation
 	 * name.

@@ -376,6 +376,22 @@ public class DiscoveryServiceImpl implements Discovery {
 		return treeHandler.getOutputList(serviceID, operationName);
 	}
 
+	public List<String> getInputList(final String operationName) throws DiscoveryException {
+		return treeHandler.getInputList(operationName);
+	}
+
+	public List<String> getInputVaultList(final String operationName) throws DiscoveryException {
+		return treeHandler.getInputVaultList(operationName);
+	}
+
+	public List<String> getOutputList(final String operationName) throws DiscoveryException {
+		return treeHandler.getOutputList(operationName);
+	}
+
+	public List<String> getOutputVaultList(final String operationName) throws DiscoveryException {
+		return treeHandler.getOutputVaultList(operationName);
+	}
+
 	/* ************************************************************************
 	 * Old Methods
 	 */
