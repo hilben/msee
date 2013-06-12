@@ -54,6 +54,8 @@ public class DiscoveryServiceImpl implements Discovery {
 	private ServiceRepository serviceRepository = null;
 	private DiscoveryQueryBuilder discoveryQueryBuilder = null;
 
+	private DiscoveryTreeHandler treeHandler = null;
+
 	/**
 	 * The constructor takes the service repository as argument, which can not
 	 * be NULL.
@@ -258,6 +260,7 @@ public class DiscoveryServiceImpl implements Discovery {
 		Set<DiscoveredCategory> returnSet = new HashSet<DiscoveredCategory>();
 		try {
 			returnSet = treeBuilder.buildTree();
+			treeHandler = new DiscoveryTreeHandler(returnSet);
 		} catch (DiscoveryException e) {
 			LOGGER.catching(e);
 		}
@@ -296,28 +299,86 @@ public class DiscoveryServiceImpl implements Discovery {
 
 		rdfModel.close();
 
-		Iterator<DiscoveredCategory> itc = categorySet.iterator();
-		if (itc.hasNext()) {
-			while (itc.hasNext()) {
-				DiscoveredCategory category = itc.next();
-				Iterator<DiscoveredService> its = category.getServiceSet().iterator();
-				if (its.hasNext()) {
-					while (its.hasNext()) {
-						DiscoveredService service = its.next();
-						if (service.getName().equals(serviceID)) {
-							return service;
-						}
-					}
-				} else {
-					throw new DiscoveryException("Service not found");
-				}
-			}
-		} else {
-			throw new DiscoveryException("Service with ID: " + serviceID + " not found");
-		}
-		return null;
+		treeHandler = new DiscoveryTreeHandler(categorySet);
+		DiscoveredService service = treeHandler.getService(serviceID);
+		return (service != null) ? service : null;
 	}
 
+	/**
+	 * Returns the value of a QueryRow in the given column
+	 */
+	private String getValueOfQueryRow(QueryRow row, String column) {
+		return row.getValue(column).toString();
+	}
+
+	/**
+	 * Returns the service repository.
+	 * 
+	 * @return service repository
+	 */
+	public ServiceRepository getServiceRepository() {
+		return serviceRepository;
+	}
+
+	/**
+	 * Returns the number of registered services.
+	 */
+	public int countServices() {
+		Model rdfModel = serviceRepository.getModel();
+		rdfModel.open();
+		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
+		int count = (int) rdfModel.countStatements(pattern);
+		rdfModel.close();
+		return count;
+	}
+
+	/**
+	 * Returns the list of all service IDs.
+	 */
+	public List<String> getServiceList() {
+		List<String> returnList = new ArrayList<String>();
+		Model rdfModel = serviceRepository.getModel();
+		rdfModel.open();
+		String query = "select * where {?serviceID " + RDF.type + " " + MSM.Service + " . }";
+		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
+		ClosableIterator<QueryRow> results = resultTable.iterator();
+		while (results.hasNext()) {
+			QueryRow row = results.next();
+			String serviceID = row.getValue("serviceID").toString();
+			returnList.add(serviceID);
+		}
+		rdfModel.close();
+		return returnList;
+	}
+
+	/**
+	 * Returns the input list for a given service ID and a given operation name.
+	 * 
+	 * @param serviceID
+	 * @param operationName
+	 * @throws DiscoveryException
+	 */
+	public List<String> getInputList(String serviceID, String operationName)
+			throws DiscoveryException {
+		return treeHandler.getInputList(serviceID, operationName);
+	}
+
+	/**
+	 * Returns the output list for a given service ID and a given operation
+	 * name.
+	 * 
+	 * @param serviceID
+	 * @param operationName
+	 * @throws DiscoveryException
+	 */
+	public List<String> getOutputList(String serviceID, String operationName)
+			throws DiscoveryException {
+		return treeHandler.getOutputList(serviceID, operationName);
+	}
+
+	/* ************************************************************************
+	 * Old Methods
+	 */
 	@Deprecated
 	public Set<DiscoveredServiceHrests> discoverServices(String[] categoryList) {
 		Set<DiscoveredServiceHrests> returnSet = new HashSet<DiscoveredServiceHrests>();
@@ -381,52 +442,5 @@ public class DiscoveryServiceImpl implements Discovery {
 		rdfModel.close();
 
 		return returnSet;
-	}
-
-	/**
-	 * Returns the value of a QueryRow in the given column
-	 */
-	private String getValueOfQueryRow(QueryRow row, String column) {
-		return row.getValue(column).toString();
-	}
-
-	/**
-	 * Returns the service repository.
-	 * 
-	 * @return service repository
-	 */
-	public ServiceRepository getServiceRepository() {
-		return serviceRepository;
-	}
-
-	/**
-	 * Returns the number of registered services.
-	 */
-	public int countServices() {
-		Model rdfModel = serviceRepository.getModel();
-		rdfModel.open();
-		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
-		int count = (int) rdfModel.countStatements(pattern);
-		rdfModel.close();
-		return count;
-	}
-
-	/**
-	 * Returns the list of all service IDs.
-	 */
-	public List<String> getServiceList() {
-		List<String> returnList = new ArrayList<String>();
-		Model rdfModel = serviceRepository.getModel();
-		rdfModel.open();
-		String query = "select * where {?serviceID " + RDF.type + " " + MSM.Service + " . }";
-		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
-		ClosableIterator<QueryRow> results = resultTable.iterator();
-		while (results.hasNext()) {
-			QueryRow row = results.next();
-			String serviceID = row.getValue("serviceID").toString();
-			returnList.add(serviceID);
-		}
-		rdfModel.close();
-		return returnList;
 	}
 }

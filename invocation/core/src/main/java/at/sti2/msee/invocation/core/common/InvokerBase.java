@@ -18,7 +18,7 @@ import at.sti2.msee.monitoring.api.exception.MonitoringException;
  * @author Christian Mayr
  * 
  */
-public class InvokerBase {
+public abstract class InvokerBase {
 	protected Logger logger = Logger.getLogger(this.getClass());
 	protected MonitoringComponent monitoring = null;
 	MonitoringInvocationInstance invocationinstance = null;

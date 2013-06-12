@@ -42,3 +42,4 @@ SELECT * WHERE {
 		?operation msm:hasMethod ?operationMethod .
 	}
 }
+
