@@ -71,7 +71,6 @@ $(document).ready(function() {
 
         $('#rankingSetQoSParams').modal('hide');
         $('#rankingResultModal').modal();
-        // $('.rankedendpoints').load('/monitorings/getRankedEndpoints/ResponseTime,PayloadSizeResponse/0x4,7x1/' + checkedEndpoints);
 
         var paramKeys = [];
         var paramsValues = [];
@@ -83,8 +82,6 @@ $(document).ready(function() {
                 paramsValues.push($(this).attr("value"));
             }
         });
-
-
 
         st = $('textarea#servicetemplate').val();
         inst = $('textarea#serviceinstances').val();
@@ -99,7 +96,7 @@ $(document).ready(function() {
 
     });
 
-    $('#accordion').collapse().height('auto');
+    $('#accordion2').collapse().height('auto');
 
     $("#tree").dynatree({
 
@@ -107,7 +104,7 @@ $(document).ready(function() {
         selectMode : 2,
 
         title : "Lazy loading tree",
-    autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
+        autoFocus : false, // Set focus to first child, when expanding or lazy-loading.
 
         initAjax : {
             url : "/monitorings/getSubcategoriesAndServices/root",
@@ -131,10 +128,11 @@ $(document).ready(function() {
                 console.log("You activated " + node);
                 document.getElementById('statustext').textContent = "Loading monitoring data...";
                 currentSelectedEndpoint = node.data.title;
-                console.log("BBBBBBBBBB");
+
+
+                updateEndpointDetails();
 
                 updateGraph();
-
             },
 
             onLazyRead : function(node) {
@@ -149,6 +147,12 @@ $(document).ready(function() {
         });
 
     });
+
+    function updateEndpointDetails() {
+        console.info("updateEndpointDetails");
+         $('#servicedetails').load('/monitorings/getServiceDetails',{
+            currentSelectedEndpoint: currentSelectedEndpoint});
+    }
 
 
     function updateGraph() {

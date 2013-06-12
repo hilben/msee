@@ -16,14 +16,15 @@ SesaWebsite::Application.routes.draw do
   match "monitorings/index" => "monitorings#index"
   get "monitorings/index"
 
-  match "monitorings/showEndpointDetails/:qos/*url" => "monitorings#showEndpointDetails"
+  #match "monitorings/showEndpointDetails/:qos/*url" => "monitorings#showEndpointDetails"
 
+  match "monitorings/getServiceDetails" => "monitorings#getServiceDetails"
 
 
   match "monitorings/getGoogleGraphData" => "monitorings#getGoogleGraphData"
-  match "monitorings/getGoogleGraphData/:qos/*url" => "monitorings#getGoogleGraphData"
+  #match "monitorings/getGoogleGraphData/:qos/*url" => "monitorings#getGoogleGraphData"
 
-  match "monitorings/getRankedEndpoints/:qos/:values/*endpoints" => "monitorings#getRankedEndpoints"
+ # match "monitorings/getRankedEndpoints/:qos/:values/*endpoints" => "monitorings#getRankedEndpoints"
 
   match "monitorings/setSelectedQoSParams" => "monitorings#getQoSParamKeys"
   
@@ -47,19 +48,19 @@ SesaWebsite::Application.routes.draw do
   match "rules" => "rules#index"
   match "monitorings/options" => "monitorings/rulesoptions#index"
 
-  get "services/:id/update", :controller => "services", :action => "update"
-  get "services/:id/destroy", :controller => "services", :action => "destroy"
+  #get "services/:id/update", :controller => "services", :action => "update"
+  #get "services/:id/destroy", :controller => "services", :action => "destroy"
 
-  get "ontologies/:id/update", :controller => "ontologies", :action => "update"
-  get "ontologies/:id/destroy", :controller => "ontologies", :action => "destroy"
-  match "ontologies/add" => "ontologies#create"
+  #get "ontologies/:id/update", :controller => "ontologies", :action => "update"
+  #get "ontologies/:id/destroy", :controller => "ontologies", :action => "destroy"
+  #match "ontologies/add" => "ontologies#create"
 
-  get "services/:id/update", :controller => "services", :action => "update"
-  get "services/:id/destroy", :controller => "services", :action => "destroy"
+  #get "services/:id/update", :controller => "services", :action => "update"
+  #get "services/:id/destroy", :controller => "services", :action => "destroy"
 
-  get "ontologies/:id/update", :controller => "ontologies", :action => "update"
-  get "ontologies/:id/destroy", :controller => "ontologies", :action => "destroy"
-  match "ontologies/add" => "ontologies#create"
+  #get "ontologies/:id/update", :controller => "ontologies", :action => "update"
+  #get "ontologies/:id/destroy", :controller => "ontologies", :action => "destroy"
+  #match "ontologies/add" => "ontologies#create"
 
   match "faq" => "faq#index"
   get "faq/index"

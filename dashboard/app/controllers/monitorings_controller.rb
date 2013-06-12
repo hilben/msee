@@ -35,10 +35,8 @@ class MonitoringsController < ApplicationController
 
   def index
     # getCategoriesAndEndpoints()
-
-    #runInvocation()
+    runInvocation()
     runRegistration()
-    #RegistrationController.index
 
     respond_to do |format|
       format.html # index.html.erb
@@ -86,59 +84,18 @@ class MonitoringsController < ApplicationController
     render :partial => "monitorings/rulesoptions"
   end
 
-  def getRankedEndpoints
-    @errors = "no erros"
 
-    #soap call to the server
-    client = Savon::Client.new(@@ranking_url)
+  def getServiceDetails
+    @endpointdetails = params[:currentSelectedEndpoint]
 
-    logger.info("qos: #{params[:qos]}  values: #{params[:values]} endpoints: #{params[:endpoints]} ");
+    @serviceinputs = @endpointdetails+"#INPUT"
+    @servicefaults= @endpointdetails+"#INPUT"
+    @serviceoutputs = @endpointdetails+"#INPUT"
 
-    @qos = params[:qos].split(',').to_a
-    @values = params[:values].split(',')
-    @endpoints = params[:endpoints].split(',')
 
-    for x in @values do
-      x.to_s["x"]="."
-      x = x.to_f
-    end
+    logger.info "#{@endpointdetails}"
 
-    q = @qos
-    v = @values
-    e = @endpoints
-    z = @qos
-
-    logger.info("qos: #{@qos}  values: #{@values} endpoints: #{@endpoints} ");
-    logger.info("qos: #{@qos.class}  values: #{@values.class} endpoints: #{@endpoints.class} z: #{z}");
-    #TODO: arg0 should be renamed see soap service in backend
-    begin
-      # responseclient = client.request :ns2, :getQoSRankedEndpoints, arg0: @qos, arg1: @values, arg2: @endpoints
-      responseclient = client.request :ns2, :getQoSRankedEndpoints do
-        soap.body = {
-          "QoSParamKeys" => q,
-          "preferenceValues" => v,
-          "endpoints" => e,
-        }
-      end
-
-      data = responseclient.to_hash.first
-
-      @results = data[1][:return]
-
-      logger.info("Data: #{data}")
-
-      if responseclient.success?
-        logger.info("Success!")
-      end
-
-    rescue Savon::SOAP::Fault => fault
-      @errors = fault.to_s
-      logger.info("FAULT: #{fault.to_s}")
-    end
-
-    #
-
-    render :partial => "monitorings/rankings"
+    render :partial => "monitorings/servicedetails"
   end
 
 
@@ -348,7 +305,7 @@ class MonitoringsController < ApplicationController
     @values = params[:values]
     @serviceinstances = params[:serviceinstances]
     @servicetemplate  = params[:servicetemplates]
-    
+
     logger.info "selected: #{@selectedendpoints} keys: #{@keys} values: #{@values} inst: #{@serviceinstances} templ: #{@servicetemplate}"
 
     render :partial => "monitorings/rankings"
