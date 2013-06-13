@@ -61,7 +61,8 @@ public class InvokerSOAP extends InvokerBase {
 			Options options = new Options();
 			options.setTo(targetEPR);
 
-			// options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
+			// options.setTransportInProtocol(org.apache.axis2.namespace.Constants.URI_WSDL11_SOAP);
+			// options.setTransportInProtocol(org.apache.axis2.Constants.TRANSPORT_HTTP);
 
 			startMonitoring();
 
@@ -69,8 +70,11 @@ public class InvokerSOAP extends InvokerBase {
 			sender.setOptions(options);
 			OMElement result = sender.sendReceive(payload);
 
-			String response = result.getFirstElement().getText();
-			results = response;
+			if (result.getFirstElement() == null) {
+				results = result.getText();
+			} else {
+				results = result.getFirstElement().getText();
+			}
 
 			successfulInvocation(startTime, requestMessageSize, results);
 		} catch (org.apache.axis2.AxisFault | MonitoringException e) {

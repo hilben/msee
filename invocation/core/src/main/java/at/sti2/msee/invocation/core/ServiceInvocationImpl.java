@@ -136,10 +136,10 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 
 		// not WSDL SOAP call - REST or Other
 		String address = discoveredOperation.getAddress();
-		if (address.contains("^^")) {
-			address = address.substring(0, address.indexOf("^^"));
-		}
 		if (address != null) {
+			if (address.contains("^^")) {
+				address = address.substring(0, address.indexOf("^^"));
+			}
 			InvokerREST invokerRest = new InvokerREST(monitoring);
 			return invokerRest.invokeREST(serviceID, address, discoveredOperation.getMethod(),
 					parameterMap);

@@ -24,7 +24,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 	Logger LOGGER = Logger.getLogger(this.getClass().getCanonicalName());
 
 	private ServiceRepository serviceRepository = null;
-			
+
 	public ServiceRegistrationImpl(ServiceRepository serviceRepository) {
 		this.serviceRepository = serviceRepository;
 		try {
@@ -33,35 +33,33 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 			LOGGER.error(e.getMessage() + Arrays.toString(e.getStackTrace()));
 		}
 	}
-	
+
 	@Override
-	public String registerInContext(String serviceDescriptionURL, String contextURI) throws ServiceRegistrationException {
-		
+	public String registerInContext(String serviceDescriptionURL, String contextURI)
+			throws ServiceRegistrationException {
+
 		URL descriptionURL = this.getServiceDescriptionURL(serviceDescriptionURL);
 		ServiceModelFormat format = this.getServiceDescriptionFormat(descriptionURL);
-		
+
 		String serviceURI = register(descriptionURL, format, contextURI);
-			
+
 		return serviceURI;
 	}
 
 	@Override
 	public String register(String serviceDescriptionURL) throws ServiceRegistrationException {
-		return this.registerInContext(serviceDescriptionURL,null);			
+		return this.registerInContext(serviceDescriptionURL, null);
 	}
 
-	
 	private String register(URL descriptionURL, ServiceModelFormat format, String contextURI)
 			throws ServiceRegistrationException {
-		try 
-		{
+		try {
 			Service2RDFTransformer transformer = Service2RDFTransformerFactory.newInstance(format);
-			String msmRDF = new MSMChecker(transformer.toMSM(descriptionURL)).check();		
-			
+			String msmRDF = new MSMChecker(transformer.toMSM(descriptionURL)).check();
+
 			String serviceURI = this.serviceRepository.insert(msmRDF, contextURI);
 			return serviceURI;
-		} 
-		catch (ModelRuntimeException | IOException | Service2RDFTransformerException e) {
+		} catch (ModelRuntimeException | IOException | Service2RDFTransformerException e) {
 			throw new ServiceRegistrationException(e);
 		}
 	}
@@ -70,13 +68,15 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 			throws ServiceRegistrationException {
 		ServiceModelFormatDetector detector = new ServiceModelFormatDetector();
 		ServiceModelFormat format = detector.detect(descriptionURL);
-		if (format == ServiceModelFormat.UNKNOWN){
-			throw new ServiceRegistrationException("Service format not recognized");
+		if (format == ServiceModelFormat.UNKNOWN) {
+			throw new ServiceRegistrationException("Service format not recognized - Check "
+					+ "that xmlns:sawsdl=\"http://www.w3.org/ns/sawsdl\" is contained");
 		}
 		return format;
-	}	
+	}
 
-	private URL getServiceDescriptionURL(String serviceDescriptionURL) throws ServiceRegistrationException {
+	private URL getServiceDescriptionURL(String serviceDescriptionURL)
+			throws ServiceRegistrationException {
 		try {
 			return new URL(serviceDescriptionURL);
 		} catch (MalformedURLException e) {
@@ -88,7 +88,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 	public String deregister(String serviceURI) throws ServiceRegistrationException {
 		throw new ServiceRegistrationException("Not implemented");
 	}
-	
+
 	@Override
 	public String update(String serviceURI, String serviceURL) throws ServiceRegistrationException {
 		throw new ServiceRegistrationException("Not implemented");
