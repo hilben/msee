@@ -37,6 +37,7 @@ import javax.wsdl.WSDLElement;
 import javax.wsdl.WSDLException;
 import javax.wsdl.extensions.schema.Schema;
 import javax.wsdl.extensions.schema.SchemaImport;
+import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
@@ -45,12 +46,14 @@ import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.Syntax;
 import org.ontoware.rdf2go.model.node.URI;
+import org.ontoware.rdf2go.model.node.impl.URIImpl;
 import org.ontoware.rdf2go.vocabulary.RDF;
 import org.ontoware.rdf2go.vocabulary.RDFS;
 import org.xml.sax.InputSource;
 
 import uk.ac.open.kmi.iserve.importer.sawsdl.schema.Element;
 import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
+import uk.ac.open.kmi.iserve.commons.vocabulary.WSDL;
 import uk.ac.open.kmi.iserve.importer.sawsdl.schema.SchemaMap;
 import uk.ac.open.kmi.iserve.importer.sawsdl.schema.SchemaParser;
 import uk.ac.open.kmi.iserve.importer.sawsdl.util.ModelReferenceExtractor;
@@ -80,7 +83,7 @@ public class Sawsdl11Transformer {
 
 		processServices(definition.getServices(), tempModel);
 		String result = tempModel.serialize(this.defaultSyntax);
-		result = result.replaceAll(getBaseURI(), "#");
+		// result = result.replaceAll(getBaseURI(), "#");  // chrmay: fix - uri was wrong 13.6.2013
 		tempModel.close();
 		tempModel = null;
 //		System.out.println(result);
@@ -168,7 +171,18 @@ public class Sawsdl11Transformer {
 		while (iter.hasNext()) {
 			String key = iter.next();
 			Port port = ports.get(key);
-			// TODO: hasAddress
+			// hasAddress and namespache - chrmay
+			if(port.getExtensibilityElements().size()>0){
+				// address in wsdl1.1 ~~ endpoint in wsdl2.0
+				String address = ((SOAPAddress) port.getExtensibilityElements().get(0)).getLocationURI();
+				tempModel.addStatement(serviceUri, RDF.type, WSDL.Service);
+				tempModel.addStatement(serviceUri, WSDL.endpoint, new URIImpl(address));
+				tempModel.addStatement(new URIImpl(address), RDF.type, WSDL.Endpoint);
+				tempModel.addStatement(new URIImpl(address), WSDL.address, address);
+				String serviceNS = service.getQName().getNamespaceURI();
+				tempModel.addStatement(serviceUri, WSDL.namespace, serviceNS);
+			}
+			
 			PortType portType = port.getBinding().getPortType();
 			ModelReferenceExtractor.extractModelReferences((WSDLElement) portType, tempModel, serviceUri);
 			processOperations(portType.getOperations(), tempModel, serviceUri);
