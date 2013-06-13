@@ -6,7 +6,15 @@ import java.net.URL;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
+import org.ontoware.aifbcommons.collection.ClosableIterable;
+import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
+import org.ontoware.rdf2go.model.Model;
+import org.ontoware.rdf2go.model.QueryRow;
+import org.ontoware.rdf2go.model.Statement;
+import org.ontoware.rdf2go.model.impl.StatementImpl;
+import org.ontoware.rdf2go.model.node.URI;
+import org.ontoware.rdf2go.model.node.impl.URIImpl;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.model.ServiceModelFormat;
@@ -87,6 +95,18 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 	@Override
 	public String deregister(String serviceURI) throws ServiceRegistrationException {
 		throw new ServiceRegistrationException("Not implemented");
+//		Model rdfModel = this.serviceRepository.getModel();
+//		rdfModel.open();
+//		String queryString = "select * from <"+serviceURI+"> where {?s ?p ?o}";
+//		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(queryString);
+//		ClosableIterator<QueryRow> results = resultTable.iterator();
+//		while (results.hasNext()){
+//			QueryRow row = results.next();
+//			Statement statement = new StatementImpl(new URIImpl(serviceURI), row.getValue("s").asResource(), row.getValue("p").asURI(), row.getValue("o"));
+//			rdfModel.removeStatement(statement);
+//		}
+//		rdfModel.close();
+//		return serviceURI;
 	}
 
 	@Override
