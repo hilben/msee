@@ -12,9 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap/bootstrap-modal
-//= require bootstrap/bootstrap-dropdown
-//= require bootstrap/bootstrap-alert
+//= require bootstrap/bootstrap.min
+
 //= require prettify/prettify
 //= require star-rating/jquery.rating
 

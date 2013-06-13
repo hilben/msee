@@ -1,7 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 //= require autocomplete/jquery.fcbkcomplete.js
-//= require bootstrap/bootstrap-collapse
 
 $(document).ready(function(){
     $("#collapse_discover").collapse('show');    

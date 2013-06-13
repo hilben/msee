@@ -22,6 +22,7 @@ java_import Java::at.sti2.msee.invocation.core.ServiceInvocationImpl
 java_import Java::at.sti2.msee.monitoring.api.qos.QoSType
 java_import Java::at.sti2.msee.monitoring.core.chart.GoogleChart
 java_import Java::at.sti2.msee.monitoring.core.MonitoringComponentImpl
+java_import Java::at.sti2.msee.monitoring.core.common.MonitoringConfig
 
 
 # Retrieve a JSON Resource
@@ -91,6 +92,22 @@ class MonitoringsController < ApplicationController
     @serviceinputs = @endpointdetails+"#INPUT"
     @servicefaults= @endpointdetails+"#INPUT"
     @serviceoutputs = @endpointdetails+"#INPUT"
+
+    serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
+    repositoryId = "msee-test"
+
+    repositoryConfiguration = ServiceRepositoryConfiguration.new
+    repositoryConfiguration.setRepositoryID(repositoryId)
+    repositoryConfiguration.setServerEndpoint(serverEndpoint)
+
+    serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
+    discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
+
+
+    @serviceinputs = discovery.getInputList(@endpointdetails)
+    discovery.getInputVaultList(@endpointdetails)
+    @serviceoutputs = discovery.getOutputList(@endpointdetails)
+    discovery.getOutputVaultList(@endpointdetails)
 
 
     logger.info "#{@endpointdetails}"
@@ -178,7 +195,7 @@ class MonitoringsController < ApplicationController
       listEndpoints = Java::JavaUtil::ArrayList.new
 
       url.each do |endpointUrl|
-        endpointUrl = "http://" + endpointUrl[6,endpointUrl.length]
+        endpointUrl = "http:/" + endpointUrl[6,endpointUrl.length]
         listEndpoints << endpointUrl
       end
 
@@ -192,6 +209,7 @@ class MonitoringsController < ApplicationController
       logger.info "getGoogleGraphData listParameters: #{listParameters}"
 
 
+      logger.info "#{MonitoringConfig.getConfig().toString}"
 
       jsonData = chart.asJson(listEndpoints,listParameters)
 
