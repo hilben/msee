@@ -92,13 +92,13 @@
 		sawsdl:modelReference="http://msee.sti2.at/categories#business">
 		<wsdl2:endpoint name="HotelServiceHttpSoap12Endpoint"
 			binding="tns:HotelServiceSoap12Binding"
-			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap12Endpoint/" />
+			address="http://sesa.sti2.at:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap12Endpoint/" />
 		<wsdl2:endpoint name="HotelServiceHttpSoap11Endpoint"
 			binding="tns:HotelServiceSoap11Binding"
-			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap11Endpoint/" />
+			address="http://sesa.sti2.at:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpSoap11Endpoint/" />
 		<wsdl2:endpoint name="HotelServiceHttpEndpoint"
 			binding="tns:HotelServiceHttpBinding"
-			address="http://192.168.65.147:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpEndpoint/" />
+			address="http://sesa.sti2.at:8080/HotelWS-1.0.0-SNAPSHOT/services/HotelService.HotelServiceHttpEndpoint/" />
 	</wsdl2:service>
 </wsdl2:description>
 
