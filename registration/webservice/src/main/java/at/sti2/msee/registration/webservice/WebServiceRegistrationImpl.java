@@ -35,7 +35,7 @@ import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
  * address of the WSDL document defining the Web service.
  **/
 
-@WebService(targetNamespace = "http://msee.sti2.at/delivery/", endpointInterface = "at.sti2.msee.registration.api.ServiceRegistration", portName = "RegistrationServicePort", serviceName = "RegistrationService")
+@WebService(targetNamespace = "http://msee.sti2.at/delivery/registration/", endpointInterface = "at.sti2.msee.registration.api.ServiceRegistration", portName = "RegistrationServicePort", serviceName = "service")
 public class WebServiceRegistrationImpl implements ServiceRegistration {
 	ServiceRegistration registrationDelegate;
 
@@ -53,8 +53,8 @@ public class WebServiceRegistrationImpl implements ServiceRegistration {
 	}
 
 	private void loadConfiguration(Configuration configuration) {
-		String repositoryId = configuration.getSesameReposID();
-		String serverEndpoint = configuration.getSesameEndpoint();
+		String repositoryId = "msee"; //configuration.getSesameReposID();
+		String serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"; //configuration.getSesameEndpoint();
 
 		ServiceRegistrationConfiguration registrationConfiguration = new ServiceRegistrationConfiguration();
 

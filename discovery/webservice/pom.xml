@@ -14,29 +14,26 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Generate WSDL files from annotations in the implementation -->
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-java2wsdl-maven-plugin</artifactId>
+				<version>1.6.2</version>
 				<executions>
 					<execution>
-						<id>install</id>
-						<phase>install</phase>
-						<configuration>
-							<className>at.sti2.msee.discovery.api.webservice.Discovery</className>
-							<outputFile>${project.build.directory}/../src/main/resources/DiscoveryService.wsdl</outputFile>
-							<genWsdl>true</genWsdl>
-
-							<!-- <genClient>true</genClient> -->
-							<verbose>false</verbose>
-						</configuration>
+						<phase>process-classes</phase>
 						<goals>
-							<goal>java2ws</goal>
+							<goal>java2wsdl</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<className>at.sti2.msee.discovery.webservice.WebServiceDiscoveryImpl</className>
+					<outputFileName>${project.build.directory}/discovery.wsdl</outputFileName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
@@ -82,24 +79,18 @@
 			<artifactId>axis</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.axis2</groupId> -->
-		<!-- <artifactId>axis2</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.axis2</groupIdoupId> -->
-		<!-- <artifactId>XmlSchema</artifactId> -->
-		<!-- </exclusion> -->
-		<!-- </exclusions> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.axis2</groupId> -->
-		<!-- <artifactId>axis2-transport-local</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.axis2</groupId> -->
-		<!-- <artifactId>axis2-jaxws</artifactId> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-local</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-jaxws</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-api</artifactId>
@@ -200,17 +191,16 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle</artifactId>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.cxf</groupId> -->
+		<!-- <artifactId>cxf-bundle</artifactId> -->
+		<!-- </dependency> -->
 
-		<!-- Even though this is dependency of cxf it must be added explicitly 
-			for jetty (maven problem) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework</groupId> -->
+		<!-- <artifactId>spring-web</artifactId> -->
+		<!-- </dependency> -->
 
 	</dependencies>
 

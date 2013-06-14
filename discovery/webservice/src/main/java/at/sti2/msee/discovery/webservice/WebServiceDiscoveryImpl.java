@@ -37,7 +37,7 @@ import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
 /**
  * @author Alex Oberhauser
  */
-@WebService(serviceName = "discovery", targetNamespace = "http://msee.sti2.at/services/", endpointInterface = "at.sti2.msee.discovery.api.webservice.Discovery")
+@WebService(targetNamespace = "http://msee.sti2.at/delivery/discovery/", endpointInterface = "at.sti2.msee.discovery.api.webservice.Discovery", portName = "DiscoveryServicePort", serviceName = "service")
 public class WebServiceDiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(WebServiceDiscoveryImpl.class
 			.getName());
