@@ -66,6 +66,8 @@ public class DiscoveryServiceImpl implements Discovery {
 		if (serviceRepository == null) {
 			throw new IllegalArgumentException("Service repository cannot be null");
 		}
+		LOGGER.info(serviceRepository.getServiceRepositoryConfiguration().getRepositoryID() + " - "
+				+ serviceRepository.getServiceRepositoryConfiguration().getServerEndpoint());
 		this.serviceRepository = serviceRepository;
 		try {
 			this.serviceRepository.init();

@@ -33,11 +33,23 @@ public class RepositoryConfig {
 	}
 
 	public String getSesameEndpoint() {
-		return this.properties.getProperty(sesameEndpointName);
+		String endpoint = this.properties.getProperty(sesameEndpointName);
+		if (endpoint == null) {
+			throw new IllegalArgumentException(endpoint);
+		}
+		return endpoint;
 	}
 
 	public String getSesameRepositoryID() {
-		return this.properties.getProperty(sesameRepositoryIDName);
+		String repository = this.properties.getProperty("default.sesame.repository.name");
+		if (repository == null) {
+			repository = this.properties.getProperty(sesameRepositoryIDName);
+		}
+		if (repository == null) {
+			throw new IllegalArgumentException(
+					"\"default.sesame.repository.name\" or \"discovery.sesame.reposid\" not set");
+		}
+		return repository;
 	}
 
 }

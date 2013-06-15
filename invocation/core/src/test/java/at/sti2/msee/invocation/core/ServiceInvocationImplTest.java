@@ -1,7 +1,6 @@
 package at.sti2.msee.invocation.core;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -73,7 +72,7 @@ public class ServiceInvocationImplTest {
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
 		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID1), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID1, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
@@ -84,7 +83,7 @@ public class ServiceInvocationImplTest {
 		String operation = "getHotelAddress";
 		String inputVariables = "<parameters>" + "<hotelID>" + hotelID + "</hotelID>"
 				+ "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID2, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
@@ -95,7 +94,7 @@ public class ServiceInvocationImplTest {
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
 		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID3), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID3, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
@@ -105,7 +104,7 @@ public class ServiceInvocationImplTest {
 		String expected = "\n      Hello from server - herongyang.com.\n    ";
 		String operation = "Hello";
 		String inputVariables = "<parameters>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID4), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID4, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 

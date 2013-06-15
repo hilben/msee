@@ -52,10 +52,14 @@ public class ParameterParser {
 			NodeList root = doc.getChildNodes();
 
 			Node comp = getNode("parameters", root);
-			NodeList params = comp.getChildNodes();
-			for (int i = 0; i < params.getLength(); i++) {
-				Node param = params.item(i);
-				parameterMap.put(param.getNodeName(), param.getTextContent());
+			if (comp != null) {
+				NodeList params = comp.getChildNodes();
+				for (int i = 0; i < params.getLength(); i++) {
+					Node param = params.item(i);
+					parameterMap.put(param.getNodeName(), param.getTextContent());
+				}
+			} else {
+				logger.warn("no parameters set - are they not needed? - Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
 			}
 			return parameterMap;
 		} catch (SAXException | IOException | NullPointerException e) {

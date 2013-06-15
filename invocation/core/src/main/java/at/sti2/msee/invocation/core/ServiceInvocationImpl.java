@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -121,11 +122,17 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws ServiceInvokerException
 	 */
 	@Override
-	public String invoke(URL serviceID, String operation, String inputData)
+	public String invoke(String serviceIDURL, String operation, String inputData)
 			throws ServiceInvokerException {
 		if (serviceRepository == null)
 			throw new ServiceInvokerException("Repository not set by constructor");
 
+		URL serviceID = null;
+		try {
+			serviceID = new URL(serviceIDURL);
+		} catch (MalformedURLException e) {
+			throw new ServiceInvokerException("URL is not correct: " + serviceIDURL);
+		}
 		prepareDataFromDiscovery(serviceID, operation);
 
 		Map<String, String> parameterMap = new ParameterParser(inputData).parse();
@@ -184,7 +191,9 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 						+ serviceID + " of service " + discoveredService.getName());
 			}
 		} catch (DiscoveryException e) {
-			throw new ServiceInvokerException("Discovery not possible", e);
+			logger.error(e.getLocalizedMessage() + " " + Arrays.toString(e.getStackTrace()));
+			throw new ServiceInvokerException("Discovery not possible: " + e.getLocalizedMessage(),
+					e);
 		}
 
 	}
@@ -223,8 +232,14 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 */
 	@Override
 	@Deprecated
-	public String invokeSOAP(URL webserviceURL, String soapMessage) throws ServiceInvokerException {
-
+	public String invokeSOAP(String serviceIDURL, String soapMessage)
+			throws ServiceInvokerException {
+		URL webserviceURL = null;
+		try {
+			webserviceURL = new URL(serviceIDURL);
+		} catch (MalformedURLException e1) {
+			throw new ServiceInvokerException("URL is not correct: " + serviceIDURL);
+		}
 		// Setup monitoring data and prepare stuff
 		long requestMessageSize = soapMessage.getBytes().length;
 		long startTime = System.currentTimeMillis();

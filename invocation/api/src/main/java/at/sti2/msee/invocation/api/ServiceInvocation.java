@@ -1,7 +1,5 @@
 package at.sti2.msee.invocation.api;
 
-import java.net.URL;
-
 import javax.xml.soap.SOAPMessage;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
@@ -26,7 +24,7 @@ public interface ServiceInvocation {
 	 * @return result of the invocation
 	 * @throws ServiceInvokerException
 	 */
-	public String invoke(URL serviceID, String operation, String inputData)
+	public String invoke(String serviceIDURL, String operation, String inputData)
 			throws ServiceInvokerException;
 
 	/**
@@ -38,7 +36,7 @@ public interface ServiceInvocation {
 	 * @throws ServiceInvokerException
 	 */
 	@Deprecated
-	public String invokeSOAP(URL serviceID, /* op ? */
+	public String invokeSOAP(String serviceIDURL, /* op ? */
 			String soapMessage) throws ServiceInvokerException;
 
 }
