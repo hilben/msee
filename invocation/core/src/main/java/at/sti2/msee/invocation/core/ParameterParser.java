@@ -50,6 +50,11 @@ public class ParameterParser {
 			Document doc = parser.getDocument();
 
 			NodeList root = doc.getChildNodes();
+			if (root.getLength() == 0) {
+				logger.warn("no parameters set - are they not needed? - "
+						+ "Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
+				return parameterMap;
+			}
 
 			Node comp = getNode("parameters", root);
 			if (comp != null) {
@@ -59,7 +64,8 @@ public class ParameterParser {
 					parameterMap.put(param.getNodeName(), param.getTextContent());
 				}
 			} else {
-				logger.warn("no parameters set - are they not needed? - Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
+				logger.warn("no parameters set - are they not needed? - "
+						+ "Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
 			}
 			return parameterMap;
 		} catch (SAXException | IOException | NullPointerException e) {
@@ -79,9 +85,9 @@ public class ParameterParser {
 	 * @return {@link Node}
 	 */
 	private Node getNode(String tagName, NodeList nodes) {
-		for (int x = 0; x < nodes.getLength(); x++) {
-			Node node = nodes.item(x);
-			if (node.getNodeName().equalsIgnoreCase(tagName)) {
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node.getNodeName().equals(tagName)) {
 				return node;
 			}
 		}
