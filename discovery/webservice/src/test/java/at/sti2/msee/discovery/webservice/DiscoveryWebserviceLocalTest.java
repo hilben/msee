@@ -69,14 +69,14 @@ public class DiscoveryWebserviceLocalTest {
 
 	@Test
 	public void test() {
-		String endpoint = "http://localhost:" + webPort + "/service";
+		String endpoint = "http://localhost:" + webPort + "/services/service";
 		Service service = new Service();
 		Call call = null;
 
 		try {
 			call = (org.apache.axis.client.Call) service.createCall();
 			call.setTargetEndpointAddress(new java.net.URL(endpoint));
-			call.setOperationName(new QName("http://msee.sti2.at/services/", "discover"));
+			call.setOperationName(new QName("http://msee.sti2.at/delivery/discovery/", "discover"));
 			call.addParameter("categoryList", org.apache.axis.Constants.XSD_STRING,
 					javax.xml.rpc.ParameterMode.IN);
 			call.setReturnType(org.apache.axis.Constants.XSD_STRING);
