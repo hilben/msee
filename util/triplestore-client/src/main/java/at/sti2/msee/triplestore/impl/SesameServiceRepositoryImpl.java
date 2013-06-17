@@ -47,7 +47,7 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 
 		if (configuration.getServerEndpoint() == null) {
 			this.repository = new SailRepository(new MSEEMemoryStore());
-			LOGGER.warning("caution: in-memory respository was set");
+			LOGGER.info("In-memory respository was set");
 		} else {
 			this.repository = new HTTPRepository(
 					configuration.getServerEndpoint(),

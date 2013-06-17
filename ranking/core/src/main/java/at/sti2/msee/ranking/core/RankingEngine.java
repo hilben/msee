@@ -16,7 +16,6 @@ import at.sti2.msee.ranking.api.QoSRankingPreferencesTemplate;
 import at.sti2.msee.ranking.api.exception.RankingException;
 import at.sti2.msee.ranking.repository.RankingRepositoryHandler;
 import eu.soa4all.ranking.rules.RulesRanking;
-import eu.soa4all.ranking.wsmolite.RulesRankingTest;
 import eu.soa4all.ranking.wsmolite.WSMOLiteRDFReader;
 import eu.soa4all.validation.RPC.MSMService;
 import eu.soa4all.validation.RPC.Service;
@@ -96,7 +95,7 @@ public class RankingEngine {
 				throw new RankingException(e);
 			}
 
-			engine.addService(service, RulesRankingTest.class.getResource(s));
+			engine.addService(service, RankingEngine.class.getResource(s));
 		}
 		System.out.println(engine.rank());
 
