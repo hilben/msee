@@ -6,7 +6,7 @@ PREFIX wsdl: <http://www.w3.org/ns/wsdl-rdf#>
 PREFIX msee: <http://msee.sti2.at/properties#> 
 PREFIX hr: <http://www.wsmo.org/ns/hrests#> 
 
-# v1.2
+# v1.3
 
 CONSTRUCT {
 	?serviceID 
@@ -82,9 +82,12 @@ CONSTRUCT {
 
 } WHERE { 
 	?serviceID rdf:type msm:Service . 
-	{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .} 
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
+	FILTER (
+		?category = <http://msee.sti2.at/categories#REST_WEB_SERVICE> 
+	)
+	
 	OPTIONAL{
 		?serviceID rdfs:label ?ServiceLabel .
 	}
