@@ -26,14 +26,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Ignore;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.RepositoryException;
 
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
-import at.sti2.msee.monitoring.api.MonitoringInvocationState;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailability;
 import at.sti2.msee.monitoring.api.availability.MonitoringWebserviceAvailabilityState;
 import at.sti2.msee.monitoring.api.exception.MonitoringException;
@@ -41,7 +39,6 @@ import at.sti2.msee.monitoring.api.exception.MonitoringNoDataStoredException;
 import at.sti2.msee.monitoring.api.qos.QoSType;
 import at.sti2.msee.monitoring.api.qos.QoSParameter;
 import at.sti2.msee.monitoring.core.availability.MonitoringAvailabilityCheckerHandlerImpl;
-import at.sti2.msee.monitoring.core.common.MonitoringConfig;
 import at.sti2.msee.monitoring.core.repository.MonitoringRepositoryHandler;
 
 /**
