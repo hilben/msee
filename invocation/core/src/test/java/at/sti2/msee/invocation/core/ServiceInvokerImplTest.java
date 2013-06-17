@@ -65,7 +65,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 	@Test
 	public final void testInvokeTestWebService2() {
-		String endpoint = "http://msee.sti2.at/discovery-webservice/service";
+		String endpoint = "http://msee.sti2.at:8080/discovery-webservice/services/service";
 		String soapFile = "/test_discover.soap";
 
 		FileInputStream fis = null;

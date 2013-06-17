@@ -1,21 +1,22 @@
 package at.sti2.msee.registration.core;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.ontoware.aifbcommons.collection.ClosableIterable;
-import org.ontoware.aifbcommons.collection.ClosableIterator;
+import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
 import org.ontoware.rdf2go.model.Model;
-import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
-import org.ontoware.rdf2go.model.impl.StatementImpl;
-import org.ontoware.rdf2go.model.node.URI;
-import org.ontoware.rdf2go.model.node.impl.URIImpl;
+import org.ontoware.rdf2go.model.node.Variable;
+import org.ontoware.rdf2go.util.RDFTool;
+import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.repository.RepositoryException;
+
+import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
 
 import at.sti2.msee.model.ServiceModelFormat;
 import at.sti2.msee.model.ServiceModelFormatDetector;
@@ -64,12 +65,35 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 		try {
 			Service2RDFTransformer transformer = Service2RDFTransformerFactory.newInstance(format);
 			String msmRDF = new MSMChecker(transformer.toMSM(descriptionURL)).check();
+			
+			if(contextURI == null){
+				contextURI = findContextURI(msmRDF);
+			}
 
 			String serviceURI = this.serviceRepository.insert(msmRDF, contextURI);
 			return serviceURI;
 		} catch (ModelRuntimeException | IOException | Service2RDFTransformerException e) {
 			throw new ServiceRegistrationException(e);
 		}
+	}
+
+	/**
+	 * Returns the service URI for a given rdf model.
+	 * 
+	 * @param msmRDF
+	 * @throws ModelRuntimeException
+	 * @throws IOException
+	 */
+	private String findContextURI(String msmRDF) throws ModelRuntimeException, IOException {
+		Model msmModel = RDF2Go.getModelFactory().createModel();
+		msmModel.open();
+		StringReader reader = new StringReader(msmRDF);
+		msmModel.readFrom(reader);
+		Statement serviceStatement = RDFTool.findStatement(msmModel, Variable.ANY, RDF.type,
+				MSM.Service);
+		String contextURI = serviceStatement.getSubject().toString();
+		msmModel.close();
+		return contextURI;
 	}
 
 	private ServiceModelFormat getServiceDescriptionFormat(URL descriptionURL)
@@ -94,23 +118,17 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 
 	@Override
 	public String deregister(String serviceURI) throws ServiceRegistrationException {
-		throw new ServiceRegistrationException("Not implemented");
-//		Model rdfModel = this.serviceRepository.getModel();
-//		rdfModel.open();
-//		String queryString = "select * from <"+serviceURI+"> where {?s ?p ?o}";
-//		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(queryString);
-//		ClosableIterator<QueryRow> results = resultTable.iterator();
-//		while (results.hasNext()){
-//			QueryRow row = results.next();
-//			Statement statement = new StatementImpl(new URIImpl(serviceURI), row.getValue("s").asResource(), row.getValue("p").asURI(), row.getValue("o"));
-//			rdfModel.removeStatement(statement);
-//		}
-//		rdfModel.close();
-//		return serviceURI;
+		Model contextModel = serviceRepository.getModel(serviceURI);
+		contextModel.open();
+		contextModel.removeAll();
+		contextModel.close();
+		return serviceURI;
+		
 	}
 
 	@Override
 	public String update(String serviceURI, String serviceURL) throws ServiceRegistrationException {
-		throw new ServiceRegistrationException("Not implemented");
+		deregister(serviceURI);
+		return register(serviceURL);
 	}
 }

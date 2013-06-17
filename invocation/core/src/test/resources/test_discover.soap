@@ -1,4 +1,4 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://sesa.sti2.at/services/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://msee.sti2.at/delivery/discovery/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:discover>

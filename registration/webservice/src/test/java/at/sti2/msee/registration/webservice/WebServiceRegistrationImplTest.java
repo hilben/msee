@@ -38,8 +38,8 @@ public class WebServiceRegistrationImplTest extends EasyMockSupport {
 	{
 		address = "http://localhost:9000/services/WebServiceRegistration";
 		wsdlURL = new URL(address + "?wsdl");
-		serviceName = new QName("http://msee.sti2.at/delivery/", "RegistrationService");
-		portName = new QName("http://msee.sti2.at/delivery/", "RegistrationServicePort");	
+		serviceName = new QName("http://msee.sti2.at/delivery/registration/", "service");
+		portName = new QName("http://msee.sti2.at/delivery/registration", "RegistrationServicePort");	
 
 		mock = this.createMock(ServiceRegistration.class);				
 		WebServiceRegistrationImpl registrationImpl = new WebServiceRegistrationImpl(mock);

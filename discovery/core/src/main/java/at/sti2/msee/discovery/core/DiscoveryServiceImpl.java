@@ -19,8 +19,6 @@ import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
-import org.ontoware.rdf2go.model.TriplePattern;
-import org.ontoware.rdf2go.model.node.Variable;
 import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
@@ -326,12 +324,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	 * Returns the number of registered services.
 	 */
 	public int countServices() {
-		Model rdfModel = serviceRepository.getModel();
-		rdfModel.open();
-		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
-		int count = (int) rdfModel.countStatements(pattern);
-		rdfModel.close();
-		return count;
+		return getServiceList().size();
 	}
 
 	/**
@@ -341,7 +334,8 @@ public class DiscoveryServiceImpl implements Discovery {
 		List<String> returnList = new ArrayList<String>();
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
-		String query = "select * where {?serviceID " + RDF.type + " " + MSM.Service + " . }";
+		String query = "select * where {?serviceID " + RDF.type.toSPARQL() + " "
+				+ MSM.Service.toSPARQL() + " . }";
 		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
 		ClosableIterator<QueryRow> results = resultTable.iterator();
 		while (results.hasNext()) {
