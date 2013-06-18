@@ -93,24 +93,24 @@ public class WebServiceDiscoveryImpl implements Discovery {
 		}
 	}
 
-	@Override
-	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
-			String[] outputParamList) throws DiscoveryException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String lookup(String namespace, String operationName) throws DiscoveryException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getIServeModel(String serviceID) throws DiscoveryException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
+//			String[] outputParamList) throws DiscoveryException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String lookup(String namespace, String operationName) throws DiscoveryException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public String getIServeModel(String serviceID) throws DiscoveryException {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	/*
 	 * (non-Javadoc)

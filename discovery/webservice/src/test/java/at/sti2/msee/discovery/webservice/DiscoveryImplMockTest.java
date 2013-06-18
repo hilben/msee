@@ -33,67 +33,67 @@ import at.sti2.msee.discovery.api.webservice.Discovery;
  * 
  */
 public class DiscoveryImplMockTest {
-	// private String resourceLocation = "/default.test.properties";
-	Mockery context = new JUnit4Mockery();
-	private Discovery discoveryWebService = context.mock(Discovery.class);
-
-	@Test
-	public void testDiscoverAdvanced() throws Exception {
-		final String[] categoryList = new String[4];
-		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
-		categoryList[1] = "http://www.sti2.at/MSEE/ServiceCategories#Authority";
-		categoryList[2] = "http://www.sti2.at/MSEE/ServiceCategories#Maritime";
-		categoryList[3] = "http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration";
-
-		final String[] inputParamList = new String[2];
-		inputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
-		inputParamList[1] = "http://www.w3.org/TR/xmlschema-2/#string";
-		final String[] outputParamList = new String[1];
-		outputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
-		context.checking(new Expectations() {
-			{
-				oneOf(discoveryWebService).discoverAdvanced(categoryList,
-						inputParamList, outputParamList);
-			}
-		});
-		System.out.println(discoveryWebService.discoverAdvanced(categoryList,
-				inputParamList, outputParamList));
-
-	}
-
-	// @Test
-	public void testDiscover() throws Exception {
-		final String[] categoryList = new String[1];
-		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
-		context.checking(new Expectations() {
-			{
-				oneOf(discoveryWebService).discover(categoryList);
-			}
-		});
-		System.out.println(discoveryWebService.discover(categoryList));
-	}
-
-	// @Test
-	public void testLookup() throws URISyntaxException, Exception {
-		context.checking(new Expectations() {
-			{
-				oneOf(discoveryWebService).lookup("http://www.webserviceX.NET",
-						"GetWeather");
-			}
-		});
-		System.out.println(discoveryWebService.lookup(
-				"http://www.webserviceX.NET", "GetWeather"));
-	}
-
-	// @Test
-	public void testIServeModel() throws Exception {
-		context.checking(new Expectations() {
-			{
-				oneOf(discoveryWebService).getIServeModel(
-						"http://www.webserviceX.NET#GlobalWeather");
-			}
-		});
-		System.out.println(discoveryWebService
-				.getIServeModel("http://www.webserviceX.NET#GlobalWeather"));
-	}
+//	// private String resourceLocation = "/default.test.properties";
+//	Mockery context = new JUnit4Mockery();
+//	private Discovery discoveryWebService = context.mock(Discovery.class);
+//
+//	@Test
+//	public void testDiscoverAdvanced() throws Exception {
+//		final String[] categoryList = new String[4];
+//		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
+//		categoryList[1] = "http://www.sti2.at/MSEE/ServiceCategories#Authority";
+//		categoryList[2] = "http://www.sti2.at/MSEE/ServiceCategories#Maritime";
+//		categoryList[3] = "http://www.sti2.at/MSEE/ServiceCategories#HealthDeclaration";
+//
+//		final String[] inputParamList = new String[2];
+//		inputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
+//		inputParamList[1] = "http://www.w3.org/TR/xmlschema-2/#string";
+//		final String[] outputParamList = new String[1];
+//		outputParamList[0] = "http://www.w3.org/TR/xmlschema-2/#string";
+//		context.checking(new Expectations() {
+//			{
+//				oneOf(discoveryWebService).discoverAdvanced(categoryList,
+//						inputParamList, outputParamList);
+//			}
+//		});
+//		System.out.println(discoveryWebService.discoverAdvanced(categoryList,
+//				inputParamList, outputParamList));
+//
+//	}
+//
+//	// @Test
+//	public void testDiscover() throws Exception {
+//		final String[] categoryList = new String[1];
+//		categoryList[0] = "http://www.sti2.at/MSEE/ServiceCategories#BUSINESS";
+//		context.checking(new Expectations() {
+//			{
+//				oneOf(discoveryWebService).discover(categoryList);
+//			}
+//		});
+//		System.out.println(discoveryWebService.discover(categoryList));
+//	}
+//
+//	// @Test
+//	public void testLookup() throws URISyntaxException, Exception {
+//		context.checking(new Expectations() {
+//			{
+//				oneOf(discoveryWebService).lookup("http://www.webserviceX.NET",
+//						"GetWeather");
+//			}
+//		});
+//		System.out.println(discoveryWebService.lookup(
+//				"http://www.webserviceX.NET", "GetWeather"));
+//	}
+//
+//	// @Test
+//	public void testIServeModel() throws Exception {
+//		context.checking(new Expectations() {
+//			{
+//				oneOf(discoveryWebService).getIServeModel(
+//						"http://www.webserviceX.NET#GlobalWeather");
+//			}
+//		});
+//		System.out.println(discoveryWebService
+//				.getIServeModel("http://www.webserviceX.NET#GlobalWeather"));
+//	}
 }

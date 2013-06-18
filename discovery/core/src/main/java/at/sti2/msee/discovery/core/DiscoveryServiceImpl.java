@@ -170,42 +170,42 @@ public class DiscoveryServiceImpl implements Discovery {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
-	 * .lang.String[], java.lang.String[], java.lang.String[])
-	 */
-	@Override
-	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
-			String[] outputParamList) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
-	 * java.lang.String)
-	 */
-	@Override
-	public String lookup(String namespace, String operationName) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
-	 * .String)
-	 */
-	@Override
-	public String getIServeModel(String serviceID) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
+//	 * .lang.String[], java.lang.String[], java.lang.String[])
+//	 */
+//	@Override
+//	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
+//			String[] outputParamList) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
+//	 * java.lang.String)
+//	 */
+//	@Override
+//	public String lookup(String namespace, String operationName) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
+//	 * .String)
+//	 */
+//	@Override
+//	public String getIServeModel(String serviceID) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
 
 	/**
 	 * Returns the service categories as a String list.

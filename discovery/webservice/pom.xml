@@ -12,6 +12,7 @@
 	</parent>
 
 	<build>
+		<finalName>discovery-webservice</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.axis2</groupId>
