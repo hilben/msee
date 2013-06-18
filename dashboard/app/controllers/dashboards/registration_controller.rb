@@ -16,7 +16,7 @@ class Dashboards::RegistrationController < ApplicationController
     input = params[:wsdl_input]
 
     serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "msee-test"
+    repositoryId = "msee"
 
     begin
       repositoryConfiguration = ServiceRepositoryConfiguration.new

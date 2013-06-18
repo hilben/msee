@@ -13,6 +13,7 @@
 
 
 	<build>
+		<finalName>registration-webservice</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.axis2</groupId>
