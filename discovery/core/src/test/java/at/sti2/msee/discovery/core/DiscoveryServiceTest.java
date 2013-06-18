@@ -91,6 +91,24 @@ public class DiscoveryServiceTest extends TestCase {
 		assertNotContains(result, "wsdl.service(someService)/Hello/output/Out");
 		assertNotContains(result, "wsdl.service(someService)/Hello/input/In");
 	}
+	
+	@Test
+	public void testDiscoverCategories() throws Exception {
+		final String[] categoryList = new String[2];
+		categoryList[0] = "http://msee.sti2.at/categories#business";
+		categoryList[1] = "http://msee.sti2.at/categories#business2";
+		String result = discoveryService.discover(categoryList);
+		assertTrue("Result is empty", result.length() > 0);
+		assertContains(result, "wsdl.service(helloService)");
+		assertContains(result, "wsdl.service(helloService)/Hello");
+		assertContains(result, "wsdl.service(helloService)/Hello/output/Out");
+		assertContains(result, "wsdl.service(helloService)/Hello/input/In");
+		
+		assertNotContains(result, "wsdl.service(someService)");
+		assertNotContains(result, "wsdl.service(someService)/Hello");
+		assertNotContains(result, "wsdl.service(someService)/Hello/output/Out");
+		assertNotContains(result, "wsdl.service(someService)/Hello/input/In");
+	}
 
 	private void assertContains(String haystack, String needle) {
 		assertTrue(needle + " not found in " + haystack, haystack.contains(needle));

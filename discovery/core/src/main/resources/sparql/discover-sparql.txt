@@ -84,7 +84,7 @@ CONSTRUCT {
 	?serviceID rdf:type msm:Service . 
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
-	%FILTER%
+	%FILTER%		# is filled by the query builder class
 	
 	OPTIONAL{
 		?serviceID rdfs:label ?ServiceLabel .

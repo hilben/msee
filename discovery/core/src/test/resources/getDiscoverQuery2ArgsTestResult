@@ -86,7 +86,7 @@ CONSTRUCT {
 	?serviceID sawsdl:modelReference ?category .
 	FILTER (
 		?category = <http://msee.sti2.at/categories#REST_WEB_SERVICE> 
-	)
+	)		# is filled by the query builder class
 	
 	OPTIONAL{
 		?serviceID rdfs:label ?ServiceLabel .
