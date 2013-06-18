@@ -3,8 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<!-- Default configuration file for CXF -->
-	<display-name>Invocation Webservice</display-name>
+	
+	<display-name>Monitoring Webservice</display-name>
 	
 
 	<servlet>
