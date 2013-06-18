@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
 import javax.xml.rpc.ServiceException;
 import javax.xml.soap.SOAPMessage;
 
@@ -48,6 +48,7 @@ import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.invocation.core.common.InvokerBase;
 import at.sti2.msee.invocation.core.common.InvokerREST;
 import at.sti2.msee.invocation.core.common.InvokerSOAP;
+import at.sti2.msee.invocation.core.common.Parameter;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
@@ -65,7 +66,6 @@ import at.sti2.msee.triplestore.ServiceRepository;
  * @author Benjamin Hiltpolt
  * @author Christian Mayr
  * 
- *         TODO: Documentation
  */
 public class ServiceInvocationImpl implements ServiceInvocation {
 	protected static Logger logger = Logger.getLogger(ServiceInvocationImpl.class);
@@ -135,10 +135,10 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 		}
 		prepareDataFromDiscovery(serviceID, operation);
 
-		Map<String, String> parameterMap = new ParameterParser(inputData).parse();
+		List<Parameter> parameters = new ParameterParser(inputData).parse();
 		if (endpoint != null && discoveredOperation.getMethod() == null) {
 			InvokerSOAP invokerSoap = new InvokerSOAP(monitoring);
-			return invokerSoap.invokeSOAP(endpoint, operation, parameterMap, namespace);
+			return invokerSoap.invokeSOAP(endpoint, operation, parameters, namespace);
 		}
 
 		// not WSDL SOAP call - REST or Other
@@ -149,7 +149,7 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 			}
 			InvokerREST invokerRest = new InvokerREST(monitoring);
 			return invokerRest.invokeREST(serviceID, address, discoveredOperation.getMethod(),
-					parameterMap);
+					parameters);
 		}
 		throw new ServiceInvokerException("Service type not supported");
 	}

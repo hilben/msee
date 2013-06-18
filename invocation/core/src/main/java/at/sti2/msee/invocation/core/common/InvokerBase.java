@@ -1,9 +1,7 @@
 package at.sti2.msee.invocation.core.common;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import java.util.List;
 import org.apache.log4j.Logger;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
@@ -106,10 +104,10 @@ public abstract class InvokerBase {
 	/**
 	 * Returns the size of the parameters.
 	 */
-	protected long getParameterSize(Map<String, String> parameters) {
+	protected long getParameterSize(List<Parameter> parameters) {
 		long size = 0;
-		for (Entry<String, String> entrySet : parameters.entrySet()) {
-			size += entrySet.getValue().length();
+		for (Pair<String, String> entrySet : parameters) {
+			size += entrySet.value().length();
 		}
 		return size;
 	}

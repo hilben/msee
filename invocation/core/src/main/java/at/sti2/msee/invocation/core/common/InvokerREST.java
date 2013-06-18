@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import java.util.List;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.DeleteMethod;
@@ -27,7 +25,7 @@ public class InvokerREST extends InvokerBase {
 	}
 
 	public String invokeREST(final URL serviceID, String address, final String method,
-			final Map<String, String> parameters) throws ServiceInvokerException {
+			final List<Parameter> parameters) throws ServiceInvokerException {
 		// monitoring
 		long startTime = System.currentTimeMillis();
 		initMonitoring(serviceID);
@@ -37,15 +35,14 @@ public class InvokerREST extends InvokerBase {
 		final String charset = "UTF-8";
 		NameValuePair[] data = new NameValuePair[parameters.size()];
 		int i = 0;
-		for (Entry<String, String> parameterSet : parameters.entrySet()) {
+		for (Pair<String, String> parameter : parameters) {
 			try {
-				address = address.replace("{" + parameterSet.getKey() + "}",
-						URLEncoder.encode(parameterSet.getValue(), charset));
+				address = address.replace("{" + parameter.name() + "}",
+						URLEncoder.encode(parameter.value(), charset));
 			} catch (UnsupportedEncodingException e) {
 				throw new ServiceInvokerException(e);
 			}
-			NameValuePair tmpPair = new NameValuePair(parameterSet.getKey(),
-					parameterSet.getValue());
+			NameValuePair tmpPair = new NameValuePair(parameter.name(), parameter.value());
 			data[i++] = tmpPair;
 		}
 		if (address.contains("{") && address.contains("}")) {
@@ -101,7 +98,7 @@ public class InvokerREST extends InvokerBase {
 			PutMethod putHandler = new PutMethod(address);
 			InputStream putResponse = new ByteArrayInputStream("".getBytes());
 			try {
-				putHandler.setRequestEntity(new StringRequestEntity(parameters.get("data"),
+				putHandler.setRequestEntity(new StringRequestEntity(getDataValue(parameters),
 						"application/json", charset));
 				checkStatus(client.executeMethod(putHandler));
 				putResponse = putHandler.getResponseBodyAsStream();
@@ -136,6 +133,36 @@ public class InvokerREST extends InvokerBase {
 		return output;
 	}
 
+	/**
+	 * Returns the value for the parameter "data".
+	 * 
+	 * @param parameters
+	 */
+	private String getDataValue(List<Parameter> parameters) {
+		return getParameterValue(parameters, "data");
+	}
+
+	/**
+	 * Returns the value of the given parameter name. If the name is not found
+	 * it returns null.
+	 * 
+	 * @param parameters
+	 * @param name
+	 */
+	private String getParameterValue(List<Parameter> parameters, String name) {
+		for (Pair<String, String> parameter : parameters)
+			if (parameter.name().equals(name))
+				return parameter.value();
+		return null;
+	}
+
+	/**
+	 * Checks the server status message of the invocation. If the status is not
+	 * of type 2xx an exception is thrown.
+	 * 
+	 * @param status
+	 * @throws ServiceInvokerException
+	 */
 	private int checkStatus(int status) throws ServiceInvokerException {
 		if (status < 200 || status > 299) {
 			throw new ServiceInvokerException("Invocation failed with status " + status);
@@ -143,8 +170,13 @@ public class InvokerREST extends InvokerBase {
 		return status;
 	}
 
-	private static String convertStreamToString(java.io.InputStream is) {
-		java.util.Scanner s = new java.util.Scanner(is);
+	/**
+	 * Converts the given {@link InputStream} into a string.
+	 * 
+	 * @param inputStream
+	 */
+	private static String convertStreamToString(java.io.InputStream inputStream) {
+		java.util.Scanner s = new java.util.Scanner(inputStream);
 		s.useDelimiter("\\A");
 		String retval = s.hasNext() ? s.next() : "";
 		s.close();
