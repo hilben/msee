@@ -3,15 +3,13 @@ package at.sti2.msee.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.axis2.AxisFault;
-import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TesterDiscovery extends TesterBase {
 	final String endpoint = server + "/discovery-webservice/services/service";
 	String namespace = "http://msee.sti2.at/delivery/discovery/";
