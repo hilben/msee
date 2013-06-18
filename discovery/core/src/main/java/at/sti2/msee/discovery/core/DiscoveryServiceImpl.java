@@ -36,9 +36,9 @@ import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.discovery.core.tree.DiscoveredCategory;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
-import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredService;
-import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredServiceBase;
 import at.sti2.msee.triplestore.ServiceRepository;
 
 /**
@@ -392,8 +392,8 @@ public class DiscoveryServiceImpl implements Discovery {
 	 * Old Methods
 	 */
 	@Deprecated
-	public Set<DiscoveredServiceHrests> discoverServices(String[] categoryList) {
-		Set<DiscoveredServiceHrests> returnSet = new HashSet<DiscoveredServiceHrests>();
+	public Set<DiscoveredService> discoverServices(String[] categoryList) {
+		Set<DiscoveredService> returnSet = new HashSet<DiscoveredService>();
 		LOGGER.debug("Starting discover()");
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
@@ -421,10 +421,10 @@ public class DiscoveryServiceImpl implements Discovery {
 			if (row.getValue("inputMessageContent") != null) {
 				inputMessageContent = row.getValue("inputMessageContent").toString();
 			}
-			DiscoveredServiceHrests service = new DiscoveredServiceHrests(serviceID);
-			Iterator<DiscoveredServiceHrests> its = returnSet.iterator();
+			DiscoveredServiceBase service = new DiscoveredServiceBase(serviceID);
+			Iterator<DiscoveredService> its = returnSet.iterator();
 			while (its.hasNext()) {
-				DiscoveredServiceHrests tmpService = its.next();
+				DiscoveredServiceBase tmpService = (DiscoveredServiceBase) its.next();
 				if (tmpService.equals(service)) {
 					service = tmpService;
 					break;
@@ -433,19 +433,19 @@ public class DiscoveryServiceImpl implements Discovery {
 			returnSet.add(service);
 
 			// operation
-			DiscoveredOperationHrests operation = new DiscoveredOperationHrests(operationName);
-			operation.setAddress(address);
-			operation.setMethod(method);
+			DiscoveredOperationBase operation = new DiscoveredOperationBase(operationName);
+			operation.addAddress(address);
+			operation.addMethod(method);
 			if (!service.getOperationSet().contains(operation)) {
 				service.addDiscoveredOperation(operation);
 			}
 
 			Iterator<DiscoveredOperation> ito = service.getOperationSet().iterator();
 			while (ito.hasNext()) {
-				DiscoveredOperation tmpOperation = ito.next();
+				DiscoveredOperationBase tmpOperation = (DiscoveredOperationBase) ito.next();
 				if (tmpOperation.equals(operation)) {
-					((DiscoveredOperationHrests) tmpOperation).addInput(inputMessageContent);
-					((DiscoveredOperationHrests) tmpOperation).addOutput(outputMessageContent);
+					tmpOperation.addInput(inputMessageContent);
+					tmpOperation.addOutput(outputMessageContent);
 				}
 			}
 
