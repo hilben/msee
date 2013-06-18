@@ -28,6 +28,8 @@ public class ServiceTypeFinderTest {
 		DiscoveredOperationBase restOperation1 = new DiscoveredOperationBase("operation1");
 		DiscoveredService restService1 = new DiscoveredServiceBase("service1");
 		restService1.addDiscoveredOperation(restOperation1);
+		restOperation1.addAddress("http://someaddress.com");
+		restOperation1.addMethod("GET");
 		category.addDiscoveredService(restService1);
 
 		Set<DiscoveredService> services = category.getServiceSet();

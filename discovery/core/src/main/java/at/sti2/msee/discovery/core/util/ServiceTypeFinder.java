@@ -16,7 +16,7 @@ public class ServiceTypeFinder {
 
 				DiscoveredOperationBase rest = (DiscoveredOperationBase) operations.iterator()
 						.next();
-				if (rest.getMethod() == null) {
+				if (rest.getMethod() == null || rest.getAddress() == null) {
 					return ServiceType.OTHERORUNKNOWN;
 				}
 
