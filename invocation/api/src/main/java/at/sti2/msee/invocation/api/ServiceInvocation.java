@@ -24,7 +24,7 @@ public interface ServiceInvocation {
 	 * @return result of the invocation
 	 * @throws ServiceInvokerException
 	 */
-	public String invoke(String serviceIDURL, String operation, String inputData)
+	public String invoke(String serviceURI, String operation, String inputData)
 			throws ServiceInvokerException;
 
 	/**

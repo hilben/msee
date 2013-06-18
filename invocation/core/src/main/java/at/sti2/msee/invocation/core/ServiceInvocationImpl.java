@@ -122,16 +122,16 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws ServiceInvokerException
 	 */
 	@Override
-	public String invoke(String serviceIDURL, String operation, String inputData)
+	public String invoke(String serviceURI, String operation, String inputData)
 			throws ServiceInvokerException {
 		if (serviceRepository == null)
 			throw new ServiceInvokerException("Repository not set by constructor");
 
 		URL serviceID = null;
 		try {
-			serviceID = new URL(serviceIDURL);
+			serviceID = new URL(serviceURI);
 		} catch (MalformedURLException e) {
-			throw new ServiceInvokerException("URL is not correct: " + serviceIDURL);
+			throw new ServiceInvokerException("URL is not correct: " + serviceURI);
 		}
 		prepareDataFromDiscovery(serviceID, operation);
 

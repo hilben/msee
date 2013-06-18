@@ -37,6 +37,7 @@ public class InvokerREST extends InvokerBase {
 		int i = 0;
 		for (Pair<String, String> parameter : parameters) {
 			try {
+				// e.g. http://example.com/person/{id}
 				address = address.replace("{" + parameter.name() + "}",
 						URLEncoder.encode(parameter.value(), charset));
 			} catch (UnsupportedEncodingException e) {

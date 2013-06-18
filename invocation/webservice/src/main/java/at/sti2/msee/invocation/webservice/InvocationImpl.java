@@ -44,9 +44,9 @@ public class InvocationImpl implements Invocation {
 	}
 
 	@Override
-	public String invoke(String serviceIDURL, String operation, String inputData)
+	public String invoke(String serviceURI, String operation, String inputData)
 			throws ServiceInvokerException {
-		return invoker.invoke(serviceIDURL, operation, inputData);
+		return invoker.invoke(serviceURI, operation, inputData);
 	}
 
 }
