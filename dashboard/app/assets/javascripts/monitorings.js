@@ -13,6 +13,8 @@
 
 //= require star-rating/jquery.rating
 
+//= require bootstrap/bootstrap.min.js
+
 //= require google/monitoring-jsapi
 
 var currentSelectedEndpoint;
