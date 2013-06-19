@@ -29,7 +29,7 @@ import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryConfig;
-import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -146,7 +146,7 @@ public class DiscoveryServiceHrestsTest extends TestCase {
 	@Deprecated
 	public void testDiscoverServices() {
 		String[] categories = { "http://msee.sti2.at/categories#business" };
-		Set<DiscoveredServiceHrests> tree = ((DiscoveryServiceImpl) discoveryService)
+		Set<DiscoveredService> tree = ((DiscoveryServiceImpl) discoveryService)
 				.discoverServices(categories);
 		assertTrue(tree.size() > 0);
 	}

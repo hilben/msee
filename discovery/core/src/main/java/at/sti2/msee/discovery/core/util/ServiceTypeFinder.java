@@ -3,7 +3,7 @@ package at.sti2.msee.discovery.core.util;
 import java.util.Set;
 
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
-import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredService;
 
 public class ServiceTypeFinder {
@@ -13,13 +13,13 @@ public class ServiceTypeFinder {
 		} else {
 			Set<DiscoveredOperation> operations = discoveredService.getOperationSet();
 			if (operations.iterator().hasNext()) {
-				try {
-					DiscoveredOperationHrests rest = (DiscoveredOperationHrests) operations
-							.iterator().next();
-					rest.getMethod();
-				} catch (ClassCastException e) {
+
+				DiscoveredOperationBase rest = (DiscoveredOperationBase) operations.iterator()
+						.next();
+				if (rest.getMethod() == null || rest.getAddress() == null) {
 					return ServiceType.OTHERORUNKNOWN;
 				}
+
 				return ServiceType.REST;
 			}
 		}

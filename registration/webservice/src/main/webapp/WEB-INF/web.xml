@@ -5,15 +5,15 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<!-- Default configuration file for CXF -->
 	<display-name>Registration Webservice</display-name>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-            classpath:/applicationContext.xml
-        </param-value>
-	</context-param>
+<!-- 	<listener> -->
+<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
+<!-- 	<context-param> -->
+<!-- 		<param-name>contextConfigLocation</param-name> -->
+<!-- 		<param-value> -->
+<!--             classpath:/applicationContext.xml -->
+<!--         </param-value> -->
+<!-- 	</context-param> -->
 
 	<servlet>
 		<servlet-name>AxisServlet</servlet-name>
@@ -29,6 +29,10 @@
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
+	
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>
 

@@ -56,7 +56,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-			invoker.invokeSOAP(new URL(endpoint), soapMessage);
+			invoker.invokeSOAP(endpoint, soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
 			if (!e.getLocalizedMessage().contains("(404)Not Found"))
 				fail(Arrays.toString(e.getStackTrace()));
@@ -65,7 +65,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 	@Test
 	public final void testInvokeTestWebService2() {
-		String endpoint = "http://msee.sti2.at/discovery-webservice/service";
+		String endpoint = "http://msee.sti2.at:8080/discovery-webservice/services/service";
 		String soapFile = "/test_discover.soap";
 
 		FileInputStream fis = null;
@@ -90,7 +90,7 @@ public class ServiceInvokerImplTest extends TestCase {
 
 		try {
 			invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-			invoker.invokeSOAP(new URL(endpoint), soapMessage);
+			invoker.invokeSOAP(endpoint, soapMessage);
 		} catch (MalformedURLException | ServiceInvokerException | MonitoringException e) {
 			if (!e.getLocalizedMessage().contains("(404)Not Found"))
 				fail(Arrays.toString(e.getStackTrace()));
@@ -126,7 +126,7 @@ public class ServiceInvokerImplTest extends TestCase {
 		try {
 			try {
 				invoker.getMonitoring().enableMonitoring(new URL(endpoint));
-				invoker.invokeSOAP(new URL(endpoint), soapMessage);
+				invoker.invokeSOAP(endpoint, soapMessage);
 			} catch (MalformedURLException | MonitoringException e) {
 				fail(Arrays.toString(e.getStackTrace()));
 			}

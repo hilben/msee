@@ -3,8 +3,8 @@ package at.sti2.msee.invocation.core;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.LogManager;
 
@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.invocation.core.common.InvokerREST;
+import at.sti2.msee.invocation.core.common.Parameter;
 
 public class ServiceInvokerImplRestTest {
 	protected final Logger logger = Logger.getLogger(this.getClass());
@@ -35,7 +36,7 @@ public class ServiceInvokerImplRestTest {
 	private static Server server;
 	private static String webPort = "48080";
 	Gson gson = new Gson();
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
@@ -75,20 +76,21 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/{id}";
 		String method = "GET";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", "5");
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", "5"));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		Assert.assertThat(result, is("{\"id\":\"5\",\"name\":\"The standard name of Hotel5\"}"));
 	}
-	
+
 	@Test
 	public void testGETfail() throws ServiceInvokerException, MalformedURLException {
 		exception.expect(ServiceInvokerException.class);
 		URL serviceID = new URL("http://" + UUID.randomUUID());
-		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/hotel/{id}";
+		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort
+				+ "/hotel/hotel/{id}";
 		String method = "GET";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", "5");
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", "5"));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		Assert.assertThat(result, is("{\"id\":\"5\",\"name\":\"The standard name of Hotel5\"}"));
 	}
@@ -100,8 +102,8 @@ public class ServiceInvokerImplRestTest {
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort
 				+ "/hotel/{id}/details";
 		String method = "GET";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", Integer.toString(id));
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", Integer.toString(id)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 
 		String expected = "\"Further hotel details for Hotel" + id + ".\"";
@@ -119,7 +121,7 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/count";
 		String method = "GET";
-		Map<String, String> parameters = new HashMap<String, String>();
+		List<Parameter> parameters = new ArrayList<>();
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		return new Integer(result);
 	}
@@ -130,14 +132,14 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/";
 		String method = "POST";
-		Map<String, String> parameters = new HashMap<String, String>();
+		List<Parameter> parameters = new ArrayList<>();
 		Hotel newHotel = new Hotel();
-		parameters.put("hotel", gson.toJson(newHotel));
+		parameters.add(new Parameter("hotel", gson.toJson(newHotel)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, is("{\"id\":\"11\"}"));
 		assertThat(count, is(equalTo(getHotelCount() - 1)));
 	}
-	
+
 	@Test
 	public void testPOSTfail() throws ServiceInvokerException, MalformedURLException {
 		exception.expect(ServiceInvokerException.class);
@@ -145,9 +147,9 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/hotel";
 		String method = "POST";
-		Map<String, String> parameters = new HashMap<String, String>();
+		List<Parameter> parameters = new ArrayList<>();
 		Hotel newHotel = new Hotel();
-		parameters.put("hotel", gson.toJson(newHotel));
+		parameters.add(new Parameter("hotel", gson.toJson(newHotel)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, is("{\"id\":\"11\"}"));
 		assertThat(count, is(equalTo(getHotelCount() - 1)));
@@ -165,9 +167,9 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/{id}";
 		String method = "PUT";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", Integer.toString(id));
-		parameters.put("data", gson.toJson(updatedHotel));
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", Integer.toString(id)));
+		parameters.add(new Parameter("data", gson.toJson(updatedHotel)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, is("{\"id\":\"" + id + "\",\"name\":\"" + newName + "\"}"));
 		assertThat(getHotelCount(), is(initialCount)); // must not change
@@ -188,9 +190,9 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/{id}";
 		String method = "PUT";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", Integer.toString(id));
-		parameters.put("data", gson.toJson(updatedHotel));
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", Integer.toString(id)));
+		parameters.add(new Parameter("data", gson.toJson(updatedHotel)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, is("{\"id\":\"" + id + "\",\"name\":\"" + newName + "\"}"));
 		assertThat(getHotelCount(), is(initialCount + 1));
@@ -207,8 +209,8 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/{id}";
 		String method = "DELETE";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", Integer.toString(id));
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", Integer.toString(id)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, is("{\"id\":\"1\",\"name\":\"The standard name of Hotel1\"}"));
 		assertThat(getHotelCount(), is(initialCount - 1));
@@ -226,8 +228,8 @@ public class ServiceInvokerImplRestTest {
 		URL serviceID = new URL("http://" + UUID.randomUUID());
 		String address = "http://localhost:" + ServiceInvokerImplRestTest.webPort + "/hotel/{id}";
 		String method = "DELETE";
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", Integer.toString(id));
+		List<Parameter> parameters = new ArrayList<>();
+		parameters.add(new Parameter("id", Integer.toString(id)));
 		String result = invoker.invokeREST(serviceID, address, method, parameters);
 		assertThat(result, either(is(nullValue(String.class))).or(is("")));
 		assertThat(getHotelCount(), is(initialCount));

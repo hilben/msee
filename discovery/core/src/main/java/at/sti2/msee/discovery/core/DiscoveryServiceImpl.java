@@ -19,8 +19,6 @@ import org.ontoware.aifbcommons.collection.ClosableIterator;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.QueryRow;
 import org.ontoware.rdf2go.model.Statement;
-import org.ontoware.rdf2go.model.TriplePattern;
-import org.ontoware.rdf2go.model.node.Variable;
 import org.ontoware.rdf2go.vocabulary.RDF;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
@@ -38,9 +36,9 @@ import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.common.DiscoveryQueryBuilder;
 import at.sti2.msee.discovery.core.tree.DiscoveredCategory;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
-import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
 import at.sti2.msee.discovery.core.tree.DiscoveredService;
-import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
+import at.sti2.msee.discovery.core.tree.DiscoveredServiceBase;
 import at.sti2.msee.triplestore.ServiceRepository;
 
 /**
@@ -66,6 +64,8 @@ public class DiscoveryServiceImpl implements Discovery {
 		if (serviceRepository == null) {
 			throw new IllegalArgumentException("Service repository cannot be null");
 		}
+		LOGGER.info(serviceRepository.getServiceRepositoryConfiguration().getRepositoryID() + " - "
+				+ serviceRepository.getServiceRepositoryConfiguration().getServerEndpoint());
 		this.serviceRepository = serviceRepository;
 		try {
 			this.serviceRepository.init();
@@ -170,42 +170,42 @@ public class DiscoveryServiceImpl implements Discovery {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
-	 * .lang.String[], java.lang.String[], java.lang.String[])
-	 */
-	@Override
-	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
-			String[] outputParamList) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
-	 * java.lang.String)
-	 */
-	@Override
-	public String lookup(String namespace, String operationName) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
-	 * .String)
-	 */
-	@Override
-	public String getIServeModel(String serviceID) throws DiscoveryException {
-		throw new DiscoveryException("Not yet implemented");
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
+//	 * .lang.String[], java.lang.String[], java.lang.String[])
+//	 */
+//	@Override
+//	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
+//			String[] outputParamList) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
+//	 * java.lang.String)
+//	 */
+//	@Override
+//	public String lookup(String namespace, String operationName) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
+//	 * .String)
+//	 */
+//	@Override
+//	public String getIServeModel(String serviceID) throws DiscoveryException {
+//		throw new DiscoveryException("Not yet implemented");
+//	}
 
 	/**
 	 * Returns the service categories as a String list.
@@ -324,12 +324,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	 * Returns the number of registered services.
 	 */
 	public int countServices() {
-		Model rdfModel = serviceRepository.getModel();
-		rdfModel.open();
-		TriplePattern pattern = rdfModel.createTriplePattern(Variable.ANY, RDF.type, MSM.Service);
-		int count = (int) rdfModel.countStatements(pattern);
-		rdfModel.close();
-		return count;
+		return getServiceList().size();
 	}
 
 	/**
@@ -339,7 +334,8 @@ public class DiscoveryServiceImpl implements Discovery {
 		List<String> returnList = new ArrayList<String>();
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
-		String query = "select * where {?serviceID " + RDF.type + " " + MSM.Service + " . }";
+		String query = "select * where {?serviceID " + RDF.type.toSPARQL() + " "
+				+ MSM.Service.toSPARQL() + " . }";
 		ClosableIterable<QueryRow> resultTable = rdfModel.sparqlSelect(query);
 		ClosableIterator<QueryRow> results = resultTable.iterator();
 		while (results.hasNext()) {
@@ -396,8 +392,8 @@ public class DiscoveryServiceImpl implements Discovery {
 	 * Old Methods
 	 */
 	@Deprecated
-	public Set<DiscoveredServiceHrests> discoverServices(String[] categoryList) {
-		Set<DiscoveredServiceHrests> returnSet = new HashSet<DiscoveredServiceHrests>();
+	public Set<DiscoveredService> discoverServices(String[] categoryList) {
+		Set<DiscoveredService> returnSet = new HashSet<DiscoveredService>();
 		LOGGER.debug("Starting discover()");
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
@@ -425,10 +421,10 @@ public class DiscoveryServiceImpl implements Discovery {
 			if (row.getValue("inputMessageContent") != null) {
 				inputMessageContent = row.getValue("inputMessageContent").toString();
 			}
-			DiscoveredServiceHrests service = new DiscoveredServiceHrests(serviceID);
-			Iterator<DiscoveredServiceHrests> its = returnSet.iterator();
+			DiscoveredServiceBase service = new DiscoveredServiceBase(serviceID);
+			Iterator<DiscoveredService> its = returnSet.iterator();
 			while (its.hasNext()) {
-				DiscoveredServiceHrests tmpService = its.next();
+				DiscoveredServiceBase tmpService = (DiscoveredServiceBase) its.next();
 				if (tmpService.equals(service)) {
 					service = tmpService;
 					break;
@@ -437,19 +433,19 @@ public class DiscoveryServiceImpl implements Discovery {
 			returnSet.add(service);
 
 			// operation
-			DiscoveredOperationHrests operation = new DiscoveredOperationHrests(operationName);
-			operation.setAddress(address);
-			operation.setMethod(method);
+			DiscoveredOperationBase operation = new DiscoveredOperationBase(operationName);
+			operation.addAddress(address);
+			operation.addMethod(method);
 			if (!service.getOperationSet().contains(operation)) {
 				service.addDiscoveredOperation(operation);
 			}
 
 			Iterator<DiscoveredOperation> ito = service.getOperationSet().iterator();
 			while (ito.hasNext()) {
-				DiscoveredOperation tmpOperation = ito.next();
+				DiscoveredOperationBase tmpOperation = (DiscoveredOperationBase) ito.next();
 				if (tmpOperation.equals(operation)) {
-					((DiscoveredOperationHrests) tmpOperation).addInput(inputMessageContent);
-					((DiscoveredOperationHrests) tmpOperation).addOutput(outputMessageContent);
+					tmpOperation.addInput(inputMessageContent);
+					tmpOperation.addOutput(outputMessageContent);
 				}
 			}
 

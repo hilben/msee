@@ -21,9 +21,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
 import javax.xml.rpc.ServiceException;
 import javax.xml.soap.SOAPMessage;
 
@@ -47,6 +48,7 @@ import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
 import at.sti2.msee.invocation.core.common.InvokerBase;
 import at.sti2.msee.invocation.core.common.InvokerREST;
 import at.sti2.msee.invocation.core.common.InvokerSOAP;
+import at.sti2.msee.invocation.core.common.Parameter;
 import at.sti2.msee.monitoring.api.MonitoringComponent;
 import at.sti2.msee.monitoring.api.MonitoringInvocationInstance;
 import at.sti2.msee.monitoring.api.MonitoringInvocationState;
@@ -64,7 +66,6 @@ import at.sti2.msee.triplestore.ServiceRepository;
  * @author Benjamin Hiltpolt
  * @author Christian Mayr
  * 
- *         TODO: Documentation
  */
 public class ServiceInvocationImpl implements ServiceInvocation {
 	protected static Logger logger = Logger.getLogger(ServiceInvocationImpl.class);
@@ -121,28 +122,34 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 * @throws ServiceInvokerException
 	 */
 	@Override
-	public String invoke(URL serviceID, String operation, String inputData)
+	public String invoke(String serviceURI, String operation, String inputData)
 			throws ServiceInvokerException {
 		if (serviceRepository == null)
 			throw new ServiceInvokerException("Repository not set by constructor");
 
+		URL serviceID = null;
+		try {
+			serviceID = new URL(serviceURI);
+		} catch (MalformedURLException e) {
+			throw new ServiceInvokerException("URL is not correct: " + serviceURI);
+		}
 		prepareDataFromDiscovery(serviceID, operation);
 
-		Map<String, String> parameterMap = new ParameterParser(inputData).parse();
+		List<Parameter> parameters = new ParameterParser(inputData).parse();
 		if (endpoint != null && discoveredOperation.getMethod() == null) {
 			InvokerSOAP invokerSoap = new InvokerSOAP(monitoring);
-			return invokerSoap.invokeSOAP(endpoint, operation, parameterMap, namespace);
+			return invokerSoap.invokeSOAP(endpoint, operation, parameters, namespace);
 		}
 
 		// not WSDL SOAP call - REST or Other
 		String address = discoveredOperation.getAddress();
-		if (address.contains("^^")) {
-			address = address.substring(0, address.indexOf("^^"));
-		}
 		if (address != null) {
+			if (address.contains("^^")) {
+				address = address.substring(0, address.indexOf("^^"));
+			}
 			InvokerREST invokerRest = new InvokerREST(monitoring);
 			return invokerRest.invokeREST(serviceID, address, discoveredOperation.getMethod(),
-					parameterMap);
+					parameters);
 		}
 		throw new ServiceInvokerException("Service type not supported");
 	}
@@ -184,7 +191,9 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 						+ serviceID + " of service " + discoveredService.getName());
 			}
 		} catch (DiscoveryException e) {
-			throw new ServiceInvokerException("Discovery not possible", e);
+			logger.error(e.getLocalizedMessage() + " " + Arrays.toString(e.getStackTrace()));
+			throw new ServiceInvokerException("Discovery not possible: " + e.getLocalizedMessage(),
+					e);
 		}
 
 	}
@@ -223,8 +232,14 @@ public class ServiceInvocationImpl implements ServiceInvocation {
 	 */
 	@Override
 	@Deprecated
-	public String invokeSOAP(URL webserviceURL, String soapMessage) throws ServiceInvokerException {
-
+	public String invokeSOAP(String serviceIDURL, String soapMessage)
+			throws ServiceInvokerException {
+		URL webserviceURL = null;
+		try {
+			webserviceURL = new URL(serviceIDURL);
+		} catch (MalformedURLException e1) {
+			throw new ServiceInvokerException("URL is not correct: " + serviceIDURL);
+		}
 		// Setup monitoring data and prepare stuff
 		long requestMessageSize = soapMessage.getBytes().length;
 		long startTime = System.currentTimeMillis();

@@ -2,9 +2,7 @@ package at.sti2.msee.invocation.core.common;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import java.util.List;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -31,9 +29,9 @@ public class InvokerSOAP extends InvokerBase {
 	}
 
 	public String invokeSOAP(String endpoint, String operation,
-			Map<String, String> inputVariableMap, String namespace) throws ServiceInvokerException {
+			List<Parameter> parameters, String namespace) throws ServiceInvokerException {
 		logger.debug("Invoking " + endpoint);
-		logger.debug("Using Variables " + inputVariableMap);
+		logger.debug("Using Variables " + parameters);
 
 		// monitoring
 		try {
@@ -42,7 +40,7 @@ public class InvokerSOAP extends InvokerBase {
 			throw new ServiceInvokerException(e);
 		}
 		long startTime = System.currentTimeMillis();
-		long requestMessageSize = getParameterSize(inputVariableMap);
+		long requestMessageSize = getParameterSize(parameters);
 
 		String results = "";
 
@@ -50,9 +48,9 @@ public class InvokerSOAP extends InvokerBase {
 		OMFactory fac = OMAbstractFactory.getOMFactory();
 		OMNamespace omNs = fac.createOMNamespace(namespace, "theMSEENamespace");
 		OMElement method = fac.createOMElement(operation, omNs);
-		for (Entry<String, String> entry : inputVariableMap.entrySet()) {
-			OMElement value = fac.createOMElement(entry.getKey(), omNs);
-			value.addChild(fac.createOMText(value, entry.getValue()));
+		for (Pair<String, String> entry : parameters) {
+			OMElement value = fac.createOMElement(entry.name(), omNs);
+			value.addChild(fac.createOMText(value, entry.value()));
 			method.addChild(value);
 		}
 
@@ -61,16 +59,22 @@ public class InvokerSOAP extends InvokerBase {
 			Options options = new Options();
 			options.setTo(targetEPR);
 
-			// options.setTransportInProtocol(Constants.URI_WSDL11_SOAP);
+			// options.setTransportInProtocol(org.apache.axis2.namespace.Constants.URI_WSDL11_SOAP);
+			// options.setTransportInProtocol(org.apache.axis2.Constants.TRANSPORT_HTTP);
 
 			startMonitoring();
 
 			ServiceClient sender = new ServiceClient();
 			sender.setOptions(options);
 			OMElement result = sender.sendReceive(payload);
+			sender.cleanup();
+			sender.cleanupTransport();
 
-			String response = result.getFirstElement().getText();
-			results = response;
+			if (result.getFirstElement() == null) {
+				results = result.getText();
+			} else {
+				results = result.getFirstElement().getText();
+			}
 
 			successfulInvocation(startTime, requestMessageSize, results);
 		} catch (org.apache.axis2.AxisFault | MonitoringException e) {

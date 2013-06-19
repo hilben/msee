@@ -61,7 +61,7 @@ public class DiscoveryTreeHandler {
 		Iterator<DiscoveredCategory> itc = discoveredServiceTree.iterator();
 		while (itc.hasNext()) {
 			DiscoveredCategory category = itc.next();
-			if (category.getName().equalsIgnoreCase(categoryName)) {
+			if (category.getName().equals(categoryName)) {
 				return category;
 			}
 		}

@@ -2,7 +2,8 @@ package at.sti2.msee.invocation.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import at.sti2.msee.invocation.api.exception.ServiceInvokerException;
+import at.sti2.msee.invocation.core.common.Parameter;
 
 /**
  * This class parses parameters of an XML string into {@link Map}.
@@ -31,17 +33,17 @@ public class ParameterParser {
 
 	/**
 	 * Parses the input parameters in the format <parameters><id>1</id>
-	 * <name>john</name> </parameters> into a {@link Map<String, String>}.
+	 * <name>john</name> </parameters> into a {@link List<Parameter>}.
 	 * 
 	 * @param inputDataAsXML
 	 * @return
 	 * @throws ServiceInvokerException
 	 */
-	public Map<String, String> parse() throws ServiceInvokerException {
+	public List<Parameter> parse() throws ServiceInvokerException {
 		if (parameterInputData == null) {
 			throw new ServiceInvokerException("Input data is not set");
 		}
-		Map<String, String> parameterMap = new HashMap<String, String>();
+		List<Parameter> parameters = new ArrayList<>();
 		InputSource inputSource = new InputSource(new ByteArrayInputStream(
 				parameterInputData.getBytes()));
 		DOMParser parser = new DOMParser();
@@ -50,14 +52,24 @@ public class ParameterParser {
 			Document doc = parser.getDocument();
 
 			NodeList root = doc.getChildNodes();
+			if (root.getLength() == 0) {
+				logger.warn("no parameters set - are they not needed? - "
+						+ "Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
+				return parameters;
+			}
 
 			Node comp = getNode("parameters", root);
-			NodeList params = comp.getChildNodes();
-			for (int i = 0; i < params.getLength(); i++) {
-				Node param = params.item(i);
-				parameterMap.put(param.getNodeName(), param.getTextContent());
+			if (comp != null) {
+				NodeList params = comp.getChildNodes();
+				for (int i = 0; i < params.getLength(); i++) {
+					Node param = params.item(i);
+					parameters.add(new Parameter(param.getNodeName(), param.getTextContent()));
+				}
+			} else {
+				logger.warn("no parameters set - are they not needed? - "
+						+ "Hint: Format: <parameters><id>1</id> <name>john</name> </parameters> ");
 			}
-			return parameterMap;
+			return parameters;
 		} catch (SAXException | IOException | NullPointerException e) {
 			logger.error(e.getMessage(), e);
 			throw new ServiceInvokerException("Parsing of parameters only possible for this "
@@ -75,9 +87,9 @@ public class ParameterParser {
 	 * @return {@link Node}
 	 */
 	private Node getNode(String tagName, NodeList nodes) {
-		for (int x = 0; x < nodes.getLength(); x++) {
-			Node node = nodes.item(x);
-			if (node.getNodeName().equalsIgnoreCase(tagName)) {
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node.getNodeName().equals(tagName)) {
 				return node;
 			}
 		}

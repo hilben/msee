@@ -27,7 +27,7 @@ class Dashboards::DiscoveriesController < ApplicationController
 
     #obtain the categories
     serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "msee-test"
+    repositoryId = "msee"
 
     repositoryConfiguration = ServiceRepositoryConfiguration.new
     repositoryConfiguration.setRepositoryID(repositoryId)
@@ -102,7 +102,7 @@ class Dashboards::DiscoveriesController < ApplicationController
     begin
 
       serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-      repositoryId = "msee-test"
+      repositoryId = "msee"
 
 
       repositoryConfiguration = ServiceRepositoryConfiguration.new

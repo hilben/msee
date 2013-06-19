@@ -7,13 +7,15 @@ PREFIX msee: <http://msee.sti2.at/properties#>
 PREFIX hr: <http://www.wsmo.org/ns/hrests#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-# v1.0
+# v1.3
 
 SELECT * WHERE { 
 	?serviceID rdf:type msm:Service . 
-	{		?serviceID sawsdl:modelReference <http://msee.sti2.at/categories#REST_WEB_SERVICE> .} 
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
+	FILTER (
+		?category = <http://msee.sti2.at/categories#REST_WEB_SERVICE> 
+	) 
 	
 	# operation
 	?operation a msm:Operation .

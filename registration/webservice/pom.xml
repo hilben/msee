@@ -11,105 +11,157 @@
 		<version>m17.1-SNAPSHOT</version>
 	</parent>
 
+
 	<build>
+		<finalName>registration-webservice</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.jvnet.jax-ws-commons</groupId>
-				<artifactId>jaxws-maven-plugin </artifactId>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-java2wsdl-maven-plugin</artifactId>
+				<version>1.6.2</version>
 				<executions>
 					<execution>
-						<id>Create WSDL</id>
-						<phase>generate-test-resources</phase>
+						<phase>process-classes</phase>
 						<goals>
-							<goal>wsgen</goal>
+							<goal>java2wsdl</goal>
 						</goals>
-						<configuration>
-							<sei>at.sti2.msee.registration.webservice.WebServiceRegistrationImpl</sei>
-							<genWsdl>true</genWsdl>
-							<keep>false</keep>
-							<verbose>true</verbose>
-							<resourceDestDir>src/test/resources/wsdl</resourceDestDir>
-						</configuration>
 					</execution>
-					<execution>
-						<id>Create client</id>
-						<phase>generate-test-sources</phase>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<wsdlDirectory>src/test/resources/wsdl</wsdlDirectory>
-							<wsdlFiles>
-								<wsdlFile>RegistrationService.wsdl</wsdlFile>
-							</wsdlFiles>
-							<implDestDir>src/test/java</implDestDir>
-							<sourceDestDir>src/test/java</sourceDestDir>
-							<verbose>true</verbose>
-							<keep>true</keep>
-						</configuration>
-					</execution>
-
 				</executions>
+				<configuration>
+					<className>at.sti2.msee.registration.webservice.WebServiceRegistrationImpl</className>
+					<outputFileName>${project.build.directory}/registration.wsdl</outputFileName>
+				</configuration>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.jvnet.jax-ws-commons
-										</groupId>
-										<artifactId>
-											jaxws-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.2,)
-										</versionRange>
-										<goals>
-											<goal>wsgen</goal>
-											<goal>wsimport</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
+
+
 	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-transport-local</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>registration.core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<!-- Even though this is dependency of cxf it must be added explicitly 
-			for jetty (maven problem) -->
+
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
+			<scope>test</scope>
 		</dependency>
+	
 	</dependencies>
+
+<!-- 	<build> -->
+<!-- 		<plugins> -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.jvnet.jax-ws-commons</groupId> -->
+<!-- 				<artifactId>jaxws-maven-plugin </artifactId> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>Create WSDL</id> -->
+<!-- 						<phase>generate-test-resources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>wsgen</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<sei>at.sti2.msee.registration.webservice.WebServiceRegistrationImpl</sei> -->
+<!-- 							<genWsdl>true</genWsdl> -->
+<!-- 							<keep>false</keep> -->
+<!-- 							<verbose>true</verbose> -->
+<!-- 							<resourceDestDir>src/test/resources/wsdl</resourceDestDir> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 					<execution> -->
+<!-- 						<id>Create client</id> -->
+<!-- 						<phase>generate-test-sources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>wsimport</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<wsdlDirectory>src/test/resources/wsdl</wsdlDirectory> -->
+<!-- 							<wsdlFiles> -->
+<!-- 								<wsdlFile>RegistrationService.wsdl</wsdlFile> -->
+<!-- 							</wsdlFiles> -->
+<!-- 							<implDestDir>src/test/java</implDestDir> -->
+<!-- 							<sourceDestDir>src/test/java</sourceDestDir> -->
+<!-- 							<verbose>true</verbose> -->
+<!-- 							<keep>true</keep> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+<!-- 		</plugins> -->
+<!-- 		<resources> -->
+<!-- 			<resource> -->
+<!-- 				<directory>src/main/resources</directory> -->
+<!-- 				<filtering>true</filtering> -->
+<!-- 			</resource> -->
+<!-- 		</resources> -->
+<!-- 		<pluginManagement> -->
+<!-- 			<plugins> -->
+<!-- 				<plugin> -->
+<!-- 					<groupId>org.eclipse.m2e</groupId> -->
+<!-- 					<artifactId>lifecycle-mapping</artifactId> -->
+<!-- 					<version>1.0.0</version> -->
+<!-- 					<configuration> -->
+<!-- 						<lifecycleMappingMetadata> -->
+<!-- 							<pluginExecutions> -->
+<!-- 								<pluginExecution> -->
+<!-- 									<pluginExecutionFilter> -->
+<!-- 										<groupId> -->
+<!-- 											org.jvnet.jax-ws-commons -->
+<!-- 										</groupId> -->
+<!-- 										<artifactId> -->
+<!-- 											jaxws-maven-plugin -->
+<!-- 										</artifactId> -->
+<!-- 										<versionRange> -->
+<!-- 											[2.2,) -->
+<!-- 										</versionRange> -->
+<!-- 										<goals> -->
+<!-- 											<goal>wsgen</goal> -->
+<!-- 											<goal>wsimport</goal> -->
+<!-- 										</goals> -->
+<!-- 									</pluginExecutionFilter> -->
+<!-- 									<action> -->
+<!-- 										<ignore></ignore> -->
+<!-- 									</action> -->
+<!-- 								</pluginExecution> -->
+<!-- 							</pluginExecutions> -->
+<!-- 						</lifecycleMappingMetadata> -->
+<!-- 					</configuration> -->
+<!-- 				</plugin> -->
+<!-- 			</plugins> -->
+<!-- 		</pluginManagement> -->
+<!-- 	</build> -->
+
 </project>

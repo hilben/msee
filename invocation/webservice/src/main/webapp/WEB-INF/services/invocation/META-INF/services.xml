@@ -1,0 +1,14 @@
+
+<serviceGroup>
+	<service name="service" targetNamespace="http://msee.sti2.at/delivery/">
+		<description>Service</description>
+		<schema schemaNamespace="http://msee.sti2.at/delivery/" />
+		<parameter name="ServiceClass" locked="false">
+			at.sti2.msee.invocation.webservice.InvocationImpl
+		</parameter>
+		<!-- <operation name="ping"> -->
+		<!-- <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" 
+			/> -->
+		<!-- </operation> -->
+	</service>
+</serviceGroup>

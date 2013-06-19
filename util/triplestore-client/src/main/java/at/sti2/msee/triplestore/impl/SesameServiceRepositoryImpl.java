@@ -3,6 +3,7 @@ package at.sti2.msee.triplestore.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ontoware.rdf2go.RDF2Go;
 import org.ontoware.rdf2go.exception.ModelRuntimeException;
@@ -27,6 +28,7 @@ import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 import at.sti2.msee.triplestore.query.ModelQueryHelper;
 
 public class SesameServiceRepositoryImpl implements ServiceRepository {
+	Logger LOGGER = Logger.getLogger(this.getClass().getCanonicalName());
 
 	private ServiceRepositoryConfiguration configuration = null;
 	private Repository repository = null;
@@ -43,9 +45,10 @@ public class SesameServiceRepositoryImpl implements ServiceRepository {
 		}
 		RDF2Go.register(new RepositoryModelFactory());
 
-		if (configuration.getServerEndpoint() == null)
+		if (configuration.getServerEndpoint() == null) {
 			this.repository = new SailRepository(new MSEEMemoryStore());
-		else {
+			LOGGER.info("In-memory respository was set");
+		} else {
 			this.repository = new HTTPRepository(
 					configuration.getServerEndpoint(),
 					configuration.getRepositoryID());

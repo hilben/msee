@@ -3,8 +3,11 @@ package at.sti2.msee.discovery.core.common;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.apache.logging.log4j.LogManager;
@@ -30,22 +33,46 @@ public class DiscoveryQueryBuilder {
 	 *            - List of categories
 	 * @return SPARQL query
 	 */
-	public String getDiscoverQuery2Args(String[] _categoryList) {
+	public String getDiscoverQuery2Args(String[] categoryList) {
 		LOGGER.debug("Create query for discover");
-
 		String query = readFile("/sparql/discover-sparql.txt");
 
+		return query.replace("%FILTER%", getCategoriesFiltered(categoryList));
+	}
+
+	/**
+	 * Builds the SPARQL filter statement for the given category list.
+	 * 
+	 * @param categoryList
+	 */
+	private CharSequence getCategoriesFiltered(String[] categoryList) {
+		Set<String> categoriesChecked = checkCategoryList(categoryList);
 		StringBuilder categories = new StringBuilder();
-		categories.append("{");
-		for (String category : _categoryList) {
-			categories.append("\t\t?serviceID sawsdl:modelReference <" + category + "> .");
-			if (_categoryList.length > 1) {
-				categories.append("\n} UNION {\n");
+		categories.append("FILTER (\n");
+		int numberOfCategories = categoriesChecked.size();
+		Iterator<String> itc = categoriesChecked.iterator();
+		int i = 0;
+		while (itc.hasNext()) {
+			categories.append("\t\t?category = <" + itc.next() + "> ");
+			if (i++ < numberOfCategories - 1) {
+				categories.append("\n\t || \n");
 			}
 		}
-		categories.append("}");
-		query = query.replace("%categories%", categories);
-		return query;
+		categories.append("\n\t)");
+		return categories.toString();
+	}
+
+	/**
+	 * Checks for duplicates and returns a {@link Set} of categories.
+	 * 
+	 * @param categoryList
+	 */
+	private Set<String> checkCategoryList(String[] categoryList) {
+		Set<String> returnSet = new HashSet<>();
+		for (String category : categoryList) {
+			returnSet.add(category);
+		}
+		return returnSet;
 	}
 
 	/**
@@ -68,22 +95,12 @@ public class DiscoveryQueryBuilder {
 	 *            - List of categories
 	 * @return SPARQL query
 	 */
-	public String getDiscoverServices(String[] _categoryList) {
+	public String getDiscoverServices(String[] categoryList) {
 		LOGGER.debug("Create query for discover");
 
 		String query = readFile("/sparql/discover-services-sparql.txt");
 
-		StringBuilder categories = new StringBuilder();
-		categories.append("{");
-		for (String category : _categoryList) {
-			categories.append("\t\t?serviceID sawsdl:modelReference <" + category + "> .");
-			if (_categoryList.length > 1) {
-				categories.append("\n} UNION {\n");
-			}
-		}
-		categories.append("}");
-		query = query.replace("%categories%", categories);
-		return query;
+		return query.replace("%FILTER%", getCategoriesFiltered(categoryList));
 	}
 
 	public String getDiscoverCategoriesAndServices() {

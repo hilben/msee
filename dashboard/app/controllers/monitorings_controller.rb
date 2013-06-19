@@ -89,12 +89,12 @@ class MonitoringsController < ApplicationController
   def getServiceDetails
     @endpointdetails = params[:currentSelectedEndpoint]
 
-    @serviceinputs = @endpointdetails+"#INPUT"
-    @servicefaults= @endpointdetails+"#INPUT"
-    @serviceoutputs = @endpointdetails+"#INPUT"
+    # @serviceinputs = @endpointdetails+"#INPUT"
+    # @servicefaults= @endpointdetails+"#INPUT"
+    # @serviceoutputs = @endpointdetails+"#INPUT"
 
     serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "msee-test"
+    repositoryId = "msee"
 
     repositoryConfiguration = ServiceRepositoryConfiguration.new
     repositoryConfiguration.setRepositoryID(repositoryId)
@@ -103,14 +103,21 @@ class MonitoringsController < ApplicationController
     serviceDiscoveryConfiguration = ServiceDiscoveryConfiguration.new(repositoryConfiguration)
     discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
 
+    begin
+      @serviceinputs = discovery.getInputList(@endpointdetails)
+      #discovery.getInputVaultList(@endpointdetails)
+      # @serviceoutputs = discovery.getOutputList(@endpointdetails)
+      # discovery.getOutputVaultList(@endpointdetails)
 
-    @serviceinputs = discovery.getInputList(@endpointdetails)
-    discovery.getInputVaultList(@endpointdetails)
-    @serviceoutputs = discovery.getOutputList(@endpointdetails)
-    discovery.getOutputVaultList(@endpointdetails)
 
+    rescue Exception => e
+      logger.info "e:"+e.inspect
+      @error = "Getting the Service details failed, through exception: " + e.inspect + e.to_s
+      logger.info "#{@error} "
+      @serviceinputs = @error
+    end
 
-    logger.info "#{@endpointdetails}"
+    logger.info "Endponts details : #{@endpointdetails}"
 
     render :partial => "monitorings/servicedetails"
   end
@@ -121,7 +128,7 @@ class MonitoringsController < ApplicationController
 
     #obtain the categories
     serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"
-    repositoryId = "msee-test"
+    repositoryId = "msee"
 
     repositoryConfiguration = ServiceRepositoryConfiguration.new
     repositoryConfiguration.setRepositoryID(repositoryId)
@@ -133,6 +140,7 @@ class MonitoringsController < ApplicationController
 
     logger.info "DIS #{serviceTree.discoverCategoryAndService}"
     logger.info "LENGTH #{serviceTree.getServiceCategories.length}"
+    logger.info "tree #{serviceTree.discoverCategoryAndService.toString()}"
     for s in serviceTree.discoverCategoryAndService
       logger.info "Cats: #{s}"
     end

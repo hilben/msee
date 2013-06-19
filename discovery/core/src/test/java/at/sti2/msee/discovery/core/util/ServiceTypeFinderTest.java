@@ -12,10 +12,8 @@ import at.sti2.msee.discovery.core.tree.DiscoveredCategory;
 import at.sti2.msee.discovery.core.tree.DiscoveredCategoryImpl;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperation;
 import at.sti2.msee.discovery.core.tree.DiscoveredOperationBase;
-import at.sti2.msee.discovery.core.tree.DiscoveredOperationHrests;
 import at.sti2.msee.discovery.core.tree.DiscoveredService;
 import at.sti2.msee.discovery.core.tree.DiscoveredServiceBase;
-import at.sti2.msee.discovery.core.tree.DiscoveredServiceHrests;
 
 public class ServiceTypeFinderTest {
 	private static DiscoveredCategory category;
@@ -27,9 +25,11 @@ public class ServiceTypeFinderTest {
 
 	@Test
 	public void testGetTypeRest() {
-		DiscoveredOperationHrests restOperation1 = new DiscoveredOperationHrests("operation1");
-		DiscoveredServiceHrests restService1 = new DiscoveredServiceHrests("service1");
+		DiscoveredOperationBase restOperation1 = new DiscoveredOperationBase("operation1");
+		DiscoveredService restService1 = new DiscoveredServiceBase("service1");
 		restService1.addDiscoveredOperation(restOperation1);
+		restOperation1.addAddress("http://someaddress.com");
+		restOperation1.addMethod("GET");
 		category.addDiscoveredService(restService1);
 
 		Set<DiscoveredService> services = category.getServiceSet();

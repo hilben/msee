@@ -1,7 +1,6 @@
 package at.sti2.msee.invocation.core;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -53,6 +52,10 @@ public class ServiceInvocationImplTest {
 				"/services/hotelwsdl2.0-2013-06-11.wsdl").toString();
 		registeredServiceID2 = registrationService.register(serviceDescriptionURL);
 
+		serviceDescriptionURL = ServiceInvocationImplTest.class.getResource(
+				"/services/helloservice-wsdl1.1-2013-06-11.wsdl").toString();
+		registeredServiceID4 = registrationService.register(serviceDescriptionURL);
+
 	}
 
 	@Test
@@ -69,7 +72,7 @@ public class ServiceInvocationImplTest {
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
 		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID1), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID1, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
@@ -78,8 +81,9 @@ public class ServiceInvocationImplTest {
 		String hotelID = "1";
 		String expected = "Street Road 312" + hotelID;
 		String operation = "getHotelAddress";
-		String inputVariables = "<parameters>" + "<hotelID>" + hotelID + "</hotelID>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID2), operation, inputVariables);
+		String inputVariables = "<parameters>" + "<hotelID>" + hotelID + "</hotelID>"
+				+ "</parameters>";
+		String result = invocation.invoke(registeredServiceID2, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 
@@ -90,7 +94,17 @@ public class ServiceInvocationImplTest {
 		String expected = "Hotel Name" + id;
 		String operation = "getHotelName";
 		String inputVariables = "<parameters>" + "<id>" + id + "</id>" + "</parameters>";
-		String result = invocation.invoke(new URL(registeredServiceID3), operation, inputVariables);
+		String result = invocation.invoke(registeredServiceID3, operation, inputVariables);
+		Assert.assertEquals("Result is: " + result, expected, result);
+	}
+
+	@Test
+	public final void testInvokeWSDLHelloService() throws MalformedURLException,
+			ServiceInvokerException {
+		String expected = "\n      Hello from server - herongyang.com.\n    ";
+		String operation = "Hello";
+		String inputVariables = "<parameters>" + "</parameters>";
+		String result = invocation.invoke(registeredServiceID4, operation, inputVariables);
 		Assert.assertEquals("Result is: " + result, expected, result);
 	}
 

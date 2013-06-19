@@ -7,7 +7,9 @@ PREFIX msee: <http://msee.sti2.at/properties#>
 PREFIX hr: <http://www.wsmo.org/ns/hrests#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT * WHERE { 
-	<%THESERVICEID%> rdf:type msm:Service . 
+	?serviceID rdf:type msm:Service . 
+	FILTER (?serviceID = <%THESERVICEID%> )
+	
 	?serviceID msm:hasOperation ?operation .
 	?serviceID sawsdl:modelReference ?category .
 	?operation a msm:Operation .
@@ -41,6 +43,5 @@ SELECT * WHERE {
 	OPTIONAL{
 		?operation hr:hasMethod ?operationMethod .
 	}
-	
-	#FILTER regex(?serviceID, "^%THESERVICEID%")
+
 }

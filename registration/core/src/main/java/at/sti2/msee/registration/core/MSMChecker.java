@@ -88,6 +88,15 @@ public class MSMChecker {
 			}
 		}
 	}
+	
+	public String getServiceName() throws ServiceRegistrationException{
+		check(); // asserts that services is filled, if any
+		if(services.size()>0){
+			return services.get(0).toString();
+		} else {
+			throw new ServiceRegistrationException("no service registered");
+		}
+	}
 
 	private void checkForCategories() throws ServiceRegistrationException {
 		for (Resource service : services) {
