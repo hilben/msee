@@ -1,22 +1,22 @@
-<div class="accordion" id="accordion2">
+<div id="my-accordion" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> Monitoring Data </a>
+            <a href="#collapse-year-2012" data-parent="#my-accordion" data-toggle="collapse" class="accordion-toggle">Operation Details</a>
         </div>
-        <div id="collapseOne" class="accordion-body collapse in">
-            <div class="accordion-inner">
-                <%= render 'graph' %>
-            </div>
-        </div>
-    </div>
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"> Details</a>
-        </div>
-        <div id="collapseTwo" class="accordion-body collapse">
+        <div class="accordion-body collapse in" id="monitoring">
             <div class="accordion-inner">
                 <div id="servicedetails"><%= render 'servicedetails' %></div>
-            </div>
+            </div><!-- .accordion-inner -->
+        </div><!-- .accordion-body -->
+    </div><!-- .accordion-group -->
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a href="#collapse-year-2011" data-parent="#my-accordion" data-toggle="collapse" class="accordion-toggle">Monitored Data</a>
         </div>
-    </div>
+        <div class="accordion-body collapse" id="opteration details">
+            <div class="accordion-inner">
+                 <%= render 'graph' %>
+            </div><!-- .accordion-inner -->
+        </div><!-- .accordion-body -->
+    </div><!-- .accordion-group -->
 </div>

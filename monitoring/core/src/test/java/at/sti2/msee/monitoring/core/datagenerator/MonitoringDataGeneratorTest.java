@@ -51,7 +51,7 @@ public class MonitoringDataGeneratorTest {
 //							1200, 50, 1200, 100, 1500, 0.05, new Date(), 10000) },
 					{ new MonitoringDataGeneratorParameters(
 							new URL(
-									"http:///msee.sti2.at/services/61a2c8ce-f00c-4eba-bc7e-94e3411f28a1#wsdl.service(helloService)/Hello"),
+									"http:///msee.sti2.at/services/7c52d54f-f0e1-4535-846d-3ba52c594847#getHotelName"),
 							5, 50, 1200, 50, 1200, 100, 1500, 0.05,
 							new Date(), 10000) }
 
@@ -67,9 +67,11 @@ public class MonitoringDataGeneratorTest {
 
 		try {
 			this.generator.generateData(true);
+			
 		} catch (RepositoryException | MalformedQueryException
 				| UpdateExecutionException | IOException | MonitoringException
 				| ParseException e) {
+			e.printStackTrace();
 			fail();
 		}
 	}

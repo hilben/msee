@@ -120,7 +120,8 @@ public class GoogleChart {
 
 		MonitoringComponent m = MonitoringComponentImpl.getInstance();
 
-		String ws1 = "http://www.example.com/chartws1";
+		String ws1 = "http://msee.sti2.at/services/7c52d54f-f0e1-4535-846d-3ba52c594847#getHotelName";
+//		String ws1 = "http://www.example.com/chartws1";
 //		String ws2 = "http://www.example.com/chartws2";
 //		String ws3 = "http://msee.sti2.at/services/2fd9e82e-e583-45a4-8a34-2d9b6c632be4#wsdl.service(helloService)/Hello";
 
@@ -137,7 +138,7 @@ public class GoogleChart {
 		endpoints.add(ws1);
 //		endpoints.add(ws2);
 //		endpoints.add(ws3);
-		qosParamKeys.add("ResponseTime");
+		qosParamKeys.add("RequestTotal");
 //		qosParamKeys.add("PayloadSizeResponse");
 //		qosParamKeys.add("PayloadSizeRequest");
 		// qosParamKeys.add("AvailableTime");
