@@ -1,10 +1,20 @@
 <p>
-    Select QoS Parameters:
+Select QoS Parameters:
 </p>
 
-    <% if @qosParamKeys then%>
-    <% for param in @qosParamKeys do%>
-    <input class = "qoscheckbox" id="<%= param %>" name="<%= param %>" type="checkbox" value="1" />
-    <%= param %>
-    <% end %>
-    <% end %>
+
+<% if @qosParamKeys then%>
+<% for param in @qosParamKeys do%>
+<input class = "qoscheckbox" id="<%= param %>" name="<%= param %>" type="checkbox" value="1" />
+<%= param %>
+<% end %>
+<% end %>
+
+
+<select class="selectpicker" multiple>
+	<% if @qosParamKeys then%>
+	<% for param in @qosParamKeys do%>
+	<option id="<%= param %>" name="<%= param %>" type="checkbox" value="1" ><%= param %></option>
+	<% end %>
+	<% end %>
+</select>

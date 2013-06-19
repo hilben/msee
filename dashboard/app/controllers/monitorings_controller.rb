@@ -104,10 +104,11 @@ class MonitoringsController < ApplicationController
     discovery = ServiceDiscoveryFactory.createDiscoveryService(serviceDiscoveryConfiguration)
 
     begin
+      discovery.discoverCategoryAndService()
       @serviceinputs = discovery.getInputList(@endpointdetails)
-      #discovery.getInputVaultList(@endpointdetails)
-      # @serviceoutputs = discovery.getOutputList(@endpointdetails)
-      # discovery.getOutputVaultList(@endpointdetails)
+      @serviceinputsvaults = discovery.getInputVaultList(@endpointdetails)
+      @serviceoutputs = discovery.getOutputList(@endpointdetails)
+      @serviceoutputsvaults = discovery.getOutputVaultList(@endpointdetails)
 
 
     rescue Exception => e
