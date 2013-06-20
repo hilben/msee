@@ -276,16 +276,21 @@ class MonitoringsController < ApplicationController
       logger.info "serviceID: #{serviceID}"
 
       begin
-        invoker = ServiceInvocationImpl.new
+        serviceRepositoryConfiguration = ServiceRepositoryConfiguration.new
+        serviceRepositoryConfiguration.setRepositoryID("msee")
+        serviceRepositoryConfiguration.setServerEndpoint("http://msee.sti2.at:8080/openrdf-sesame")
+        serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration)
+        serviceRepository.init()
+        invoker = ServiceInvocationImpl.new(serviceRepository)
 
         result = invoker.invoke(serviceID, operation,data)
         logger.debug "invoker : #{result}"
 
-        @outputmon = result
-        @noticemon = "The invocation was succesfull.";
+        @output = result
+        @notice = "The invocation was succesfull.";
 
       rescue => e
-        @errormon = "Invocation Process failed, through exception: " + e.to_s
+        @error = "Invocation Process failed, through exception: " + e.to_s
       end
     end
   end
