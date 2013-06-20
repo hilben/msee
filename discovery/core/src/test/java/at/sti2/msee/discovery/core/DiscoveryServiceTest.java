@@ -18,6 +18,7 @@ package at.sti2.msee.discovery.core;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -178,4 +179,11 @@ public class DiscoveryServiceTest extends TestCase {
 		assertTrue(service.getName().equals(registeredServiceID));
 	}
 
+	@Test
+	public void testGetInput() throws DiscoveryException{
+		DiscoveredService service = ((DiscoveryServiceImpl) discoveryService)
+				.discoverService(registeredServiceID);
+		List<String> inputList = ((DiscoveryServiceImpl) discoveryService).getInputList(service.getOperationSet().iterator().next().getName());
+		
+	}
 }
