@@ -17,11 +17,10 @@
 package at.sti2.msee.ranking.common;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import at.sti2.msee.config.Config;
 
 /**
  * @author Benjamin Hiltpolt
@@ -30,10 +29,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class RankingConfig {
 
-	private final Logger LOGGER = LogManager.getLogger(this.getClass()
-			.getName());
-
-	private final Properties prop;
+	private final Logger LOGGER = LogManager.getLogger(this.getClass().getName());
 
 	private static RankingConfig instance = null;
 
@@ -50,33 +46,22 @@ public class RankingConfig {
 	}
 
 	private RankingConfig() throws IOException {
-		this.prop = new Properties();
-		this.prop.load(RankingConfig.class
-				.getResourceAsStream("/default.properties"));
-
-		this.triplestoreEndpoint = this.prop
-				.getProperty("ranking.triplestore.endpoint");
-		this.triplestoreReposid = this.prop
-				.getProperty("ranking.triplestore.reposid");
-		this.instancePrefix = this.prop
-				.getProperty("ranking.instance.prefixuri");
+		Config config = Config.INSTANCE;
+		this.triplestoreEndpoint = config.getRankingRepositoryEndpoint();
+		this.triplestoreReposid = config.getRankingRepositoryID();
+		this.instancePrefix = config.getRankingInstancePrefix();
 
 		LOGGER.debug("Loaded ranking configuration: " + this);
 
-		URL resLocation = RankingConfig.class
-				.getResource("/default.properties");
 		if (this.triplestoreReposid == null) {
-			throw new IOException(
-					"repository not available in ranking config file " + resLocation);
+			throw new IOException("repository not available in ranking config file ");
 		}
 
 		if (this.triplestoreEndpoint == null) {
-			throw new IOException(
-					"triplestoreEndpoint not available in ranking config file " + resLocation);
+			throw new IOException("triplestoreEndpoint not available in ranking config file ");
 		}
 		if (this.instancePrefix == null) {
-			throw new IOException(
-					"triplestoreEndpoint not available in ranking config file " + resLocation);
+			throw new IOException("triplestoreEndpoint not available in ranking config file ");
 		}
 	}
 
@@ -90,10 +75,8 @@ public class RankingConfig {
 
 	@Override
 	public String toString() {
-		return "Config [prop=" + prop + ", triplestoreEndpoint="
-				+ triplestoreEndpoint + ", triplestoreReposid="
-				+ triplestoreReposid + ", ranking.instance.prefixuri= "
-				+ instancePrefix + " ]";
+		return "Config [triplestoreEndpoint=" + triplestoreEndpoint + ", triplestoreReposid="
+				+ triplestoreReposid + ", ranking.instance.prefixuri= " + instancePrefix + " ]";
 	}
 
 	public String getInstancePrefix() {

@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openrdf.rio.UnsupportedRDFormatException;
 
+import at.sti2.msee.config.Config;
 import at.sti2.msee.discovery.api.webservice.Discovery;
 import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
@@ -41,25 +42,20 @@ import at.sti2.msee.discovery.core.ServiceDiscoveryFactory;
 public class WebServiceDiscoveryImpl implements Discovery {
 	private final static Logger LOGGER = LogManager.getLogger(WebServiceDiscoveryImpl.class
 			.getName());
-
+	private Config config = Config.INSTANCE;
 	private Discovery discoveryDelegate;
 
 	public WebServiceDiscoveryImpl() throws IOException {
-		Configuration configuration = new Configuration();
-		this.loadConfiguration(configuration);
+		init();
 	}
 
 	public WebServiceDiscoveryImpl(Discovery discovery) {
 		this.discoveryDelegate = discovery;
 	}
 
-	WebServiceDiscoveryImpl(Configuration configuration) throws IOException {
-		this.loadConfiguration(configuration);
-	}
-
-	private void loadConfiguration(Configuration configuration) {
-		String repositoryId = configuration.getSesameReposID();
-		String serverEndpoint = configuration.getSesameEndpoint();
+	private void init() {
+		String repositoryId = config.getRepositoryID();
+		String serverEndpoint = config.getRepositoryEndpoint();
 
 		discoveryDelegate = ServiceDiscoveryFactory.createDiscoveryService(serverEndpoint,
 				repositoryId);

@@ -23,6 +23,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import at.sti2.msee.discovery.api.webservice.Discovery;
+import at.sti2.msee.discovery.api.webservice.DiscoveryException;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationImpl;
 import at.sti2.msee.triplestore.ServiceRepository;
@@ -78,7 +79,7 @@ public class DiscoveryServiceTest_ForTree extends TestCase {
 	}
 
 	@Test
-	public void testGetTree() throws IOException, ServiceRegistrationException {
+	public void testGetTree() throws IOException, ServiceRegistrationException, DiscoveryException {
 		System.out.println(((DiscoveryServiceImpl) discoveryService).discoverCategoryAndService());
 	}
 

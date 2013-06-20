@@ -17,10 +17,11 @@
 package at.sti2.msee.monitoring.core.common;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import at.sti2.msee.config.Config;
 
 /**
  * @author Benjamin Hiltpolt
@@ -29,10 +30,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class MonitoringConfig {
 
-	private final Logger LOGGER = LogManager.getLogger(this.getClass()
-			.getName());
-	
-	private final Properties prop;
+	private final Logger LOGGER = LogManager.getLogger(this.getClass().getName());
 
 	private static MonitoringConfig instance = null;
 
@@ -49,29 +47,24 @@ public class MonitoringConfig {
 	}
 
 	private MonitoringConfig() throws IOException {
-		this.prop = new Properties();
-     	this.prop.load(MonitoringConfig.class.getResourceAsStream("/default.properties"));
-     	
-		
-		this.triplestoreEndpoint = this.prop
-				.getProperty("monitoring.triplestore.endpoint");
-		this.triplestoreReposid = this.prop.getProperty("monitoring.triplestore.reposid");
+		Config config = Config.INSTANCE;
 
-		this.instanceprefix = this.prop.getProperty("monitoring.instance.prefixuri");
+		this.triplestoreEndpoint = config.getMonitoringRepositoryEndpoint();
+		this.triplestoreReposid = config.getMonitoringRepositoryID();
+		this.instanceprefix = config.getMonitoringInstancePrefix();
 
 		LOGGER.debug("Loaded monitoring configuration: " + this);
-		
+
 		if (this.instanceprefix == null) {
 			throw new IOException("instanceprefix not available in config file");
 		}
-		
+
 		if (this.triplestoreReposid == null) {
 			throw new IOException("repository not available in config file");
 		}
 
 		if (this.triplestoreEndpoint == null) {
-			throw new IOException(
-					"triplestoreEndpoint not available in config file");
+			throw new IOException("triplestoreEndpoint not available in config file");
 		}
 	}
 
@@ -89,9 +82,7 @@ public class MonitoringConfig {
 
 	@Override
 	public String toString() {
-		return "Config [prop=" + prop + ", triplestoreEndpoint="
-				+ triplestoreEndpoint + ", triplestoreReposid="
-				+ triplestoreReposid + ", instanceprefix=" + instanceprefix
-				+ "]";
+		return "Config [triplestoreEndpoint=" + triplestoreEndpoint + ", triplestoreReposid="
+				+ triplestoreReposid + ", instanceprefix=" + instanceprefix + "]";
 	}
 }

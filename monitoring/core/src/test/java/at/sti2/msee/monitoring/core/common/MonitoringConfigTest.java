@@ -35,7 +35,7 @@ public class MonitoringConfigTest {
 
 	@Test
 	public void testGetTriplestoreReposID() {
-		assertTrue(this.config.getTriplestoreReposID().compareTo("wsmf")==0);
+		assertTrue(this.config.getTriplestoreReposID(), this.config.getTriplestoreReposID().compareTo("wsmf")==0);
 	}
 
 }

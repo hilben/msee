@@ -20,11 +20,11 @@ import java.io.IOException;
 
 import javax.jws.WebService;
 
+import at.sti2.msee.config.Config;
 import at.sti2.msee.registration.api.ServiceRegistration;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.registration.core.ServiceRegistrationFactory;
 import at.sti2.msee.registration.core.configuration.ServiceRegistrationConfiguration;
-import at.sti2.msee.registration.webservice.configuration.Configuration;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 
 /**
@@ -37,24 +37,20 @@ import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
 
 @WebService(targetNamespace = "http://msee.sti2.at/delivery/registration/", endpointInterface = "at.sti2.msee.registration.api.ServiceRegistration", portName = "RegistrationServicePort", serviceName = "service")
 public class WebServiceRegistrationImpl implements ServiceRegistration {
-	ServiceRegistration registrationDelegate;
+	private ServiceRegistration registrationDelegate;
+	private Config config = Config.INSTANCE;
 
 	public WebServiceRegistrationImpl() throws IOException {
-		Configuration configuration = new Configuration();
-		this.loadConfiguration(configuration);
+		init();
 	}
 
 	public WebServiceRegistrationImpl(ServiceRegistration registrationDelegate) {
 		this.registrationDelegate = registrationDelegate;
 	}
 
-	WebServiceRegistrationImpl(Configuration configuration) throws IOException {
-		this.loadConfiguration(configuration);
-	}
-
-	private void loadConfiguration(Configuration configuration) {
-		String repositoryId = "msee"; // configuration.getSesameReposID();
-		String serverEndpoint = "http://sesa.sti2.at:8080/openrdf-sesame"; // configuration.getSesameEndpoint();
+	private void init() {
+		String repositoryId = config.getRepositoryID();
+		String serverEndpoint = config.getRepositoryEndpoint();
 
 		ServiceRegistrationConfiguration registrationConfiguration = new ServiceRegistrationConfiguration();
 

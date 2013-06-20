@@ -32,6 +32,10 @@
 			<version>${project.parent.version}</version>
 			<artifactId>monitoring.core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>util.config</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.ibm.icu</groupId>

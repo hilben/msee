@@ -162,7 +162,7 @@ public class DiscoveryServiceTest extends TestCase {
 	}
 
 	@Test
-	public void testDiscoverCategoryAndService() {
+	public void testDiscoverCategoryAndService() throws DiscoveryException {
 		((DiscoveryServiceImpl) discoveryService).discoverCategoryAndService();
 	}
 
@@ -180,10 +180,11 @@ public class DiscoveryServiceTest extends TestCase {
 	}
 
 	@Test
-	public void testGetInput() throws DiscoveryException{
+	public void testGetInput() throws DiscoveryException {
 		DiscoveredService service = ((DiscoveryServiceImpl) discoveryService)
 				.discoverService(registeredServiceID);
-		List<String> inputList = ((DiscoveryServiceImpl) discoveryService).getInputList(service.getOperationSet().iterator().next().getName());
-		
+		List<String> inputList = ((DiscoveryServiceImpl) discoveryService).getInputList(service
+				.getOperationSet().iterator().next().getName());
+
 	}
 }

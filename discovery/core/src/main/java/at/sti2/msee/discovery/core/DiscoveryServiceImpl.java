@@ -55,7 +55,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	private DiscoveryTreeHandler treeHandler = null;
 
 	/**
-	 * The constructor takes the service repository as argument, which can not
+	 * The constructor takes the service repository as argument, which MUST not
 	 * be NULL.
 	 * 
 	 * @param serviceRepository
@@ -170,42 +170,47 @@ public class DiscoveryServiceImpl implements Discovery {
 		}
 	}
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see
-//	 * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
-//	 * .lang.String[], java.lang.String[], java.lang.String[])
-//	 */
-//	@Override
-//	public String discoverAdvanced(String[] categoryList, String[] inputParamList,
-//			String[] outputParamList) throws DiscoveryException {
-//		throw new DiscoveryException("Not yet implemented");
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see
-//	 * at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
-//	 * java.lang.String)
-//	 */
-//	@Override
-//	public String lookup(String namespace, String operationName) throws DiscoveryException {
-//		throw new DiscoveryException("Not yet implemented");
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see
-//	 * at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
-//	 * .String)
-//	 */
-//	@Override
-//	public String getIServeModel(String serviceID) throws DiscoveryException {
-//		throw new DiscoveryException("Not yet implemented");
-//	}
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see
+	// * at.sti2.msee.discovery.api.webservice.Discovery#discoverAdvanced(java
+	// * .lang.String[], java.lang.String[], java.lang.String[])
+	// */
+	// @Override
+	// public String discoverAdvanced(String[] categoryList, String[]
+	// inputParamList,
+	// String[] outputParamList) throws DiscoveryException {
+	// throw new DiscoveryException("Not yet implemented");
+	// }
+	//
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see
+	// *
+	// at.sti2.msee.discovery.api.webservice.Discovery#lookup(java.lang.String,
+	// * java.lang.String)
+	// */
+	// @Override
+	// public String lookup(String namespace, String operationName) throws
+	// DiscoveryException {
+	// throw new DiscoveryException("Not yet implemented");
+	// }
+	//
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see
+	// *
+	// at.sti2.msee.discovery.api.webservice.Discovery#getIServeModel(java.lang
+	// * .String)
+	// */
+	// @Override
+	// public String getIServeModel(String serviceID) throws DiscoveryException
+	// {
+	// throw new DiscoveryException("Not yet implemented");
+	// }
 
 	/**
 	 * Returns the service categories as a String list.
@@ -238,6 +243,8 @@ public class DiscoveryServiceImpl implements Discovery {
 	/**
 	 * This method builds a tree of services of the following structure:
 	 * 
+	 * @throws DiscoveryException
+	 * 
 	 */
 	// category1 -service1.1
 	// --operation1.1.1
@@ -249,7 +256,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	// category2
 	// -service2.1
 	// --operation2.1.1
-	public Set<DiscoveredCategory> discoverCategoryAndService() {
+	public Set<DiscoveredCategory> discoverCategoryAndService() throws DiscoveryException {
 		String queryString = new DiscoveryQueryBuilder().getDiscoverCategoriesAndServices();
 		Model rdfModel = serviceRepository.getModel();
 		rdfModel.open();
@@ -263,6 +270,7 @@ public class DiscoveryServiceImpl implements Discovery {
 			treeHandler = new DiscoveryTreeHandler(returnSet);
 		} catch (DiscoveryException e) {
 			LOGGER.catching(e);
+			throw new DiscoveryException("Build of service tree not possible", e);
 		}
 
 		rdfModel.close();
@@ -356,6 +364,7 @@ public class DiscoveryServiceImpl implements Discovery {
 	 */
 	public List<String> getInputList(String serviceID, String operationName)
 			throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getInputList(serviceID, operationName);
 	}
 
@@ -369,23 +378,41 @@ public class DiscoveryServiceImpl implements Discovery {
 	 */
 	public List<String> getOutputList(String serviceID, String operationName)
 			throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getOutputList(serviceID, operationName);
 	}
 
 	public List<String> getInputList(final String operationName) throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getInputList(operationName);
 	}
 
 	public List<String> getInputVaultList(final String operationName) throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getInputVaultList(operationName);
 	}
 
 	public List<String> getOutputList(final String operationName) throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getOutputList(operationName);
 	}
 
 	public List<String> getOutputVaultList(final String operationName) throws DiscoveryException {
+		ensureTreeHandlerData();
 		return treeHandler.getOutputVaultList(operationName);
+	}
+
+	/**
+	 * Checks the initialization of the tree handler instance. Without data a
+	 * call to the tree handler would not make sense. This method should be
+	 * called before the tree handler is used.
+	 * 
+	 * @throws DiscoveryException
+	 */
+	private void ensureTreeHandlerData() throws DiscoveryException {
+		if (treeHandler == null) {
+			discoverCategoryAndService();
+		}
 	}
 
 	/* ************************************************************************

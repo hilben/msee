@@ -17,7 +17,7 @@ CONSTRUCT {
 	
 	?serviceID 
 		msee:name ?serviceName ; 
-		msee:decription ?serviceDescription ; 
+		msee:description ?serviceDescription ; 
 		msee:requirements ?serviceRequirements ; 
 		msee:access_point ?serviceAccessPoint ; 
 		msee:type ?serviceType ; 
@@ -213,11 +213,21 @@ CONSTRUCT {
 	
 	OPTIONAL {
 		?serviceID msee:name ?serviceName . 
-		?serviceID msee:decription ?serviceDescription . 
+	}
+	OPTIONAL {
+		?serviceID msee:description ?serviceDescription . 
+	}
+	OPTIONAL {
 		?serviceID msee:requirements ?serviceRequirements . 
+	}
+	OPTIONAL {
 		?serviceID msee:access_point ?serviceAccessPoint . 
+	}
+	OPTIONAL {
 		?serviceID msee:type ?serviceType . 
+	}
+	OPTIONAL {
 		?serviceID msee:icon ?serviceIcon . 
-	} 
+	}
 
 }

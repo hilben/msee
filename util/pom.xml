@@ -12,6 +12,7 @@
 	</parent>
 
 	<modules>
+		<module>config</module>
 <!-- 		<module>ranking-framework</module> -->
 		<module>iserve-commons-io</module>
 		<module>iserve-commons-vocabulary</module>

@@ -18,6 +18,10 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
+			<artifactId>util.config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>util.triplestore.client</artifactId>
 		</dependency>
 		<dependency>

@@ -137,7 +137,7 @@ public class MonitoringComponentImplTest {
 		}
 	}
 
-	@Test
+	@Test @Ignore
 	public void testUpdateAvailabilityState() {
 		MonitoringWebserviceAvailabilityState state1 = MonitoringWebserviceAvailabilityState.Available;
 		MonitoringWebserviceAvailabilityState state2 = MonitoringWebserviceAvailabilityState.Unavailable;

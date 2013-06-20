@@ -14,6 +14,7 @@ import org.openrdf.repository.RepositoryException;
 
 import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
 
+import at.sti2.msee.config.Config;
 import at.sti2.msee.registration.api.exception.ServiceRegistrationException;
 import at.sti2.msee.triplestore.ServiceRepository;
 import at.sti2.msee.triplestore.ServiceRepositoryConfiguration;
@@ -28,8 +29,8 @@ public class ServiceRegistrationImplTest {
 		ServiceRepositoryConfiguration serviceRepositoryConfiguration = new ServiceRepositoryConfiguration();
 
 		// Comment these 2 lines to force a in-memory repository
-		serviceRepositoryConfiguration.setRepositoryID("msee-test");
-		serviceRepositoryConfiguration.setServerEndpoint("http://sesa.sti2.at:8080/openrdf-sesame");
+		// serviceRepositoryConfiguration.setRepositoryID(Config.INSTANCE.getRepositoryID());
+		// serviceRepositoryConfiguration.setServerEndpoint(Config.INSTANCE.getRepositoryEndpoint());
 
 		serviceRepository = ServiceRepositoryFactory.newInstance(serviceRepositoryConfiguration);
 		serviceRepository.init();
@@ -39,6 +40,21 @@ public class ServiceRegistrationImplTest {
 	@After
 	public void tearDown() throws Exception {
 		serviceRepository.shutdown();
+	}
+
+	@Test
+	public void test() throws ServiceRegistrationException {
+		String serviceDescriptionURL = "http://chrismayrdp11.herokuapp.com/wsdl/Indesit_companysite.wsdl.xml";
+		ServiceRegistrationImpl registration = new ServiceRegistrationImpl(serviceRepository);
+		registration.register(serviceDescriptionURL);
+		
+		serviceDescriptionURL = "http://chrismayrdp11.herokuapp.com/wsdl/Indesit_rest.wsdl.xml";
+		registration = new ServiceRegistrationImpl(serviceRepository);
+		registration.register(serviceDescriptionURL);
+		
+		serviceDescriptionURL = "http://chrismayrdp11.herokuapp.com/wsdl/Indesit_webapp.wsdl.xml";
+		registration = new ServiceRegistrationImpl(serviceRepository);
+		registration.register(serviceDescriptionURL);
 	}
 
 	@Test
