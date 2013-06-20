@@ -5,9 +5,6 @@
 //= require jquery/jquery
 //= require jquery/jquery.min
 
-//= require bootstrap/bootstrap-dropdown
-//= require bootstrap/bootstrap-transition
-//= require bootstrap/bootstrap.min
 
 //= require jquery/jquery-ui.custom
 //= require jquery/jquery-ui.custom.min
@@ -16,6 +13,8 @@
 
 //= require star-rating/jquery.rating
 
+//= require bootstrap/bootstrap.min.js
+
 //= require google/monitoring-jsapi
 
 var currentSelectedEndpoint;
@@ -23,6 +22,10 @@ var checkedEndpoints;
 var currentSelectedQoSParams;
 
 $(document).ready(function() {
+
+
+
+
 
     console.log("LOADED MONITORING.JS");
     currentSelectedQoSParams = ["RequestTotal"];
@@ -96,7 +99,11 @@ $(document).ready(function() {
 
     });
 
-    $('#accordion2').collapse().height('auto');
+    $('#my-accordion').on('show hide', function() {
+        $(this).css('height', 'auto');
+    });
+
+   // $('#my-accordion').collapse({ parent: true, toggle: true }); 
 
     $("#tree").dynatree({
 
