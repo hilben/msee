@@ -33,6 +33,7 @@ import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.enumeration.Direction;
 import org.apache.woden.wsdl20.xml.BindingOperationElement;
 import org.apache.woden.wsdl20.xml.DescriptionElement;
+import org.apache.woden.wsdl20.xml.DocumentableElement;
 import org.apache.woden.wsdl20.xml.EndpointElement;
 import org.apache.woden.wsdl20.xml.InterfaceElement;
 import org.apache.woden.wsdl20.xml.InterfaceFaultReferenceElement;
@@ -175,6 +176,10 @@ public class Sawsdl20Transformer {
 				tempModel.addStatement(new URIImpl(endpointName), RDF.type, WSDL.Endpoint);
 				tempModel.addStatement(new URIImpl(endpointName), WSDL.address, endpoint);
 				tempModel.addStatement(serviceUri, WSDL.namespace, serviceNS);
+				
+				// extracting msee properties
+				extractMSEEProperties(serviceElement, tempModel, serviceUri);
+				
 
 				ModelReferenceExtractor.extractModelReferences(intfElement, tempModel, serviceUri);
 
@@ -182,6 +187,32 @@ public class Sawsdl20Transformer {
 						serviceUri);
 			}
 		}
+	}
+	
+	
+	
+	private void extractMSEEProperties(DocumentableElement element, Model model, URI elementUri) {
+		XMLAttr[] attributes = element.getExtensionAttributes();
+		if ( null == attributes || attributes.length <= 0 ) {
+			return;
+		}
+		for ( XMLAttr attribute : attributes ) {
+			if ( attribute.getAttributeType() != null && attribute.getAttributeType().getLocalPart() != null &&
+					attribute.getAttributeType().toString().contains("properties") ) {
+				processMSEEPropertiesString(attribute, model, elementUri);
+			}
+		}
+	}
+	
+	private void processMSEEPropertiesString(XMLAttr property, Model model, URI elementUri) {
+		if ( null == property || "" == property.getContent().toString() )
+			return;
+		String mseeProperty = trimBraces(property.getAttributeType().toString());
+		model.addStatement(elementUri, new URIImpl(mseeProperty), property.getContent().toString());
+	}
+
+	private String trimBraces(String stringWithBraces) {
+		return stringWithBraces.replace("{", "").replace("}", "");
 	}
 
 	private void processOperations(InterfaceOperationElement[] operationElements, Model tempModel,
