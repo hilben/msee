@@ -70,8 +70,12 @@ public class ServiceModelFormatDetector {
 	 * loads the parsed XML elements into a data set.
 	 */
 	private ServiceModelFormat detectInternal() {
-		InputStream inputStream = prepareInput(serviceDescriptionURI);
-		String input = inputStreamToString(inputStream);
+		String input = "";
+		try (InputStream inputStream = prepareInput(serviceDescriptionURI)) {
+			input = inputStreamToString(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		modelParser = new ServiceModelFormatParser(input);
 		elementSet = modelParser.parseElements();
@@ -147,10 +151,11 @@ public class ServiceModelFormatDetector {
 		InputStream inputStream = null;
 		if (scheme.toLowerCase().equals("http") || scheme.toLowerCase().equals("https")) {
 			try {
-				inputStream = (InputStream) serviceDescriptionURL.toURL().getContent();
+				inputStream = (InputStream) serviceDescriptionURL.toURL().openStream();
 			} catch (MalformedURLException e) {
 				throw new IllegalArgumentException("URL not correct");
 			} catch (IOException e) {
+				e.printStackTrace();
 				throw new IllegalArgumentException("Not a valid Host");
 			}
 
@@ -158,7 +163,8 @@ public class ServiceModelFormatDetector {
 			try {
 				inputStream = new FileInputStream(new File(serviceDescriptionURL));
 			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException("File name/location not correct");
+				throw new IllegalArgumentException("File name/location not correct: "
+						+ e.getLocalizedMessage() + " - " + serviceDescriptionURL, e);
 			}
 
 		}
