@@ -147,28 +147,14 @@ public class ServiceModelFormatDetector {
 	 * @return InputStream
 	 */
 	private InputStream prepareInput(URI serviceDescriptionURL) {
-		String scheme = serviceDescriptionURL.getScheme();
-		InputStream inputStream = null;
-		if (scheme.toLowerCase().equals("http") || scheme.toLowerCase().equals("https")) {
-			try {
-				inputStream = (InputStream) serviceDescriptionURL.toURL().openStream();
-			} catch (MalformedURLException e) {
-				throw new IllegalArgumentException("URL not correct");
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new IllegalArgumentException("Not a valid Host");
-			}
-
-		} else if (scheme.toLowerCase().equals("file")) {
-			try {
-				inputStream = new FileInputStream(new File(serviceDescriptionURL));
-			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException("File name/location not correct: "
-						+ e.getLocalizedMessage() + " - " + serviceDescriptionURL, e);
-			}
-
+		try {
+			return serviceDescriptionURL.toURL().openStream();
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException("URL not correct for " + serviceDescriptionURL);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Not a valid Host: " + serviceDescriptionURL);
 		}
-		return inputStream;
 	}
 
 	/**

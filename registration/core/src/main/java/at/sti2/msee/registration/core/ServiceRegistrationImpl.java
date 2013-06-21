@@ -12,8 +12,10 @@ import org.ontoware.rdf2go.exception.ModelRuntimeException;
 import org.ontoware.rdf2go.model.Model;
 import org.ontoware.rdf2go.model.Statement;
 import org.ontoware.rdf2go.model.node.Variable;
+import org.ontoware.rdf2go.model.node.impl.URIImpl;
 import org.ontoware.rdf2go.util.RDFTool;
 import org.ontoware.rdf2go.vocabulary.RDF;
+import org.ontoware.rdf2go.vocabulary.RDFS;
 import org.openrdf.repository.RepositoryException;
 
 import uk.ac.open.kmi.iserve.commons.vocabulary.MSM;
@@ -65,12 +67,19 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 		try {
 			Service2RDFTransformer transformer = Service2RDFTransformerFactory.newInstance(format);
 			String msmRDF = new MSMChecker(transformer.toMSM(descriptionURL)).check();
-			
-			if(contextURI == null){
+
+			if (contextURI == null) {
 				contextURI = findContextURI(msmRDF);
 			}
 
 			String serviceURI = this.serviceRepository.insert(msmRDF, contextURI);
+
+			Model isdefinedbyModel = RDF2Go.getModelFactory().createModel();
+			isdefinedbyModel.open();
+			isdefinedbyModel.addStatement(contextURI, RDFS.isDefinedBy, descriptionURL.toString());
+			serviceRepository.insertModel(isdefinedbyModel, new URIImpl(contextURI));
+			isdefinedbyModel.close();
+
 			return serviceURI;
 		} catch (ModelRuntimeException | IOException | Service2RDFTransformerException e) {
 			throw new ServiceRegistrationException(e);
@@ -123,7 +132,7 @@ public class ServiceRegistrationImpl implements ServiceRegistration {
 		contextModel.removeAll();
 		contextModel.close();
 		return serviceURI;
-		
+
 	}
 
 	@Override
